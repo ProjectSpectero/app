@@ -31,4 +31,9 @@
   border: 1px solid $color-border;
   border-radius: 4px;
 }
+.logo-container {
+  width: 100%;
+  margin-bottom: $pad;
+  text-align: center;
+}
 </style>

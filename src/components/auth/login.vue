@@ -4,25 +4,23 @@
       Please log in to continue.
     </div>
 
-    <div class="message error" v-if="formError">
-      {{ formError }}
-    </div>
+    <div class="message error" v-if="formError">{{ formError }}</div>
 
-    <div class="input-container">
-      <input type="text" class="input full-width" v-model="authKey" name="authKey" :disabled="formDisable" placeholder="Username" v-validate="'required'" data-vv-as="username" :class="{'input-error': errors.has('authKey')}">
-      <span v-show="errors.has('authKey')" class="input-error-msg">
+    <div class="form-input">
+      <input type="text" class="input max-width" v-model="authKey" name="authKey" :disabled="formDisable" placeholder="Username" v-validate="'required'" data-vv-as="username" :class="{'input-error': errors.has('authKey')}">
+      <span v-show="errors.has('authKey')" class="input-error-message">
         {{ errors.first('authKey') }}
       </span>
     </div>
 
-    <div class="input-container">
-      <input type="password" class="input full-width" v-model="password" name="password" :disabled="formDisable" placeholder="Password" v-validate="'required'" data-vv-as="password" :class="{'input-error': errors.has('password')}">
-      <span v-show="errors.has('password')" class="input-error-msg">
+    <div class="form-input">
+      <input type="password" class="input max-width" v-model="password" name="password" :disabled="formDisable" placeholder="Password" v-validate="'required'" data-vv-as="password" :class="{'input-error': errors.has('password')}">
+      <span v-show="errors.has('password')" class="input-error-message">
         {{ errors.first('password') }}
       </span>
     </div>
 
-    <button class="button button-info full-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">{{ formDisable ? 'Please Wait' : 'Log In' }}</button>
+    <button class="button button-info max-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">{{ formDisable ? 'Please Wait' : 'Log In' }}</button>
   </form>
 </template>
 

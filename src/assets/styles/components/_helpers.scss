@@ -1,0 +1,21 @@
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+.flex {
+  display: flex;
+}
+.block {
+  display: block;
+}
+.inline {
+  display: inline-block;
+}
+.pad {
+  padding: $pad;
+}
+.max-width {
+  width: 100%;
+}
