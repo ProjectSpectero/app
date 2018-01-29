@@ -1,5 +1,5 @@
 <template>
-  <form id="loginForm">
+  <form id="form-tfa">
     <div class="message error" v-if="formError">{{ formError }}</div>
 
     <div class="form-input">
