@@ -22,7 +22,7 @@
       </span>
     </div>
 
-    <button class="button button-success full-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">{{ formDisable ? 'Please Wait' : 'Log In' }}</button>
+    <button class="button button-info full-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">{{ formDisable ? 'Please Wait' : 'Log In' }}</button>
   </form>
 </template>
 

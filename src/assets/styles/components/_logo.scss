@@ -1,0 +1,20 @@
+.logo {
+  width: 276px;
+  height: 40px;
+  display: inline-block;
+  background: url('~@img/logo.svg') no-repeat 0 0/276px 40px;
+
+  &.logo-dark {
+    background-image: url('~@img/logo-dark.svg');
+  }
+  &.logo-sm {
+    width: 138px;
+    height: 20px;
+    background-size: 138px 20px;
+  }
+  &.logo-md {
+    width: 175px;
+    height: 25px;
+    background-size: 175px 25px;
+  }
+}

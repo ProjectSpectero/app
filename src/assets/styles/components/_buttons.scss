@@ -1,0 +1,64 @@
+// Button background color mixin
+@mixin buttonBackgroundColor($color) {
+  background-color: $color;
+  background-image: none;
+  border: 1px solid transparent;
+
+  &:hover {
+    background-color: darken($color, 3%);
+  }
+  &[disabled] {
+    background-color: $color;
+  }
+}
+
+// BUTTONS
+.button {
+  display: inline-block;
+  padding: 11px 18px;
+  font-family: $font-family;
+  font-size: $font-size;
+  font-weight: $font-bold;
+  line-height: 100%;
+  border-radius: 4px;
+  color: $white;
+  cursor: pointer;
+  transition: all 0.1s ease-out;
+  color: $color-dark;
+  background-image: linear-gradient(0deg, #F2F4F7 0%, #FFFFFF 100%);
+  border: 1px solid #CED0DA;
+  // @include buttonBackgroundColor($color-smoke);
+  // border: 1px solid transparent;
+  
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  // Button color styles
+  &.button-info {
+    color: $white;
+    @include buttonBackgroundColor($color-info);
+  }
+  &.button-success {
+    color: $white;
+    @include buttonBackgroundColor($color-success);
+  }
+  &.button-danger {
+    color: $white;
+    @include buttonBackgroundColor($color-danger);
+  }
+  &.button-warning {
+    color: #4C421A;
+    @include buttonBackgroundColor($color-warning);
+  }
+  &.button-dark {
+    color: $white;
+    @include buttonBackgroundColor($color-dark);
+  }
+
+  // Button sizes
+  &.button-sm {
+    padding: 8px 12px;
+  }
+}
