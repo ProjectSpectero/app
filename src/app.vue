@@ -64,5 +64,10 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '~@styles/main.scss';
+@import '~@styles/main.scss';
+
+#app {
+  width: 100%;
+  height: 100%;
+}
 </style>
