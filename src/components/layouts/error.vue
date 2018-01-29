@@ -12,7 +12,7 @@ export default {
 
 <style lang="scss" scoped>
   .error {
-    padding: 3rem;
+    padding: 5rem;
     text-align: center;
   }
 </style>
