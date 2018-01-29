@@ -1,10 +1,6 @@
 // Input padding
 .form-input {
   margin-bottom: 12px;
-
-  &.no-spacing {
-    margin-bottom: 0;
-  }
 }
 
 // Input error messages
@@ -14,4 +10,18 @@
   color: $color-danger;
   font-weight: $font-bold;
   line-height: 20px;
+}
+
+// Input labels
+.label {
+  display: block;
+  margin-bottom: 10px;
+
+  label {
+    display: inline-block;
+    color: $color-dark;
+    font-size: $font-size;
+    line-height: 100%;
+    cursor: pointer;
+  }
 }
