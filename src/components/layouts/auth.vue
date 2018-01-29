@@ -16,5 +16,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../../assets/styles/_vars.scss';
+  @import '../../assets/styles/vars/_all.scss';
 </style>

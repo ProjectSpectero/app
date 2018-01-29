@@ -64,5 +64,6 @@ export default {
 </script>
 
 <style lang="scss">
-  @import './assets/styles/_global.scss';
+  @import '~@styles/main.scss';
+  // @import '~@vars';
 </style>
