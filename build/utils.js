@@ -42,6 +42,18 @@ exports.cssLoaders = function (options) {
       })
     }
 
+    // Globally load SCSS files (for global variables, etc.)
+    if (loader === 'sass') {
+      loaders.push({
+        loader: 'sass-resources-loader',
+        options: {
+          resources: [
+            path.resolve(__dirname, '../src/assets/styles/vars/_all.scss')
+          ]
+        }
+      })
+    }
+
     // Extract CSS when that option is specified
     // (which is the case during production build)
     if (options.extract) {

@@ -1,0 +1,17 @@
+// Input padding
+.form-input {
+  margin-bottom: 12px;
+
+  &.no-spacing {
+    margin-bottom: 0;
+  }
+}
+
+// Input error messages
+.input-error-message {
+  display: block;
+  margin-top: 2px;
+  color: $color-danger;
+  font-weight: $font-bold;
+  line-height: 24px;
+}

@@ -1,8 +1,33 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App'
+import app from './app'
 import router from './router'
+import store from './store'
+
+import VueI18n from 'vue-i18n'
+import VueCookie from 'vue-cookie'
+import VeeValidate from 'vee-validate'
+import VueProgressBar from 'vue-progressbar'
+import Toasted from 'vue-toasted'
+
+Vue.use(VueI18n)
+Vue.use(VueCookie)
+Vue.use(VeeValidate)
+Vue.use(VueProgressBar, {
+  color: '#18FF6D',
+  failedColor: 'red',
+  thickness: '5px'
+})
+Vue.use(Toasted, {
+  className: 'toast',
+  position: 'bottom-right',
+  duration: 3000,
+  singleton: false
+})
+
+const messages = {
+  en: require('./lang/en.js')
+}
+const i18n = new VueI18n({ locale: 'en', messages })
 
 Vue.config.productionTip = false
 
@@ -10,6 +35,8 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
-  components: { App },
-  template: '<App/>'
+  store,
+  i18n,
+  template: '<app/>',
+  components: { app }
 })
