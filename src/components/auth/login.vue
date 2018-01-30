@@ -9,13 +9,14 @@
     <div class="form-input">
       <input
         type="text"
+        v-model="username"
+        name="username"
+        placeholder="Email address"
         class="input max-width"
-        v-model="username" name="username"
+        :class="{'input-error': errors.has('username')}"
         :disabled="formDisable"
-        placeholder="Username"
-        v-validate="'required'"
-        data-vv-as="username"
-        :class="{'input-error': errors.has('username')}">
+        v-validate="'required|email'"
+        data-vv-as="email">
 
       <span v-show="errors.has('username')" class="input-error-message">
         {{ errors.first('username') }}
@@ -25,13 +26,14 @@
     <div class="form-input">
       <input
         type="password"
-        class="input max-width"
-        v-model="password" name="password"
-        :disabled="formDisable"
+        v-model="password"
+        name="password"
         placeholder="Password"
+        class="input max-width"
+        :class="{'input-error': errors.has('password')}"
+        :disabled="formDisable"
         v-validate="'required'"
-        data-vv-as="password"
-        :class="{'input-error': errors.has('password')}">
+        data-vv-as="password">
 
       <span v-show="errors.has('password')" class="input-error-message">
         {{ errors.first('password') }}

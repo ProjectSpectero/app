@@ -3,14 +3,34 @@
     <div class="message error" v-if="formError">{{ formError }}</div>
 
     <div class="form-input">
-      <input type="text" class="input max-width" v-model="email" name="email" :disabled="formDisable" placeholder="Email address" v-validate="'required|email'" data-vv-as="email address" :class="{'input-error': errors.has('email')}">
+      <input
+        type="text"
+        v-model="email"
+        name="email"
+        placeholder="Email address"
+        class="input max-width"
+        :class="{'input-error': errors.has('email')}"
+        :disabled="formDisable"
+        v-validate="'required|email'"
+        data-vv-as="email">
+
       <span v-show="errors.has('email')" class="input-error-message">
         {{ errors.first('email') }}
       </span>
     </div>
 
     <div class="form-input">
-      <input type="password" class="input max-width" v-model="password" name="password" :disabled="formDisable" placeholder="Password" v-validate="'required|min:5|max:72'" data-vv-as="password" :class="{'input-error': errors.has('password')}">
+      <input
+        type="password"
+        v-model="password"
+        name="password"
+        placeholder="Password"
+        class="input max-width"
+        :class="{'input-error': errors.has('password')}"
+        :disabled="formDisable"
+        v-validate="'required|min:5|max:72'"
+        data-vv-as="password">
+
       <span v-show="errors.has('password')" class="input-error-message">
         {{ errors.first('password') }}
       </span>

@@ -3,7 +3,17 @@
     <div class="message error" v-if="formError">{{ formError }}</div>
 
     <div class="form-input">
-      <input type="text" class="input max-width" v-model="tfaValue" name="tfaValue" :disabled="formDisable" placeholder="Enter TFA Key" v-validate="'required'" data-vv-as="two factor authentication key" :class="{'input-error': errors.has('tfaValue')}">
+      <input
+        type="text"
+        v-model="tfaValue"
+        name="tfaValue"
+        placeholder="Enter TFA Key"
+        class="input max-width"
+        :class="{'input-error': errors.has('tfaValue')}"
+        :disabled="formDisable"
+        v-validate="'required'"
+        data-vv-as="two factor authentication key">
+
       <span v-show="errors.has('tfaValue')" class="input-error-message">
         {{ errors.first('tfaValue') }}
       </span>

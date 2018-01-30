@@ -12,10 +12,10 @@ module.exports = {
     FIELD_EMAIL: 'Must be a valid email.',
 
     MISSING_BODY: 'Some required fields are missing or empty.',
-    USER_NOT_FOUND: 'Invalid username or password.',
+    USER_NOT_FOUND: 'Invalid email or password.',
     USER_OBJECT_NOT_FOUND: 'Unable to submit the form without a proper user',
-    USER_AUTHKEY_ALREADY_EXISTS: 'Username already in use.',
-    AUTHENTICATION_FAILED: 'Invalid username or password.',
+    USER_AUTHKEY_ALREADY_EXISTS: 'Email already in use.',
+    AUTHENTICATION_FAILED: 'Invalid email or password.',
     UNABLE_TO_LOGOUT: 'Unable to log the user out.',
     ROLE_VALIDATION_FAILED: 'You don\'t have access to assign this role.',
 
