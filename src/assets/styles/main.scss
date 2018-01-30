@@ -6,8 +6,12 @@
 @import "components/icons";
 @import "components/global";
 @import "components/helpers";
+@import "components/typography";
 @import "components/logo";
 @import "components/form";
 @import "components/inputs";
 @import "components/buttons";
 @import "components/messages";
+
+// Pages
+@import "pages/error";

@@ -25,5 +25,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.spectero {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.content {
+  margin-left: 230px;
+}
 </style>

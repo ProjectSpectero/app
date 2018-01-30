@@ -1,5 +1,5 @@
 <template>
-  <form id="loginForm">
+  <form id="form-login">
     <div class="message info" v-if="!formError && this.$route.query.redirect">
       Please log in to continue.
     </div>
@@ -38,7 +38,7 @@
       </span>
     </div>
 
-    <button class="button button-info max-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">{{ formDisable ? 'Please Wait' : 'Log In' }}</button>
+    <button class="button button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">{{ formDisable ? 'Please Wait' : 'Log In' }}</button>
   </form>
 </template>
 

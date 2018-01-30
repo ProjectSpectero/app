@@ -1,18 +1,11 @@
 <template>
-  <div class="error">
+  <div class="error-screen">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default {
-
-}
 </script>
 
 <style lang="scss" scoped>
-  .error {
-    padding: 3rem;
-    text-align: center;
-  }
 </style>

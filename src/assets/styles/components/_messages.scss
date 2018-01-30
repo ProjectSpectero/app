@@ -9,19 +9,19 @@
   margin-bottom: 12px;
   
   &.info {
-    color: #fff;
+    color: $white;
     background-color: $color-info;
   }
-  &.error {
-    color: #fff;
+  &.error, &.danger {
+    color: $white;
     background-color: $color-danger;
   }
   &.success {
-    color: rgba(0,0,0,0.8);
+    color: $white;
     background-color: $color-success;
   }
   &.warning {
-    color: rgba(0,0,0,0.8);
+    color: rgba(0,0,0,0.7);
     background-color: $color-warning;
   }
 }
