@@ -7,14 +7,32 @@
     <div class="message error" v-if="formError">{{ formError }}</div>
 
     <div class="form-input">
-      <input type="text" class="input max-width" v-model="authKey" name="authKey" :disabled="formDisable" placeholder="Username" v-validate="'required'" data-vv-as="username" :class="{'input-error': errors.has('authKey')}">
-      <span v-show="errors.has('authKey')" class="input-error-message">
-        {{ errors.first('authKey') }}
+      <input
+        type="text"
+        class="input max-width"
+        v-model="username" name="username"
+        :disabled="formDisable"
+        placeholder="Username"
+        v-validate="'required'"
+        data-vv-as="username"
+        :class="{'input-error': errors.has('username')}">
+
+      <span v-show="errors.has('username')" class="input-error-message">
+        {{ errors.first('username') }}
       </span>
     </div>
 
     <div class="form-input">
-      <input type="password" class="input max-width" v-model="password" name="password" :disabled="formDisable" placeholder="Password" v-validate="'required'" data-vv-as="password" :class="{'input-error': errors.has('password')}">
+      <input
+        type="password"
+        class="input max-width"
+        v-model="password" name="password"
+        :disabled="formDisable"
+        placeholder="Password"
+        v-validate="'required'"
+        data-vv-as="password"
+        :class="{'input-error': errors.has('password')}">
+
       <span v-show="errors.has('password')" class="input-error-message">
         {{ errors.first('password') }}
       </span>
@@ -31,7 +49,7 @@ import auth from '@/api/auth.js'
 export default {
   data () {
     return {
-      authKey: null,
+      username: null,
       password: null,
       formError: null,
       formDisable: false
@@ -48,9 +66,10 @@ export default {
           // Disable form while HTTP request being made
           this.formDisable = true
 
+          // this.login()
           auth.login({
             data: {
-              authKey: this.authKey,
+              username: this.username,
               password: this.password
             },
             loginSuccess: msg => {
@@ -67,17 +86,39 @@ export default {
         }
       })
     },
+    login () {
+      const redirect = this.$auth.redirect()
+
+      this.$auth.login({
+        data: {
+          username: this.username,
+          password: this.password
+        },
+        rememberMe: false,
+        redirect: { name: redirect ? redirect.from.name : 'dashboard' },
+        fetchUser: false
+      }).then(() => {
+        console.log('success')
+        // Pre-load user-related data
+        this.setup()
+
+        // Move to the front page
+        this.dealWithSuccess()
+      }, (error) => {
+        this.dealWithError(error.data)
+      })
+    },
     async setup () {
       // Add anything that needs preloading here
     },
-    dealWithSuccess (msg) {
-      this.formError = null
+    dealWithSuccess () {
+      // this.formError = null
 
-      if (this.$route.query.redirect) {
-        this.$router.push({ path: this.$route.query.redirect })
-      } else {
-        this.$router.push({ name: 'dashboard' })
-      }
+      // if (this.$route.query.redirect) {
+      //   this.$router.push({ path: this.$route.query.redirect })
+      // } else {
+      //   this.$router.push({ name: 'dashboard' })
+      // }
     },
     dealWithError (err) {
       this.formDisable = false

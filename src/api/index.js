@@ -23,7 +23,6 @@ export default function (method, path, data, success, failed) {
 
   const protocol = process.env.DAEMON_HTTPS ? 'https://' : location.protocol + '//'
   const endpoint = process.env.DAEMON_ENDPOINT ? process.env.DAEMON_ENDPOINT : location.hostname
-  const version = process.env.DAEMON_VERSION
   let port = location.port ? ':' + location.port : ''
 
   // Allowing a default empty port to be specified
@@ -31,7 +30,7 @@ export default function (method, path, data, success, failed) {
     port = process.env.DAEMON_PORT ? ':' + process.env.DAEMON_PORT : ''
   }
 
-  const url = protocol + endpoint + port + '/v' + version
+  const url = protocol + endpoint + port + '/v' + process.env.DAEMON_VERSION
 
   Vue.prototype.$Progress.start()
 

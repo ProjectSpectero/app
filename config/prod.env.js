@@ -1,4 +1,6 @@
-'use strict'
+const ip = require('ip')
+
 module.exports = {
-  NODE_ENV: '"production"'
+  NODE_ENV: '"production"',
+  DAEMON_VERSION: '"1"'
 }

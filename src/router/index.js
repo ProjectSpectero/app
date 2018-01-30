@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Meta from 'vue-meta'
 
-import store from '../store'
-import auth from '../api/auth.js'
+// import store from '../store'
+// import auth from '../api/auth.js'
 
 // Routes
 import authRoutes from './auth'
@@ -25,32 +25,32 @@ const router = new Router({
 })
 
 // Test authentication before landing on each route request
-router.beforeEach((to, from, next) => {
-  const loginCheck = auth.checkLogin()
+// router.beforeEach((to, from, next) => {
+//   const loginCheck = auth.checkLogin()
 
-  // JWT token verified, update current user in Vuex store
-  if (loginCheck !== false) {
-    store.dispatch('auth/setCurrentJWT', loginCheck)
-  }
+//   // JWT token verified, update current user in Vuex store
+//   if (loginCheck !== false) {
+//     store.dispatch('auth/setCurrentJWT', loginCheck)
+//   }
 
-  // Handle routes requiring authentication
-  // or handle routes that arent view-able by already logged in users (default to /dashboard)
-  // else handles regular routes
-  if (to.matched.some(record => record.meta.auth)) {
-    if (loginCheck !== false) {
-      next()
-    } else {
-      next({ name: 'login', query: { redirect: to.fullPath } })
-    }
-  } else if (to.matched.some(record => record.meta.antiAuth)) {
-    if (loginCheck !== false) {
-      next({ name: 'dashboard' })
-    } else {
-      next()
-    }
-  } else {
-    next()
-  }
-})
+//   // Handle routes requiring authentication
+//   // or handle routes that arent view-able by already logged in users (default to /dashboard)
+//   // else handles regular routes
+//   if (to.matched.some(record => record.meta.auth)) {
+//     if (loginCheck !== false) {
+//       next()
+//     } else {
+//       next({ name: 'login', query: { redirect: to.fullPath } })
+//     }
+//   } else if (to.matched.some(record => record.meta.antiAuth)) {
+//     if (loginCheck !== false) {
+//       next({ name: 'dashboard' })
+//     } else {
+//       next()
+//     }
+//   } else {
+//     next()
+//   }
+// })
 
 export default router

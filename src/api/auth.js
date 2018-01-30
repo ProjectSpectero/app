@@ -2,18 +2,16 @@ import api from './index.js'
 import { setCookie, getCookie, removeCookie } from 'tiny-cookie'
 
 /**
- * Returns parsed JWT from SPECTERO_AUTH cookie.
+ * Returns parsed token from SPECTERO_AUTH cookie.
  *
  * On error, returns Object with error key and deletes cookie (if any).
  *
- * @param {String} jwt JWT token to validate (uses auth cookie if null)
+ * @param {String} token Token to validate (uses auth cookie if null)
  */
-const parseJWT = function (jwt) {
+const parseToken = function (token) {
   try {
-    const token = jwt || getCookie('SPECTERO_AUTH')
-
     return {
-      token: token,
+      token: token || getCookie('SPECTERO_AUTH'),
       exp: null,
       data: null,
       error: null
@@ -25,11 +23,11 @@ const parseJWT = function (jwt) {
 }
 
 /**
- * Verifies current JWT token in cookies and user object in vuex store.
+ * Verifies current token in cookies and user object in vuex store.
  */
 const checkLogin = function () {
-  const jwt = parseJWT()
-  return jwt.error !== null ? false : jwt
+  const token = parseToken()
+  return token.error !== null ? false : token
 }
 
 /**
@@ -39,29 +37,34 @@ const checkLogin = function () {
  * @param {String} password Password for user to authenticate.
  */
 const login = function (options) {
-  return api('POST', `/auth`, options, function (response) {
+  return api('POST', '/auth', options, function (response) {
     const data = response.data
 
-    // Login successful, JWT token issued
-    if (data.message === 'JWT_TOKEN_ISSUED') {
-      let jwt = parseJWT(data.result)
-      setCookie('SPECTERO_AUTH', data.result, { expires: new Date(jwt.exp * 1000).toGMTString() })
-      return options.loginSuccess(jwt)
+    // Login successful, token issued
+    if (data.message === 'OAUTH_TOKEN_ISSUED') {
+      console.log('OAUTH_TOKEN_ISSUED!')
+      const token = parseToken(data.result)
+
+      setCookie('SPECTERO_AUTH', data.result, {
+        expires: new Date(token.exp * 1000).toGMTString()
+      })
+
+      return options.loginSuccess(token)
     }
 
-    // 200 status code recieved, but JWT token wasn't issued
-    return options.loginFailed(`Unknown error occurred.`)
+    // 200 status code recieved, but token wasn't issued
+    return options.loginFailed('Unknown error occurred: 200 status code recieved, but token failed to be issued.')
   },
   function (error) {
     if (error === undefined) {
-      return options.loginFailed(`Unknown error occurred.`)
+      return options.loginFailed('Unknown error occurred.')
     }
     return options.loginFailed(error)
   })
 }
 
 export default {
-  parseJWT,
+  parseToken,
   checkLogin,
   login
 }
