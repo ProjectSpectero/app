@@ -9,5 +9,5 @@
 </script>
 
 <style lang="scss" scoped>
-
+// Defined in assets/styles/pages/_error.scss
 </style>

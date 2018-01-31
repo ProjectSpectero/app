@@ -14,26 +14,5 @@
 </script>
 
 <style lang="scss" scoped>
-.auth {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
-}
-.auth-container {
-  width: 350px;
-  padding: $pad;
-  color: $color-primary;
-  background: $white;
-  border: 1px solid $color-border;
-  border-radius: 4px;
-}
-.logo-container {
-  width: 100%;
-  margin-bottom: $pad;
-  text-align: center;
-}
+// Defined in assets/styles/pages/_auth.scss
 </style>

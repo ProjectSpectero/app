@@ -1,47 +1,50 @@
 <template>
-  <form id="form-login">
-    <div class="message info" v-if="!formError && this.$route.query.redirect">
-      Please log in to continue.
-    </div>
+  <div>
+    <form id="form-login">
+      <div class="message info" v-if="!formError && this.$route.query.redirect">
+        Please log in to continue.
+      </div>
 
-    <div class="message error" v-if="formError">{{ formError }}</div>
+      <div class="message error" v-if="formError">{{ formError }}</div>
 
-    <div class="form-input">
-      <input
-        type="text"
-        v-model="username"
-        name="username"
-        placeholder="Email address"
-        class="input max-width"
-        :class="{'input-error': errors.has('username')}"
-        :disabled="formDisable"
-        v-validate="'required|email'"
-        data-vv-as="email">
+      <div class="form-input">
+        <input
+          type="text"
+          v-model="username"
+          name="username"
+          placeholder="Email address"
+          class="input max-width"
+          :class="{'input-error': errors.has('username')}"
+          :disabled="formDisable"
+          v-validate="'required|email'"
+          data-vv-as="email">
 
-      <span v-show="errors.has('username')" class="input-error-message">
-        {{ errors.first('username') }}
-      </span>
-    </div>
+        <span v-show="errors.has('username')" class="input-error-message">
+          {{ errors.first('username') }}
+        </span>
+      </div>
 
-    <div class="form-input">
-      <input
-        type="password"
-        v-model="password"
-        name="password"
-        placeholder="Password"
-        class="input max-width"
-        :class="{'input-error': errors.has('password')}"
-        :disabled="formDisable"
-        v-validate="'required'"
-        data-vv-as="password">
+      <div class="form-input">
+        <input
+          type="password"
+          v-model="password"
+          name="password"
+          placeholder="Password"
+          class="input max-width"
+          :class="{'input-error': errors.has('password')}"
+          :disabled="formDisable"
+          v-validate="'required'"
+          data-vv-as="password">
 
-      <span v-show="errors.has('password')" class="input-error-message">
-        {{ errors.first('password') }}
-      </span>
-    </div>
+        <span v-show="errors.has('password')" class="input-error-message">
+          {{ errors.first('password') }}
+        </span>
+      </div>
 
-    <button class="button button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">{{ formDisable ? 'Please Wait' : 'Log In' }}</button>
-  </form>
+      <button class="button button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">{{ formDisable ? 'Please Wait' : 'Log In' }}</button>
+    </form>
+    <router-link :to="{ name: 'register' }" class="bottom-link">Don't have an account? <strong>Create one now</strong></router-link>
+  </div>
 </template>
 
 <script>
