@@ -1,11 +1,11 @@
 <template>
-  <div>test</div>
+  <div>Dashboard</div>
 </template>
 
 <script>
-export default {
-  created () {
-    // this.$router.push({ name: 'users' })
-  }
-}
+// export default {
+//   created () {
+//     this.$router.push({ name: 'users' })
+//   }
+// }
 </script>
