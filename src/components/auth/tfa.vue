@@ -1,26 +1,28 @@
 <template>
-  <form id="form-tfa">
-    <div class="message error" v-if="formError">{{ formError }}</div>
+  <div>
+    <form id="form-tfa">
+      <div class="message error" v-if="formError">{{ formError }}</div>
 
-    <div class="form-input">
-      <input
-        type="text"
-        v-model="tfaValue"
-        name="tfaValue"
-        placeholder="Enter TFA Key"
-        class="input max-width"
-        :class="{'input-error': errors.has('tfaValue')}"
-        :disabled="formDisable"
-        v-validate="'required'"
-        data-vv-as="two factor authentication key">
+      <div class="form-input">
+        <input
+          type="text"
+          v-model="tfaValue"
+          name="tfaValue"
+          placeholder="Enter TFA Key"
+          class="input max-width"
+          :class="{'input-error': errors.has('tfaValue')}"
+          :disabled="formDisable"
+          v-validate="'required'"
+          data-vv-as="two factor authentication key">
 
-      <span v-show="errors.has('tfaValue')" class="input-error-message">
-        {{ errors.first('tfaValue') }}
-      </span>
-    </div>
+        <span v-show="errors.has('tfaValue')" class="input-error-message">
+          {{ errors.first('tfaValue') }}
+        </span>
+      </div>
 
-    <button class="button button-info max-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">{{ formDisable ? 'Please Wait' : 'Continue' }}</button>
-  </form>
+      <button class="button button-info max-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">{{ formDisable ? 'Please Wait' : 'Continue' }}</button>
+    </form>
+  </div>
 </template>
 
 <script>
