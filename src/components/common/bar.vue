@@ -18,8 +18,6 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "vars/all";
-
   .bar {
     position: fixed;
     top: 0;

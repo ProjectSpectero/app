@@ -148,8 +148,6 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "vars/all";
-
   .main-info {
     display: flex;
     align-items: center;

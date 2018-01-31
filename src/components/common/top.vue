@@ -16,8 +16,6 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "vars/all";
-
   .title-bar {
     width: 100%;
     height: 70px;

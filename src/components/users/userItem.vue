@@ -60,8 +60,6 @@
 </script>
 
 <style lang="scss" scoped>
-@import "vars/all";
-
 article {
   background: $darker;
   border-radius: 4px;
