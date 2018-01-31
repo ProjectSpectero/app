@@ -30,13 +30,11 @@ export default function (method, path, data, success, failed) {
     port = process.env.DAEMON_PORT ? ':' + process.env.DAEMON_PORT : ''
   }
 
-  const url = protocol + endpoint + port + '/v' + process.env.DAEMON_VERSION
-
   Vue.prototype.$Progress.start()
 
   axios({
     method: method,
-    baseURL: url,
+    baseURL: protocol + endpoint + port + '/v' + process.env.DAEMON_VERSION,
     timeout: 10000,
     headers: {
       Authorization: getCookie('SPECTERO_AUTH') !== null ? `Bearer ${getCookie('SPECTERO_AUTH')}` : null

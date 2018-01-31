@@ -1,5 +1,6 @@
 import api from './index.js'
-import { setCookie, getCookie, removeCookie } from 'tiny-cookie'
+import store from '../store'
+import { getCookie, removeCookie } from 'tiny-cookie'
 
 /**
  * Returns parsed token from SPECTERO_AUTH cookie.
@@ -37,25 +38,25 @@ const checkLogin = function () {
  * @param {String} password Password for user to authenticate.
  */
 const login = function (options) {
-  return api('POST', '/auth', options, function (response) {
-    const data = response.data
+  return api('POST', '/auth', options, response => {
+    if (response && response.data) {
+      // Login successful, token issued
+      if (response.data.message === 'OAUTH_TOKEN_ISSUED') {
+        const result = response.data.result
 
-    // Login successful, token issued
-    if (data.message === 'OAUTH_TOKEN_ISSUED') {
-      console.log('OAUTH_TOKEN_ISSUED!')
-      const token = parseToken(data.result)
-
-      setCookie('SPECTERO_AUTH', data.result, {
-        expires: new Date(token.exp * 1000).toGMTString()
-      })
-
-      return options.loginSuccess(token)
+        // Bind cookie and set tokens within the store
+        store.dispatch('auth/addCookie', result).then(() => {
+          console.log('Added cookie with', getCookie('SPECTERO_AUTH'))
+          store.dispatch('auth/setLoginInfo', result).then(() => {
+            options.loginSuccess()
+          })
+        })
+      }
     }
 
     // 200 status code recieved, but token wasn't issued
     return options.loginFailed('Unknown error occurred: 200 status code recieved, but token failed to be issued.')
-  },
-  function (error) {
+  }, error => {
     if (error === undefined) {
       return options.loginFailed('Unknown error occurred.')
     }

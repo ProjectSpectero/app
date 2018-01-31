@@ -72,12 +72,12 @@ export default {
               username: this.username,
               password: this.password
             },
-            loginSuccess: msg => {
+            loginSuccess: response => {
               // Pre-load user-related data
               this.setup()
 
               // Move to the front page
-              this.dealWithSuccess(msg)
+              this.dealWithSuccess()
             },
             loginFailed: err => {
               this.dealWithError(err)
@@ -112,13 +112,13 @@ export default {
       // Add anything that needs preloading here
     },
     dealWithSuccess () {
-      // this.formError = null
+      this.formError = null
 
-      // if (this.$route.query.redirect) {
-      //   this.$router.push({ path: this.$route.query.redirect })
-      // } else {
-      //   this.$router.push({ name: 'dashboard' })
-      // }
+      if (this.$route.query.redirect) {
+        this.$router.push({ path: this.$route.query.redirect })
+      } else {
+        this.$router.push({ name: 'dashboard' })
+      }
     },
     dealWithError (err) {
       this.formDisable = false

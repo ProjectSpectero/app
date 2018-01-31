@@ -49,7 +49,7 @@
       <section class="nav-section">
         <h5>Logout</h5>
         <ul>
-          <li @click="logout">
+          <li @click="logMeOut">
             <a href="#"><span class="icon-life-buoy"></span> Logout</a>
           </li>
         </ul>
@@ -59,17 +59,17 @@
 </template>
 
 <script>
-import { removeCookie } from 'tiny-cookie'
+import { mapActions } from 'vuex'
 
 export default {
   methods: {
-    logout () {
-      try {
-        removeCookie('SPECTERO_AUTH')
+    ...mapActions({
+      logout: 'auth/logout'
+    }),
+    logMeOut () {
+      this.logout().then(() => {
         this.$router.push({ name: 'login' })
-      } catch (err) {
-        throw new Error(this.$i18n.t('errors.UNABLE_TO_LOGOUT'))
-      }
+      })
     }
   }
 }

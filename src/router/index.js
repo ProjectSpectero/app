@@ -2,11 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Meta from 'vue-meta'
 
-// import store from '../store'
-// import auth from '../api/auth.js'
+import store from '../store'
 
 // Routes
 import authRoutes from './auth'
+import userRoutes from './user'
 import defaultRoutes from './default'
 
 Vue.use(Router)
@@ -20,37 +20,40 @@ const router = new Router({
   saveScrollPosition: true,
   routes: [
     ...authRoutes,
+    ...userRoutes,
     ...defaultRoutes
   ]
 })
 
 // Test authentication before landing on each route request
-// router.beforeEach((to, from, next) => {
-//   const loginCheck = auth.checkLogin()
-
-//   // JWT token verified, update current user in Vuex store
-//   if (loginCheck !== false) {
-//     store.dispatch('auth/setCurrentJWT', loginCheck)
-//   }
-
-//   // Handle routes requiring authentication
-//   // or handle routes that arent view-able by already logged in users (default to /dashboard)
-//   // else handles regular routes
-//   if (to.matched.some(record => record.meta.auth)) {
-//     if (loginCheck !== false) {
-//       next()
-//     } else {
-//       next({ name: 'login', query: { redirect: to.fullPath } })
-//     }
-//   } else if (to.matched.some(record => record.meta.antiAuth)) {
-//     if (loginCheck !== false) {
-//       next({ name: 'dashboard' })
-//     } else {
-//       next()
-//     }
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  store.dispatch('auth/checkLogin').then(loggedIn => {
+    // Handle routes requiring authentication
+    // or handle routes that arent view-able by already logged in users (default to /dashboard)
+    // else handles regular routes
+    if (to.matched.some(record => record.meta.auth)) {
+      console.log('record.meta.auth found')
+      if (loggedIn) {
+        console.log('loginCheck at meta.auth')
+        next()
+      } else {
+        console.log('Redirecting to login')
+        next({ name: 'login', query: { redirect: to.fullPath } })
+      }
+    } else if (to.matched.some(record => record.meta.antiAuth)) {
+      console.log('record.meta.antiAuth found')
+      if (loggedIn) {
+        console.log('Redirecting to dashboard')
+        next({ name: 'dashboard' })
+      } else {
+        console.log('loginCheck at meta.antiAuth')
+        next()
+      }
+    } else {
+      console.log('router else')
+      next()
+    }
+  })
+})
 
 export default router
