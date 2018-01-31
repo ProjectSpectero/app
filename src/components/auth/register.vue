@@ -39,7 +39,9 @@
 
       <button class="button button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">{{ formDisable ? 'Please Wait' : 'Register' }}</button>
     </form>
-    <router-link :to="{ name: 'login' }" class="bottom-link">Already have an account? <strong>Log in now</strong></router-link>
+    <div class="bottom-link">
+      <router-link :to="{ name: 'login' }">Already have an account? <strong>Log in now</strong></router-link>
+    </div>
   </div>
 </template>
 

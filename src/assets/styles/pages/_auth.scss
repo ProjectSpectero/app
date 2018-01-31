@@ -6,7 +6,6 @@
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-  text-align: center;
 
   .auth-container {
     width: 350px;
@@ -22,13 +21,17 @@
     text-align: center;
   }
   .bottom-link {
-    display: inline-block;
+    display: block;
     margin-top: $pad;
-    text-decoration: none;
-    color: $color-dark;
+    text-align: center;
 
-    &:hover {
-      color: $color-primary;
+    a {
+      text-decoration: none;
+      color: $color-dark;
+
+      &:hover {
+        color: $color-primary;
+      }
     }
   }
 }
