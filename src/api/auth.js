@@ -1,35 +1,5 @@
 import api from './index.js'
 import store from '@/store'
-import { getCookie, removeCookie } from 'tiny-cookie'
-
-/**
- * Returns parsed token from SPECTERO_AUTH cookie.
- *
- * On error, returns Object with error key and deletes cookie (if any).
- *
- * @param {String} token Token to validate (uses auth cookie if null)
- */
-const parseToken = function (token) {
-  try {
-    return {
-      token: token || getCookie('SPECTERO_AUTH'),
-      exp: null,
-      data: null,
-      error: null
-    }
-  } catch (err) {
-    removeCookie('SPECTERO_AUTH')
-    return { error: err }
-  }
-}
-
-/**
- * Verifies current token in cookies and user object in vuex store.
- */
-const checkLogin = function () {
-  const token = parseToken()
-  return token.error !== null ? false : token
-}
 
 /**
  * Authenticates user with credentials.
@@ -44,9 +14,9 @@ const login = function (options) {
       if (response.data.message === 'OAUTH_TOKEN_ISSUED') {
         const result = response.data.result
 
-        // Bind cookie and set tokens within the store
+        // Bind cookie
         store.dispatch('auth/addCookie', result).then(() => {
-          console.log('Added cookie with', getCookie('SPECTERO_AUTH'))
+          // Add tokens to the store
           store.dispatch('auth/setLoginInfo', result).then(() => {
             options.loginSuccess()
           })
@@ -65,7 +35,5 @@ const login = function (options) {
 }
 
 export default {
-  parseToken,
-  checkLogin,
   login
 }

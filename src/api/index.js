@@ -21,6 +21,7 @@ export default function (method, path, data, success, failed) {
   // 2.2) If a port is specified on our config BUT that port is '', we'll run the app using only the ip address
   // 2.3) If a port is specified and numeric, that will be used as expected
 
+  const cookie = (getCookie(process.env.COOKIE_NAME) !== null) ? JSON.parse(getCookie(process.env.COOKIE_NAME)) : null
   const protocol = process.env.DAEMON_HTTPS ? 'https://' : location.protocol + '//'
   const endpoint = process.env.DAEMON_ENDPOINT ? process.env.DAEMON_ENDPOINT : location.hostname
   let port = location.port ? ':' + location.port : ''
@@ -37,7 +38,7 @@ export default function (method, path, data, success, failed) {
     baseURL: protocol + endpoint + port + '/v' + process.env.DAEMON_VERSION,
     timeout: 10000,
     headers: {
-      Authorization: getCookie('SPECTERO_AUTH') !== null ? `Bearer ${getCookie('SPECTERO_AUTH')}` : null
+      Authorization: cookie ? `Bearer ${cookie.accessToken}` : null
     },
     url: path,
     data: data.data
@@ -62,8 +63,8 @@ export default function (method, path, data, success, failed) {
     error = error.response
 
     // Remove authorization cookie if 401 returned by any API call
-    if (error.status === 401 && getCookie('SPECTERO_AUTH') !== null) {
-      removeCookie('SPECTERO_AUTH')
+    if (error.status === 401 && getCookie(process.env.COOKIE_NAME) !== null) {
+      removeCookie(process.env.COOKIE_NAME)
     }
 
     let err = new Err(error.data.errors)

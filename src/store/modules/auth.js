@@ -9,6 +9,7 @@ const state = {
 }
 
 const getters = {
+  user: (state) => state.user,
   accessToken: (state) => state.accessToken,
   refreshToken: (state) => state.refreshToken,
   expiry: (state) => state.expiry,
@@ -19,8 +20,7 @@ const getters = {
 
 const actions = {
   syncCurrentUser ({ commit }) {
-    userAPI.get({
-      data: { id: state.user.id },
+    userAPI.getMe({
       success: (response) => {
         commit('SET_CURRENT_USER', response.data.result)
       },
@@ -30,22 +30,23 @@ const actions = {
       }
     })
   },
-  checkLogin ({ commit, getters }) {
-    const c = getCookie('SPECTERO_AUTH')
-    console.log('at checkLogin')
-    if (c) {
-      console.log('Found right cookie')
+  async checkLogin ({ commit, getters, dispatch }) {
+    const cookie = getCookie(process.env.COOKIE_NAME)
+    let data = null
 
+    if (cookie) {
+      // Access token found, no need to decode cookie
       if (getters.accessToken) {
-        console.log('Found accessToken so no need to parse cookie')
         return true
       }
 
-      const data = JSON.parse(c)
+      data = JSON.parse(cookie)
 
+      // If no data is set we're first-landing the page and
+      // we'll need to decode the cookie and retrieve the current user
       if (data) {
-        console.log('On checkLogin, parsed cookie', data)
         commit('SET_LOGIN_INFO', data)
+        await dispatch('syncCurrentUser')
         return true
       }
     }
@@ -59,19 +60,17 @@ const actions = {
       expiry: payload.expiry
     }
 
-    setCookie('SPECTERO_AUTH', JSON.stringify(data), { expires: payload.expiry + 's' })
+    setCookie(process.env.COOKIE_NAME, JSON.stringify(data), { expires: payload.expiry + 's' })
   },
   logout ({ commit }) {
     try {
-      removeCookie('SPECTERO_AUTH')
+      removeCookie(process.env.COOKIE_NAME)
+      commit('CLEAR_LOGIN_INFO')
     } catch (err) {
       throw new Error(this.$i18n.t('errors.UNABLE_TO_LOGOUT'))
     }
-
-    commit('CLEAR_LOGIN_INFO')
-    console.log('Logged out.')
   },
-  setLoginInfo ({ commit }, payload) {
+  setLoginInfo ({ commit, dispatch }, payload) {
     commit('SET_LOGIN_INFO', payload)
   }
 }
@@ -81,10 +80,6 @@ const mutations = {
     state.user = payload
   },
   SET_LOGIN_INFO (state, payload) {
-    console.log('accessToken', payload.accessToken)
-    console.log('refreshToken', payload.refreshToken)
-    console.log('expiry', payload.expiry)
-
     state.accessToken = payload.accessToken
     state.refreshToken = payload.refreshToken
     state.expiry = payload.expiry
@@ -93,6 +88,7 @@ const mutations = {
     state.accessToken = null
     state.refreshToken = null
     state.expiry = null
+    state.user = null
   }
 }
 

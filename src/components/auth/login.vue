@@ -105,7 +105,6 @@ export default {
         redirect: { name: redirect ? redirect.from.name : 'dashboard' },
         fetchUser: false
       }).then(() => {
-        console.log('success')
         // Pre-load user-related data
         this.setup()
 

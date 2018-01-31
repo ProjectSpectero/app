@@ -1,11 +1,19 @@
 <template>
-  <div>Dashboard</div>
+  <div>
+    <h1 v-if="user">
+      Welcome, {{ user.name }}
+    </h1>
+  </div>
 </template>
 
 <script>
-// export default {
-//   created () {
-//     this.$router.push({ name: 'users' })
-//   }
-// }
+import { mapGetters } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters({
+      user: 'auth/user'
+    })
+  }
+}
 </script>
