@@ -1,5 +1,5 @@
 import api from './index.js'
-import store from '../store'
+import store from '@/store'
 import { getCookie, removeCookie } from 'tiny-cookie'
 
 /**

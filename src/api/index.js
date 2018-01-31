@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import { getCookie, removeCookie } from 'tiny-cookie'
-import Err from '../modules/error.js'
+import Err from '@/modules/error.js'
 
 /**
  * API wrapper for making various calls from sub-wrappers.

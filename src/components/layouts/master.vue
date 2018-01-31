@@ -10,7 +10,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import sidebar from '../common/sidebar'
+import sidebar from '@/components/common/sidebar'
 
 export default {
   computed: {

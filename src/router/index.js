@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Meta from 'vue-meta'
 
-import store from '../store'
+import store from '@/store'
 
 // Routes
 import authRoutes from './auth'
