@@ -18,24 +18,34 @@ class Err {
     let errors = {}
     let fields = {}
 
-    for (var key in data) {
-      if (data.hasOwnProperty(key)) {
-        let err = []
-        for (let i = 0; i < data[key].length; i++) {
-          let e = data[key][i].split(':')
-          err.push({
-            key: e[0],
-            field: e[1],
-            data: e[2]
-          })
-          if (e[1] !== undefined) {
-            if (fields[e[1]] === undefined) {
-              fields[e[1]] = {}
+    // Data is Array[] of error keys (keys w/ no additional data)
+    if (Array.isArray(data)) {
+      for (let i = 0; i < data.length; i++) {
+        errors[data[i]] = {}
+      }
+    } else { // Data is Object{} with keys as error keys, values as additional info to those error keys
+      for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+          let err = []
+
+          for (let i = 0; i < data[key].length; i++) {
+            let e = data[key][i].split(':')
+
+            err.push({
+              key: e[0],
+              field: e[1],
+              data: e[2]
+            })
+
+            if (e[1] !== undefined) {
+              if (fields[e[1]] === undefined) {
+                fields[e[1]] = {}
+              }
+              fields[e[1]][e[0]] = e[2] !== undefined ? e[2] : null
             }
-            fields[e[1]][e[0]] = e[2] !== undefined ? e[2] : null
           }
+          errors[key] = err
         }
-        errors[key] = err
       }
     }
     this.errors = errors
