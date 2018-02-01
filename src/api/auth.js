@@ -30,6 +30,7 @@ const login = function (options) {
     if (error === undefined) {
       return options.loginFailed('Unknown error occurred.')
     }
+    console.log('error was ', error)
     return options.loginFailed(error)
   })
 }
