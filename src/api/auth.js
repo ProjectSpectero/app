@@ -27,11 +27,7 @@ const login = function (options) {
     // 200 status code recieved, but token wasn't issued
     return options.loginFailed('Unknown error occurred: 200 status code recieved, but token failed to be issued.')
   }, error => {
-    if (error === undefined) {
-      return options.loginFailed('Unknown error occurred.')
-    }
-    console.log('error was ', error)
-    return options.loginFailed(error)
+    return options.loginFailed((error !== undefined) ? error : 'Unknown error occurred.')
   })
 }
 
