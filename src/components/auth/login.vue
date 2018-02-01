@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import auth from '@/api/auth.js'
 
 export default {
@@ -63,8 +62,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-    }),
     submit () {
       this.$validator.validateAll().then((result) => {
         if (!result) {
@@ -73,7 +70,6 @@ export default {
           // Disable form while HTTP request being made
           this.formDisable = true
 
-          // this.login()
           auth.login({
             data: {
               username: this.username,
@@ -91,27 +87,6 @@ export default {
             }
           })
         }
-      })
-    },
-    login () {
-      const redirect = this.$auth.redirect()
-
-      this.$auth.login({
-        data: {
-          username: this.username,
-          password: this.password
-        },
-        rememberMe: false,
-        redirect: { name: redirect ? redirect.from.name : 'dashboard' },
-        fetchUser: false
-      }).then(() => {
-        // Pre-load user-related data
-        this.setup()
-
-        // Move to the front page
-        this.dealWithSuccess()
-      }, (error) => {
-        this.dealWithError(error.data)
       })
     },
     async setup () {

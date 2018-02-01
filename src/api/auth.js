@@ -31,6 +31,20 @@ const login = function (options) {
   })
 }
 
+const register = function (options) {
+  return api('POST', '/user', options, response => {
+    if (response && response.data) {
+      options.registerSuccess(response.data.result)
+    }
+
+    // 200 status code recieved, but token wasn't issued
+    return options.registerFailed('Unknown error occurred: 200 status code recieved, but token failed to be issued.')
+  }, error => {
+    return options.registerFailed((error !== undefined) ? error : 'Unknown error occurred.')
+  })
+}
+
 export default {
-  login
+  login,
+  register
 }

@@ -13,6 +13,7 @@ module.exports = {
 
     MISSING_BODY: 'Some required fields are missing or empty.',
     USER_NOT_FOUND: 'Invalid email or password.',
+    EMAIL_FIELD_UNIQUE: 'This email is already taken.',
     EMAIL_VERIFICATION_NEEDED: 'Your acount is pending verification. Please check your email!',
     USER_OBJECT_NOT_FOUND: 'Unable to submit the form without a proper user',
     USER_AUTHKEY_ALREADY_EXISTS: 'Email already in use.',

@@ -37,7 +37,9 @@
         </span>
       </div>
 
-      <button class="button button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">{{ formDisable ? 'Please Wait' : 'Register' }}</button>
+      <button class="button button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">
+        {{ formDisable ? 'Please Wait' : 'Register' }}
+      </button>
     </form>
     <div class="bottom-link">
       <router-link :to="{ name: 'login' }">Already have an account? <strong>Log in now</strong></router-link>
@@ -46,6 +48,8 @@
 </template>
 
 <script>
+import auth from '@/api/auth.js'
+
 export default {
   data () {
     return {
@@ -56,8 +60,58 @@ export default {
     }
   },
   methods: {
-    reset () {
-      Object.assign(this.$data, this.$options.data.call(this))
+    submit () {
+      this.$validator.validateAll().then((result) => {
+        if (!result) {
+          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
+        } else {
+          // Disable form while HTTP request being made
+          this.formDisable = true
+
+          auth.register({
+            data: {
+              name: this.email,
+              email: this.email,
+              password: this.password
+            },
+            registerSuccess: response => {
+              this.dealWithSuccess()
+            },
+            registerFailed: error => {
+              this.dealWithError(error)
+            }
+          })
+        }
+      })
+    },
+    dealWithSuccess () {
+      this.formError = null
+      this.$toasted.show('Success!')
+      this.$router.push({ name: 'verify' })
+    },
+    dealWithError (err) {
+      this.formDisable = false
+      console.log(err)
+      // Get first error key to display main error msg
+      for (var errorKey in err.errors) {
+        if (err.errors.hasOwnProperty(errorKey)) {
+          this.formError = this.$i18n.t(`errors.${errorKey}`)
+          break
+        }
+      }
+
+      // Inject errors into form fields
+      for (let inputName in err.fields) {
+        if (err.fields.hasOwnProperty(inputName)) {
+          let inputErrors = err.fields[inputName]
+
+          for (let errorKey in inputErrors) {
+            if (inputErrors.hasOwnProperty(errorKey)) {
+              this.$validator.errors.add(inputName, this.$i18n.t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] }))
+            }
+          }
+        }
+      }
     }
   },
   metaInfo: {
