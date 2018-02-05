@@ -5,8 +5,14 @@
     <p>Please proceed to the <router-link :to="{ name: 'login' }">login page</router-link> to access Spectero.</p>
   </div>
   <div v-else>
-    <h2>Verifying ...</h2>
-    <p>Please wait while we validate your account.</p>
+    <div v-if="error">
+      <h2>Something went wrong!</h2>
+      <p>We were unable to verify your account. Please try again later.</p>
+    </div>
+    <div v-else>
+      <h2>Verifying ...</h2>
+      <p>Please wait while we validate your account.</p>
+    </div>
   </div>
 </template>
 
@@ -16,7 +22,8 @@ import user from '@/api/user.js'
 export default {
   data () {
     return {
-      verified: false
+      verified: false,
+      error: false
     }
   },
   created () {
@@ -30,11 +37,12 @@ export default {
           token: this.$route.params.token
         },
         success: response => {
+          this.error = false
           this.verified = true
         },
         fail: error => {
           console.log(error)
-          this.$toasted.error('Something went wrong :(')
+          this.error = true
           this.verified = false
         }
       })

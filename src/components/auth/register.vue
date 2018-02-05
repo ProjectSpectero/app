@@ -86,8 +86,7 @@ export default {
     },
     dealWithSuccess () {
       this.formError = null
-      this.$toasted.show('Success!')
-      this.$router.push({ name: 'verify' })
+      this.$router.push({ name: 'pending' })
     },
     dealWithError (err) {
       this.formDisable = false
