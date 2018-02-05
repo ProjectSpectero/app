@@ -91,7 +91,7 @@ export default {
     },
     dealWithError (err) {
       this.formDisable = false
-      console.log(err)
+
       // Get first error key to display main error msg
       for (var errorKey in err.errors) {
         if (err.errors.hasOwnProperty(errorKey)) {

@@ -25,6 +25,16 @@ export default {
   },
 
   /**
+   * Verifies the user account.
+   *
+   * @param {String} email Email address.
+   * @param {String} tolen Unique token.
+   */
+  verify (options) {
+    return api('GET', `/user/verify/${options.data.email}/${options.data.token}`, options)
+  },
+
+  /**
    * Creates user from given parameters.
    *
    * @param {String} authKey      Username.
