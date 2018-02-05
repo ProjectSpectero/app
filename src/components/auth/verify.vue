@@ -7,7 +7,7 @@
   <div v-else>
     <div v-if="error">
       <h2>Something went wrong!</h2>
-      <p>We were unable to verify your account. Please try again later.</p>
+      <p>{{ errorMessage }}</p>
     </div>
     <div v-else>
       <h2>Verifying ...</h2>
@@ -23,7 +23,8 @@ export default {
   data () {
     return {
       verified: false,
-      error: false
+      error: false,
+      errorMessage: 'We were unable to verify your account. Please try again later.'
     }
   },
   created () {
@@ -41,7 +42,12 @@ export default {
           this.verified = true
         },
         fail: error => {
-          console.log(error)
+          const keys = Object.keys(error.errors)
+
+          if (keys[0] === 'USER_ALREADY_VERIFIED') {
+            this.errorMessage = 'Your account is already verified!'
+          }
+
           this.error = true
           this.verified = false
         }
