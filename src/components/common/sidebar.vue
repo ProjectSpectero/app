@@ -47,8 +47,12 @@
         </ul>
       </section>
       <section class="nav-section">
-        <h5>Logout</h5>
+        <h5>Account</h5>
         <ul>
+          <router-link :to="{ name: 'account' }">
+            <a>Settings</a>
+          </router-link>
+
           <li @click="logMeOut">
             <a href="#"><span class="icon-life-buoy"></span> Logout</a>
           </li>

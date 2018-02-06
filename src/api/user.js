@@ -35,6 +35,15 @@ export default {
   },
 
   /**
+   * Enables/disables 2FA.
+   *
+   * @param {String} action Enable or disable 2FA.
+   */
+  twoFactorAuth (options) {
+    return api('GET', `/auth/multifactor/${options.action}`, options)
+  },
+
+  /**
    * Creates user from given parameters.
    *
    * @param {String} authKey      Username.
@@ -54,13 +63,8 @@ export default {
    *
    * @param {Integer} id       User id to edit.
    *
-   * @param {String} authKey      Username.
-   * @param {String} password     Password.
-   * @param {String} emailAddress Email address.
-   * @param {String} fullName     Display name.
-   * @param {Array}  roles        Array of roles to assign ([] for no roles).
-   * @param {String} cert         n/a
-   * @param {String} cartKey      n/a
+   * @param {String}   name   Name.
+   * @param {String} email    Email.
    */
   edit (options) {
     return api('PUT', `/user/${options.data.id}`, options)

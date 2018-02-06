@@ -6,6 +6,7 @@ import store from '@/store'
 
 // Routes
 import authRoutes from './auth'
+import userRoutes from './users'
 import defaultRoutes from './default'
 
 Vue.use(Router)
@@ -19,6 +20,7 @@ const router = new Router({
   saveScrollPosition: true,
   routes: [
     ...authRoutes,
+    ...userRoutes,
     ...defaultRoutes
   ]
 })
