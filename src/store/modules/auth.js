@@ -65,12 +65,8 @@ const actions = {
     setCookie(process.env.COOKIE_NAME, JSON.stringify(data), { expires: payload.expiry + 's' })
   },
   logout ({ commit }) {
-    try {
-      removeCookie(process.env.COOKIE_NAME)
-      commit('CLEAR_LOGIN_INFO')
-    } catch (err) {
-      throw new Error(this.$i18n.t('errors.UNABLE_TO_LOGOUT'))
-    }
+    removeCookie(process.env.COOKIE_NAME)
+    commit('CLEAR_LOGIN_INFO')
   },
   setLoginInfo ({ commit, dispatch }, payload) {
     commit('SET_LOGIN_INFO', payload)

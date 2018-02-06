@@ -36,22 +36,21 @@ router.beforeEach((to, from, next) => {
     // else handles regular routes
     if (to.matched.some(record => record.meta.auth)) {
       if (loggedIn) {
-        console.log('1')
         next()
       } else {
-        console.log('2')
-        next({ name: 'login', query: { redirect: to.fullPath } })
+        // Force the same behavior as logging out (remove cookie + clean store)
+        // for scenarios where our cookie has expired
+        store.dispatch('auth/logout').then(loggedIn => {
+          next({ name: 'login', query: { redirect: to.fullPath } })
+        })
       }
     } else if (to.matched.some(record => record.meta.antiAuth)) {
       if (loggedIn) {
-        console.log('3')
         next({ name: 'dashboard' })
       } else {
-        console.log('4')
         next()
       }
     } else {
-      console.log('5')
       next()
     }
   })
