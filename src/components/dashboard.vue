@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1 v-if="user">
-      Welcome, {{ user.name }}
+    <h1>
+      Welcome, {{ user.email }}
     </h1>
   </div>
 </template>

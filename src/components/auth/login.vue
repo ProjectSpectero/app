@@ -50,7 +50,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import auth from '@/api/auth.js'
+import userAPI from '@/api/user.js'
 
 export default {
   data () {
@@ -62,6 +64,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      storeUser: 'auth/storeUser'
+    }),
     submit () {
       this.$validator.validateAll().then((result) => {
         if (!result) {
@@ -69,37 +74,40 @@ export default {
         } else {
           // Disable form while HTTP request being made
           this.formDisable = true
-
-          auth.login({
-            data: {
-              username: this.username,
-              password: this.password
-            },
-            loginSuccess: response => {
-              // Pre-load user-related data
-              this.setup()
-
-              // Move to the front page
-              this.dealWithSuccess()
-            },
-            loginFailed: err => {
-              this.dealWithError(err)
-            }
-          })
+          this.processLogin()
         }
       })
     },
-    async setup () {
-      // Add anything that needs preloading here
+    async processLogin () {
+      await auth.login({
+        data: {
+          username: this.username,
+          password: this.password
+        },
+        loginSuccess: response => {
+          this.fetchUser()
+        },
+        loginFailed: error => {
+          this.dealWithError(error)
+        }
+      })
     },
-    dealWithSuccess () {
-      this.formError = null
+    async fetchUser () {
+      await userAPI.getMe({
+        success: response => {
+          this.formError = null
+          this.storeUser(response.data.result)
 
-      if (this.$route.query.redirect) {
-        this.$router.push({ path: this.$route.query.redirect })
-      } else {
-        this.$router.push({ name: 'dashboard' })
-      }
+          if (this.$route.query.redirect) {
+            this.$router.push({ path: this.$route.query.redirect })
+          } else {
+            this.$router.push({ name: 'dashboard' })
+          }
+        },
+        fail: error => {
+          console.log(error)
+        }
+      })
     },
     dealWithError (err) {
       this.formDisable = false

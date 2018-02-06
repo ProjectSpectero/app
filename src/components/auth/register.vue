@@ -70,7 +70,6 @@ export default {
 
           auth.register({
             data: {
-              name: this.email,
               email: this.email,
               password: this.password
             },

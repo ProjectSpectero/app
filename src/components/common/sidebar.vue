@@ -4,7 +4,7 @@
     <div class="menu-items">
       <section class="nav-section">
         <ul>
-          <li><a href="#"><span class="icon-zap"></span> Overview</a></li>
+          <li><router-link :to="{ name: 'dashboard' }"><span class="icon-zap"></span> Overview</router-link></li>
         </ul>
       </section>
       <section class="nav-section">
@@ -14,19 +14,6 @@
             <a href="#"><span class="icon-sliders"></span> Manage Server</a>
             <ul>
               <li><a href="#">Overview</a></li>
-
-              <router-link tag="li" :to="{ name: 'services' }">
-                <a>Services</a>
-              </router-link>
-
-              <router-link tag="li" :to="{ name: 'proxies' }">
-                <a>Proxies</a>
-              </router-link>
-
-              <router-link tag="li" :to="{ name: 'users' }">
-                <a>Users</a>
-              </router-link>
-
               <li><a href="#">Statistics</a></li>
             </ul>
           </li>
@@ -49,9 +36,7 @@
       <section class="nav-section">
         <h5>Account</h5>
         <ul>
-          <router-link :to="{ name: 'account' }">
-            <a>Settings</a>
-          </router-link>
+          <li><router-link :to="{ name: 'account' }">Settings</router-link></li>
 
           <li @click="logMeOut">
             <a href="#"><span class="icon-life-buoy"></span> Logout</a>

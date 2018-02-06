@@ -19,14 +19,13 @@ const getters = {
 }
 
 const actions = {
-  syncCurrentUser ({ commit }) {
-    userAPI.getMe({
-      success: (response) => {
+  async syncCurrentUser ({ commit }) {
+    await userAPI.getMe({
+      success: response => {
         commit('SET_CURRENT_USER', response.data.result)
       },
-      fail: (error) => {
+      fail: error => {
         console.log(error)
-        // TODO: implement
       }
     })
   },
@@ -53,14 +52,17 @@ const actions = {
 
     return false
   },
+  storeUser ({ commit }, user) {
+    commit('SET_CURRENT_USER', user)
+  },
   addCookie ({ commit }, payload) {
     const data = {
       accessToken: payload.accessToken,
       refreshToken: payload.refreshToken,
-      expiry: payload.expiry
+      expiry: 5
     }
 
-    setCookie(process.env.COOKIE_NAME, JSON.stringify(data), { expires: payload.expiry + 's' })
+    setCookie(process.env.COOKIE_NAME, JSON.stringify(data), { expires: 5 + 's' })
   },
   logout ({ commit }) {
     try {

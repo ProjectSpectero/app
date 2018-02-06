@@ -46,13 +46,8 @@ export default {
   /**
    * Creates user from given parameters.
    *
-   * @param {String} authKey      Username.
    * @param {String} password     Password.
    * @param {String} emailAddress Email address.
-   * @param {String} fullName     Display name.
-   * @param {Array}  roles        Array of roles to assign ([] for no roles).
-   * @param {String} cert         n/a
-   * @param {String} cartKey      n/a
    */
   create (options) {
     return api('POST', `/user`, options)

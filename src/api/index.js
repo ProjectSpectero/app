@@ -12,7 +12,7 @@ import Err from '@/modules/error.js'
  * @param {Function} success Callback to be called on method success
  * @param {Function} failed  Callback to be called on method fail
  */
-export default function (method, path, data, success, failed) {
+async function API (method, path, data, success, failed) {
   // Setting up the proper axios path for deamon interaction works as follows:
   // 1) If you specify daemon params on the config build file, those will be used across the app
   // 2) If you don't specify certain (or all) params, defaults will kick in.
@@ -33,34 +33,37 @@ export default function (method, path, data, success, failed) {
 
   Vue.prototype.$Progress.start()
 
-  axios({
-    method: method,
-    baseURL: protocol + endpoint + port + '/v' + process.env.DAEMON_VERSION,
-    timeout: 10000,
-    headers: {
-      Authorization: cookie ? `Bearer ${cookie.accessToken}` : null
-    },
-    url: path,
-    data: data.data
-  }).then(response => {
+  try {
+    const response = await axios({
+      method: method,
+      baseURL: protocol + endpoint + port + '/v' + process.env.DAEMON_VERSION,
+      timeout: 10000,
+      headers: {
+        Authorization: cookie ? `Bearer ${cookie.accessToken}` : null
+      },
+      url: path,
+      data: data.data
+    })
+
+    if (response) {
+      Vue.prototype.$Progress.finish()
+
+      // Main api callback
+      if (typeof success === 'function') {
+        success(response)
+      }
+
+      // Sub-wrapper callback
+      if (typeof data.success === 'function') {
+        data.success(response)
+      }
+
+      return { error: false, data: response }
+    }
+  } catch (e) {
     Vue.prototype.$Progress.finish()
 
-    // Main api callback
-    if (typeof success === 'function') {
-      success(response)
-    }
-
-    // Sub-wrapper callback
-    if (typeof data.success === 'function') {
-      data.success(response)
-    }
-
-    return { error: false, data: response }
-  }).catch(error => {
-    Vue.prototype.$Progress.finish()
-
-    console.log(error)
-    error = error.response
+    let error = e.response
 
     // Remove authorization cookie if 401 returned by any API call
     if (error.status === 401 && getCookie(process.env.COOKIE_NAME) !== null) {
@@ -77,5 +80,7 @@ export default function (method, path, data, success, failed) {
     }
 
     return { error: true, data: err }
-  })
+  }
 }
+
+export default API
