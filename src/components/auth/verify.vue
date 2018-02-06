@@ -7,7 +7,14 @@
   <div v-else>
     <div v-if="error">
       <h2>Something went wrong!</h2>
-      <p>{{ errorMessage }}</p>
+
+      <div v-if="error === 'USER_ALREADY_VERIFIED'">
+        <p>Your account is already verified!</p>
+        <p>Please proceed to the <router-link :to="{ name: 'login' }">login page</router-link> to access Spectero.</p>
+      </div>
+      <div v-else>
+        <p>We were unable to verify your account. Please try again later.</p>
+      </div>
     </div>
     <div v-else>
       <h2>Verifying ...</h2>
@@ -23,8 +30,8 @@ export default {
   data () {
     return {
       verified: false,
-      error: false,
-      errorMessage: 'We were unable to verify your account. Please try again later.'
+      error: null,
+      errorMessage: ''
     }
   },
   created () {
@@ -38,17 +45,13 @@ export default {
           token: this.$route.params.token
         },
         success: response => {
-          this.error = false
+          this.error = null
           this.verified = true
         },
         fail: error => {
           const keys = Object.keys(error.errors)
 
-          if (keys[0] === 'USER_ALREADY_VERIFIED') {
-            this.errorMessage = 'Your account is already verified!'
-          }
-
-          this.error = true
+          this.error = keys[0]
           this.verified = false
         }
       })
