@@ -59,10 +59,10 @@ const actions = {
     const data = {
       accessToken: payload.accessToken,
       refreshToken: payload.refreshToken,
-      expiry: 5
+      expiry: payload.expiry
     }
 
-    setCookie(process.env.COOKIE_NAME, JSON.stringify(data), { expires: 5 + 's' })
+    setCookie(process.env.COOKIE_NAME, JSON.stringify(data), { expires: payload.expiry + 's' })
   },
   logout ({ commit }) {
     try {
