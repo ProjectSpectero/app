@@ -1,6 +1,5 @@
 <template>
   <div class="spectero">
-    <bar v-if="barComponent" :barComponent="barComponent"></bar>
     <sidebar></sidebar>
     <div class="content">
       <router-view></router-view>
@@ -9,15 +8,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import sidebar from '@/components/common/sidebar'
 
 export default {
-  computed: {
-    ...mapGetters({
-      barComponent: 'settings/bar'
-    })
-  },
   components: {
     sidebar
   }

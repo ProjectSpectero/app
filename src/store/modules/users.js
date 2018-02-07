@@ -8,20 +8,44 @@ const getters = {
   list: state => state.users,
   editRules: () => {
     return {
-      authKey: {
-        required: true,
-        max: 50,
-        regex: /^[a-zA-Z][\w]*$/
-      },
-      password: {
-        max: 72
-      },
-      emailAddress: {
+      email: {
         required: true,
         email: true
       },
-      fullName: {
+      password: {
+        min: 5,
+        max: 72
+      },
+      name: {
         max: 50
+      },
+      address_line_1: {
+        max: 255
+      },
+      address_line_2: {
+        max: 255
+      },
+      city: {
+        max: 255
+      },
+      state: {
+        max: 255
+      },
+      post_code: {
+        max: 255,
+        alpha_num: true
+      },
+      country: {
+        max: 255
+      },
+      phone_no: {
+        max: 255
+      },
+      tax_identification: {
+        max: 255
+      },
+      organization: {
+        max: 255
       }
     }
   },

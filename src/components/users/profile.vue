@@ -17,7 +17,7 @@
             class="input max-width"
             :class="{'input-error': errors.has('email')}"
             :disabled="formDisable"
-            v-validate="'required|email'"
+            v-validate="rules['email']"
             data-vv-as="email">
 
           <span v-show="errors.has('email')" class="input-error-message">
@@ -41,7 +41,7 @@
             class="input max-width"
             :class="{'input-error': errors.has('name')}"
             :disabled="formDisable"
-            v-validate="'required'"
+            v-validate="rules['name']"
             data-vv-as="name">
 
           <span v-show="errors.has('name')" class="input-error-message">
@@ -60,7 +60,7 @@
             class="input max-width"
             :class="{'input-error': errors.has('address_line_1')}"
             :disabled="formDisable"
-            v-validate="'required'"
+            v-validate="rules['address_line_1']"
             data-vv-as="address_line_1">
 
           <span v-show="errors.has('address_line_1')" class="input-error-message">
@@ -79,7 +79,7 @@
             class="input max-width"
             :class="{'input-error': errors.has('address_line_2')}"
             :disabled="formDisable"
-            v-validate="'required'"
+            v-validate="rules['address_line_2']"
             data-vv-as="address_line_2">
 
           <span v-show="errors.has('address_line_2')" class="input-error-message">
@@ -88,135 +88,126 @@
         </div>
 
         <div class="form-input">
-          <div class="label"><label for="address_city">City</label></div>
+          <div class="label"><label for="city">City</label></div>
           <input
             type="text"
-            v-model="form.address_city"
-            name="address_city"
-            id="address_city"
+            v-model="form.city"
+            name="city"
+            id="city"
             placeholder="City"
             class="input max-width"
-            :class="{'input-error': errors.has('address_city')}"
+            :class="{'input-error': errors.has('city')}"
             :disabled="formDisable"
-            v-validate="'required'"
-            data-vv-as="address_city">
+            v-validate="rules['city']"
+            data-vv-as="city">
 
-          <span v-show="errors.has('address_city')" class="input-error-message">
-            {{ errors.first('address_city') }}
+          <span v-show="errors.has('city')" class="input-error-message">
+            {{ errors.first('city') }}
           </span>
         </div>
 
         <div class="form-input">
-          <div class="label"><label for="address_state">State</label></div>
+          <div class="label"><label for="state">State</label></div>
           <input
             type="text"
-            v-model="form.address_state"
-            name="address_state"
-            id="address_state"
+            v-model="form.state"
+            name="state"
+            id="state"
             placeholder="State"
             class="input max-width"
-            :class="{'input-error': errors.has('address_state')}"
+            :class="{'input-error': errors.has('state')}"
             :disabled="formDisable"
-            v-validate="'required'"
-            data-vv-as="address_state">
+            v-validate="rules['state']"
+            data-vv-as="state">
 
-          <span v-show="errors.has('address_state')" class="input-error-message">
-            {{ errors.first('address_state') }}
+          <span v-show="errors.has('state')" class="input-error-message">
+            {{ errors.first('state') }}
           </span>
         </div>
 
         <div class="form-input">
-          <div class="label"><label for="address_post_code">Postal Code</label></div>
+          <div class="label"><label for="post_code">Postal Code</label></div>
           <input
             type="text"
-            v-model="form.address_post_code"
-            name="address_post_code"
-            id="address_post_code"
+            v-model="form.post_code"
+            name="post_code"
+            id="post_code"
             placeholder="Postal Code"
             class="input max-width"
-            :class="{'input-error': errors.has('address_post_code')}"
+            :class="{'input-error': errors.has('post_code')}"
             :disabled="formDisable"
-            v-validate="'required'"
-            data-vv-as="address_post_code">
+            v-validate="rules['post_code']"
+            data-vv-as="post_code">
 
-          <span v-show="errors.has('address_post_code')" class="input-error-message">
-            {{ errors.first('address_post_code') }}
+          <span v-show="errors.has('post_code')" class="input-error-message">
+            {{ errors.first('post_code') }}
           </span>
         </div>
 
-        <div class="form-input">
-          <div class="label"><label for="address_country">Country</label></div>
-          <input
-            type="text"
-            v-model="form.address_country"
-            name="address_country"
-            id="address_country"
-            placeholder="Country"
-            class="input max-width"
-            :class="{'input-error': errors.has('address_country')}"
-            :disabled="formDisable"
-            v-validate="'required'"
-            data-vv-as="address_country">
+        <div v-if="form.country" class="form-input">
+          <div class="label"><label for="country">Country</label></div>
 
-          <span v-show="errors.has('address_country')" class="input-error-message">
-            {{ errors.first('address_country') }}
-          </span>
+          <select v-model="form.country">
+            <option v-for="country in countries" :key="country.code">
+              {{ country.name }}
+            </option>
+          </select>
         </div>
 
         <div class="form-input">
-          <div class="label"><label for="address_phone">Phone Number</label></div>
+          <div class="label"><label for="phone_no">Phone Number</label></div>
           <input
             type="text"
-            v-model="form.address_phone"
-            name="address_phone"
-            id="address_phone"
+            v-model="form.phone_no"
+            name="phone_no"
+            id="phone_no"
             placeholder="Phone Number"
             class="input max-width"
-            :class="{'input-error': errors.has('address_phone')}"
+            :class="{'input-error': errors.has('phone_no')}"
             :disabled="formDisable"
-            v-validate="'required'"
-            data-vv-as="address_phone">
+            v-validate="rules['phone_no']"
+            data-vv-as="phone_no">
 
-          <span v-show="errors.has('address_phone')" class="input-error-message">
-            {{ errors.first('address_phone') }}
+          <span v-show="errors.has('phone_no')" class="input-error-message">
+            {{ errors.first('phone_no') }}
           </span>
         </div>
 
         <div class="form-input">
-          <div class="label"><label for="address_tax_number">Tax Identification Number</label></div>
+          <div class="label"><label for="tax_identification">Tax Identification Number</label></div>
           <input
             type="text"
-            v-model="form.address_tax_number"
-            name="address_tax_number"
-            id="address_tax_number"
+            v-model="form.tax_identification"
+            name="tax_identification"
+            id="tax_identification"
             placeholder="Tax Identification Number"
             class="input max-width"
-            :class="{'input-error': errors.has('address_tax_number')}"
+            :class="{'input-error': errors.has('tax_identification')}"
             :disabled="formDisable"
-            v-validate="'required'"
-            data-vv-as="address_tax_number">
+            v-validate="rules['tax_identification']"
+            data-vv-as="tax_identification">
 
-          <span v-show="errors.has('address_tax_number')" class="input-error-message">
-            {{ errors.first('address_tax_number') }}
+          <span v-show="errors.has('tax_identification')" class="input-error-message">
+            {{ errors.first('tax_identification') }}
           </span>
         </div>
 
         <div class="form-input">
-          <div class="label"><label for="address_organization">Organization</label></div>
+          <div class="label"><label for="organization">Organization</label></div>
           <input
             type="text"
-            v-model="form.address_organization"
-            name="address_organization"
-            id="address_organization"
+            v-model="form.organization"
+            name="organization"
+            id="organization"
             placeholder="Organization"
             class="input max-width"
-            :class="{'input-error': errors.has('address_organization')}"
+            :class="{'input-error': errors.has('organization')}"
             :disabled="formDisable"
-            v-validate="'required'"
-            data-vv-as="address_organization">
+            v-validate="rules['organization']"
+            data-vv-as="organization">
 
-          <span v-show="errors.has('address_tax_number')" class="input-error-message">
-            {{ errors.first('address_tax_number') }}
+          <span v-show="errors.has('organization')" class="input-error-message">
+            {{ errors.first('organization') }}
           </span>
         </div>
 
@@ -230,6 +221,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import user from '@/api/user.js'
 
 export default {
@@ -244,8 +236,22 @@ export default {
     }
   },
   created () {
-    console.log(this.user)
     this.form = JSON.parse(JSON.stringify(this.user))
+
+    // Find the correct country
+    if (this.form.country !== null) {
+      this.form.country = this.countries.find(c => c.code === this.form.country.code)
+    } else {
+      this.form.country = this.countries[0].code
+    }
+
+    console.log(this.form.country)
+  },
+  computed: {
+    ...mapGetters({
+      rules: 'users/editRules',
+      countries: 'settings/countries'
+    })
   },
   methods: {
     submit () {
@@ -255,12 +261,12 @@ export default {
         } else {
           this.formDisable = true
 
+          // Format special fields
+          this.form.id = this.user.id
+          this.form.country = this.form.country.code
+
           user.edit({
-            data: {
-              id: this.user.id,
-              name: this.form.name,
-              email: this.form.email
-            },
+            data: this.form,
             success: response => {
               this.dealWithSuccess()
             },
@@ -272,7 +278,8 @@ export default {
       })
     },
     dealWithSuccess () {
-      this.$toasted.show('Profile updated!')
+      this.$toasted.show('Your profile has been updated successfully!')
+      this.formDisable = false
     },
     dealWithError (err) {
       this.formDisable = false
