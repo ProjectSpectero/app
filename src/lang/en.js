@@ -29,7 +29,10 @@ module.exports = {
     INVALID_IP_AS_LISTENER_REQUEST: 'Unable to bind httpProxy/openVPN server to this listener.',
     INVALID_HTTP_MODE_REQUEST: 'Invalid HTTP mode change requested.',
     STORED_CONFIG_WAS_NULL: 'Unable to store service configuration.',
-    CANNOT_DELETE_SELF: 'You can\'t delete yourself.'
+    CANNOT_DELETE_SELF: 'You can\'t delete yourself.',
+
+    PAYMENT_INVALID_PARAMETERS: 'The payment data you have supplied seems to be wrong. Please contact us for more details.',
+    PAYMENT_PROCESSOR_NOT_ENABLED: 'This payment processor is not enabled. Please contact us for more details.'
   },
 
   services: {
