@@ -10,5 +10,16 @@ export default {
    */
   processPaypal (options) {
     return api('GET', `/payment/paypal/callback?mode=${options.data.mode}&token=${options.data.token}&payerID=${options.data.PayerID}`, options)
+  },
+
+  /**
+   * Returns orders list.
+   *
+   * @param {String} mode Payment mode.
+   * @param {String} token Payment token.
+   * @param {String} payerID Current payer unique ID.
+   */
+  orders (options) {
+    return api('GET', `/order`, options)
   }
 }

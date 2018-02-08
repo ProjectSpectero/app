@@ -8,10 +8,12 @@ import VueCookie from 'vue-cookie'
 import VeeValidate from 'vee-validate'
 import VueProgressBar from 'vue-progressbar'
 import Toasted from 'vue-toasted'
+import { ClientTable } from 'vue-tables-2'
 
 Vue.use(VueI18n)
 Vue.use(VueCookie)
 Vue.use(VeeValidate)
+Vue.use(ClientTable)
 Vue.use(VueProgressBar, {
   color: '#18FF6D',
   failedColor: 'red',
