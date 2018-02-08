@@ -24,6 +24,25 @@
             {{ errors.first('email') }}
           </span>
         </div>
+
+        <div class="form-input">
+          <div class="label"><label for="password">Password</label></div>
+          <input
+            type="password"
+            v-model="form.password"
+            name="password"
+            id="password"
+            placeholder="Password (leave blank to keep the current one)"
+            class="input max-width"
+            :class="{'input-error': errors.has('password')}"
+            :disabled="formDisable"
+            v-validate="rules['password']"
+            data-vv-as="password">
+
+          <span v-show="errors.has('password')" class="input-error-message">
+            {{ errors.first('password') }}
+          </span>
+        </div>
       </div>
 
       <div class="container">
@@ -221,7 +240,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import user from '@/api/user.js'
 
 export default {
@@ -232,20 +251,20 @@ export default {
     return {
       formError: null,
       formDisable: false,
+      changedEmail: false,
       form: null
     }
   },
   created () {
     this.form = JSON.parse(JSON.stringify(this.user))
 
-    // Find the correct country
-    if (this.form.country !== null) {
-      this.form.country = this.countries.find(c => c.code === this.form.country.code)
+    // Default country: USA
+    if (!this.form.country) {
+      this.form.country = this.countries[0].name
     } else {
-      this.form.country = this.countries[0].code
+      let currentCountry = this.countries.find(c => c.code === this.form.country)
+      this.form.country = currentCountry.name
     }
-
-    console.log(this.form.country)
   },
   computed: {
     ...mapGetters({
@@ -254,32 +273,65 @@ export default {
     })
   },
   methods: {
+    ...mapActions({
+      logout: 'auth/logout'
+    }),
     submit () {
       this.$validator.validateAll().then((result) => {
         if (!result) {
-          this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
+          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
         } else {
-          this.formDisable = true
+          if (this.user.email === this.form.email) {
+            this.changedEmail = false
+            this.processForm()
+          } else if (this.user.email !== this.form.email &&
+            confirm(this.$i18n.t('CHANGE_EMAIL_DIALOG', { oldEmail: this.user.email, newEmail: this.form.email }))) {
+            this.changedEmail = true
+            this.processForm()
+          }
+        }
+      })
+    },
+    logMeOut () {
+      this.logout().then(() => {
+        this.$router.push({ name: 'login' })
+      })
+    },
+    processForm () {
+      const country = this.countries.find(c => c.name === this.form.country)
+      let data = JSON.parse(JSON.stringify(this.form))
 
-          // Format special fields
-          this.form.id = this.user.id
-          this.form.country = this.form.country.code
+      // Remove empty fields from the list
+      for (var key in data) {
+        if (data[key] === null || data[key] === '') {
+          delete data[key]
+        }
+      }
 
-          user.edit({
-            data: this.form,
-            success: response => {
-              this.dealWithSuccess()
-            },
-            fail: error => {
-              this.dealWithError(error)
-            }
-          })
+      // Format special fields
+      data.id = this.user.id
+      data.country = country.code
+
+      this.formDisable = true
+
+      user.edit({
+        data: data,
+        success: response => {
+          this.dealWithSuccess()
+        },
+        fail: error => {
+          this.dealWithError(error)
         }
       })
     },
     dealWithSuccess () {
       this.$toasted.show('Your profile has been updated successfully!')
       this.formDisable = false
+
+      // Changing the email requires re-validation + logging in again
+      if (this.changedEmail) {
+        this.logMeOut()
+      }
     },
     dealWithError (err) {
       this.formDisable = false
@@ -296,7 +348,7 @@ export default {
       for (let inputName in err.fields) {
         if (err.fields.hasOwnProperty(inputName)) {
           let inputErrors = err.fields[inputName]
-
+          console.log(inputErrors)
           for (let errorKey in inputErrors) {
             if (inputErrors.hasOwnProperty(errorKey)) {
               this.$validator.errors.add(inputName, this.$i18n.t(`errors.${errorKey}`, null, { x: inputErrors[errorKey] }))

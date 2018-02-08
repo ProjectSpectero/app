@@ -1,5 +1,8 @@
 const state = {
   countries: [
+    { code: 'US', name: 'United States' },
+    { code: 'GB', name: 'United Kingdom' },
+    { code: 'AU', name: 'Australia' },
     { code: 'AF', name: 'Afghanistan' },
     { code: 'AX', name: 'Åland Islands' },
     { code: 'AL', name: 'Albania' },
@@ -13,7 +16,6 @@ const state = {
     { code: 'AR', name: 'Argentina' },
     { code: 'AM', name: 'Armenia' },
     { code: 'AW', name: 'Aruba' },
-    { code: 'AU', name: 'Australia' },
     { code: 'AT', name: 'Austria' },
     { code: 'AZ', name: 'Azerbaijan' },
     { code: 'BS', name: 'Bahamas' },
@@ -231,8 +233,6 @@ const state = {
     { code: 'UG', name: 'Uganda' },
     { code: 'UA', name: 'Ukraine' },
     { code: 'AE', name: 'United Arab Emirates' },
-    { code: 'GB', name: 'United Kingdom' },
-    { code: 'US', name: 'United States' },
     { code: 'UM', name: 'United States Minor Outlying Islands' },
     { code: 'UY', name: 'Uruguay' },
     { code: 'UZ', name: 'Uzbekistan' },

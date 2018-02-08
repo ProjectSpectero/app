@@ -46,5 +46,6 @@ module.exports = {
   USER_DELETE_ERROR: 'There was a problem while deleting this user. Please try again later.',
   UNABLE_TO_DISPLAY_BANNED_DOMAINS: 'Proxy Mode must be set to Normal to edit banned domains.',
   UNABLE_TO_DISPLAY_ALLOWED_DOMAINS: 'Proxy Mode must be set to ExclusiveAllow to edit allowed domains.',
-  LEAVE_CONFIRM_DIALOG: 'Are you sure you want to leave? Any unsaved changes will be lost.'
+  LEAVE_CONFIRM_DIALOG: 'Are you sure you want to leave? Any unsaved changes will be lost.',
+  CHANGE_EMAIL_DIALOG: 'You have changed your email from {oldEmail} to {newEmail}. If your new email is invalid, we will not be able to reach you and your account will be locked. Are you sure you want to change your email to {newEmail} and logout?'
 }
