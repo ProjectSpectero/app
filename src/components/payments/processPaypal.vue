@@ -1,9 +1,13 @@
 <template>
-  <div v-if="error">
+  <div v-if="status === 'error'">
     <h2>We were unable to process your payment</h2>
-    {{ error }}
+    {{ errorMessage }}
   </div>
-  <div v-else class="payments">
+  <div v-else-if="status === 'success'">
+    <h2>Payment processed</h2>
+    <p>Your payment has been processed successfully. Thank you!</p>
+  </div>
+  <div v-else>
     <h2>Validating payment ...</h2>
     <p>Please wait while we validate your payment ...</p>
   </div>
@@ -15,7 +19,8 @@ import paymentAPI from '@/api/payment.js'
 export default {
   data () {
     return {
-      error: null
+      status: '',
+      errorMessage: null
     }
   },
   created () {
@@ -30,12 +35,12 @@ export default {
           data: params,
           success: response => {
             console.log(response)
-            this.error = null
+            this.status = 'success'
           },
           fail: error => {
-            console.log(error)
             const keys = Object.keys(error.errors)
-            this.error = this.$i18n.t(`errors.${keys[0]}`)
+            this.errorMessage = this.$i18n.t(`errors.${keys[0]}`)
+            this.status = 'error'
           }
         })
       } else {
