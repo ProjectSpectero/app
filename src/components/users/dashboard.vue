@@ -1,9 +1,7 @@
 <template>
   <div>
-    <h1>Welcome, {{ user.email }}</h1>
-
     <div class="orders">
-      <h3>My orders</h3>
+      <h1>My orders</h1>
       <orders type="simple"></orders>
     </div>
   </div>
@@ -18,6 +16,11 @@ export default {
     ...mapGetters({
       user: 'auth/user'
     })
+  },
+  methods: {
+    switchType (type) {
+      this.type = type
+    }
   },
   components: {
     orders

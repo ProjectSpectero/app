@@ -21,5 +21,16 @@ export default {
    */
   orders (options) {
     return api('GET', `/order`, options)
+  },
+
+  /**
+   * Returns orders list for the logged in user.
+   *
+   * @param {String} mode Payment mode.
+   * @param {String} token Payment token.
+   * @param {String} payerID Current payer unique ID.
+   */
+  myOrders (options) {
+    return api('GET', `/order/self`, options)
   }
 }
