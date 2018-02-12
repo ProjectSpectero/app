@@ -2,7 +2,7 @@
   <form action="/process-payment" method="post">
     <stripe-checkout
       :stripe-key="stripeKey"
-      product="product">
+      :product="product">
     </stripe-checkout>
   </form>
 </template>
@@ -11,6 +11,15 @@
 import { StripeCheckout } from 'vue-stripe'
 
 export default {
+  data () {
+    return {
+      product: {
+        name: 'Spectero',
+        description: 'Spectero purchase',
+        amount: 100000
+      }
+    }
+  },
   computed: {
     stripeKey () {
       console.log(process.env.STRIPE_MODE)
