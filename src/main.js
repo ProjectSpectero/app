@@ -3,7 +3,6 @@ import app from './app'
 import router from './router'
 import store from './store'
 
-import Env from '@websanova/vue-env'
 import VueI18n from 'vue-i18n'
 import VueCookie from 'vue-cookie'
 import VeeValidate from 'vee-validate'
@@ -11,7 +10,8 @@ import VueProgressBar from 'vue-progressbar'
 import Toasted from 'vue-toasted'
 import { ClientTable } from 'vue-tables-2'
 
-Vue.use(Env)
+require('dotenv').config()
+
 Vue.use(VueI18n)
 Vue.use(VueCookie)
 Vue.use(VeeValidate)
