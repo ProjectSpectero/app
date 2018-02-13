@@ -13,6 +13,44 @@ export default {
   },
 
   /**
+   * Processes a Stripe payment.
+   *
+   * @param {String} stripeToken Stripe token.
+   * @param {Boolean} save Whether to save or not.
+   */
+  processStripe (options) {
+    return api('POST', `/payment/stripe/process/${options.data.invoiceId}`, options)
+  },
+
+  /**
+   * Creates an order.
+   *
+   * @param {Integer} user_id Current user id.
+   * @param {String} status Order status.
+   * @param {String} subscription_provider Subscription provider (stripe or paypal).
+   * @param {String} subscription_reference Subscription reference.
+   * @param {String} term Term.
+   * @param {String} due_next Next due date.
+   */
+  createOrder (options) {
+    return api('POST', `/order`, options)
+  },
+
+  /**
+   * Creates an invoice.
+   *
+   * @param {Integer} order_id Current order id.
+   * @param {Integer} user_id Current user id.
+   * @param {Integer} amount Amount.
+   * @param {Integer} tax Tax.
+   * @param {String} status Order status.
+   * @param {String} due_next Next due date.
+   */
+  createInvoice (options) {
+    return api('POST', `/invoice`, options)
+  },
+
+  /**
    * Returns orders list.
    *
    * @param {String} mode Payment mode.
@@ -32,5 +70,12 @@ export default {
    */
   myOrders (options) {
     return api('GET', `/order/self`, options)
+  },
+
+  /**
+   * Returns invoices list for the logged in user.
+   */
+  myInvoices (options) {
+    return api('GET', `/invoice/self`, options)
   }
 }

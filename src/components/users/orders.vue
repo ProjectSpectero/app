@@ -39,12 +39,11 @@ export default {
     }
   },
   created () {
-    console.log(this.type)
     this.fetchOrders()
   },
   methods: {
     fetchOrders () {
-      paymentAPI.orders({
+      paymentAPI.myOrders({
         success: response => {
           this.tableData = response.data.result
           this.setTable()
@@ -145,7 +144,8 @@ function processTotal (row) {
   if (lineItems !== undefined) {
     for (let lineItem in lineItems) {
       if (lineItems.hasOwnProperty(lineItem)) {
-        sum += parseFloat(lineItems[lineItem].amount * lineItems[lineItem].quantity)
+        const quantity = lineItems[lineItem].quantity || 1
+        sum += parseFloat(lineItems[lineItem].amount * quantity)
       }
     }
   }

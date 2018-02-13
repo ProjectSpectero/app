@@ -1,6 +1,7 @@
 <template>
   <div class="sidebar">
-    <div class="logo logo-sm"></div>
+    <router-link :to="{ name: 'dashboard' }"><div class="logo logo-sm"></div></router-link>
+
     <div class="menu-items">
       <section class="nav-section">
         <ul>

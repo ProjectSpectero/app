@@ -121,3 +121,15 @@
     }
   }
 }
+
+.StripeElement {
+  font-family: $font-family !important;
+}
+.stripe-card {
+  font-family: $font-family;
+  width: 300px;
+  border: 1px solid red;
+}
+.stripe-card.complete {
+  border-color: green;
+}
