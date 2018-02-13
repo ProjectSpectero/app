@@ -1,15 +1,17 @@
 <template>
-  <form @submit="test" method="post">
-    <stripe-checkout
-      :stripe-key="stripeKey"
-      :product="product"
-      on-success="broadcast">
-    </stripe-checkout>
-  </form>
+  <div>
+    <card class='stripe-card'
+      :class='{ complete }'
+      :stripe="stripeKey"
+      :options='stripeOptions'
+      @change='toggleStatus($event.complete)'
+    />
+    <button class='pay-with-stripe' @click='pay' :disabled='!complete'>Pay with credit card</button>
+  </div>
 </template>
 
 <script>
-import { StripeCheckout } from 'vue-stripe'
+import { Card, createToken } from 'vue-stripe-elements-plus'
 
 // Workflow:
 // 1) On click, call /order (API)
@@ -20,10 +22,9 @@ import { StripeCheckout } from 'vue-stripe'
 export default {
   data () {
     return {
-      product: {
-        name: 'Spectero',
-        description: 'Spectero purchase',
-        amount: 100000
+      complete: false,
+      stripeOptions: {
+        // see https://stripe.com/docs/stripe.js#element-options for details
       }
     }
   },
@@ -34,12 +35,25 @@ export default {
     }
   },
   methods: {
-    test () {
-      console.log('here')
+    pay () {
+      createToken().then(data => console.log(data.token))
+    },
+    toggleStatus (status) {
+      this.complete = status
     }
   },
   components: {
-    StripeCheckout
+    Card
   }
 }
 </script>
+
+<style>
+.stripe-card {
+  width: 300px;
+  border: 1px solid grey;
+}
+.stripe-card.complete {
+  border-color: green;
+}
+</style>
