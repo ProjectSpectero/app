@@ -50,60 +50,35 @@ export default {
     // 4) We handle the payment success token with the API
     // 5) If everything goes well, the payment process is complete
     pay () {
-      paymentAPI.createOrder({
-        data: {
-          user_id: this.user.id,
-          status: 'UNPAID',
-          subscription_provider: 'stripe',
-          subscription_reference: 'test' + (Math.random() * (1500 - 20) + 20),
-          term: 'test',
-          due_next: '2018-03-02'
-        },
-        success: orderResponse => {
-          console.log(orderResponse)
-          // Order created
-          if (orderResponse.data.message === 'ORDER_CREATED' && orderResponse.data.result) {
-            paymentAPI.createInvoice({
-              data: {
-                amount: 100,
-                tax: 0.15,
-                order_id: orderResponse.data.result.id,
-                user_id: this.user.id,
-                status: orderResponse.data.result.status,
-                due_date: orderResponse.data.result.due_next
-              },
-              success: invoiceResponse => {
-                console.log(invoiceResponse)
-                // (unpaid) invoice added
-                if (invoiceResponse.data.message === 'INVOICE_CREATED' && invoiceResponse.data.result) {
-                  // Stripe token issued
-                  createToken().then(stripeData => {
-                    // Process stripe payment on our API
-                    paymentAPI.processStripe({
-                      data: {
-                        invoiceId: invoiceResponse.data.result.id,
-                        stripeToken: stripeData.token.id,
-                        save: true
-                      },
-                      success: processResponse => {
-                        console.log(processResponse)
+      // Getting a dummy invoice for now
+      paymentAPI.invoices({
+        success: invoices => {
+          console.log(invoices)
+          if (invoices.data.result) {
+            const dummyInvoice = invoices.data.result[0]
 
-                        // Read our own invoice list and show the last one
-                        // (which matches our current payment)
-                        paymentAPI.myInvoices({
-                          success: invoicesResponse => {
-                            console.log(invoicesResponse)
-                            this.finished = true
-                          },
-                          fail: error => this.showError(error)
-                        })
-                      },
-                      fail: error => this.showError(error)
-                    })
+            // Stripe token issued
+            createToken().then(stripeData => {
+              // Process stripe payment on our API
+              paymentAPI.processStripe({
+                data: {
+                  invoiceId: dummyInvoice.id,
+                  stripeToken: stripeData.token.id,
+                  save: true
+                },
+                success: processResponse => {
+                  console.log(processResponse)
+
+                  paymentAPI.invoices({
+                    success: invoicesResponse => {
+                      console.log(invoicesResponse)
+                      this.finished = true
+                    },
+                    fail: error => this.showError(error)
                   })
-                }
-              },
-              fail: error => this.showError(error)
+                },
+                fail: error => this.showError(error)
+              })
             })
           }
         },

@@ -73,6 +73,13 @@ export default {
   },
 
   /**
+   * Returns the invoice list.
+   */
+  invoices (options) {
+    return api('GET', `/invoice`, options)
+  },
+
+  /**
    * Returns invoices list for the logged in user.
    */
   myInvoices (options) {

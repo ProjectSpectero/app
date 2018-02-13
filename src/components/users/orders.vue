@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     fetchOrders () {
-      paymentAPI.myOrders({
+      paymentAPI.orders({
         success: response => {
           this.tableData = response.data.result
           this.setTable()
@@ -65,12 +65,12 @@ export default {
     setColumns () {
       this.columns = (this.type === 'simple')
         ? ['id', 'created_at', 'total']
-        : ['id', 'created_at', 'status', 'provider', 'notes', 'actions']
+        : ['id', 'created_at', 'status', 'provider', 'total']
     },
     setSortableColumns () {
       this.sortableColumns = (this.type === 'simple')
         ? ['id', 'created_at', 'total']
-        : ['id', 'created_at', 'status', 'provider', 'notes']
+        : ['id', 'created_at', 'status', 'provider', 'total']
     },
     setFilterableColumns () {
       this.filterableColumns = (this.type === 'simple')
@@ -138,18 +138,7 @@ export default {
 // We're recycling this method when custom sorting by total, so we need to have it
 // outside of 'this' scope
 function processTotal (row) {
-  let sum = 0
-  const lineItems = row.line_items
-
-  if (lineItems !== undefined) {
-    for (let lineItem in lineItems) {
-      if (lineItems.hasOwnProperty(lineItem)) {
-        const quantity = lineItems[lineItem].quantity || 1
-        sum += parseFloat(lineItems[lineItem].amount * quantity)
-      }
-    }
-  }
-
-  return sum
+  const invoice = row.last_invoice
+  return invoice ? parseFloat(invoice.amount).toFixed(2) + ' ' + invoice.currency : '-'
 }
 </script>

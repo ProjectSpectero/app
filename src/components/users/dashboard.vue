@@ -2,7 +2,7 @@
   <div>
     <div class="orders">
       <h1>My orders</h1>
-      <orders type="simple"></orders>
+      <orders type="expanded"></orders>
     </div>
   </div>
 </template>
