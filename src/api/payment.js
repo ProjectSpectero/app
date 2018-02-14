@@ -51,6 +51,14 @@ export default {
   },
 
   /**
+   * Returns an order.
+   * @param {Integer} id Order id.
+   */
+  order (options) {
+    return api('GET', `/order/${options.data.id}`, options)
+  },
+
+  /**
    * Returns orders list.
    *
    * @param {String} mode Payment mode.
@@ -77,6 +85,14 @@ export default {
    */
   invoices (options) {
     return api('GET', `/invoice`, options)
+  },
+
+  /**
+   * Returns an invoice.
+   * @param {Integer} id Invoice id.
+   */
+  invoice (options) {
+    return api('GET', `/invoice/${options.data.id}`, options)
   },
 
   /**

@@ -1,29 +1,18 @@
 <template>
   <div>
     <div class="orders">
-      <h1>My orders</h1>
-      <orders type="expanded"></orders>
+      <h1>Dashboard</h1>
+      <orders-list type="simple"></orders-list>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import orders from './orders'
+import ordersList from './ordersList'
 
 export default {
-  computed: {
-    ...mapGetters({
-      user: 'auth/user'
-    })
-  },
-  methods: {
-    switchType (type) {
-      this.type = type
-    }
-  },
   components: {
-    orders
+    ordersList
   }
 }
 </script>

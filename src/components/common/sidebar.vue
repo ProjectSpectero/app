@@ -9,29 +9,10 @@
         </ul>
       </section>
       <section class="nav-section">
-        <h5>Servers</h5>
+        <h5>Orders</h5>
         <ul>
-          <li class="active">
-            <a href="#"><span class="icon-sliders"></span> Manage Server</a>
-            <ul>
-              <li><a href="#">Overview</a></li>
-              <li><a href="#">Statistics</a></li>
-            </ul>
-          </li>
-          <li><a href="#"><span class="icon-layers"></span> Mass Manage</a></li>
-        </ul>
-      </section>
-      <section class="nav-section">
-        <h5>Marketplace</h5>
-        <ul>
-          <li><a href="#"><span class="icon-share-2"></span> Spectero Market</a></li>
-          <li><a href="#"><span class="icon-globe"></span> Proxy Network</a></li>
-        </ul>
-      </section>
-      <section class="nav-section">
-        <h5>Help</h5>
-        <ul>
-          <li><a href="#"><span class="icon-life-buoy"></span> Documentation</a></li>
+          <li><router-link :to="{ name: 'orders' }"><span class="icon-zap"></span> Orders</router-link></li>
+          <li><router-link :to="{ name: 'invoices' }"><span class="icon-zap"></span> Invoices</router-link></li>
         </ul>
       </section>
       <section class="nav-section">
