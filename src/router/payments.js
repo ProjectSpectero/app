@@ -6,6 +6,6 @@ import Stripe from '@/components/payments/stripe'
 
 export default [
   { path: '/payment/stripe/:invoiceId', name: 'stripe', component: Stripe },
-  { path: '/payment/paypal/callback', name: 'paypalCallback', component: paypalCallback, meta: { layout: 'auth' } },
+  { path: '/payment/paypal/callback', name: 'paypalCallback', component: paypalCallback },
   { path: '/payment/paypal/:invoiceId', name: 'paypal', component: Paypal }
 ]
