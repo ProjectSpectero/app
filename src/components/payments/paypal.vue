@@ -31,9 +31,7 @@ export default {
             console.log('On processPayment with response', response)
             if (response.data.result.redirectUrl) {
               console.log('Redirecting to ... ', response.data.result.redirectUrl)
-              window.location = response.data.result.redirectUrl
-            } else {
-              console.log('Unable to redirect')
+              this.redirect(response.data.result.redirectUrl)
             }
           },
           fail: error => {
@@ -44,6 +42,9 @@ export default {
       } else {
         this.error = this.$i18n.t('errors.PAYMENT_INVALID_PARAMETERS')
       }
+    },
+    redirect (redirectUrl) {
+      window.location.href = redirectUrl
     }
   }
 }
