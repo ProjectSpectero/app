@@ -10,6 +10,11 @@
         @change="setProcessedStatus($event.complete)"
       />
       <button @click="pay" :disabled="!processed">Pay with credit card</button>
+
+      <label>
+        <input type="checkbox">
+        Save card?
+      </label>
     </div>
   </div>
 </template>
@@ -43,12 +48,6 @@ export default {
     }
   },
   methods: {
-    // The workflow for payments with Stripe works as follows:
-    // 1) We create an (unpaid) order through the API
-    // 2) We issue an invoice for that order
-    // 3) If things work as intended, we'll process the payment with Stripe
-    // 4) We handle the payment success token with the API
-    // 5) If everything goes well, the payment process is complete
     pay () {
       // Getting a dummy invoice for now
       paymentAPI.invoices({
