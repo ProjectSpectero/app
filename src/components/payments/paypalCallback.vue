@@ -8,8 +8,8 @@
     <p>Your payment has been processed successfully. Thank you!</p>
   </div>
   <div v-else>
-    <h2>Validating payment ...</h2>
-    <p>Please wait while we validate your payment ...</p>
+    <h2>Completing payment ...</h2>
+    <p>Please wait while we complete your payment ...</p>
   </div>
 </template>
 

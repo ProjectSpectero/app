@@ -4,12 +4,11 @@ export default {
   /**
    * Processes a Paypal payment.
    *
-   * @param {String} mode Payment mode.
-   * @param {String} token Payment token.
-   * @param {String} payerID Current payer unique ID.
+   * @param {String} stripeToken Stripe token.
+   * @param {Boolean} save Whether to save or not.
    */
   processPaypal (options) {
-    return api('GET', `/payment/paypal/callback?mode=${options.data.mode}&token=${options.data.token}&payerID=${options.data.PayerID}`, options)
+    return api('POST', `/payment/paypal/process/${options.data.invoiceId}`, options)
   },
 
   /**
@@ -20,6 +19,17 @@ export default {
    */
   processStripe (options) {
     return api('POST', `/payment/stripe/process/${options.data.invoiceId}`, options)
+  },
+
+  /**
+   * Runs the Paypal callback.
+   *
+   * @param {String} mode Payment mode.
+   * @param {String} token Payment token.
+   * @param {String} payerID Current payer unique ID.
+   */
+  paypalCallback (options) {
+    return api('GET', `/payment/paypal/callback?mode=${options.data.mode}&token=${options.data.token}&payerID=${options.data.PayerID}`, options)
   },
 
   /**

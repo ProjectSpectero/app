@@ -19,13 +19,13 @@
             </router-link>
 
             <div v-if="props.row.last_invoice.status === 'UNPAID'">
-              <button class="button" @click.stop="payWithPaypal">
-                Pay with Paypal
-              </button>
+              <router-link class="button" :to="{ name: 'paypal', params: { invoiceId: props.row.last_invoice.id } }">
+                Pay (Paypal)
+              </router-link>
 
-              <button class="button"  @click.stop="payWithStripe">
-                Pay with Stripe
-              </button>
+              <router-link class="button" :to="{ name: 'stripe', params: { invoiceId: props.row.last_invoice.id } }">
+                Pay (Stripe)
+              </router-link>
             </div>
           </div>
         </template>
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     fetchOrders () {
-      paymentAPI.orders({
+      paymentAPI.myOrders({
         success: response => {
           this.tableData = response.data.result
           this.setTable()
@@ -69,12 +69,6 @@ export default {
           console.log(error)
         }
       })
-    },
-    payWithPaypal () {
-
-    },
-    payWithStripe () {
-
     },
     processTotal (row) {
       return processTotal(row)
