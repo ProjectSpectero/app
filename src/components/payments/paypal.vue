@@ -20,15 +20,15 @@ export default {
   },
   methods: {
     processPayment () {
-      const invoiceId = this.$route.params.invoiceId
+      console.log('On processPayment with params', this.$route.params)
 
-      if (invoiceId) {
+      if (this.$route.params.invoiceId) {
         paymentAPI.processPaypal({
           data: {
-            invoiceId: invoiceId
+            invoiceId: this.$route.params.invoiceId
           },
           success: response => {
-            console.log(response)
+            console.log('On processPayment with response', response)
             if (response.data.result.redirectUrl) {
               console.log('Redirecting to ... ', response.data.result.redirectUrl)
               window.location = response.data.result.redirectUrl

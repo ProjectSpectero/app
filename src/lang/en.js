@@ -6,6 +6,7 @@ module.exports = {
     RESOURCE_CREATION_FAILED: 'Unable to create resource, please try again later.',
     RESOURCE_NOT_FOUND: 'We could not find that resource. Please contact us if the error persists.',
     REQUEST_FAILED: 'The request failed. Please contact us if the error persists.',
+    UNAUTHORIZED: 'You are not authorized to do this. Please contact us if the error persists.',
 
     FIELD_REQUIRED: 'This field is required.',
     FIELD_MAXLENGTH: 'Cannot be longer than {x} characters.',

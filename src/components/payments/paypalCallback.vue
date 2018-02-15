@@ -29,12 +29,12 @@ export default {
   methods: {
     validatePayment () {
       const params = this.$route.query
-
+      console.log('On validatePayment with params', params)
       if (params.mode && params.token && params.PayerID) {
         paymentAPI.processPaypal({
           data: params,
           success: response => {
-            console.log(response)
+            console.log('On validatePayment with response', response)
             this.status = 'success'
           },
           fail: error => {
