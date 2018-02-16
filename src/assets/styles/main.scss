@@ -20,16 +20,15 @@
 
 .VueTables.VueTables--client {
   .VueTables__search {
-    display: flex;
-    align-items: center;
-    margin: $pad;
-    padding: $pad;
-    background: $white;
-    border: 1px solid $color-border;
-    border-radius: 4px;
 
     .VueTables__search-field {
-      width: 100%;
+      display: flex;
+      align-items: center;
+      margin: $pad;
+      padding: $pad;
+      background: $white;
+      border: 1px solid $color-border;
+      border-radius: 4px;
     }
 
     input[type=text] {
