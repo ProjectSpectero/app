@@ -50,7 +50,6 @@ export default {
       columns: ['created_at'],
       sortableColumns: ['created_at'],
       filterableColumns: ['created_at'],
-      actionButtons: [],
       options: {}
     }
   },
