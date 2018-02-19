@@ -91,13 +91,6 @@ export default {
   },
 
   /**
-   * Returns the invoice list.
-   */
-  invoices (options) {
-    return api('GET', `/invoice`, options)
-  },
-
-  /**
    * Returns an invoice.
    * @param {Integer} id Invoice id.
    */

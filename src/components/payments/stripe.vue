@@ -50,7 +50,7 @@ export default {
   methods: {
     pay () {
       // Getting a dummy invoice for now
-      paymentAPI.invoices({
+      paymentAPI.myInvoices({
         success: invoices => {
           console.log(invoices)
           if (invoices.data.result) {
@@ -68,7 +68,7 @@ export default {
                 success: processResponse => {
                   console.log(processResponse)
 
-                  paymentAPI.invoices({
+                  paymentAPI.myInvoices({
                     success: invoicesResponse => {
                       console.log(invoicesResponse)
                       this.finished = true
