@@ -8,6 +8,7 @@ import store from '@/store'
 import authRoutes from './auth'
 import userRoutes from './users'
 import paymentRoutes from './payments'
+import nodeRoutes from './nodes'
 import defaultRoutes from './default'
 
 Vue.use(Router)
@@ -23,6 +24,7 @@ const router = new Router({
     ...authRoutes,
     ...userRoutes,
     ...paymentRoutes,
+    ...nodeRoutes,
     ...defaultRoutes
   ]
 })

@@ -13,6 +13,7 @@
         <ul>
           <li><router-link :to="{ name: 'orders' }"><span class="icon-zap"></span> Orders</router-link></li>
           <li><router-link :to="{ name: 'invoices' }"><span class="icon-zap"></span> Invoices</router-link></li>
+          <li><router-link :to="{ name: 'nodes' }"><span class="icon-zap"></span> Nodes</router-link></li>
         </ul>
       </section>
       <section class="nav-section">
