@@ -42,7 +42,7 @@
             </tr>
             <tr>
               <td><strong>Invoice Status:</strong></td>
-              <td><strong class="invoice-status-unpaid">{{ invoice.status }}</strong></td>
+              <td><strong :class="statusClass">{{ invoice.status }}</strong></td>
             </tr>
             <tr>
               <td><strong>Invoice Date:</strong></td>
@@ -123,7 +123,10 @@ export default {
   computed: {
     ...mapGetters({
       user: 'auth/user'
-    })
+    }),
+    statusClass () {
+      return (this.invoice && this.invoice.status === 'PAID') ? 'invoice-status-paid' : 'invoice-status-unpaid'
+    }
   },
   methods: {
     fetchInvoice () {
