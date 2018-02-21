@@ -68,6 +68,7 @@ async function API (method, path, data, success, failed) {
     // Remove authorization cookie if 401 returned by any API call
     if (error.status === 401 && getCookie(process.env.COOKIE_NAME) !== null) {
       removeCookie(process.env.COOKIE_NAME)
+      window.location.href = '/'
     }
 
     let err = new Err(error.data.errors)
