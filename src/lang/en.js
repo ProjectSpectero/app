@@ -45,6 +45,12 @@ module.exports = {
     RESTART_ERROR: 'There was an error while trying to restart your server. Please try again later.'
   },
 
+  nodes: {
+    DELETE_CONFIRM_DIALOG: 'Are you sure you want to remove this node?',
+    DELETE_SUCCESS: 'Node removed successfully!',
+    DELETE_ERROR: 'An error ocurred while trying to delete your node. Please try again later.'
+  },
+
   USER_CREATE_SUCCESS: 'User created!',
   USER_UPDATE_SUCCESS: 'User saved!',
   USER_UPDATE_ERROR: 'Something went wrong. Please try again!',

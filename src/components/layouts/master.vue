@@ -27,6 +27,5 @@ export default {
 .content {
   width: 100%;
   margin-left: 230px;
-  margin-right: 40px;
 }
 </style>
