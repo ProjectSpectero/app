@@ -1,7 +1,6 @@
 <template>
   <div v-if="!loading">
     <div v-if="valid" class="invoice">
-
       <div class="invoice-header">
         <div class="invoice-logo-container">
           <div class="logo logo-dark logo-md"></div>
@@ -149,7 +148,7 @@ export default {
         },
         success: response => {
           console.log(response.data.result)
-          if (response.data.result && this.user.id === response.data.result.user_id) {
+          if (response.data.result) {
             this.valid = true
             this.loading = false
             this.invoice = response.data.result

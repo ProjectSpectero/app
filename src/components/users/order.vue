@@ -48,7 +48,7 @@ export default {
         },
         success: response => {
           console.log(response.data.result)
-          if (response.data.result && this.user.id === response.data.result.user_id) {
+          if (response.data.result) {
             this.valid = true
             this.loading = false
             this.order = response.data.result
