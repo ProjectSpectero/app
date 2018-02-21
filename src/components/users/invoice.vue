@@ -21,35 +21,40 @@
       <div class="invoice-details">
         <div class="invoice-client">
           <span class="invoice-details-title">Bill To</span>
-          <strong>Spectero, Inc.</strong>
+
+          <strong class="invoice-company">
+            <div v-if="user.organization">{{ user.organization }}</div>
+            <div v-if="user.name">{{ user.name }}</div>
+          </strong>
+
           <div class="invoice-address">
-            <div class="address-field">300 Deleware Ave Ste 210-A</div>
-            <div class="address-field">Wilmington, DE 19801</div>
-            <div class="address-field">United States</div>
-            <div class="address-field spaced">customer@spectero.com</div>
+            <div class="address-field">{{ user.address_line_1 }}</div>
+            <div class="address-field">{{ user.address_line_2 }}</div>
+            <div class="address-field">{{ user.state }}, {{ user.post_code }}</div>
+            <div class="address-field spaced">{{ user.email }}</div>
           </div>
         </div>
         <div class="invoice-info">
           <table class="invoice-info-table">
             <tr>
               <td><strong>Invoice Number:</strong></td>
-              <td>0030</td>
+              <td>{{ invoice.id }}</td>
             </tr>
             <tr>
               <td><strong>Invoice Status:</strong></td>
-              <td><strong class="invoice-status-unpaid">UNPAID</strong></td>
+              <td><strong class="invoice-status-unpaid">{{ invoice.status }}</strong></td>
             </tr>
             <tr>
               <td><strong>Invoice Date:</strong></td>
-              <td>February 1, 2018</td>
+              <td>{{ invoice.updated_at | moment('MMMM D, YYYY') }}</td>
             </tr>
             <tr>
               <td><strong>Payment Due:</strong></td>
-              <td>February 8, 2018</td>
+              <td>{{ invoice.due_date | moment('MMMM Do, YYYY') }}</td>
             </tr>
             <tr class="invert">
               <td><strong>Amount Due (USD):</strong></td>
-              <td><strong>$134.23</strong></td>
+              <td><strong>??</strong></td>
             </tr>
           </table>
         </div>
@@ -57,7 +62,7 @@
 
       <div class="invoice-divider"></div>
 
-      <table class="table-styled">
+      <table v-if="order" class="table-styled">
         <thead>
           <tr>
             <th>Item</th>
@@ -67,23 +72,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Example Line Item</td>
-            <td class="text-center">2</td>
-            <td>$15.00</td>
-            <td>$30.00</td>
-          </tr>
-          <tr>
-            <td>Example Line Item</td>
-            <td class="text-center">2</td>
-            <td>$15.00</td>
-            <td>$30.00</td>
-          </tr>
-          <tr>
-            <td>Example Line Item</td>
-            <td class="text-center">2</td>
-            <td>$15.00</td>
-            <td>$30.00</td>
+          <tr v-for="item in order.line_items" :key="item.id">
+            <td>{{ item.description }}</td>
+            <td class="text-center">{{ item.quantity }}</td>
+            <td>{{ parseFloat(item.amount).toFixed(2) }}</td>
+            <td>{{ parseFloat(item.quantity * item.amount).toFixed(2) }}</td>
           </tr>
         </tbody>
       </table>
@@ -91,28 +84,17 @@
       <div class="invoice-totals">
         <div class="invoice-totals-line">
           <div class="label"><strong>Total:</strong></div>
-          <div class="amount"><strong>$340.00</strong></div>
+          <div class="amount"><strong>{{ invoice.amount }} {{ invoice.currency }}</strong></div>
         </div>
         <div class="invoice-totals-line">
           <div class="label">Payment on February 5, 2018 using credit card:</div>
-          <div class="amount">$340.00</div>
+          <div class="amount">??</div>
         </div>
         <div class="invoice-totals-line invoice-total-outstanding">
           <div class="label"><strong>Amount Due (USD):</strong></div>
-          <div class="amount"><strong>$0.00</strong></div>
+          <div class="amount"><strong>??</strong></div>
         </div>
       </div>
-
-      <!-- <h1>Invoice #{{ invoice.id }}</h1>
-      <ul>
-        <li>Amount: {{ invoice.amount }}</li>
-        <li>Tax: {{ invoice.tax }}</li>
-        <li>Status: {{ invoice.status }}</li>
-        <li>Due date: {{ invoice.due_date }}</li>
-        <li>Currency: {{ invoice.currency }}</li>
-      </ul>
-
-      <router-link :to="{ name: 'order', params: { id: invoice.order_id } }">View order</router-link> -->
     </div>
     <div v-else>
       {{ $i18n.t('errors.UNAUTHORIZED') }}
@@ -129,7 +111,8 @@ export default {
     return {
       loading: true,
       valid: false,
-      invoice: null
+      invoice: null,
+      order: null
     }
   },
   created () {
@@ -149,9 +132,27 @@ export default {
         success: response => {
           console.log(response.data.result)
           if (response.data.result) {
-            this.valid = true
-            this.loading = false
             this.invoice = response.data.result
+
+            // Fetch the order for this invoice
+            paymentAPI.order({
+              data: {
+                id: this.invoice.order_id
+              },
+              success: response => {
+                console.log(response.data.result)
+                if (response.data.result) {
+                  this.valid = true
+                  this.loading = false
+                  this.order = response.data.result
+                }
+              },
+              fail: error => {
+                const keys = Object.keys(error.errors)
+                this.error = this.$i18n.t(`errors.${keys[0]}`)
+                this.loading = false
+              }
+            })
           }
         },
         fail: error => {
