@@ -10,8 +10,8 @@
         </template>
 
         <template slot="actions" slot-scope="props">
-          <router-link class="button" :to="{ name: 'order', params: { id: props.row.order_id } }">
-            View order
+          <router-link class="button" :to="{ name: 'invoice', params: { id: props.row.id } }">
+            View
           </router-link>
 
           <div v-if="props.row.status === 'UNPAID'">

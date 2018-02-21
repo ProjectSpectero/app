@@ -52,9 +52,9 @@
               <td><strong>Payment Due:</strong></td>
               <td>{{ invoice.due_date | moment('MMMM Do, YYYY') }}</td>
             </tr>
-            <tr class="invert">
-              <td><strong>Amount Due (USD):</strong></td>
-              <td><strong>??</strong></td>
+            <tr v-if="due" class="invert">
+              <td><strong>Amount Due:</strong></td>
+              <td><strong>{{ due.amount }} {{ due.currency }}</strong></td>
             </tr>
           </table>
         </div>
@@ -86,13 +86,13 @@
           <div class="label"><strong>Total:</strong></div>
           <div class="amount"><strong>{{ invoice.amount }} {{ invoice.currency }}</strong></div>
         </div>
-        <div class="invoice-totals-line">
+        <div v-if="transactions && transactions.length" class="invoice-totals-line">
           <div class="label">Payment on February 5, 2018 using credit card:</div>
-          <div class="amount">??</div>
+          <div class="amount">{{ transactions }}</div>
         </div>
-        <div class="invoice-totals-line invoice-total-outstanding">
+        <div v-if="due" class="invoice-totals-line invoice-total-outstanding">
           <div class="label"><strong>Amount Due (USD):</strong></div>
-          <div class="amount"><strong>??</strong></div>
+          <div class="amount"><strong>{{ due.amount }} {{ due.currency }}</strong></div>
         </div>
       </div>
     </div>
@@ -112,7 +112,9 @@ export default {
       loading: true,
       valid: false,
       invoice: null,
-      order: null
+      order: null,
+      due: 0,
+      transactions: null
     }
   },
   created () {
@@ -145,6 +147,10 @@ export default {
                   this.valid = true
                   this.loading = false
                   this.order = response.data.result
+
+                  // Fetch extra info: total due amount and list of transactions
+                  this.fetchDue()
+                  this.fetchTransactions()
                 }
               },
               fail: error => {
@@ -159,6 +165,36 @@ export default {
           const keys = Object.keys(error.errors)
           this.error = this.$i18n.t(`errors.${keys[0]}`)
           this.loading = false
+        }
+      })
+    },
+    fetchDue () {
+      paymentAPI.due({
+        data: {
+          id: this.$route.params.id
+        },
+        success: response => {
+          if (response.data.result) {
+            this.due = response.data.result
+          }
+        },
+        fail: error => {
+          console.log('Failed to load due amount', error)
+        }
+      })
+    },
+    fetchTransactions () {
+      paymentAPI.transactions({
+        data: {
+          id: this.$route.params.id
+        },
+        success: response => {
+          if (response.data.result) {
+            this.transactions = response.data.result
+          }
+        },
+        fail: error => {
+          console.log('Failed to load transactions', error)
         }
       })
     }
