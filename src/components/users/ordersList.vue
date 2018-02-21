@@ -10,10 +10,16 @@
         </template>
         <template slot="actions" slot-scope="props">
           <router-link class="button" :to="{ name: 'order', params: { id: props.row.id } }">
-            Details
+            View Details
           </router-link>
 
-          <div v-if="props.row.last_invoice">
+          <div class="inline" v-if="props.row.last_invoice && props.row.last_invoice.status === 'UNPAID'">
+            <router-link class="button button-success" :to="{ name: 'invoice', params: { id: props.row.last_invoice.id } }">
+              Pay Now
+            </router-link>
+          </div>
+
+          <!-- <div v-if="props.row.last_invoice">
             <router-link class="button" :to="{ name: 'invoice', params: { id: props.row.last_invoice.id } }">
               Last invoice
             </router-link>
@@ -27,7 +33,7 @@
                 Pay (Stripe)
               </router-link>
             </div>
-          </div>
+          </div> -->
         </template>
       </v-client-table>
     </div>
