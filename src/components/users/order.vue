@@ -1,6 +1,6 @@
 <template>
-  <div v-if="!loading">
-    <div v-if="valid" class="order">
+  <div v-if="!loading" class="order">
+    <div v-if="!error">
       <h1>Order #{{ order.id }}</h1>
       <ul>
         <li>Due next: {{ order.due_next }}</li>
@@ -14,7 +14,7 @@
       <line-items :items="order.line_items"></line-items>
     </div>
     <div v-else>
-      {{ $i18n.t('errors.UNAUTHORIZED') }}
+      {{ error }}
     </div>
   </div>
 </template>
@@ -27,8 +27,6 @@ import lineItems from './itemsList'
 export default {
   data () {
     return {
-      loading: true,
-      valid: false,
       order: null
     }
   },
@@ -49,16 +47,13 @@ export default {
         success: response => {
           console.log(response.data.result)
           if (response.data.result) {
-            this.valid = true
             this.loading = false
             this.order = response.data.result
+          } else {
+            this.error404()
           }
         },
-        fail: error => {
-          const keys = Object.keys(error.errors)
-          this.error = this.$i18n.t(`errors.${keys[0]}`)
-          this.loading = false
-        }
+        fail: error => this.errorAPI(error)
       })
     }
   },
