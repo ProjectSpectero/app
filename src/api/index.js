@@ -69,6 +69,8 @@ async function API (method, path, data, success, failed) {
     if (error.status === 401 && getCookie(process.env.COOKIE_NAME) !== null) {
       removeCookie(process.env.COOKIE_NAME)
       window.location.href = '/'
+    } else if (error.status === 404) {
+      // window.location.href = '/404'
     }
 
     let err = new Err(error.data.errors)

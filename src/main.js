@@ -10,9 +10,12 @@ import VueProgressBar from 'vue-progressbar'
 import Toasted from 'vue-toasted'
 import VueMoment from 'vue-moment'
 import { ClientTable } from 'vue-tables-2'
+import globalMixin from './mixins/global'
 
+// Load .env configurations
 require('dotenv').config()
 
+// Load packages
 Vue.use(VueI18n)
 Vue.use(VueCookie)
 Vue.use(VeeValidate)
@@ -30,10 +33,12 @@ Vue.use(Toasted, {
   singleton: false
 })
 
-const messages = {
-  en: require('./lang/en.js')
-}
+// i18n data
+const messages = { en: require('./lang/en.js') }
 const i18n = new VueI18n({ locale: 'en', messages })
+
+// Load global mixin
+Vue.mixin(globalMixin)
 
 Vue.config.productionTip = false
 

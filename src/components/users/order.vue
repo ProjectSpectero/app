@@ -39,30 +39,30 @@ export default {
     })
   },
   methods: {
-    fetchOrder () {
-      paymentAPI.order({
+    async fetchOrder () {
+      await paymentAPI.order({
         data: {
-          id: this.$route.params.id
+          id: this.$route.params.id + 2735
         },
         success: response => {
-          console.log(response.data.result)
           if (response.data.result) {
-            this.loading = false
             this.order = response.data.result
+            this.loading = false
           } else {
             this.error404()
           }
         },
-        fail: error => this.errorAPI(error)
+        fail: error => this.errorAPI(error, 'errors')
       })
     }
   },
   components: {
     lineItems
+  },
+  watch: {
+    loading: (n, o) => {
+      console.log('Loading changed to', n)
+    }
   }
 }
 </script>
-
-<style>
-
-</style>

@@ -1,18 +1,19 @@
 import Vue from 'vue'
 
-Vue.mixin({
+export default {
   data: () => ({
     loading: true,
     error: null
   }),
   methods: {
     error404: () => {
-      this.$router.push({ name: '404' })
+      window.location.href = '/404'
     },
-    errorAPI: (error) => {
+    errorAPI: (error, module) => {
       const keys = Object.keys(error.errors)
-      this.error = this.$i18n.t(`errors.${keys[0]}`)
+      console.log(Vue.prototype)
+      this.error = Vue.prototype.$t(`errors.${keys[0]}`)
       this.loading = false
     }
   }
-})
+}
