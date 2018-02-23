@@ -31,13 +31,12 @@ export default {
           data: {
             mode: this.$route.query.mode,
             token: this.$route.query.token,
-            payerId: this.$route.query.PayerID
+            PayerID: this.$route.query.PayerID
           },
           success: response => {
-            if (response.data.result) {
-              this.loading = false
-              this.success = true
-            }
+            console.log('Success!')
+            this.loading = false
+            this.success = true
           },
           fail: error => {
             console.log('Error while finishing payment:', error)

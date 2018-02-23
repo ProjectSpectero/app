@@ -29,7 +29,7 @@ export default {
    * @param {String} payerID Current payer unique ID.
    */
   paypalCallback (options) {
-    return api('GET', `/payment/paypal/callback?mode=${options.data.mode}&token=${options.data.token}&payerId=${options.data.PayerID}`, options)
+    return api('GET', `/payment/paypal/callback?mode=${options.data.mode}&token=${options.data.token}&payerID=${options.data.PayerID}`, options)
   },
 
   /**
