@@ -72,5 +72,12 @@ export default {
    */
   delete (options) {
     return api('DELETE', `/user/${options.data.id}`, options)
+  },
+
+  /**
+   * Regenerates the node key for this user.
+   */
+  regenerateNodeKey (options) {
+    return api('PUT', `/user/node_key`, options)
   }
 }

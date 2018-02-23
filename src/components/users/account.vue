@@ -3,7 +3,6 @@
     <h2>My Account</h2>
 
     <profile :user="user"></profile>
-
     <configs :user="user"></configs>
   </div>
 </template>
