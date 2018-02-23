@@ -70,9 +70,7 @@ export default {
           this.setTable()
           this.setColumns()
         },
-        fail: error => {
-          console.log(error)
-        }
+        fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
       })
     },
     processTotal (row) {

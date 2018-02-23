@@ -81,7 +81,7 @@ export default {
           this.tableData = response.data.result
         },
         fail: error => {
-          console.log(error)
+          console.log(this.errorAPI(error, 'errors'))
         }
       })
     }

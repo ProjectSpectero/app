@@ -27,6 +27,8 @@ import lineItems from './itemsList'
 export default {
   data () {
     return {
+      loading: true,
+      error: null,
       order: null
     }
   },
@@ -42,7 +44,7 @@ export default {
     async fetchOrder () {
       await paymentAPI.order({
         data: {
-          id: this.$route.params.id + 2735
+          id: this.$route.params.id
         },
         success: response => {
           if (response.data.result) {
@@ -52,7 +54,10 @@ export default {
             this.error404()
           }
         },
-        fail: error => this.errorAPI(error, 'errors')
+        fail: error => {
+          this.error = this.errorAPI(error, 'errors')
+          this.loading = false
+        }
       })
     }
   },

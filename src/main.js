@@ -36,9 +36,10 @@ Vue.use(Toasted, {
 // i18n data
 const messages = { en: require('./lang/en.js') }
 const i18n = new VueI18n({ locale: 'en', messages })
+const globalMethods = globalMixin(i18n)
 
 // Load global mixin
-Vue.mixin(globalMixin)
+Vue.mixin(globalMethods)
 
 Vue.config.productionTip = false
 

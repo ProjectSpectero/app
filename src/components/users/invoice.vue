@@ -156,20 +156,16 @@ export default {
                   this.fetchTransactions()
                 }
               },
-              fail: error => {
-                const keys = Object.keys(error.errors)
-                this.error = this.$i18n.t(`errors.${keys[0]}`)
-                this.loading = false
-              }
+              fail: error => this.processError(error)
             })
           }
         },
-        fail: error => {
-          const keys = Object.keys(error.errors)
-          this.error = this.$i18n.t(`errors.${keys[0]}`)
-          this.loading = false
-        }
+        fail: error => this.processError(error)
       })
+    },
+    processError (error) {
+      this.error = this.errorAPI(error, 'errors')
+      this.loading = false
     },
     fetchDue () {
       paymentAPI.due({
@@ -181,9 +177,7 @@ export default {
             this.due = response.data.result
           }
         },
-        fail: error => {
-          console.log('Failed to load due amount', error)
-        }
+        fail: error => this.processError(error)
       })
     },
     fetchTransactions () {
@@ -196,9 +190,7 @@ export default {
             this.transactions = response.data.result
           }
         },
-        fail: error => {
-          console.log('Failed to load transactions', error)
-        }
+        fail: error => this.processError(error)
       })
     }
   }
