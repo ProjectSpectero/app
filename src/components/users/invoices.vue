@@ -13,16 +13,6 @@
           <router-link class="button" :to="{ name: 'invoice', params: { id: props.row.id } }">
             View
           </router-link>
-
-          <div v-if="props.row.status === 'UNPAID'">
-            <router-link class="button" :to="{ name: 'paypal', params: { invoiceId: props.row.id } }">
-              Pay (Paypal)
-            </router-link>
-
-            <router-link class="button" :to="{ name: 'stripe', params: { invoiceId: props.row.id } }">
-              Pay (Stripe)
-            </router-link>
-          </div>
         </template>
       </v-client-table>
     </div>
