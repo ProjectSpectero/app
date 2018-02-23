@@ -9,6 +9,9 @@
       <p>{{ $i18n.t('errors.PAYMENT_INVALID_PARAMETERS') }}</p>
     </div>
   </div>
+  <div v-else>
+    Loading...
+  </div>
 </template>
 
 <script>
@@ -37,11 +40,13 @@ export default {
             }
           },
           fail: error => {
-            console.log(error)
+            console.log('Error while finishing payment:', error)
             this.loading = false
             this.success = false
           }
         })
+      } else {
+        console.log('Error while finishing payment:', this.$route.query)
       }
     }
   }
