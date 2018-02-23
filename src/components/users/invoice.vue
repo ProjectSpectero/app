@@ -48,11 +48,11 @@
               <td><strong>Invoice Date:</strong></td>
               <td>{{ invoice.updated_at | moment('MMMM D, YYYY') }}</td>
             </tr>
-            <tr>
+            <tr v-if="canShowDueAmount">
               <td><strong>Payment Due:</strong></td>
               <td>{{ invoice.due_date | moment('MMMM Do, YYYY') }}</td>
             </tr>
-            <tr v-if="due" class="invert">
+            <tr v-if="canShowDueAmount" class="invert">
               <td><strong>Amount Due:</strong></td>
               <td><strong>{{ due.amount }} {{ due.currency }}</strong></td>
             </tr>
@@ -90,7 +90,7 @@
           <div class="label">Payment on February 5, 2018 using credit card:</div>
           <div class="amount">{{ transactions }}</div>
         </div>
-        <div v-if="due" class="invoice-totals-line invoice-total-outstanding">
+        <div v-if="canShowDueAmount" class="invoice-totals-line invoice-total-outstanding">
           <div class="label"><strong>Amount Due (USD):</strong></div>
           <div class="amount"><strong>{{ due.amount }} {{ due.currency }}</strong></div>
         </div>
@@ -125,7 +125,16 @@ export default {
       user: 'auth/user'
     }),
     statusClass () {
-      return (this.invoice && this.invoice.status === 'PAID') ? 'invoice-status-paid' : 'invoice-status-unpaid'
+      if (this.invoice.status === 'PAID') {
+        return 'invoice-status-paid'
+      } else if (this.invoice.status === 'REFUNDED') {
+        return 'invoice-status-refunded'
+      }
+
+      return 'invoice-status-unpaid'
+    },
+    canShowDueAmount () {
+      return this.due && this.invoice.status !== 'REFUNDED'
     }
   },
   methods: {
