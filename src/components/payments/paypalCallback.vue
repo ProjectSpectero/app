@@ -37,7 +37,6 @@ export default {
             PayerID: this.$route.query.PayerID
           },
           success: response => {
-            console.log('Success!')
             this.loading = false
             this.success = true
           },
@@ -47,8 +46,6 @@ export default {
             this.success = false
           }
         })
-      } else {
-        console.log('Error while finishing payment:', this.$route.query)
       }
     }
   }

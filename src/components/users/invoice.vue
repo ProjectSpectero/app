@@ -85,9 +85,11 @@
         <div class="label"><strong>Total:</strong></div>
         <div class="amount"><strong>{{ invoice.amount }} {{ invoice.currency }}</strong></div>
       </div>
-      <div v-if="transactions && transactions.length" class="invoice-totals-line">
-        <div class="label">Payment on February 5, 2018 using credit card:</div>
-        <div class="amount">{{ transactions }}</div>
+      <div v-if="transactions && transactions.length > 0" class="invoice-totals-line">
+        <div v-for="transaction in transactions" :key="transaction.id">
+          <div class="label">Payment on {{ transaction.updated_at | moment('MMMM D, YYYY') }} ({{ transaction.type }}):</div>
+          <div class="amount">{{ transaction.amount }} {{ transaction.currency }}</div>
+        </div>
       </div>
       <div v-if="canShowDueAmount" class="invoice-totals-line invoice-total-outstanding">
         <div class="label"><strong>Amount Due (USD):</strong></div>
