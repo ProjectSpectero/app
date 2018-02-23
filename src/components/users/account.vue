@@ -3,12 +3,15 @@
     <h2>My Account</h2>
 
     <profile :user="user"></profile>
+
+    <configs :user="user"></configs>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import profile from './profile'
+import configs from './configs'
 
 export default {
   computed: {
@@ -17,7 +20,8 @@ export default {
     })
   },
   components: {
-    profile
+    profile,
+    configs
   }
 }
 </script>
