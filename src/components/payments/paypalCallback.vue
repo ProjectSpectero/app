@@ -24,6 +24,9 @@ export default {
       success: false
     }
   },
+  created () {
+    this.finishPayment()
+  },
   methods: {
     finishPayment () {
       if (this.$route.query.mode && this.$route.query.token && this.$route.query.PayerID) {
