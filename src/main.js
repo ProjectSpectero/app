@@ -9,6 +9,7 @@ import VeeValidate from 'vee-validate'
 import VueProgressBar from 'vue-progressbar'
 import Toasted from 'vue-toasted'
 import VueMoment from 'vue-moment'
+import VueAnalytics from 'vue-analytics'
 import { ClientTable } from 'vue-tables-2'
 import globalMixin from './mixins/global'
 
@@ -21,16 +22,22 @@ Vue.use(VueCookie)
 Vue.use(VeeValidate)
 Vue.use(ClientTable)
 Vue.use(VueMoment)
+
 Vue.use(VueProgressBar, {
   color: '#18FF6D',
   failedColor: 'red',
   thickness: '5px'
 })
+
 Vue.use(Toasted, {
   className: 'toast',
   position: 'bottom-right',
   duration: 3000,
   singleton: false
+})
+
+Vue.use(VueAnalytics, {
+  id: 'UA-107277606-1'
 })
 
 // i18n data
