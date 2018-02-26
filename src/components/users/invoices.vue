@@ -32,15 +32,14 @@ export default {
   data () {
     return {
       tableData: [],
-      columns: ['id', 'amount', 'tax', 'status', 'transactions', 'due_date', 'updated_at', 'actions'],
-      sortableColumns: ['id', 'amount', 'tax', 'status', 'transactions', 'due_date', 'updated_at'],
-      filterableColumns: ['id', 'amount', 'tax', 'status', 'transactions', 'due_date', 'updated_at'],
+      columns: ['id', 'amount', 'tax', 'status', 'due_date', 'updated_at', 'actions'],
+      sortableColumns: ['id', 'amount', 'tax', 'status', 'due_date', 'updated_at'],
+      filterableColumns: ['id', 'amount', 'tax', 'status', 'due_date', 'updated_at'],
       headings: {
         id: 'ID',
         status: 'Status',
         tax: 'Tax',
         amount: 'Amount',
-        transactions: 'Transactions',
         due_date: 'Due date',
         updated_at: 'Last update',
         actions: 'Actions'

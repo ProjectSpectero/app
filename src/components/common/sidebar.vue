@@ -5,24 +5,24 @@
     <div class="menu-items">
       <section class="nav-section">
         <ul>
-          <li><router-link :to="{ name: 'dashboard' }"><span class="icon-zap"></span> Overview</router-link></li>
+          <li><router-link :to="{ name: 'dashboard' }"><span class="icon-zap"></span> Dashboard</router-link></li>
         </ul>
       </section>
       <section class="nav-section">
         <h5>Orders</h5>
         <ul>
-          <li><router-link :to="{ name: 'orders' }"><span class="icon-zap"></span> Orders</router-link></li>
-          <li><router-link :to="{ name: 'invoices' }"><span class="icon-zap"></span> Invoices</router-link></li>
-          <li><router-link :to="{ name: 'nodes' }"><span class="icon-zap"></span> Nodes</router-link></li>
+          <li><router-link :to="{ name: 'orders' }"><span class="icon-codepen"></span> Orders</router-link></li>
+          <li><router-link :to="{ name: 'invoices' }"><span class="icon-credit-card"></span> Invoices</router-link></li>
+          <li><router-link :to="{ name: 'nodes' }"><span class="icon-server"></span> Nodes</router-link></li>
         </ul>
       </section>
       <section class="nav-section">
         <h5>Account</h5>
         <ul>
-          <li><router-link :to="{ name: 'settings' }">Settings</router-link></li>
+          <li><router-link :to="{ name: 'settings' }"><span class="icon-sliders"></span> Settings</router-link></li>
 
           <li @click="logMeOut">
-            <a href="#"><span class="icon-life-buoy"></span> Logout</a>
+            <a href="#"><span class="icon-user-x"></span> Logout</a>
           </li>
         </ul>
       </section>
