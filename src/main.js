@@ -37,7 +37,7 @@ Vue.use(Toasted, {
 })
 
 Vue.use(VueAnalytics, {
-  id: 'UA-107277606-1'
+  id: process.env.GOOGLE_ANALYTICS_ID
 })
 
 // i18n data
