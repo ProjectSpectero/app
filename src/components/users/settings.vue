@@ -46,6 +46,30 @@
       </div>
 
       <div class="container">
+        <div class="message error" v-if="formError">{{ formError }}</div>
+
+        <h2>Node configuration</h2>
+
+        <div class="form-input">
+          <button class="button" @click.prevent.stop="regenerateNodeKey">Regenerate node key</button>
+          <p v-if="nodeKey" class="mt-3">Your node key was set to <strong>{{ nodeKey }}</strong>.</p>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="message error" v-if="formError">{{ formError }}</div>
+
+        <h2>Payment methods</h2>
+
+        <div class="form-input">
+          <div class="label">Click below to clear your provider information.</div>
+
+          <button class="button" @click.prevent.stop="clearPaypal">Clear Paypal data</button>
+          <button class="button" @click.prevent.stop="clearStripe">Clear Stripe data</button>
+        </div>
+      </div>
+
+      <div class="container">
 
         <h2>Billing Details</h2>
 
@@ -241,18 +265,17 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import user from '@/api/user.js'
+import userAPI from '@/api/user.js'
+import paymentAPI from '@/api/payment.js'
 
 export default {
-  props: {
-    user: Object
-  },
   data () {
     return {
       formError: null,
       formDisable: false,
       changedEmail: false,
-      form: null
+      form: null,
+      nodeKey: null
     }
   },
   created () {
@@ -268,6 +291,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      user: 'auth/user',
       rules: 'users/editRules',
       countries: 'settings/countries'
     })
@@ -276,16 +300,46 @@ export default {
     ...mapActions({
       logout: 'auth/logout'
     }),
+    regenerateNodeKey () {
+      userAPI.regenerateNodeKey({
+        success: response => {
+          this.nodeKey = response.data.result.node_key
+        },
+        fail: error => {
+          console.log('Unable to regenerate node key', error)
+        }
+      })
+    },
+    clearPaypal () {
+      paymentAPI.clearPaypalData({
+        success: response => {
+          this.$toasted.show('Paypal data cleared successfully!')
+        },
+        fail: error => {
+          console.log('Unable to clear Paypal data', error)
+        }
+      })
+    },
+    clearStripe () {
+      paymentAPI.clearStripeData({
+        success: response => {
+          this.$toasted.show('Stripe data cleared successfully!')
+        },
+        fail: error => {
+          console.log('Unable to clear Stripe data', error)
+        }
+      })
+    },
     submit () {
       this.$validator.validateAll().then((result) => {
         if (!result) {
           this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
         } else {
-          if (this.user.email === this.form.email) {
+          if (this.userAPI.email === this.form.email) {
             this.changedEmail = false
             this.processForm()
-          } else if (this.user.email !== this.form.email &&
-            confirm(this.$i18n.t('CHANGE_EMAIL_DIALOG', { oldEmail: this.user.email, newEmail: this.form.email }))) {
+          } else if (this.userAPI.email !== this.form.email &&
+            confirm(this.$i18n.t('CHANGE_EMAIL_DIALOG', { oldEmail: this.userAPI.email, newEmail: this.form.email }))) {
             this.changedEmail = true
             this.processForm()
           }
@@ -309,12 +363,12 @@ export default {
       }
 
       // Format special fields
-      data.id = this.user.id
+      data.id = this.userAPI.id
       data.country = country.code
 
       this.formDisable = true
 
-      user.edit({
+      userAPI.edit({
         data: data,
         success: response => {
           this.dealWithSuccess()

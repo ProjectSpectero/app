@@ -19,7 +19,7 @@
       <section class="nav-section">
         <h5>Account</h5>
         <ul>
-          <li><router-link :to="{ name: 'account' }">Settings</router-link></li>
+          <li><router-link :to="{ name: 'settings' }">Settings</router-link></li>
 
           <li @click="logMeOut">
             <a href="#"><span class="icon-life-buoy"></span> Logout</a>

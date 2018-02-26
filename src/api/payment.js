@@ -119,5 +119,19 @@ export default {
    */
   myInvoices (options) {
     return api('GET', `/invoice/self`, options)
+  },
+
+  /**
+   * Clears data for the paypal provider.
+   */
+  clearPaypalData (options) {
+    return api('DELETE', `/payment/paypal/clear`, options)
+  },
+
+  /**
+   * Clears data for the stripe provider.
+   */
+  clearStripeData (options) {
+    return api('DELETE', `/payment/stripe/clear`, options)
   }
 }
