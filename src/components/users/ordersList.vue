@@ -5,9 +5,6 @@
         <template slot="total" slot-scope="props">
           {{ processTotal(props.row) }}
         </template>
-        <template slot="provider" slot-scope="props">
-          {{ props.row.subscription_provider }}
-        </template>
         <template slot="actions" slot-scope="props">
           <router-link class="button" :to="{ name: 'order', params: { id: props.row.id } }">
             View Details
@@ -18,22 +15,6 @@
               Pay Now
             </router-link>
           </div>
-
-          <!-- <div v-if="props.row.last_invoice">
-            <router-link class="button" :to="{ name: 'invoice', params: { id: props.row.last_invoice.id } }">
-              Last invoice
-            </router-link>
-
-            <div v-if="props.row.last_invoice.status === 'UNPAID'">
-              <router-link class="button" :to="{ name: 'paypal', params: { invoiceId: props.row.last_invoice.id } }">
-                Pay (Paypal)
-              </router-link>
-
-              <router-link class="button" :to="{ name: 'stripe', params: { invoiceId: props.row.last_invoice.id } }">
-                Pay (Stripe)
-              </router-link>
-            </div>
-          </div> -->
         </template>
       </v-client-table>
     </div>
@@ -79,30 +60,30 @@ export default {
     setColumns () {
       this.columns = (this.type === 'simple')
         ? ['id', 'created_at', 'total']
-        : ['id', 'created_at', 'status', 'provider', 'total', 'actions']
+        : ['id', 'created_at', 'due_next', 'status', 'total', 'actions']
     },
     setSortableColumns () {
       this.sortableColumns = (this.type === 'simple')
         ? ['id', 'created_at', 'total']
-        : ['id', 'created_at', 'status', 'provider', 'total']
+        : ['id', 'created_at', 'due_next', 'status', 'total']
     },
     setFilterableColumns () {
       this.filterableColumns = (this.type === 'simple')
         ? ['id', 'created_at']
-        : ['id', 'created_at', 'status', 'provider']
+        : ['id', 'created_at', 'due_next', 'status']
     },
     setHeadings () {
       this.headings = (this.type === 'simple')
         ? {
           id: 'ID',
-          created_at: 'Date',
+          created_at: 'Date Created',
           total: 'Total'
         } : {
           id: 'ID',
-          created_at: 'Date',
+          created_at: 'Date Created',
           status: 'Status',
-          provider: 'Provider',
-          actions: 'Actions'
+          actions: 'Actions',
+          due_next: 'Next Date Due'
         }
     },
     setTable () {

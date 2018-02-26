@@ -1,13 +1,13 @@
 <template>
   <div v-if="!loading" class="invoice">
-    <div class="invoice-header">
-      <div class="invoice-logo-container">
+    <div class="header">
+      <div class="logo-container">
         <div class="logo logo-dark logo-md"></div>
       </div>
-      <div class="invoice-header-details">
-        <h1 class="invoice-title">Invoice</h1>
-        <strong class="invoice-company">Spectero, Inc.</strong>
-        <div class="invoice-biller invoice-address">
+      <div class="header-details">
+        <h1 class="title">Invoice</h1>
+        <strong class="company">Spectero, Inc.</strong>
+        <div class="biller address">
           <div class="address-field">300 Deleware Ave Ste 210-A</div>
           <div class="address-field">Wilmington, DE 19801</div>
           <div class="address-field">United States</div>
@@ -15,26 +15,26 @@
       </div>
     </div>
 
-    <div class="invoice-divider"></div>
+    <div class="divider"></div>
 
-    <div class="invoice-details">
-      <div class="invoice-client">
-        <span class="invoice-details-title">Bill To</span>
+    <div class="details">
+      <div class="client">
+        <span class="details-title">Bill To</span>
 
-        <strong class="invoice-company">
+        <strong class="company">
           <div v-if="user.organization">{{ user.organization }}</div>
           <div v-if="user.name">{{ user.name }}</div>
         </strong>
 
-        <div class="invoice-address">
+        <div class="address">
           <div class="address-field">{{ user.address_line_1 }}</div>
           <div class="address-field">{{ user.address_line_2 }}</div>
           <div class="address-field">{{ user.state }}, {{ user.post_code }}</div>
           <div class="address-field spaced">{{ user.email }}</div>
         </div>
       </div>
-      <div class="invoice-info">
-        <table class="invoice-info-table">
+      <div class="info">
+        <table class="info-table">
           <tr>
             <td><strong>Invoice Number:</strong></td>
             <td>{{ invoice.id }}</td>
@@ -59,7 +59,7 @@
       </div>
     </div>
 
-    <div class="invoice-divider"></div>
+    <div class="divider"></div>
 
     <table v-if="order" class="table-styled">
       <thead>
@@ -80,18 +80,18 @@
       </tbody>
     </table>
 
-    <div class="invoice-totals">
-      <div class="invoice-totals-line">
+    <div class="totals">
+      <div class="totals-line">
         <div class="label"><strong>Total:</strong></div>
         <div class="amount"><strong>{{ invoice.amount }} {{ invoice.currency }}</strong></div>
       </div>
-      <div v-if="transactions && transactions.length > 0" class="invoice-totals-line">
+      <div v-if="transactions && transactions.length > 0" class="totals-line">
         <div v-for="transaction in transactions" :key="transaction.id">
           <div class="label">Payment on {{ transaction.updated_at | moment('MMMM D, YYYY') }} ({{ transaction.type }}):</div>
           <div class="amount">{{ transaction.amount }} {{ transaction.currency }}</div>
         </div>
       </div>
-      <div v-if="canShowDueAmount" class="invoice-totals-line invoice-total-outstanding">
+      <div v-if="canShowDueAmount" class="totals-line total-outstanding">
         <div class="label"><strong>Amount Due (USD):</strong></div>
         <div class="amount"><strong>{{ due.amount }} {{ due.currency }}</strong></div>
       </div>
@@ -133,12 +133,12 @@ export default {
     }),
     statusClass () {
       if (this.invoice.status === 'PAID') {
-        return 'invoice-status-paid'
+        return 'status-paid'
       } else if (this.invoice.status === 'REFUNDED') {
-        return 'invoice-status-refunded'
+        return 'status-refunded'
       }
 
-      return 'invoice-status-unpaid'
+      return 'status-unpaid'
     },
     canShowDueAmount () {
       return this.due && this.invoice.status !== 'REFUNDED'
@@ -212,3 +212,118 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.invoice {
+  width: 820px;
+  padding: 30px;
+  background: $white;
+  margin: $pad;
+
+  .header {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .logo-container {
+    flex-grow: 1;
+  }
+  .header-details {
+    flex-grow: 1;
+    text-align: right;
+
+    .title {
+      margin-bottom: 16px;
+      font-size: 36px;
+      line-height: 100%;
+      font-weight: $font-semi;
+      text-transform: uppercase;
+    }
+    .company {
+      font-weight: $font-bold;
+    }
+  }
+  .address {
+    margin-top: 10px;
+
+    .address-field {
+      line-height: 20px;
+
+      &.spaced {
+        margin-top: 10px;
+      }
+    }
+  }
+  .divider {
+    width: 100%;
+    height: 1px;
+    margin: 30px 0;
+    display: block;
+    background: $color-smoke;
+  }
+  .details {
+    display: flex;
+
+    .client {
+      flex-grow: 1;
+    }
+    .info {
+      width: 320px;
+    }
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      tr {
+        line-height: 22px;
+
+        td {
+          padding: 4px 0;
+
+          &:first-child {
+            padding-right: 16px;
+            text-align: right;
+          }
+        }
+        &.invert {
+          background: $color-darker;
+          color: $white;
+        }
+      }
+    }
+    .details-title {
+      display: block;
+      margin-bottom: 14px;
+      font-size: 16px;
+      font-weight: $font-bold;
+      text-transform: uppercase;
+    }
+  }
+  .status-unpaid {
+    color: $color-danger;
+  }
+  .status-paid {
+    color: $color-success;
+  }
+  .totals {
+    display: flex;
+    margin-top: 30px;
+    flex-direction: column;
+    text-align: right;
+
+    .totals-line {
+
+      .label, .amount {
+        display: inline-block;
+      }
+      .amount {
+        width: 125px;
+      }
+    }
+    .total-outstanding {
+      margin-top: 16px;
+    }
+  }
+}
+</style>
