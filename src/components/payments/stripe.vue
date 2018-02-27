@@ -1,108 +1,69 @@
 <template>
-  <div v-if="!error">
-    <div v-if="!loading">
-      Payment processed successfully!
-    </div>
-    <div v-else>
-      <card class="stripe-card"
-        :stripe="stripeKey"
-        :options="stripeOptions"
-        @change="setProcessedStatus($event.complete)"
-      />
-      <button @click="pay" :disabled="!processed">Pay with credit card</button>
+  <div>
+    <div v-if="user.stored_card_identifier && !chosen">
+      <h3>{{ $i18n.t('payments.USE_SAVED_CARD', { card: user.stored_card_identifier }) }}</h3>
 
-      <label>
-        <input type="checkbox" v-model="saveCard" true-value="1" false-value="0">
-        Save card?
-      </label>
+      <button class="button" @click="canUseCard(true)">{{ $i18n.t('payments.USE_SAVED_CARD_YES') }}</button>
+      <button class="button" @click="canUseCard(false)">{{ $i18n.t('payments.USE_SAVED_CARD_NO') }}</button>
     </div>
-  </div>
-  <div v-else>
-    {{ $i18n.t(error) }}
+
+    <template v-if="chosen">
+      <template v-if="useCard">
+        Payment in process, please wait ...
+      </template>
+      <template v-else>
+        <credit-card></credit-card>
+      </template>
+    </template>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import { Card, createToken } from 'vue-stripe-elements-plus'
+import { mapGetters } from 'vuex'
 import paymentAPI from '@/api/payment.js'
+import creditCard from './creditCard'
 
 export default {
   data () {
     return {
-      status: '',
-      error: null,
-      processed: false,
-      loading: true,
-      saveCard: false,
-      stripeOptions: {
-        // https://stripe.com/docs/stripe.js#element-options
-      }
+      chosen: false,
+      useCard: false
     }
   },
   created () {
-    console.log(this.user)
+    this.chosen = !this.user.stored_card_identifier
   },
   computed: {
     ...mapGetters({
       user: 'auth/user'
-    }),
-    stripeKey () {
-      return (process.env.STRIPE_MODE === 'sandbox') ? process.env.STRIPE_SANDBOX_PUBLIC_KEY : process.env.STRIPE_LIVE_PUBLIC_KEY
-    }
+    })
   },
   methods: {
-    ...mapActions({
-      syncCurrentUser: 'auth/syncCurrentUser'
-    }),
-    pay () {
-      // Getting a dummy invoice for now
-      paymentAPI.myInvoices({
-        success: invoices => {
-          if (invoices.data.result) {
-            const invoice = invoices.data.result[0]
+    canUseCard (value) {
+      const invoiceId = this.$route.params.invoiceId
 
-            // Stripe token issued
-            createToken().then(stripeData => {
-              // Process stripe payment on our API
-              this.processStripe(invoice, stripeData)
-            })
+      this.chosen = true
+      this.useCard = value
+
+      // Pay with pre-saved card
+      if (value) {
+        paymentAPI.processStripe({
+          data: {
+            invoiceId: invoiceId
+          },
+          success: processResponse => {
+            this.$router.push({ name: 'invoice', params: { id: invoiceId } })
+          },
+          fail: error => {
+            this.$toasted.error(this.errorAPI(error, 'payments'))
+            this.$router.push({ name: 'invoices' })
           }
-        },
-        fail: error => {
-          this.error = this.errorAPI(error, 'payments')
-          this.loading = false
-        }
-      })
-    },
-    showError (error) {
-      const keys = Object.keys(error.errors)
-      this.error = this.$i18n.t(`payments.${keys[0]}`)
-      this.finished = false
-    },
-    processStripe (invoice, stripeData) {
-      paymentAPI.processStripe({
-        data: {
-          invoiceId: invoice.id,
-          stripeToken: stripeData.token.id,
-          save: (this.saveCard === '1') || false
-        },
-        success: processResponse => {
-          this.loading = false
-          this.syncCurrentUser()
-        },
-        fail: error => {
-          this.error = this.errorAPI(error, 'payments')
-          this.loading = false
-        }
-      })
-    },
-    setProcessedStatus (status) {
-      this.processed = status
+        })
+      }
     }
   },
   components: {
-    Card
+    creditCard
   }
 }
 </script>

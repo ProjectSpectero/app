@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import paymentAPI from '@/api/payment.js'
 
 export default {
@@ -125,6 +125,7 @@ export default {
     }
   },
   created () {
+    this.syncCurrentUser()
     this.fetchInvoice()
   },
   computed: {
@@ -145,13 +146,16 @@ export default {
     }
   },
   methods: {
-    fetchInvoice () {
-      paymentAPI.invoice({
+    ...mapActions({
+      syncCurrentUser: 'auth/syncCurrentUser'
+    }),
+    async fetchInvoice () {
+      await paymentAPI.invoice({
         data: {
           id: this.$route.params.id
         },
         success: response => {
-          console.log(response.data.result)
+          console.log('Invoice:', response.data.result)
           if (response.data.result) {
             this.invoice = response.data.result
 
@@ -161,7 +165,7 @@ export default {
                 id: this.invoice.order_id
               },
               success: response => {
-                console.log(response.data.result)
+                console.log('Order:', response.data.result)
                 if (response.data.result) {
                   this.valid = true
                   this.loading = false

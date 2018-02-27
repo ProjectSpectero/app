@@ -40,7 +40,10 @@ module.exports = {
 
   payments: {
     INVOICE_ALREADY_PAID: 'This invoice was already paid!',
-    NO_STORED_CARD: 'Unable to find a card connected to this account.'
+    NO_STORED_CARD: 'Unable to find a card connected to this account.',
+    USE_SAVED_CARD: 'You have saved a credit card ({card}) on our database. Do you want to pay with it?',
+    USE_SAVED_CARD_YES: 'Yes, pay now',
+    USE_SAVED_CARD_NO: 'No, let me choose a different card'
   },
 
   services: {
