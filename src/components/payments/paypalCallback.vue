@@ -41,7 +41,7 @@ export default {
             this.success = true
             await this.setPendingInvoiceStatus(true)
             this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
-            this.$router.push({ name: 'invoice', params: { id: this.invoiceId } })
+            this.$router.push({ name: 'invoice', params: { id: processResponse.data.result.invoice_id } })
           },
           fail: error => {
             console.log('Error while finishing payment:', error)
