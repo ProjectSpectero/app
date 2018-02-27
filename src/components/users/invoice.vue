@@ -21,7 +21,7 @@
       <div class="client">
         <span class="details-title">Bill To</span>
 
-        <strong class="company">
+        <strong class="name">
           <div v-if="user.organization">{{ user.organization }}</div>
           <div v-if="user.name">{{ user.name }}</div>
         </strong>
@@ -49,11 +49,11 @@
           </tr>
           <tr v-if="canShowDueAmount">
             <td><strong>Payment Due:</strong></td>
-            <td>{{ invoice.due_date | moment('MMMM Do, YYYY') }}</td>
+            <td>{{ invoice.due_date | moment('MMMM D, YYYY') }}</td>
           </tr>
           <tr v-if="canShowDueAmount" class="invert">
             <td><strong>Amount Due:</strong></td>
-            <td><strong>{{ due.amount }} {{ due.currency }}</strong></td>
+            <td><strong>{{ due.amount | currency }} {{ due.currency }}</strong></td>
           </tr>
         </table>
       </div>
@@ -74,8 +74,8 @@
         <tr v-for="item in order.line_items" :key="item.id">
           <td>{{ item.description }}</td>
           <td class="text-center">{{ item.quantity }}</td>
-          <td>{{ parseFloat(item.amount).toFixed(2) }}</td>
-          <td>{{ parseFloat(item.quantity * item.amount).toFixed(2) }}</td>
+          <td>{{ item.amount | currency }}</td>
+          <td>{{ item.quantity * item.amount | currency }}</td>
         </tr>
       </tbody>
     </table>
@@ -83,17 +83,17 @@
     <div class="totals">
       <div class="totals-line">
         <div class="label"><strong>Total:</strong></div>
-        <div class="amount"><strong>{{ invoice.amount }} {{ invoice.currency }}</strong></div>
+        <div class="amount"><strong>{{ invoice.amount | currency }} {{ invoice.currency }}</strong></div>
       </div>
       <div v-if="transactions && transactions.length > 0" class="totals-line">
         <div v-for="transaction in transactions" :key="transaction.id">
           <div class="label">Payment on {{ transaction.updated_at | moment('MMMM D, YYYY') }} ({{ transaction.type }}):</div>
-          <div class="amount">{{ transaction.amount }} {{ transaction.currency }}</div>
+          <div class="amount">{{ transaction.amount | currency }} {{ transaction.currency }}</div>
         </div>
       </div>
       <div v-if="canShowDueAmount" class="totals-line total-outstanding">
         <div class="label"><strong>Amount Due (USD):</strong></div>
-        <div class="amount"><strong>{{ due.amount }} {{ due.currency }}</strong></div>
+        <div class="amount"><strong>{{ due.amount | currency }} {{ due.currency }}</strong></div>
       </div>
     </div>
 
@@ -267,6 +267,11 @@ export default {
 
     .client {
       flex-grow: 1;
+
+      .name {
+        line-height: 20px;
+        font-weight: $font-bold;
+      }
     }
     .info {
       width: 320px;

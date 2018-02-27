@@ -11,6 +11,7 @@ import Toasted from 'vue-toasted'
 import VueMoment from 'vue-moment'
 import VueAnalytics from 'vue-analytics'
 import { ClientTable } from 'vue-tables-2'
+import VueCurrencyFilter from 'vue-currency-filter'
 import globalMixin from './mixins/global'
 
 // Load .env configurations
@@ -22,6 +23,14 @@ Vue.use(VueCookie)
 Vue.use(VeeValidate)
 Vue.use(ClientTable)
 Vue.use(VueMoment)
+
+Vue.use(VueCurrencyFilter, {
+  symbol: '$',
+  symbolSpacing: false,
+  fractionCount: 2,
+  fractionSeparator: '.',
+  thousandsSeparator: ','
+})
 
 Vue.use(VueProgressBar, {
   color: '#18FF6D',

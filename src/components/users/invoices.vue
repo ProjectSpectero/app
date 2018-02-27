@@ -3,12 +3,17 @@
     <div class="datatable">
       <v-client-table :data="tableData" :columns="columns" :options="options">
         <template slot="amount" slot-scope="props">
-          {{ parseFloat(props.row.amount).toFixed(2) }} {{ props.row.currency }}
+          {{ props.row.amount | currency }} {{ props.row.currency }}
         </template>
         <template slot="tax" slot-scope="props">
-          {{ parseFloat(props.row.tax).toFixed(2) }} {{ props.row.currency }}
+          {{ props.row.tax | currency }} {{ props.row.currency }}
         </template>
-
+        <template slot="due_date" slot-scope="props">
+          {{ props.row.due_date | moment('MMM D, YYYY') }}
+        </template>
+        <template slot="updated_at" slot-scope="props">
+          {{ props.row.updated_at | moment('MMM D, YYYY HH:mm:ss') }}
+        </template>
         <template slot="actions" slot-scope="props">
           <router-link class="button" :to="{ name: 'invoice', params: { id: props.row.id } }">
             View
