@@ -1,7 +1,6 @@
-import userAPI from '@/api/user.js'
-
 const state = {
-  users: []
+  users: [],
+  pendingPayment: false
 }
 
 const getters = {
@@ -52,33 +51,21 @@ const getters = {
     let rules = JSON.parse(JSON.stringify(getters.editRules))
     rules.password.required = true
     return rules
-  }
+  },
+  pendingPayment: state => state.pendingPayment
 }
 
 const actions = {
-  fetch ({ commit }) {
-    userAPI.list({
-      success: response => {
-        const users = response.data.result
-
-        for (let i = 0; i < users.length; i++) { // Inject temp fields into user objects
-          let user = users[i]
-          user.status = 'online'
-        }
-
-        commit('UPDATE_USERS', response.data.result)
-      },
-      fail: error => {
-        console.log(error)
-        // TODO: implement
-      }
-    })
+  setPendingInvoiceStatus ({ commit }, status) {
+    console.log('setPendingInvoiceStatus', status)
+    commit('SET_PENDING_INVOICE_STATUS', status)
   }
 }
 
 const mutations = {
-  UPDATE_USERS (state, users) {
-    state.users = users
+  SET_PENDING_INVOICE_STATUS (state, status) {
+    console.log('settting', status)
+    state.pendingPayment = status
   }
 }
 

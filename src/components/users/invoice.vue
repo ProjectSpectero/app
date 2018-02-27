@@ -41,7 +41,7 @@
           </tr>
           <tr>
             <td><strong>Invoice Status:</strong></td>
-            <td><strong :class="statusClass">{{ invoice.status }}</strong></td>
+            <td><strong :class="statusClass">{{ status }}</strong></td>
           </tr>
           <tr>
             <td><strong>Invoice Date:</strong></td>
@@ -130,12 +130,18 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user'
+      user: 'auth/user',
+      pendingPayment: 'users/pendingPayment'
     }),
+    status () {
+      return this.invoice.status
+    },
     statusClass () {
-      if (this.invoice.status === 'PAID') {
+      if (this.status === 'PENDING') {
+        return 'status-pending'
+      } else if (this.status === 'PAID') {
         return 'status-paid'
-      } else if (this.invoice.status === 'REFUNDED') {
+      } else if (this.status === 'REFUNDED') {
         return 'status-refunded'
       }
 
@@ -147,6 +153,7 @@ export default {
   },
   methods: {
     ...mapActions({
+      setPendingInvoiceStatus: 'users/setPendingInvoiceStatus',
       syncCurrentUser: 'auth/syncCurrentUser'
     }),
     async fetchInvoice () {
@@ -158,6 +165,14 @@ export default {
           console.log('Invoice:', response.data.result)
           if (response.data.result) {
             this.invoice = response.data.result
+
+            // Set a temporary pending status for newly created invoices
+            // (we cannot control how long they take to be accepted as of now).
+            // Once we have the fake status set, we can disable that setter.
+            if (this.pendingPayment) {
+              this.$set(this.invoice, 'status', 'PENDING')
+              this.setPendingInvoiceStatus(false)
+            }
 
             // Fetch the order for this invoice
             paymentAPI.order({

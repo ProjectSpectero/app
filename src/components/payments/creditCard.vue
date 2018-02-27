@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { Card, createToken } from 'vue-stripe-elements-plus'
 import paymentAPI from '@/api/payment.js'
 
@@ -45,17 +46,15 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      setPendingInvoiceStatus: 'users/setPendingInvoiceStatus'
+    }),
     pay () {
       // Stripe token issued
       createToken().then(stripeData => {
         // Process stripe payment on our API
         this.processStripe(this.invoiceId, stripeData)
       })
-    },
-    showError (error) {
-      const keys = Object.keys(error.errors)
-      this.error = this.$i18n.t(`payments.${keys[0]}`)
-      this.finished = false
     },
     processStripe (invoiceId, stripeData) {
       paymentAPI.processStripe({
@@ -64,7 +63,8 @@ export default {
           stripeToken: stripeData.token.id,
           save: (this.saveCard === '1') || false
         },
-        success: processResponse => {
+        success: async processResponse => {
+          await this.setPendingInvoiceStatus(true)
           this.$router.push({ name: 'invoice', params: { id: invoiceId } })
         },
         fail: error => {

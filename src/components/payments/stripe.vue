@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import paymentAPI from '@/api/payment.js'
 import creditCard from './creditCard'
 
@@ -42,6 +42,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      setPendingInvoiceStatus: 'users/setPendingInvoiceStatus'
+    }),
     canUseCard (value) {
       this.chosen = true
       this.useCard = value
@@ -52,7 +55,8 @@ export default {
           data: {
             invoiceId: this.invoiceId
           },
-          success: processResponse => {
+          success: async processResponse => {
+            await this.setPendingInvoiceStatus(true)
             this.$router.push({ name: 'invoice', params: { id: this.invoiceId } })
           },
           fail: error => {
