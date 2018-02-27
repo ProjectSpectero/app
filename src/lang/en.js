@@ -38,6 +38,11 @@ module.exports = {
     PAYMENT_PROCESSOR_NOT_ENABLED: 'This payment processor is not enabled. Please contact us for more details.'
   },
 
+  payments: {
+    INVOICE_ALREADY_PAID: 'This invoice was already paid!',
+    NO_STORED_CARD: 'Unable to find a card connected to this account.'
+  },
+
   services: {
     UPDATE_SUCCESS: 'Service updated!',
     UPDATE_ERROR: 'Something went wrong. Please try again!',
@@ -49,6 +54,11 @@ module.exports = {
     DELETE_CONFIRM_DIALOG: 'Are you sure you want to remove this node?',
     DELETE_SUCCESS: 'Node removed successfully!',
     DELETE_ERROR: 'An error ocurred while trying to delete your node. Please try again later.'
+  },
+
+  users: {
+    CLEAR_CREDIT_CARD: 'Your {card} card is saved and will be used for future payments. If you\'d like, you can remove it now.',
+    NO_CREDIT_CARD: 'You don\'t have any credit card associated with Spectero.'
   },
 
   USER_CREATE_SUCCESS: 'User created!',
