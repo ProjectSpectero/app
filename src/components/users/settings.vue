@@ -56,18 +56,7 @@
         </div>
       </div>
 
-      <div class="container">
-        <div class="message error" v-if="formError">{{ formError }}</div>
-
-        <h2>Payment methods</h2>
-
-        <div class="form-input">
-          <div class="label">Click below to clear your provider information.</div>
-
-          <button class="button" @click.prevent.stop="clearPaypal">Clear Paypal data</button>
-          <button class="button" @click.prevent.stop="clearStripe">Clear Stripe data</button>
-        </div>
-      </div>
+      <payment-methods :user="user"></payment-methods>
 
       <div class="container">
 
@@ -264,9 +253,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import userAPI from '@/api/user.js'
-import paymentAPI from '@/api/payment.js'
+import paymentMethods from './settingsPaymentMethods'
 
 export default {
   data () {
@@ -297,9 +286,6 @@ export default {
     })
   },
   methods: {
-    ...mapActions({
-      logout: 'auth/logout'
-    }),
     regenerateNodeKey () {
       userAPI.regenerateNodeKey({
         success: response => {
@@ -307,26 +293,6 @@ export default {
         },
         fail: error => {
           console.log('Unable to regenerate node key', error)
-        }
-      })
-    },
-    clearPaypal () {
-      paymentAPI.clearPaypalData({
-        success: response => {
-          this.$toasted.show('Paypal data cleared successfully!')
-        },
-        fail: error => {
-          console.log('Unable to clear Paypal data', error)
-        }
-      })
-    },
-    clearStripe () {
-      paymentAPI.clearStripeData({
-        success: response => {
-          this.$toasted.show('Stripe data cleared successfully!')
-        },
-        fail: error => {
-          console.log('Unable to clear Stripe data', error)
         }
       })
     },
@@ -414,6 +380,9 @@ export default {
     reset () {
       Object.assign(this.$data, this.$options.data.call(this))
     }
+  },
+  components: {
+    paymentMethods
   }
 }
 </script>

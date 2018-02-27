@@ -63,11 +63,6 @@ export default {
   },
   components: {
     lineItems
-  },
-  watch: {
-    loading: (n, o) => {
-      console.log('Loading changed to', n)
-    }
   }
 }
 </script>
