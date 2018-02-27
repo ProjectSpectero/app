@@ -3,7 +3,13 @@
     <div class="datatable">
       <v-client-table :data="tableData" :columns="columns" :options="options">
         <template slot="total" slot-scope="props">
-          {{ processTotal(props.row) }}
+          {{ props.row.last_invoice.amount | currency }} {{ props.row.last_invoice.currency }}
+        </template>
+        <template slot="created_at" slot-scope="props">
+          {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
+        </template>
+        <template slot="due_next" slot-scope="props">
+          {{ props.row.due_next | moment('MMM D, YYYY') }}
         </template>
         <template slot="actions" slot-scope="props">
           <router-link class="button" :to="{ name: 'order', params: { id: props.row.id } }">
@@ -76,11 +82,11 @@ export default {
       this.headings = (this.type === 'simple')
         ? {
           id: 'ID',
-          created_at: 'Date Created',
+          created_at: 'Created',
           total: 'Total'
         } : {
           id: 'ID',
-          created_at: 'Date Created',
+          created_at: 'Created',
           status: 'Status',
           actions: 'Actions',
           due_next: 'Next Date Due'
