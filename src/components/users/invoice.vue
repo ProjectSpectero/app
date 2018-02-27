@@ -162,7 +162,6 @@ export default {
           id: this.$route.params.id
         },
         success: response => {
-          console.log('Invoice:', response.data.result)
           if (response.data.result) {
             this.invoice = response.data.result
 
@@ -180,7 +179,6 @@ export default {
                 id: this.invoice.order_id
               },
               success: response => {
-                console.log('Order:', response.data.result)
                 if (response.data.result) {
                   this.valid = true
                   this.loading = false

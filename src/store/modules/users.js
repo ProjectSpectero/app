@@ -57,14 +57,12 @@ const getters = {
 
 const actions = {
   setPendingInvoiceStatus ({ commit }, status) {
-    console.log('setPendingInvoiceStatus', status)
     commit('SET_PENDING_INVOICE_STATUS', status)
   }
 }
 
 const mutations = {
   SET_PENDING_INVOICE_STATUS (state, status) {
-    console.log('settting', status)
     state.pendingPayment = status
   }
 }

@@ -65,6 +65,7 @@ export default {
         },
         success: async processResponse => {
           await this.setPendingInvoiceStatus(true)
+          this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
           this.$router.push({ name: 'invoice', params: { id: invoiceId } })
         },
         fail: error => {

@@ -1,10 +1,6 @@
 <template>
   <div v-if="!loading">
-    <div v-if="success">
-      <h2>Payment processed</h2>
-      <p>Your payment has been processed successfully. Thank you!</p>
-    </div>
-    <div v-else>
+    <div v-if="!success">
       <h2>We were unable to process your payment</h2>
       <p>{{ $i18n.t('errors.PAYMENT_INVALID_PARAMETERS') }}</p>
     </div>
@@ -15,6 +11,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import paymentAPI from '@/api/payment.js'
 
 export default {
@@ -28,6 +25,9 @@ export default {
     this.finishPayment()
   },
   methods: {
+    ...mapActions({
+      setPendingInvoiceStatus: 'users/setPendingInvoiceStatus'
+    }),
     finishPayment () {
       if (this.$route.query.mode && this.$route.query.token && this.$route.query.PayerID) {
         paymentAPI.paypalCallback({
@@ -36,9 +36,12 @@ export default {
             token: this.$route.query.token,
             PayerID: this.$route.query.PayerID
           },
-          success: response => {
+          success: async processResponse => {
             this.loading = false
             this.success = true
+            await this.setPendingInvoiceStatus(true)
+            this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
+            this.$router.push({ name: 'invoice', params: { id: this.invoiceId } })
           },
           fail: error => {
             console.log('Error while finishing payment:', error)

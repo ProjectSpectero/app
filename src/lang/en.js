@@ -43,7 +43,8 @@ module.exports = {
     NO_STORED_CARD: 'Unable to find a card connected to this account.',
     USE_SAVED_CARD: 'You have saved a credit card ({card}) on our database. Do you want to pay with it?',
     USE_SAVED_CARD_YES: 'Yes, pay now',
-    USE_SAVED_CARD_NO: 'No, let me choose a different card'
+    USE_SAVED_CARD_NO: 'No, let me choose a different card',
+    PAYMENT_ACCEPTED: 'Your order has been accepted! We are now processing your payment, please check this invoice in a few minutes.'
   },
 
   services: {
