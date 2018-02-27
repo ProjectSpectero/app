@@ -24,6 +24,9 @@ import { Card, createToken } from 'vue-stripe-elements-plus'
 import paymentAPI from '@/api/payment.js'
 
 export default {
+  props: {
+    invoiceId: Number
+  },
   data () {
     return {
       status: '',
@@ -43,23 +46,10 @@ export default {
   },
   methods: {
     pay () {
-      // Getting a dummy invoice for now
-      paymentAPI.myInvoices({
-        success: invoices => {
-          if (invoices.data.result) {
-            const invoice = invoices.data.result[0]
-
-            // Stripe token issued
-            createToken().then(stripeData => {
-              // Process stripe payment on our API
-              this.processStripe(invoice, stripeData)
-            })
-          }
-        },
-        fail: error => {
-          this.$toasted.error(this.errorAPI(error, 'payments'))
-          this.$router.push({ name: 'invoices' })
-        }
+      // Stripe token issued
+      createToken().then(stripeData => {
+        // Process stripe payment on our API
+        this.processStripe(this.invoiceId, stripeData)
       })
     },
     showError (error) {
@@ -67,15 +57,15 @@ export default {
       this.error = this.$i18n.t(`payments.${keys[0]}`)
       this.finished = false
     },
-    processStripe (invoice, stripeData) {
+    processStripe (invoiceId, stripeData) {
       paymentAPI.processStripe({
         data: {
-          invoiceId: invoice.id,
+          invoiceId: invoiceId,
           stripeToken: stripeData.token.id,
           save: (this.saveCard === '1') || false
         },
         success: processResponse => {
-          this.$router.push({ name: 'invoice', params: { id: invoice.id } })
+          this.$router.push({ name: 'invoice', params: { id: invoiceId } })
         },
         fail: error => {
           this.$toasted.error(this.errorAPI(error, 'payments'))

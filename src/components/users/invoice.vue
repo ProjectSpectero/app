@@ -99,11 +99,11 @@
 
     <div v-if="invoice.status === 'UNPAID'">
       <router-link class="button" :to="{ name: 'paypal', params: { invoiceId: invoice.id } }">
-        Pay (Paypal)
+        Pay with Paypal
       </router-link>
 
       <router-link class="button" :to="{ name: 'stripe', params: { invoiceId: invoice.id } }">
-        Pay (Stripe)
+        Pay with Credit Card
       </router-link>
     </div>
   </div>

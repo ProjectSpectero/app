@@ -12,7 +12,7 @@
         Payment in process, please wait ...
       </template>
       <template v-else>
-        <credit-card></credit-card>
+        <credit-card :invoiceId="invoiceId"></credit-card>
       </template>
     </template>
   </div>
@@ -36,12 +36,13 @@ export default {
   computed: {
     ...mapGetters({
       user: 'auth/user'
-    })
+    }),
+    invoiceId () {
+      return this.$route.params.invoiceId
+    }
   },
   methods: {
     canUseCard (value) {
-      const invoiceId = this.$route.params.invoiceId
-
       this.chosen = true
       this.useCard = value
 
@@ -49,10 +50,10 @@ export default {
       if (value) {
         paymentAPI.processStripe({
           data: {
-            invoiceId: invoiceId
+            invoiceId: this.invoiceId
           },
           success: processResponse => {
-            this.$router.push({ name: 'invoice', params: { id: invoiceId } })
+            this.$router.push({ name: 'invoice', params: { id: this.invoiceId } })
           },
           fail: error => {
             this.$toasted.error(this.errorAPI(error, 'payments'))
