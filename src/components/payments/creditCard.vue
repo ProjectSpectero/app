@@ -15,7 +15,11 @@
           {{ $i18n.t('payments.CHECK_SAVE_CARD') }}
         </label>
       </div>
-      <button @click="pay" :disabled="!processed" class="button button-success button-full button-pay">{{ $i18n.t('payments.BUTTON_PROCESS_PAYMENT') }}</button>
+
+      <button v-if="!paid" @click.stop="pay" :disabled="!processed" class="button button-success button-full button-pay">
+        {{ $i18n.t('payments.BUTTON_PROCESS_PAYMENT') }}
+      </button>
+      <div v-else class="mt-3">{{ $i18n.t('payments.PAYMENT_PROCESSING') }}</div>
     </div>
   </div>
 </template>
@@ -33,6 +37,7 @@ export default {
     return {
       status: '',
       error: null,
+      paid: false,
       processed: false,
       loading: true,
       saveCard: false,
@@ -53,6 +58,8 @@ export default {
     pay () {
       // Stripe token issued
       createToken().then(stripeData => {
+        this.paid = true
+
         // Process stripe payment on our API
         this.processStripe(this.invoiceId, stripeData)
       })
