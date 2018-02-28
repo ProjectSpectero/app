@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Top from '../common/top'
+import Top from '@/components/common/top'
 import ordersList from './ordersList'
 
 export default {
