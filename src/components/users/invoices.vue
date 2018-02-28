@@ -32,13 +32,10 @@
 </template>
 
 <script>
-import Top from '../common/top'
+import top from '../common/top'
 import paymentAPI from '@/api/payment.js'
 
 export default {
-  components: {
-    Top
-  },
   data () {
     return {
       tableData: [],
@@ -90,6 +87,9 @@ export default {
         }
       })
     }
+  },
+  components: {
+    top
   }
 }
 </script>
