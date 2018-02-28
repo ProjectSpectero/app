@@ -1,8 +1,12 @@
 <template>
-  <div v-if="error">{{ error }}</div>
-  <div v-else>
-    <h2>Connecting to Paypal</h2>
-    <p>Please wait while we redirect you to Paypal One Touch™...</p>
+  <div class="boxed boxed-centered">
+    <div class="boxed-container boxed-md">
+      <div v-if="error">{{ error }}</div>
+      <div v-else>
+        <h2>{{ $i18n.t('payments.PAYPAL_CONNECT_HEADER') }}</h2>
+        <p>{{ $i18n.t('payments.PAYPAL_CONNECT_DESCRIPTION') }}</p>
+      </div>
+    </div>
   </div>
 </template>
 

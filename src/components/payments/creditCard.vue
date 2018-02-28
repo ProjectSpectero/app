@@ -1,7 +1,7 @@
 <template>
   <div v-if="!error">
     <div v-if="!loading">
-      Payment processed successfully!
+      {{ $i18n.t('payments.PAYMENT_SUCCESS') }}
     </div>
     <div v-else>
       <card class="stripe-card"
@@ -9,12 +9,13 @@
         :options="stripeOptions"
         @change="setProcessedStatus($event.complete)"
       />
-      <button @click="pay" :disabled="!processed">Pay with credit card</button>
-
-      <label>
-        <input type="checkbox" v-model="saveCard" true-value="1" false-value="0">
-        Save card?
-      </label>
+      <div class="label label-save-cc">
+        <label for="cc-save">
+          <input type="checkbox" v-model="saveCard" true-value="1" false-value="0" id="cc-save">
+          {{ $i18n.t('payments.CHECK_SAVE_CARD') }}
+        </label>
+      </div>
+      <button @click="pay" :disabled="!processed" class="button button-success button-full button-pay">{{ $i18n.t('payments.BUTTON_PROCESS_PAYMENT') }}</button>
     </div>
   </div>
 </template>
@@ -83,3 +84,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.label-save-cc {
+  border-radius: 4px;
+  margin: 16px 0;
+}
+</style>

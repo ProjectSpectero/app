@@ -41,10 +41,19 @@ module.exports = {
   payments: {
     INVOICE_ALREADY_PAID: 'This invoice was already paid!',
     NO_STORED_CARD: 'Unable to find a card connected to this account.',
-    USE_SAVED_CARD: 'You have saved a credit card ({card}) on our database. Do you want to pay with it?',
-    USE_SAVED_CARD_YES: 'Yes, pay now',
-    USE_SAVED_CARD_NO: 'No, let me choose a different card',
-    PAYMENT_ACCEPTED: 'Your order has been accepted! We are now processing your payment, please check this invoice in a few minutes.'
+    USE_SAVED_CARD: 'You previously saved a credit card ({card}) on our system. Do you want to pay with it?',
+    BUTTON_USE_SAVED_CARD_YES: 'Yes, Pay Now',
+    BUTTON_USE_SAVED_CARD_NO: 'No, Use Different Card',
+    BUTTON_PROCESS_PAYMENT: 'Process Payment',
+    CHECK_SAVE_CARD: 'Save card for future orders',
+    PAYMENT_SUCCESS: 'Payment processed successfully!',
+    PAYMENT_PROCESSING: 'Payment in process, please wait...',
+    PAYMENT_ACCEPTED: 'Your order has been accepted! We are now processing your payment, please check this invoice in a few minutes.',
+    PAY_HEADER: 'Payment for invoice #{invoiceId}',
+    PAY_DESCRIPTION: 'Use the form below to pay for your order. Once we recieve your payment, you\'ll gain access to the services associated to the invoice.',
+    PAY_SECURE: 'Your payment is secure.',
+    PAYPAL_CONNECT_HEADER: 'Connecting to Paypal',
+    PAYPAL_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Paypal One Touch™...'
   },
 
   services: {

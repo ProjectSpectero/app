@@ -1,20 +1,30 @@
 <template>
-  <div>
-    <div v-if="user.stored_card_identifier && !chosen">
-      <h3>{{ $i18n.t('payments.USE_SAVED_CARD', { card: user.stored_card_identifier }) }}</h3>
+  <div class="boxed boxed-centered">
+    <div class="boxed-container boxed-md">
+      <div class="checkout">
+        <div class="header">
+          <h1>Checkout</h1>
+          <h5 class="order-number">{{ $i18n.t('payments.PAY_HEADER', { invoiceId: invoiceId }) }}</h5>
+          <p class="order-description">{{ $i18n.t('payments.PAY_DESCRIPTION') }}</p>
+          <p class="order-secure"><span class="icon-lock"></span> {{ $i18n.t('payments.PAY_SECURE') }}</p>
+        </div>
+      </div>
 
-      <button class="button" @click="canUseCard(true)">{{ $i18n.t('payments.USE_SAVED_CARD_YES') }}</button>
-      <button class="button" @click="canUseCard(false)">{{ $i18n.t('payments.USE_SAVED_CARD_NO') }}</button>
+      <div v-if="user.stored_card_identifier && !chosen">
+        <p><strong>{{ $i18n.t('payments.USE_SAVED_CARD', { card: user.stored_card_identifier }) }}</strong></p><br>
+        <button class="button button-success" @click="canUseCard(true)">{{ $i18n.t('payments.BUTTON_USE_SAVED_CARD_YES') }}</button>
+        <button class="button" @click="canUseCard(false)">{{ $i18n.t('payments.BUTTON_USE_SAVED_CARD_NO') }}</button>
+      </div>
+
+      <template v-if="chosen">
+        <template v-if="useCard">
+          {{ $i18n.t('payments.PAYMENT_PROCESSING') }}
+        </template>
+        <template v-else>
+          <credit-card :invoiceId="invoiceId"></credit-card>
+        </template>
+      </template>
     </div>
-
-    <template v-if="chosen">
-      <template v-if="useCard">
-        Payment in process, please wait ...
-      </template>
-      <template v-else>
-        <credit-card :invoiceId="invoiceId"></credit-card>
-      </template>
-    </template>
   </div>
 </template>
 
@@ -38,7 +48,7 @@ export default {
       user: 'auth/user'
     }),
     invoiceId () {
-      return this.$route.params.invoiceId
+      return parseInt(this.$route.params.invoiceId)
     }
   },
   methods: {
@@ -73,3 +83,31 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.checkout {
+
+  .header {
+    margin-bottom: $pad;
+
+    h1 {
+      margin-bottom: 12px;
+    }
+    .order-number {
+      font-size: 14px;
+      line-height: 100%;
+      color: $color-dark;
+      font-weight: $font-regular;
+    }
+    .order-description {
+      color: $color-dark;
+    }
+    .order-secure {
+      margin-top: 12px;
+      color: $color-success;
+      font-size: 14px;
+      font-weight: $font-bold;
+    }
+  }
+}
+</style>

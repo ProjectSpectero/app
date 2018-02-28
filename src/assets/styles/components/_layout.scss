@@ -5,3 +5,31 @@
   padding: $pad;
   background: $white;
 }
+
+.boxed {
+  width: 100%;
+  height: auto;
+  padding: $pad;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  &.boxed-centered {
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  .boxed-container {
+    width: 100%;
+    max-width: 350px;
+    padding: $pad;
+    color: $color-primary;
+    background: $white;
+    border: 1px solid $color-border;
+    border-radius: 4px;
+
+    &.boxed-md {
+      max-width: 500px;
+    }
+  }
+}
