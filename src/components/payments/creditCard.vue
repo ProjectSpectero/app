@@ -16,7 +16,7 @@
         </label>
       </div>
 
-      <button v-if="!paid" @click.stop="pay" :disabled="!processed" class="button button-success button-full button-pay">
+      <button v-if="!paid" @click.stop="pay" :disabled="!processed" class="button button-md button-success button-full button-pay">
         {{ $i18n.t('payments.BUTTON_PROCESS_PAYMENT') }}
       </button>
       <div v-else class="mt-3">{{ $i18n.t('payments.PAYMENT_PROCESSING') }}</div>

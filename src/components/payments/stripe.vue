@@ -6,6 +6,7 @@
           <h1>Checkout</h1>
           <h5 class="order-number">{{ $i18n.t('payments.PAY_HEADER', { invoiceId: invoiceId }) }}</h5>
           <p class="order-description">{{ $i18n.t('payments.PAY_DESCRIPTION') }}</p>
+          <p class="order-total">Total: $0.00</p>
           <p class="order-secure"><span class="icon-lock"></span> {{ $i18n.t('payments.PAY_SECURE') }}</p>
         </div>
       </div>
@@ -94,18 +95,26 @@ export default {
       margin-bottom: 12px;
     }
     .order-number {
-      font-size: 14px;
+      margin-bottom: 16px;
+      font-size: 15px;
       line-height: 100%;
       color: $color-dark;
       font-weight: $font-regular;
     }
     .order-description {
+      font-size: 14px;
       color: $color-dark;
     }
     .order-secure {
       margin-top: 12px;
       color: $color-success;
-      font-size: 14px;
+      font-size: 15px;
+      font-weight: $font-bold;
+    }
+    .order-total {
+      margin: 16px 0 18px 0;
+      font-size: 16px;
+      line-height: 100%;
       font-weight: $font-bold;
     }
   }
