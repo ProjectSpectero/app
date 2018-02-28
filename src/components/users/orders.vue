@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import Top from '../common/top'
+import top from '../common/top'
 import ordersList from './ordersList'
 
 export default {
   components: {
-    Top,
+    top,
     ordersList
   }
 }

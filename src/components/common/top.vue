@@ -25,7 +25,7 @@ export default {
   padding: 0 $pad;
   background: $white;
   border-bottom: 1px solid $color-border;
-  
+
   h1 {
     margin-bottom: 0;
     font-size: 26px;

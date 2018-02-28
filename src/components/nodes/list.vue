@@ -63,9 +63,9 @@ export default {
           data: {
             id: id
           },
-          success: response => {
+          success: async response => {
             this.formError = null
-            this.fetchNodes()
+            await this.fetchNodes()
             this.$toasted.show(this.$i18n.t('nodes.DELETE_SUCCESS'))
           },
           fail: error => {
