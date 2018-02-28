@@ -6,9 +6,6 @@
         <template slot="amount" slot-scope="props">
           {{ props.row.amount | currency }} {{ props.row.currency }}
         </template>
-        <template slot="tax" slot-scope="props">
-          {{ props.row.tax | currency }} {{ props.row.currency }}
-        </template>
         <template slot="due_date" slot-scope="props">
           {{ props.row.due_date | moment('MMM D, YYYY') }}
         </template>
@@ -17,7 +14,7 @@
         </template>
         <template slot="actions" slot-scope="props">
           <router-link class="button" :to="{ name: 'invoice', params: { id: props.row.id } }">
-            View
+            View Details
           </router-link>
 
           <div class="inline" v-if="props.row.status === 'UNPAID'">
@@ -45,16 +42,15 @@ export default {
   data () {
     return {
       tableData: [],
-      columns: ['id', 'amount', 'tax', 'status', 'due_date', 'updated_at', 'actions'],
-      sortableColumns: ['id', 'amount', 'tax', 'status', 'due_date', 'updated_at'],
-      filterableColumns: ['id', 'amount', 'tax', 'status', 'due_date', 'updated_at'],
+      columns: ['id', 'amount', 'status', 'due_date', 'updated_at', 'actions'],
+      sortableColumns: ['id', 'amount', 'status', 'due_date', 'updated_at'],
+      filterableColumns: ['id', 'amount', 'status', 'due_date', 'updated_at'],
       headings: {
         id: 'ID',
         status: 'Status',
-        tax: 'Tax',
         amount: 'Amount',
-        due_date: 'Due date',
-        updated_at: 'Last update',
+        due_date: 'Due Date',
+        updated_at: 'Last Update',
         actions: 'Actions'
       },
       options: {}
