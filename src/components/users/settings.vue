@@ -1,5 +1,6 @@
 <template>
   <div>
+    <top title="Settings"></top>
     <form @submit.prevent.stop="submit">
       <div class="container">
         <div class="message error" v-if="formError">{{ formError }}</div>
@@ -253,11 +254,16 @@
 </template>
 
 <script>
+import Top from '@/components/common/top'
 import { mapGetters } from 'vuex'
 import userAPI from '@/api/user.js'
 import paymentMethods from './settingsPaymentMethods'
 
 export default {
+  components: {
+    Top,
+    paymentMethods
+  },
   data () {
     return {
       formError: null,
@@ -380,9 +386,6 @@ export default {
     reset () {
       Object.assign(this.$data, this.$options.data.call(this))
     }
-  },
-  components: {
-    paymentMethods
   }
 }
 </script>

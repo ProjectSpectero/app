@@ -16,15 +16,14 @@ export default {
   },
   data () {
     return {
-      columns: ['id', 'description', 'type', 'amount', 'quantity', 'resource', 'updated_at'],
+      columns: ['id', 'description', 'type', 'amount', 'quantity', 'resource'],
       headings: {
         id: 'ID',
         description: 'Description',
         type: 'Type',
         amount: 'Amount',
         quantity: 'Quantity',
-        resource: 'Resource',
-        updated_at: 'Last update'
+        resource: 'Resource'
       },
       options: {}
     }

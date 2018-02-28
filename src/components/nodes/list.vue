@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1>Nodes</h1>
+    <top title="Nodes"></top>
 
-    <div v-if="groups" class="list">
+    <div v-if="groups" class="list pad-margin">
       <div class="left">
         <div v-for="group in groups" :key="group.id" @click="selectGroup(group)" :class="{ selectedGroup: 'active' }">
           <div>Group #{{ group.id }}</div>
@@ -36,9 +36,13 @@
 </template>
 
 <script>
+import Top from '../common/top'
 import nodeAPI from '@/api/node.js'
 
 export default {
+  components: {
+    Top
+  },
   data () {
     return {
       groups: null,

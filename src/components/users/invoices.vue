@@ -1,5 +1,6 @@
 <template>
   <div>
+    <top title="Invoices"></top>
     <div class="datatable">
       <v-client-table :data="tableData" :columns="columns" :options="options">
         <template slot="amount" slot-scope="props">
@@ -31,9 +32,13 @@
 </template>
 
 <script>
+import Top from '../common/top'
 import paymentAPI from '@/api/payment.js'
 
 export default {
+  components: {
+    Top
+  },
   data () {
     return {
       tableData: [],
