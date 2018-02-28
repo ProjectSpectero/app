@@ -314,7 +314,7 @@ export default {
             this.changedEmail = false
             this.processForm()
           } else if (this.userAPI.email !== this.form.email &&
-            confirm(this.$i18n.t('CHANGE_EMAIL_DIALOG', { oldEmail: this.userAPI.email, newEmail: this.form.email }))) {
+            confirm(this.$i18n.t('users.CHANGE_EMAIL_DIALOG', { oldEmail: this.userAPI.email, newEmail: this.form.email }))) {
             this.changedEmail = true
             this.processForm()
           }

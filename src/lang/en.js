@@ -24,18 +24,11 @@ module.exports = {
     UNABLE_TO_LOGOUT: 'Unable to log the user out.',
     ROLE_VALIDATION_FAILED: 'You don\'t have access to assign this role.',
 
-    ROLE_ESCALATION_FAILED: 'You don\'t have permission to add users of this role level.',
-    CLOUD_USER_ALTER_NOT_ALLOWED: 'You can\'t alter this cloud user.',
-    USER_CANNOT_REMOVE_SELF: 'You cannot delete yourself.',
-
     INVALID_SERVICE_OR_ACTION_ATTEMPT: 'Invalid action attempt on service.',
     INVALID_IP_AS_LISTENER_REQUEST: 'Unable to bind httpProxy/openVPN server to this listener.',
     INVALID_HTTP_MODE_REQUEST: 'Invalid HTTP mode change requested.',
     STORED_CONFIG_WAS_NULL: 'Unable to store service configuration.',
-    CANNOT_DELETE_SELF: 'You can\'t delete yourself.',
-
-    PAYMENT_INVALID_PARAMETERS: 'The payment data you have supplied seems to be wrong. Please contact us for more details.',
-    PAYMENT_PROCESSOR_NOT_ENABLED: 'This payment processor is not enabled. Please contact us for more details.'
+    CANNOT_DELETE_SELF: 'You can\'t delete yourself.'
   },
 
   payments: {
@@ -53,7 +46,9 @@ module.exports = {
     PAY_DESCRIPTION: 'Use the form below to pay for your order. Once we recieve your payment, you\'ll gain access to the services associated to the invoice.',
     PAY_SECURE: 'Your payment is secure.',
     PAYPAL_CONNECT_HEADER: 'Connecting to Paypal',
-    PAYPAL_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Paypal One Touch™...'
+    PAYPAL_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Paypal One Touch™...',
+    PAYMENT_INVALID_PARAMETERS: 'The payment data you have supplied seems to be wrong. Please contact us for more details.',
+    PAYMENT_PROCESSOR_NOT_ENABLED: 'This payment processor is not enabled. Please contact us for more details.'
   },
 
   services: {
@@ -71,16 +66,7 @@ module.exports = {
 
   users: {
     CLEAR_CREDIT_CARD: 'Your {card} card is saved and will be used for future payments. If you\'d like, you can remove it now.',
-    NO_CREDIT_CARD: 'You don\'t have any credit card associated with Spectero.'
-  },
-
-  USER_CREATE_SUCCESS: 'User created!',
-  USER_UPDATE_SUCCESS: 'User saved!',
-  USER_UPDATE_ERROR: 'Something went wrong. Please try again!',
-  USER_DELETE_SUCCESS: 'User deleted!',
-  USER_DELETE_ERROR: 'There was a problem while deleting this user. Please try again later.',
-  UNABLE_TO_DISPLAY_BANNED_DOMAINS: 'Proxy Mode must be set to Normal to edit banned domains.',
-  UNABLE_TO_DISPLAY_ALLOWED_DOMAINS: 'Proxy Mode must be set to ExclusiveAllow to edit allowed domains.',
-  LEAVE_CONFIRM_DIALOG: 'Are you sure you want to leave? Any unsaved changes will be lost.',
-  CHANGE_EMAIL_DIALOG: 'You have changed your email from {oldEmail} to {newEmail}. If your new email is invalid, we will not be able to reach you and your account will be locked. Are you sure you want to change your email to {newEmail} and logout?'
+    NO_CREDIT_CARD: 'You don\'t have any credit card associated with Spectero.',
+    CHANGE_EMAIL_DIALOG: 'You have changed your email from {oldEmail} to {newEmail}. If your new email is invalid, we will not be able to reach you and your account will be locked. Are you sure you want to change your email to {newEmail} and logout?'
+  }
 }

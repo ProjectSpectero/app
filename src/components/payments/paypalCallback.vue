@@ -2,7 +2,7 @@
   <div v-if="!loading">
     <div v-if="!success">
       <h2>We were unable to process your payment</h2>
-      <p>{{ $i18n.t('errors.PAYMENT_INVALID_PARAMETERS') }}</p>
+      <p>{{ $i18n.t('payments.PAYMENT_INVALID_PARAMETERS') }}</p>
     </div>
   </div>
   <div v-else>

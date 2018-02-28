@@ -40,7 +40,7 @@ export default {
           }
         })
       } else {
-        this.error = this.$i18n.t('errors.PAYMENT_INVALID_PARAMETERS')
+        this.error = this.$i18n.t('payments.PAYMENT_INVALID_PARAMETERS')
       }
     },
     redirect (redirectUrl) {
