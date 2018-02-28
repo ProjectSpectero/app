@@ -1,6 +1,6 @@
 <template>
   <div v-if="!loading">
-    <top title="Edit node"></top>
+    <top title="Edit Node"></top>
     <div v-if="!error">
       <h1>
         Node #{{ node.id }}
@@ -26,9 +26,15 @@
 <script>
 import { mapGetters } from 'vuex'
 import nodeAPI from '@/api/node.js'
-import top from '../common/top'
+import top from '@/components/common/top'
 
 export default {
+  components: {
+    top
+  },
+  metaInfo: {
+    title: 'Edit Node'
+  },
   data () {
     return {
       loading: true,
@@ -84,9 +90,6 @@ export default {
         }
       })
     }
-  },
-  components: {
-    top
   }
 }
 </script>

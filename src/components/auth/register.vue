@@ -51,6 +51,9 @@
 import auth from '@/api/auth.js'
 
 export default {
+  metaInfo: {
+    title: 'Register'
+  },
   data () {
     return {
       email: null,
@@ -111,9 +114,6 @@ export default {
         }
       }
     }
-  },
-  metaInfo: {
-    title: 'Register'
   }
 }
 </script>

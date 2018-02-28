@@ -8,13 +8,16 @@
 </template>
 
 <script>
-import Top from '@/components/common/top'
+import top from '@/components/common/top'
 import ordersList from './ordersList'
 
 export default {
   components: {
-    Top,
+    top,
     ordersList
+  },
+  metaInfo: {
+    title: 'Orders'
   }
 }
 </script>

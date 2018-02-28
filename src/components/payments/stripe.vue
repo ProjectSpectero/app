@@ -35,6 +35,12 @@ import paymentAPI from '@/api/payment.js'
 import creditCard from './creditCard'
 
 export default {
+  components: {
+    creditCard
+  },
+  metaInfo: {
+    title: 'Checkout'
+  },
   data () {
     return {
       chosen: false,
@@ -78,9 +84,6 @@ export default {
         })
       }
     }
-  },
-  components: {
-    creditCard
   }
 }
 </script>

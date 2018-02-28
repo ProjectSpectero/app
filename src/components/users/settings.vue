@@ -254,15 +254,18 @@
 </template>
 
 <script>
-import Top from '@/components/common/top'
+import top from '@/components/common/top'
 import { mapGetters } from 'vuex'
 import userAPI from '@/api/user.js'
 import paymentMethods from './settingsPaymentMethods'
 
 export default {
   components: {
-    Top,
+    top,
     paymentMethods
+  },
+  metaInfo: {
+    title: 'Settings'
   },
   data () {
     return {

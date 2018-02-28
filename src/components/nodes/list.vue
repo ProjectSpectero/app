@@ -36,12 +36,15 @@
 </template>
 
 <script>
-import Top from '../common/top'
+import top from '@/components/common/top'
 import nodeAPI from '@/api/node.js'
 
 export default {
   components: {
-    Top
+    top
+  },
+  metaInfo: {
+    title: 'Nodes'
   },
   data () {
     return {
@@ -63,9 +66,9 @@ export default {
           data: {
             id: id
           },
-          success: async response => {
+          success: response => {
             this.formError = null
-            await this.fetchNodes()
+            this.fetchNodes()
             this.$toasted.show(this.$i18n.t('nodes.DELETE_SUCCESS'))
           },
           fail: error => {

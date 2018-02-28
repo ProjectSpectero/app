@@ -1,119 +1,129 @@
 <template>
-  <div v-if="!loading" class="invoice">
-    <div class="header">
-      <div class="logo-container">
-        <div class="logo logo-dark logo-md"></div>
-      </div>
-      <div class="header-details">
-        <h1 class="title">Invoice</h1>
-        <strong class="company">Spectero, Inc.</strong>
-        <div class="biller address">
-          <div class="address-field">300 Deleware Ave Ste 210-A</div>
-          <div class="address-field">Wilmington, DE 19801</div>
-          <div class="address-field">United States</div>
+  <div>
+    <top title="View Invoice"></top>
+    <div v-if="!loading" class="invoice">
+      <div class="header">
+        <div class="logo-container">
+          <div class="logo logo-dark logo-md"></div>
+        </div>
+        <div class="header-details">
+          <h1 class="title">Invoice</h1>
+          <strong class="company">Spectero, Inc.</strong>
+          <div class="biller address">
+            <div class="address-field">300 Deleware Ave Ste 210-A</div>
+            <div class="address-field">Wilmington, DE 19801</div>
+            <div class="address-field">United States</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="divider"></div>
+      <div class="divider"></div>
 
-    <div class="details">
-      <div class="client">
-        <span class="details-title">Bill To</span>
+      <div class="details">
+        <div class="client">
+          <span class="details-title">Bill To</span>
 
-        <strong class="name">
-          <div v-if="user.organization">{{ user.organization }}</div>
-          <div v-if="user.name">{{ user.name }}</div>
-        </strong>
+          <strong class="name">
+            <div v-if="user.organization">{{ user.organization }}</div>
+            <div v-if="user.name">{{ user.name }}</div>
+          </strong>
 
-        <div class="address">
-          <div class="address-field">{{ user.address_line_1 }}</div>
-          <div class="address-field">{{ user.address_line_2 }}</div>
-          <div class="address-field">{{ user.state }}, {{ user.post_code }}</div>
-          <div class="address-field spaced">{{ user.email }}</div>
+          <div class="address">
+            <div class="address-field">{{ user.address_line_1 }}</div>
+            <div class="address-field">{{ user.address_line_2 }}</div>
+            <div class="address-field">{{ user.state }}, {{ user.post_code }}</div>
+            <div class="address-field spaced">{{ user.email }}</div>
+          </div>
+        </div>
+        <div class="info">
+          <table class="info-table">
+            <tr>
+              <td><strong>Invoice Number:</strong></td>
+              <td>{{ invoice.id }}</td>
+            </tr>
+            <tr>
+              <td><strong>Invoice Status:</strong></td>
+              <td><strong :class="statusClass">{{ status }}</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Invoice Date:</strong></td>
+              <td>{{ invoice.updated_at | moment('MMMM D, YYYY') }}</td>
+            </tr>
+            <tr v-if="canShowDueAmount">
+              <td><strong>Payment Due:</strong></td>
+              <td>{{ invoice.due_date | moment('MMMM D, YYYY') }}</td>
+            </tr>
+            <tr v-if="canShowDueAmount" class="invert">
+              <td><strong>Amount Due:</strong></td>
+              <td><strong>{{ due.amount | currency }} {{ due.currency }}</strong></td>
+            </tr>
+          </table>
         </div>
       </div>
-      <div class="info">
-        <table class="info-table">
-          <tr>
-            <td><strong>Invoice Number:</strong></td>
-            <td>{{ invoice.id }}</td>
-          </tr>
-          <tr>
-            <td><strong>Invoice Status:</strong></td>
-            <td><strong :class="statusClass">{{ status }}</strong></td>
-          </tr>
-          <tr>
-            <td><strong>Invoice Date:</strong></td>
-            <td>{{ invoice.updated_at | moment('MMMM D, YYYY') }}</td>
-          </tr>
-          <tr v-if="canShowDueAmount">
-            <td><strong>Payment Due:</strong></td>
-            <td>{{ invoice.due_date | moment('MMMM D, YYYY') }}</td>
-          </tr>
-          <tr v-if="canShowDueAmount" class="invert">
-            <td><strong>Amount Due:</strong></td>
-            <td><strong>{{ due.amount | currency }} {{ due.currency }}</strong></td>
-          </tr>
-        </table>
-      </div>
-    </div>
 
-    <div class="divider"></div>
+      <div class="divider"></div>
 
-    <table v-if="order" class="table-styled">
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th class="text-center">Quantity</th>
-          <th>Price</th>
-          <th>Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in order.line_items" :key="item.id">
-          <td>{{ item.description }}</td>
-          <td class="text-center">{{ item.quantity }}</td>
-          <td>{{ item.amount | currency }}</td>
-          <td>{{ item.quantity * item.amount | currency }}</td>
-        </tr>
-      </tbody>
-    </table>
+      <table v-if="order" class="table-styled">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th class="text-center">Quantity</th>
+            <th>Price</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in order.line_items" :key="item.id">
+            <td>{{ item.description }}</td>
+            <td class="text-center">{{ item.quantity }}</td>
+            <td>{{ item.amount | currency }}</td>
+            <td>{{ item.quantity * item.amount | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <div class="totals">
-      <div class="totals-line">
-        <div class="label"><strong>Total:</strong></div>
-        <div class="amount"><strong>{{ invoice.amount | currency }} {{ invoice.currency }}</strong></div>
-      </div>
-      <div v-if="transactions && transactions.length > 0" class="totals-line">
-        <div v-for="transaction in transactions" :key="transaction.id">
-          <div class="label">Payment on {{ transaction.updated_at | moment('MMMM D, YYYY') }} ({{ transaction.type }}):</div>
-          <div class="amount">{{ transaction.amount | currency }} {{ transaction.currency }}</div>
+      <div class="totals">
+        <div class="totals-line">
+          <div class="label"><strong>Total:</strong></div>
+          <div class="amount"><strong>{{ invoice.amount | currency }} {{ invoice.currency }}</strong></div>
+        </div>
+        <div v-if="transactions && transactions.length > 0" class="totals-line">
+          <div v-for="transaction in transactions" :key="transaction.id">
+            <div class="label">Payment on {{ transaction.updated_at | moment('MMMM D, YYYY') }} ({{ transaction.type }}):</div>
+            <div class="amount">{{ transaction.amount | currency }} {{ transaction.currency }}</div>
+          </div>
+        </div>
+        <div v-if="canShowDueAmount" class="totals-line total-outstanding">
+          <div class="label"><strong>Amount Due (USD):</strong></div>
+          <div class="amount"><strong>{{ due.amount | currency }} {{ due.currency }}</strong></div>
         </div>
       </div>
-      <div v-if="canShowDueAmount" class="totals-line total-outstanding">
-        <div class="label"><strong>Amount Due (USD):</strong></div>
-        <div class="amount"><strong>{{ due.amount | currency }} {{ due.currency }}</strong></div>
+
+      <div v-if="invoice.status === 'UNPAID'">
+        <router-link class="button" :to="{ name: 'paypal', params: { invoiceId: invoice.id } }">
+          Pay with Paypal
+        </router-link>
+
+        <router-link class="button" :to="{ name: 'stripe', params: { invoiceId: invoice.id } }">
+          Pay with Credit Card
+        </router-link>
       </div>
-    </div>
-
-    <div v-if="invoice.status === 'UNPAID'">
-      <router-link class="button" :to="{ name: 'paypal', params: { invoiceId: invoice.id } }">
-        Pay with Paypal
-      </router-link>
-
-      <router-link class="button" :to="{ name: 'stripe', params: { invoiceId: invoice.id } }">
-        Pay with Credit Card
-      </router-link>
     </div>
   </div>
 </template>
 
 <script>
+import top from '@/components/common/top'
 import { mapGetters, mapActions } from 'vuex'
 import paymentAPI from '@/api/payment.js'
 
 export default {
+  components: {
+    top
+  },
+  metaInfo: {
+    title: 'View Invoice'
+  },
   data () {
     return {
       loading: true,

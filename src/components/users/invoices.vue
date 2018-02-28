@@ -32,10 +32,16 @@
 </template>
 
 <script>
-import top from '../common/top'
+import top from '@/components/common/top'
 import paymentAPI from '@/api/payment.js'
 
 export default {
+  components: {
+    top
+  },
+  metaInfo: {
+    title: 'Invoices'
+  },
   data () {
     return {
       tableData: [],
@@ -87,9 +93,6 @@ export default {
         }
       })
     }
-  },
-  components: {
-    top
   }
 }
 </script>

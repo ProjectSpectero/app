@@ -55,6 +55,9 @@ import auth from '@/api/auth.js'
 import userAPI from '@/api/user.js'
 
 export default {
+  metaInfo: {
+    title: 'Login'
+  },
   data () {
     return {
       username: null,
@@ -136,9 +139,6 @@ export default {
     reset () {
       Object.assign(this.$data, this.$options.data.call(this))
     }
-  },
-  metaInfo: {
-    title: 'Login'
   }
 }
 </script>
