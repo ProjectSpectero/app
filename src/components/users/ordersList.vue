@@ -6,7 +6,7 @@
           {{ props.row.last_invoice.amount | currency }} {{ props.row.last_invoice.currency }}
         </template>
         <template slot="created_at" slot-scope="props">
-          {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
+          {{ props.row.created_at | moment('MMM D, YYYY') }}
         </template>
         <template slot="due_next" slot-scope="props">
           {{ props.row.due_next | moment('MMM D, YYYY') }}
@@ -94,7 +94,7 @@ export default {
       this.options = {
         skin: '',
         texts: {
-          count: 'Showing {from} to {to} of {count} records|{count} records|One record',
+          count: 'Showing {from} to {to} of {count} orders|{count} orders|One order',
           filter: '',
           filterPlaceholder: 'Search orders',
           limit: 'Records:',
