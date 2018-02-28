@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="tableData">
     <div class="datatable">
       <v-client-table :data="tableData" :columns="columns" :options="options">
         <template slot="total" slot-scope="props">
@@ -42,7 +42,7 @@ export default {
       tableData: [],
       columns: ['created_at'],
       sortableColumns: ['created_at'],
-      filterableColumns: ['created_at'],
+      filterableColumns: null,
       options: {}
     }
   },
@@ -50,8 +50,8 @@ export default {
     this.fetchOrders()
   },
   methods: {
-    fetchOrders () {
-      paymentAPI.myOrders({
+    async fetchOrders () {
+      await paymentAPI.myOrders({
         success: response => {
           this.tableData = response.data.result
           this.setTable()
@@ -73,11 +73,6 @@ export default {
         ? ['id', 'created_at', 'total']
         : ['id', 'created_at', 'due_next', 'status', 'total']
     },
-    setFilterableColumns () {
-      this.filterableColumns = (this.type === 'simple')
-        ? ['id', 'created_at']
-        : ['id', 'created_at', 'due_next', 'status']
-    },
     setHeadings () {
       this.headings = (this.type === 'simple')
         ? {
@@ -95,7 +90,6 @@ export default {
     setTable () {
       this.setHeadings()
       this.setSortableColumns()
-      this.setFilterableColumns()
 
       this.options = {
         skin: '',
@@ -111,10 +105,10 @@ export default {
           defaultOption: 'Select {column}',
           columns: 'Columns'
         },
-        perPage: 10,
+        perPage: 5,
         headings: this.headings,
         sortable: this.sortableColumns,
-        filterable: this.filterableColumns,
+        filterable: null,
         customSorting: {
           total: ascending => {
             return function (a, b) {
