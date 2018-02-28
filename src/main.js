@@ -41,7 +41,7 @@ Vue.use(VueProgressBar, {
 Vue.use(Toasted, {
   className: 'toast',
   position: 'bottom-right',
-  duration: 3000,
+  duration: 5000,
   singleton: false
 })
 

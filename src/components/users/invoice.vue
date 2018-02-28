@@ -199,16 +199,12 @@ export default {
                   this.fetchTransactions()
                 }
               },
-              fail: error => this.processError(error)
+              fail: () => this.error404()
             })
           }
         },
-        fail: error => this.processError(error)
+        fail: () => this.error404()
       })
-    },
-    processError (error) {
-      this.error = this.errorAPI(error, 'errors')
-      this.loading = false
     },
     fetchDue () {
       paymentAPI.due({
@@ -220,7 +216,7 @@ export default {
             this.due = response.data.result
           }
         },
-        fail: error => this.processError(error)
+        fail: () => this.error404()
       })
     },
     fetchTransactions () {
@@ -233,7 +229,7 @@ export default {
             this.transactions = response.data.result
           }
         },
-        fail: error => this.processError(error)
+        fail: () => this.error404()
       })
     }
   }

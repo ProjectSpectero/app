@@ -18,10 +18,6 @@
 
             <div class="actions">
               <router-link class="button" :to="{ name: 'node', params: { id: node.id } }">
-                Manage
-              </router-link>
-
-              <router-link class="button" :to="{ name: 'nodeEdit', params: { id: node.id } }">
                 Edit
               </router-link>
 

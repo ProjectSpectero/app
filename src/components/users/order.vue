@@ -2,22 +2,17 @@
   <div>
     <top title="View Order"></top>
     <div v-if="!loading" class="order">
-      <div v-if="!error">
-        <h1>Order #{{ order.id }}</h1>
-        <ul>
-          <li>Due next: {{ order.due_next }}</li>
-          <li>Status: {{ order.status }}</li>
-          <li>Subscription provider: {{ order.subscription_provider }}</li>
-          <li>Term: {{ order.term }}</li>
-        </ul>
+      <h1>Order #{{ order.id }}</h1>
+      <ul>
+        <li>Due next: {{ order.due_next }}</li>
+        <li>Status: {{ order.status }}</li>
+        <li>Subscription provider: {{ order.subscription_provider }}</li>
+        <li>Term: {{ order.term }}</li>
+      </ul>
 
-        <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">View invoice</router-link>
+      <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">View invoice</router-link>
 
-        <line-items :items="order.line_items"></line-items>
-      </div>
-      <div v-else>
-        {{ error }}
-      </div>
+      <line-items :items="order.line_items"></line-items>
     </div>
   </div>
 </template>
@@ -65,10 +60,7 @@ export default {
             this.error404()
           }
         },
-        fail: error => {
-          this.error = this.errorAPI(error, 'errors')
-          this.loading = false
-        }
+        fail: () => this.error404()
       })
     }
   }

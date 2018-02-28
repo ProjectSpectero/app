@@ -6,7 +6,7 @@
           <h1>Checkout</h1>
           <h5 class="order-number">{{ $i18n.t('payments.PAY_HEADER', { invoiceId: invoiceId }) }}</h5>
           <p class="order-description">{{ $i18n.t('payments.PAY_DESCRIPTION') }}</p>
-          <p class="order-total">Total: $0.00</p>
+          <p class="order-total">Total: {{ due.amount | currency }} {{ due.currency }}</p>
           <p class="order-secure"><span class="icon-lock"></span> {{ $i18n.t('payments.PAY_SECURE') }}</p>
         </div>
       </div>
@@ -35,19 +35,18 @@ import paymentAPI from '@/api/payment.js'
 import creditCard from './creditCard'
 
 export default {
-  components: {
-    creditCard
-  },
   metaInfo: {
     title: 'Checkout'
   },
   data () {
     return {
       chosen: false,
-      useCard: false
+      useCard: false,
+      due: 0
     }
   },
-  created () {
+  async created () {
+    await this.fetchDue()
     this.chosen = !this.user.stored_card_identifier
   },
   computed: {
@@ -62,6 +61,19 @@ export default {
     ...mapActions({
       setPendingInvoiceStatus: 'users/setPendingInvoiceStatus'
     }),
+    fetchDue () {
+      paymentAPI.due({
+        data: {
+          id: this.invoiceId
+        },
+        success: response => {
+          if (response.data.result) {
+            this.due = response.data.result
+          }
+        },
+        fail: () => this.error404()
+      })
+    },
     canUseCard (value) {
       this.chosen = true
       this.useCard = value
@@ -84,6 +96,9 @@ export default {
         })
       }
     }
+  },
+  components: {
+    creditCard
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="spectero">
+  <div v-if="!loading" class="spectero">
     <sidebar></sidebar>
     <div class="content">
       <router-view></router-view>
@@ -11,6 +11,14 @@
 import sidebar from '@/components/common/sidebar'
 
 export default {
+  data () {
+    return {
+      loading: true
+    }
+  },
+  mounted () {
+    this.loading = false
+  },
   components: {
     sidebar
   }
