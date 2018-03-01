@@ -1,21 +1,8 @@
 <template>
   <div>
-    <top title="Edit Node"></top>
+    <top title="Edit Group"></top>
     <div v-if="!loading">
-      <h1>
-        Node #{{ node.id }}
-        <span v-if="node.friendly_name">({{ node.friendly_name }})</span>
-      </h1>
-      <h3>
-        Belongs to group #{{ group.id }}
-        <span v-if="group.friendly_name">({{ group.friendly_name }})</span>
-      </h3>
-
-      <ul>
-        <li>Market model: {{ node.market_model }}</li>
-        <li>Status: {{ node.status }}</li>
-        <li>price: {{ node.price }}</li>
-      </ul>
+      {{ group.id }}
     </div>
     <loading v-else></loading>
   </div>
@@ -29,17 +16,16 @@ import loading from '@/components/common/loading'
 
 export default {
   metaInfo: {
-    title: 'Edit Node'
+    title: 'Edit Node Group'
   },
   data () {
     return {
       loading: true,
-      node: null,
       group: null
     }
   },
   created () {
-    this.fetchNode()
+    this.fetchGroup(this.$route.params.id)
   },
   computed: {
     ...mapGetters({
@@ -47,22 +33,6 @@ export default {
     })
   },
   methods: {
-    async fetchNode () {
-      await nodeAPI.node({
-        data: {
-          id: this.$route.params.id
-        },
-        success: response => {
-          if (response.data.result) {
-            this.node = response.data.result
-            this.fetchGroup(this.node.group_id)
-          } else {
-            this.error404()
-          }
-        },
-        fail: () => this.error404()
-      })
-    },
     async fetchGroup (groupId) {
       await nodeAPI.group({
         data: {

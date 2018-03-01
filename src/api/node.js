@@ -34,10 +34,19 @@ export default {
   /**
    * Edit node details.
 
-   * @param {Integer} id User id to edit.
+   * @param {Integer} id Node id to edit.
    */
   edit (options) {
     return api('PUT', `/node/${options.data.id}`, options)
+  },
+
+  /**
+   * Edit node group details.
+
+   * @param {Integer} id Group id to edit.
+   */
+  editGroup (options) {
+    return api('PUT', `/group/${options.data.id}`, options)
   },
 
   /**
@@ -47,5 +56,14 @@ export default {
    */
   delete (options) {
     return api('DELETE', `/node/${options.data.id}`, options)
+  },
+
+  /**
+   * Delete a node group at given id.
+   *
+   * @param {Integer} id Node group id to delete.
+   */
+  deleteGroup (options) {
+    return api('DELETE', `/group/${options.data.id}`, options)
   }
 }
