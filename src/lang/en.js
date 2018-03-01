@@ -1,7 +1,9 @@
 module.exports = {
   lang: 'en',
   misc: {
-    LOADING: 'Loading, please wait ...'
+    LOADING: 'Loading, please wait ...',
+    CONTINUE: 'Continue',
+    SAVE: 'Save'
   },
 
   errors: {
@@ -67,10 +69,14 @@ module.exports = {
     DELETE_CONFIRM_DIALOG: 'Are you sure you want to remove this node?',
     DELETE_SUCCESS: 'Node removed successfully!',
     GROUP_DELETE_SUCCESS: 'Group removed successfully!',
-    DELETE_ERROR: 'An error ocurred while trying to delete your node. Please try again later.'
+    DELETE_ERROR: 'An error ocurred while trying to delete your node. Please try again later.',
+    NODE_VERIFY_SUCCESS: 'Your node {node} is now queued for verification. We\'ll send you an email as soon as this is finished.',
+    GROUP_UPDATE_SUCCESS: 'Node group updated successfully!'
   },
 
   users: {
+    LOGIN_BUTTON: 'Log In',
+    REGISTER_BUTTON: 'Register',
     CLEAR_CREDIT_CARD: 'Your {card} card is saved and will be used for future payments. If you\'d like, you can remove it now.',
     NO_CREDIT_CARD: 'You don\'t have any credit card associated with Spectero.',
     CHANGE_EMAIL_DIALOG: 'You have changed your email from {oldEmail} to {newEmail}. If your new email is invalid, we will not be able to reach you and your account will be locked. Are you sure you want to change your email to {newEmail} and logout?'

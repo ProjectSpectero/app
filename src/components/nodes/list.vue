@@ -23,12 +23,28 @@
             <template slot="created_at" slot-scope="props">
               {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
             </template>
+
+            <template slot="status" slot-scope="props">
+              <div :class="'status-' + props.row.status">
+                <span v-if="props.row.status !== 'pending_verification'">
+                  {{ props.row.status[0].toUpperCase() + props.row.status.slice(1) }}
+                </span>
+                <span v-else>
+                  Pending Verification
+                </span>
+              </div>
+            </template>
+
             <template slot="actions" slot-scope="props">
               <router-link class="button" :to="{ name: 'node', params: { id: props.row.id } }">
                 Edit
               </router-link>
 
               <button class="button" @click.stop="removeNode(props.row.id)">Remove</button>
+
+              <button v-if="props.row.status === 'unconfirmed'" class="button" @click.stop="verifyNode(props.row)">
+                Verify
+              </button>
             </template>
           </v-client-table>
         </div>
@@ -106,6 +122,18 @@ export default {
           fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
         })
       }
+    },
+    verifyNode (node) {
+      nodeAPI.verify({
+        data: {
+          id: node.id
+        },
+        success: response => {
+          this.fetchNodes()
+          this.$toasted.success(this.$i18n.t('nodes.NODE_VERIFY_SUCCESS', { node: node.friendly_name }))
+        },
+        fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
+      })
     },
     removeGroup (id) {
       if (confirm(this.$i18n.t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {

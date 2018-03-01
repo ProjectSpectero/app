@@ -38,7 +38,7 @@
       </div>
 
       <button class="button button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">
-        {{ formDisable ? 'Please Wait' : 'Register' }}
+        {{ formDisable ? $i18n.t('misc.LOADING') : $i18n.t('user.REGISTER_BUTTON') }}
       </button>
     </form>
     <div class="bottom-link">

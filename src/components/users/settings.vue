@@ -245,7 +245,7 @@
         </div>
 
         <button type="submit" class="button button-info button-md max-width" :disabled="formDisable">
-          {{ formDisable ? 'Please Wait' : 'Save' }}
+          {{ formDisable ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
         </button>
       </div>
 

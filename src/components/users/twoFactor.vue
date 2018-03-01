@@ -22,7 +22,9 @@
         </span>
       </div>
 
-      <button class="button button-info max-width" :disabled="formDisable">{{ formDisable ? 'Please Wait' : 'Continue' }}</button>
+      <button class="button button-info max-width" :disabled="formDisable">
+        {{ formDisable ? $i18n.t('misc.CONTINUE') : $i18n.t('misc.SAVE') }}
+      </button>
     </form>
     <div v-else>
       <p>Click on the button below to activate two-factor authentication</p>

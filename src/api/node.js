@@ -17,6 +17,14 @@ export default {
   },
 
   /**
+   * Verifies a node. Only allowed for nodes with status = 'unconfirmed'
+   * @param {Integer} id Node id.
+   */
+  verify (options) {
+    return api('GET', `/node/${options.data.id}/verify`, options)
+  },
+
+  /**
    * Returns a node group.
    * @param {Integer} id Node group id.
    */
@@ -46,7 +54,7 @@ export default {
    * @param {Integer} id Group id to edit.
    */
   editGroup (options) {
-    return api('PUT', `/group/${options.data.id}`, options)
+    return api('PUT', `/node_group/${options.data.id}`, options)
   },
 
   /**
@@ -64,6 +72,6 @@ export default {
    * @param {Integer} id Node group id to delete.
    */
   deleteGroup (options) {
-    return api('DELETE', `/group/${options.data.id}`, options)
+    return api('DELETE', `/node_group/${options.data.id}`, options)
   }
 }
