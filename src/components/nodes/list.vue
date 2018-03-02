@@ -2,70 +2,74 @@
   <div>
     <top title="Nodes"></top>
 
-    <div v-if="groups" class="list pad-margin">
-      <div class="left">
-        <div v-for="group in groups" :key="group.id" @click="selectGroup(group)" :class="{ selectedGroup: 'active' }">
-          <div class="node-group">
-            <div class="group-name">Group #{{ group.id }}</div>
+    <div v-if="groups && !loading">
+      <div v-if="groups.length" class="list pad-margin">
+        <div class="left">
+          <div v-for="group in groups" :key="group.id" @click="selectGroup(group)" :class="{ selectedGroup: 'active' }">
+            <div class="node-group">
+              <div class="group-name">Group #{{ group.id }}</div>
 
-            <div class="group-actions">
-              <router-link :to="{ name: 'group', params: { id: group.id } }">Edit</router-link>
-              <a href="#" @click.prevent.stop="removeGroup(group.id)">Remove</a>
-            </div>
-          </div>
-
-          <small>({{ group.nodes.length }} nodes)</small>
-        </div>
-      </div>
-      <div class="right">
-        <div v-if="nodes" class="datatable">
-          <v-client-table :data="nodes" :columns="columns" :options="options">
-            <template slot="created_at" slot-scope="props">
-              {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
-            </template>
-
-            <template slot="status" slot-scope="props">
-              <div :class="'status-' + props.row.status">
-                <span v-if="props.row.status !== 'pending_verification'">
-                  {{ props.row.status[0].toUpperCase() + props.row.status.slice(1) }}
-                </span>
-                <span v-else>
-                  Pending Verification
-                </span>
+              <div class="group-actions">
+                <router-link :to="{ name: 'group', params: { id: group.id } }">Edit</router-link>
+                <a href="#" @click.prevent.stop="removeGroup(group.id)">Remove</a>
               </div>
-            </template>
+            </div>
 
-            <template slot="actions" slot-scope="props">
-              <router-link class="button" :to="{ name: 'node', params: { id: props.row.id } }">
-                Edit
-              </router-link>
+            <small>({{ group.nodes.length }} nodes)</small>
+          </div>
+        </div>
+        <div class="right">
+          <div v-if="nodes" class="datatable">
+            <v-client-table :data="nodes" :columns="columns" :options="options">
+              <template slot="created_at" slot-scope="props">
+                {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
+              </template>
 
-              <button class="button" @click.stop="removeNode(props.row.id)">Remove</button>
+              <template slot="status" slot-scope="props">
+                <div :class="'status-' + props.row.status">
+                  <span v-if="props.row.status !== 'pending_verification'">
+                    {{ props.row.status[0].toUpperCase() + props.row.status.slice(1) }}
+                  </span>
+                  <span v-else>
+                    Pending Verification
+                  </span>
+                </div>
+              </template>
 
-              <button v-if="props.row.status === 'unconfirmed'" class="button" @click.stop="verifyNode(props.row)">
-                Verify
-              </button>
-            </template>
-          </v-client-table>
+              <template slot="actions" slot-scope="props">
+                <router-link class="button" :to="{ name: 'node', params: { id: props.row.id } }">
+                  Edit
+                </router-link>
+
+                <button class="button" @click.stop="removeNode(props.row.id)">Remove</button>
+
+                <button v-if="props.row.status === 'unconfirmed'" class="button" @click.stop="verifyNode(props.row)">
+                  Verify
+                </button>
+              </template>
+            </v-client-table>
+          </div>
         </div>
       </div>
+      <not-found v-else type="nodes"></not-found>
     </div>
+    <loading v-else></loading>
   </div>
 </template>
 
 <script>
 import top from '@/components/common/top'
+import loading from '@/components/common/loading'
+import notFound from '@/components/common/notFound'
 import nodeAPI from '@/api/node.js'
 
 export default {
-  components: {
-    top
-  },
   metaInfo: {
     title: 'Nodes'
   },
   data () {
     return {
+      loading: true,
       groups: null,
       selectedGroup: null,
       nodes: null,
@@ -159,6 +163,8 @@ export default {
             if (this.groups.length) {
               this.selectGroup(this.groups[0])
             }
+
+            this.loading = false
           }
         },
         fail: error => {
@@ -167,6 +173,11 @@ export default {
         }
       })
     }
+  },
+  components: {
+    top,
+    loading,
+    notFound
   }
 }
 </script>

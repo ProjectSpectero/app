@@ -1,6 +1,7 @@
 module.exports = {
   lang: 'en',
   misc: {
+    NOT_FOUND: 'We were unable to find any {type}.',
     LOADING: 'Loading, please wait ...',
     CONTINUE: 'Continue',
     SAVE: 'Save'

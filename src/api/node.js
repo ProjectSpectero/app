@@ -17,6 +17,30 @@ export default {
   },
 
   /**
+   * Returns a node's orders.
+   * @param {Integer} id Node id.
+   */
+  nodeOrders (options) {
+    return api('GET', `/node/${options.data.id}/orders`, options)
+  },
+
+  /**
+   * Returns a node's services.
+   * @param {Integer} id Node id.
+   */
+  nodeServices (options) {
+    return api('GET', `/node/${options.data.id}/services`, options)
+  },
+
+  /**
+   * Returns a node's ips.
+   * @param {Integer} id Node id.
+   */
+  nodeIps (options) {
+    return api('GET', `/node/${options.data.id}/ips`, options)
+  },
+
+  /**
    * Verifies a node. Only allowed for nodes with status = 'unconfirmed'
    * @param {Integer} id Node id.
    */

@@ -118,9 +118,6 @@ import { mapGetters, mapActions } from 'vuex'
 import paymentAPI from '@/api/payment.js'
 
 export default {
-  components: {
-    top
-  },
   metaInfo: {
     title: 'View Invoice'
   },
@@ -232,6 +229,9 @@ export default {
         fail: () => this.error404()
       })
     }
+  },
+  components: {
+    top
   }
 }
 </script>

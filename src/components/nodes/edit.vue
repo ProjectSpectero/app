@@ -16,6 +16,10 @@
         <li>Status: {{ node.status }}</li>
         <li>price: {{ node.price }}</li>
       </ul>
+
+      <ips :ips="ips"></ips>
+      <services :services="services"></services>
+      <orders :orders="orders"></orders>
     </div>
     <loading v-else></loading>
   </div>
@@ -26,6 +30,9 @@ import { mapGetters } from 'vuex'
 import nodeAPI from '@/api/node.js'
 import top from '@/components/common/top'
 import loading from '@/components/common/loading'
+import ips from '@/components/nodes/listIps'
+import services from '@/components/nodes/listServices'
+import orders from '@/components/nodes/listOrders'
 
 export default {
   metaInfo: {
@@ -35,7 +42,10 @@ export default {
     return {
       loading: true,
       node: null,
-      group: null
+      group: null,
+      orders: null,
+      services: null,
+      ips: null
     }
   },
   created () {
@@ -56,11 +66,35 @@ export default {
           if (response.data.result) {
             this.node = response.data.result
             this.fetchGroup(this.node.group_id)
+            this.fetchExtras('Orders', this.node.id)
+            this.fetchExtras('Services', this.node.id)
+            this.fetchExtras('Ips', this.node.id)
           } else {
-            this.error404()
+            // this.error404()
           }
         },
-        fail: () => this.error404()
+        fail: (e) => {
+          console.log(e)
+          // this.error404()
+        }
+      })
+    },
+    fetchExtras (type, id) {
+      const method = nodeAPI['node' + type]
+      const varName = type.toLowerCase()
+
+      method({
+        data: {
+          id: id
+        },
+        success: response => {
+          if (response.data.result) {
+            this[varName] = response.data.result
+          }
+        },
+        fail: (e) => {
+          console.log(e)
+        }
       })
     },
     async fetchGroup (groupId) {
@@ -82,7 +116,10 @@ export default {
   },
   components: {
     top,
-    loading
+    loading,
+    ips,
+    services,
+    orders
   }
 }
 </script>
