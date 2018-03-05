@@ -1,47 +1,30 @@
 <template>
   <div>
     <top title="Edit Group"></top>
+    <ul class="tabs">
+      <li v-for="tab in tabs" @click.stop="switchTab(tab.id, tab.hash)" :key="tab.id" :class="(activeTab === tab.id) ? 'active' : ''">
+        {{ tab.label }}
+      </li>
+    </ul>
+
     <div v-if="!loading">
-      <form @submit.prevent.stop="submit">
-        <div class="container">
-          <div class="message error" v-if="formError">{{ formError }}</div>
-
-          <h2>General Information</h2>
-
-          <div class="form-input">
-            <div class="label"><label for="friendly_name">Friendly Name</label></div>
-            <input
-              type="text"
-              v-model="form.friendly_name"
-              name="friendly_name"
-              id="friendly_name"
-              placeholder="Please add a name for this node group"
-              class="input max-width"
-              :class="{'input-error': errors.has('friendly_name')}"
-              :disabled="formDisable"
-              v-validate="rules['friendly_name']"
-              data-vv-as="friendly_name">
-
-            <span v-show="errors.has('friendly_name')" class="input-error-message">
-              {{ errors.first('friendly_name') }}
-            </span>
-          </div>
-        </div>
-
-        <button type="submit" class="button button-info button-md max-width" :disabled="formDisable">
-          {{ formDisable ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
-        </button>
-      </form>
+      <edit-form v-if="activeTab === 1" :group="group"></edit-form>
+      <list-orders v-else-if="activeTab === 2" :orders="orders"></list-orders>
+      <list-ips v-else-if="activeTab === 3" :ips="ips"></list-ips>
+      <list-services v-else :services="services"></list-services>
     </div>
     <loading v-else></loading>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import nodeAPI from '@/api/node.js'
 import top from '@/components/common/top'
 import loading from '@/components/common/loading'
+import editForm from './editGroupForm'
+import listOrders from './listOrders'
+import listServices from './listServices'
+import listIps from './listIps'
 
 export default {
   metaInfo: {
@@ -49,24 +32,22 @@ export default {
   },
   data () {
     return {
-      formError: null,
-      formDisable: false,
-      form: null,
-      loading: true,
-      rules: {
-        friendly_name: {
-          max: 50
-        }
-      }
+      tabs: [
+        { id: 1, label: 'General details', hash: '#details' },
+        { id: 2, label: 'Orders', hash: '#orders' },
+        { id: 3, label: 'IP Addresses', hash: '#ips' },
+        { id: 4, label: 'Services', hash: '#services' }
+      ],
+      activeTab: 1,
+      group: null,
+      ips: [],
+      services: [],
+      orders: [],
+      loading: true
     }
   },
   created () {
     this.fetchGroup(this.$route.params.id)
-  },
-  computed: {
-    ...mapGetters({
-      user: 'auth/user'
-    })
   },
   methods: {
     async fetchGroup (groupId) {
@@ -74,9 +55,17 @@ export default {
         data: {
           id: groupId
         },
-        success: response => {
+        success: async response => {
           if (response.data.result) {
-            this.form = response.data.result
+            this.group = response.data.result
+
+            await this.fetchExtras('Orders', this.group.id)
+            await this.fetchExtras('Services', this.group.id)
+            await this.fetchExtras('Ips', this.group.id)
+
+            // Chech if the url has any anchors and load it immediately
+            this.parseTab()
+
             this.loading = false
           } else {
             this.error404()
@@ -85,29 +74,59 @@ export default {
         fail: () => this.error404()
       })
     },
-    async submit () {
-      this.formDisable = true
+    parseTab () {
+      if (window.location.hash) {
+        const activeTab = this.tabs.find(t => t.hash === window.location.hash)
 
-      await nodeAPI.editGroup({
-        data: this.form,
+        if (activeTab) {
+          this.switchTab(activeTab.id, activeTab.hash)
+        }
+      }
+    },
+    fetchExtras (type, id) {
+      const method = nodeAPI['node' + type]
+      const varName = type.toLowerCase()
+
+      method({
+        data: {
+          id: id
+        },
         success: response => {
           if (response.data.result) {
-            this.formDisable = false
-            this.$toasted.success(this.$i18n.t('nodes.GROUP_UPDATE_SUCCESS'))
-          } else {
-            this.error404()
+            this[varName] = response.data.result
           }
         },
         fail: (e) => {
           console.log(e)
-          // this.error404()
         }
       })
+    },
+    switchTab (id, hash) {
+      this.activeTab = id
+      this.$router.push({ name: 'group', params: { id: this.group.id }, hash: hash })
     }
   },
   components: {
     top,
-    loading
+    loading,
+    editForm,
+    listOrders,
+    listServices,
+    listIps
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .tabs {
+    > li {
+      display: inline-block;
+      margin-right: 1rem;
+      cursor: pointer;
+
+      &.active {
+        border-bottom: 1px solid blue;
+      }
+    }
+  }
+</style>

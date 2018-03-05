@@ -20,6 +20,7 @@ Vue.use(Meta)
 const router = new Router({
   mode: 'history',
   saveScrollPosition: true,
+  scrollBehavior: (to, from, pos) => to.hash ? { selector: to.hash } : { x: 0, y: 0 },
   routes: [
     ...authRoutes,
     ...userRoutes,
