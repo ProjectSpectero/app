@@ -1,25 +1,13 @@
 <template>
   <div>
     <top title="Edit Node"></top>
+    <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
+
     <div v-if="!loading">
-      <h1>
-        Node #{{ node.id }}
-        <span v-if="node.friendly_name">({{ node.friendly_name }})</span>
-      </h1>
-      <h3>
-        Belongs to group #{{ group.id }}
-        <span v-if="group.friendly_name">({{ group.friendly_name }})</span>
-      </h3>
-
-      <ul>
-        <li>Market model: {{ node.market_model }}</li>
-        <li>Status: {{ node.status }}</li>
-        <li>price: {{ node.price }}</li>
-      </ul>
-
-      <ips :ips="ips"></ips>
-      <services :services="services"></services>
-      <orders :orders="orders"></orders>
+      <edit-form v-if="activeTab === 1" :node="node"></edit-form>
+      <list-orders v-else-if="activeTab === 2" :orders="orders"></list-orders>
+      <list-ips v-else-if="activeTab === 3" :ips="ips"></list-ips>
+      <list-services v-else :services="services"></list-services>
     </div>
     <loading v-else></loading>
   </div>
@@ -30,9 +18,11 @@ import { mapGetters } from 'vuex'
 import nodeAPI from '@/api/node.js'
 import top from '@/components/common/top'
 import loading from '@/components/common/loading'
-import ips from '@/components/nodes/listIps'
-import services from '@/components/nodes/listServices'
-import orders from '@/components/nodes/listOrders'
+import tabs from './tabs'
+import editForm from './editForm'
+import listOrders from './listOrders'
+import listServices from './listServices'
+import listIps from './listIps'
 
 export default {
   metaInfo: {
@@ -40,12 +30,19 @@ export default {
   },
   data () {
     return {
+      tabs: [
+        { id: 1, label: 'General details', hash: '#details' },
+        { id: 2, label: 'Orders', hash: '#orders' },
+        { id: 3, label: 'IP Addresses', hash: '#ips' },
+        { id: 4, label: 'Services', hash: '#services' }
+      ],
       loading: true,
       node: null,
+      activeTab: 1,
       group: null,
-      orders: null,
-      services: null,
-      ips: null
+      ips: [],
+      services: [],
+      orders: []
     }
   },
   created () {
@@ -65,6 +62,7 @@ export default {
         success: response => {
           if (response.data.result) {
             this.node = response.data.result
+
             this.fetchGroup(this.node.group_id)
             this.fetchExtras('Orders', this.node.id)
             this.fetchExtras('Services', this.node.id)
@@ -97,6 +95,19 @@ export default {
         }
       })
     },
+    parseTab () {
+      if (window.location.hash) {
+        const activeTab = this.tabs.find(t => t.hash === window.location.hash)
+
+        if (activeTab) {
+          this.switchTab(activeTab.id, activeTab.hash)
+        }
+      }
+    },
+    switchTab (data) {
+      this.activeTab = data.id
+      this.$router.push({ name: 'node', params: { id: data.id }, hash: data.hash })
+    },
     async fetchGroup (groupId) {
       await nodeAPI.group({
         data: {
@@ -106,20 +117,23 @@ export default {
           if (response.data.result) {
             this.group = response.data.result
             this.loading = false
-          } else {
-            this.error404()
           }
         },
-        fail: () => this.error404()
+        fail: (e) => {
+          console.log(e)
+          // this.error404()
+        }
       })
     }
   },
   components: {
     top,
     loading,
-    ips,
-    services,
-    orders
+    tabs,
+    editForm,
+    listOrders,
+    listServices,
+    listIps
   }
 }
 </script>

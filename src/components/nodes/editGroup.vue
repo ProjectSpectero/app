@@ -1,11 +1,7 @@
 <template>
   <div>
     <top title="Edit Group"></top>
-    <ul class="tabs">
-      <li v-for="tab in tabs" @click.stop="switchTab(tab.id, tab.hash)" :key="tab.id" :class="(activeTab === tab.id) ? 'active' : ''">
-        {{ tab.label }}
-      </li>
-    </ul>
+    <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
 
     <div v-if="!loading">
       <edit-form v-if="activeTab === 1" :group="group"></edit-form>
@@ -21,6 +17,7 @@
 import nodeAPI from '@/api/node.js'
 import top from '@/components/common/top'
 import loading from '@/components/common/loading'
+import tabs from './tabs'
 import editForm from './editGroupForm'
 import listOrders from './listOrders'
 import listServices from './listServices'
@@ -34,9 +31,7 @@ export default {
     return {
       tabs: [
         { id: 1, label: 'General details', hash: '#details' },
-        { id: 2, label: 'Orders', hash: '#orders' },
-        { id: 3, label: 'IP Addresses', hash: '#ips' },
-        { id: 4, label: 'Services', hash: '#services' }
+        { id: 2, label: 'Orders', hash: '#orders' }
       ],
       activeTab: 1,
       group: null,
@@ -83,6 +78,10 @@ export default {
         }
       }
     },
+    switchTab (data) {
+      this.activeTab = data.id
+      this.$router.push({ name: 'group', params: { id: data.id }, hash: data.hash })
+    },
     fetchExtras (type, id) {
       const method = nodeAPI['node' + type]
       const varName = type.toLowerCase()
@@ -100,15 +99,12 @@ export default {
           console.log(e)
         }
       })
-    },
-    switchTab (id, hash) {
-      this.activeTab = id
-      this.$router.push({ name: 'group', params: { id: this.group.id }, hash: hash })
     }
   },
   components: {
     top,
     loading,
+    tabs,
     editForm,
     listOrders,
     listServices,
@@ -116,17 +112,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  .tabs {
-    > li {
-      display: inline-block;
-      margin-right: 1rem;
-      cursor: pointer;
-
-      &.active {
-        border-bottom: 1px solid blue;
-      }
-    }
-  }
-</style>
