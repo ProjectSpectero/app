@@ -1,11 +1,13 @@
 <template>
-  <div>
-    <h2>Items</h2>
-
-    <div class="datatable">
-      <v-client-table :data="items" :columns="columns" :options="options">
-      </v-client-table>
-    </div>
+  <div class="datatable">
+    <v-client-table :data="items" :columns="columns" :options="options">
+      <template slot="amount" slot-scope="props">
+        {{ props.row.amount | currency }}
+      </template>
+      <template slot="total" slot-scope="props">
+        {{ props.row.amount * props.row.quantity | currency }}
+      </template>
+    </v-client-table>
   </div>
 </template>
 
@@ -16,14 +18,14 @@ export default {
   },
   data () {
     return {
-      columns: ['id', 'description', 'type', 'amount', 'quantity', 'resource'],
+      columns: ['description', 'type', 'resource', 'quantity', 'amount', 'total'],
       headings: {
-        id: 'ID',
-        description: 'Description',
+        description: 'Item',
         type: 'Type',
-        amount: 'Amount',
+        amount: 'Price',
         quantity: 'Quantity',
-        resource: 'Resource'
+        resource: 'Resource',
+        total: 'Amount'
       },
       options: {}
     }
