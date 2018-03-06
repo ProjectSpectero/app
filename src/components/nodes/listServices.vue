@@ -1,7 +1,11 @@
 <template>
   <div>
       <div v-if="services && services.length" class="list pad-margin">
-        <v-client-table :data="services" :columns="columns" :options="options"></v-client-table>
+        <v-client-table :data="services" :columns="columns" :options="options">
+          <template slot="created_at" slot-scope="props">
+            {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
+          </template>
+        </v-client-table>
       </div>
       <not-found v-else type="services"></not-found>
   </div>
@@ -16,12 +20,14 @@ export default {
   },
   data () {
     return {
-      columns: ['created_at', 'actions'],
-      sortableColumns: ['created_at'],
-      filterableColumns: ['created_at'],
+      columns: ['config', 'connection_resource', 'type', 'created_at'],
+      sortableColumns: ['config', 'connection_resource', 'type', 'created_at'],
+      filterableColumns: ['config', 'connection_resource', 'type', 'created_at'],
       headings: {
-        created_at: 'Creation Date',
-        actions: 'Actions'
+        config: 'Configuration',
+        connection_resource: 'Connection',
+        type: 'Type',
+        created_at: 'Creation Date'
       },
       options: {}
     }
