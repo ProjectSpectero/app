@@ -59,16 +59,20 @@ export default {
         data: {
           id: this.$route.params.id
         },
-        success: response => {
+        success: async response => {
           if (response.data.result) {
             this.node = response.data.result
 
-            this.fetchGroup(this.node.group_id)
-            this.fetchExtras('Orders', this.node.id)
-            this.fetchExtras('Services', this.node.id)
-            this.fetchExtras('Ips', this.node.id)
-          } else {
-            // this.error404()
+            await this.fetchExtras('Orders', this.node.id)
+            await this.fetchExtras('Services', this.node.id)
+            await this.fetchExtras('Ips', this.node.id)
+
+            // Uncategorized nodes don't have any node group so fetching ends here
+            if (this.node.group_id) {
+              this.fetchGroup(this.node.group_id)
+            } else {
+              this.loading = false
+            }
           }
         },
         fail: (e) => {

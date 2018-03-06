@@ -4,7 +4,7 @@ export default {
   /**
    * Retrieves all node groups and their nodes.
    */
-  nodeGroups (options) {
+  groups (options) {
     return api('GET', `/node_group/self`, options)
   },
 
@@ -14,6 +14,13 @@ export default {
    */
   node (options) {
     return api('GET', `/node/${options.data.id}`, options)
+  },
+
+  /**
+   * Retrieves all uncategorized nodes.
+   */
+  uncategorizedNodes (options) {
+    return api('GET', `/node/self/uncategorized`, options)
   },
 
   /**
@@ -54,6 +61,14 @@ export default {
    */
   group (options) {
     return api('GET', `/node_group/${options.data.id}`, options)
+  },
+
+  /**
+   * Returns a node group's orders.
+   * @param {Integer} id Node group id.
+   */
+  groupOrders (options) {
+    return api('GET', `/node_group/${options.data.id}/orders`, options)
   },
 
   /**

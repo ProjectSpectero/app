@@ -54,9 +54,7 @@ export default {
           if (response.data.result) {
             this.group = response.data.result
 
-            await this.fetchExtras('Orders', this.group.id)
-            await this.fetchExtras('Services', this.group.id)
-            await this.fetchExtras('Ips', this.group.id)
+            await this.fetchOrders(this.group.id)
 
             // Chech if the url has any anchors and load it immediately
             this.parseTab()
@@ -82,17 +80,14 @@ export default {
       this.activeTab = data.id
       this.$router.push({ name: 'group', params: { id: data.id }, hash: data.hash })
     },
-    fetchExtras (type, id) {
-      const method = nodeAPI['node' + type]
-      const varName = type.toLowerCase()
-
-      method({
+    fetchOrders (id) {
+      nodeAPI.groupOrders({
         data: {
           id: id
         },
         success: response => {
           if (response.data.result) {
-            this[varName] = response.data.result
+            this.orders = response.data.result
           }
         },
         fail: (e) => {

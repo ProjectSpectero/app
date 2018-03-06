@@ -5,7 +5,7 @@
     <div v-if="groups && !loading">
       <div v-if="groups.length" class="list pad-margin">
         <div class="left">
-          <div v-for="group in groups" :key="group.id" @click="selectGroup(group)" :class="{ selectedGroup: 'active' }">
+          <div v-for="group in groups" :key="group.id" @click="selectGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
             <div class="node-group">
               <div class="group-name">Group #{{ group.id }}</div>
 
@@ -16,6 +16,13 @@
             </div>
 
             <small>({{ group.nodes.length }} nodes)</small>
+          </div>
+
+          <div v-if="uncategorizedNodes.length" @click="selectUncategorizedNodes" :class="selectedGroup === 0 ? 'active' : ''">
+            <div class="node-group">
+              <div class="group-name">Uncategorized</div>
+            </div>
+            <small>({{ uncategorizedNodes.length }} nodes)</small>
           </div>
         </div>
         <div class="right">
@@ -73,6 +80,7 @@ export default {
       groups: null,
       selectedGroup: null,
       nodes: null,
+      uncategorizedNodes: [],
       columns: ['friendly_name', 'ip', 'market_model', 'created_at', 'status', 'actions'],
       sortableColumns: ['friendly_name', 'ip', 'status', 'market_model', 'created_at'],
       filterableColumns: ['friendly_name', 'ip', 'status', 'market_model', 'created_at'],
@@ -112,6 +120,11 @@ export default {
   methods: {
     selectGroup (group) {
       this.nodes = group.nodes
+      this.selectedGroup = group.id
+    },
+    selectUncategorizedNodes () {
+      this.nodes = this.uncategorizedNodes
+      this.selectedGroup = 0
     },
     removeNode (id) {
       if (confirm(this.$i18n.t('nodes.DELETE_CONFIRM_DIALOG'))) {
@@ -154,7 +167,7 @@ export default {
       }
     },
     fetchNodes () {
-      nodeAPI.nodeGroups({
+      nodeAPI.groups({
         success: response => {
           if (response.data.result) {
             this.groups = response.data.result
@@ -164,12 +177,22 @@ export default {
               this.selectGroup(this.groups[0])
             }
 
-            this.loading = false
+            // Load uncategorized nodes and add them to our list
+            nodeAPI.uncategorizedNodes({
+              success: response => {
+                this.uncategorizedNodes = response.data.result
+                this.loading = false
+              },
+              fail: (e) => {
+                console.log(e)
+                // this.error404()
+              }
+            })
           }
         },
-        fail: error => {
-          const keys = Object.keys(error.errors)
-          this.error = this.$i18n.t(`errors.${keys[0]}`)
+        fail: (e) => {
+          console.log(e)
+          // this.error404()
         }
       })
     }
@@ -198,6 +221,10 @@ export default {
       height: 60px;
       padding: 1rem;
       cursor: pointer;
+    }
+
+    .active {
+      background: #f9f9f9
     }
   }
 
