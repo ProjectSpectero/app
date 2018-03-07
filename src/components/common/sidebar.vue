@@ -1,7 +1,8 @@
 <template>
   <div class="sidebar">
-    <router-link :to="{ name: 'dashboard' }"><div class="logo logo-sm"></div></router-link>
-
+    <div class="menu-logo">
+      <router-link :to="{ name: 'dashboard' }"><div class="logo logo-sm"></div></router-link>
+    </div>
     <div class="menu-items">
       <section class="nav-section">
         <ul>
@@ -50,27 +51,12 @@ export default {
 <style lang="scss" scoped>
 .sidebar {
   width: 230px;
-  height: 100%;
+  height: 100vh;
   background: #161A1F;
   color: $white;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-a {
-  padding: 13px $pad;
-  display: block;
-  color: #C5D0E1;
-  font-size: 15px;
-  font-weight: $font-semi;
-  text-decoration: none;
-
-  &:hover {
-    color: $white;
-  }
 }
 h5 {
   padding-left: $pad;
@@ -78,7 +64,7 @@ h5 {
   margin-bottom: 0;
   text-transform: uppercase;
 }
-.logo {
+.menu-logo {
   margin: $pad;
   flex-shrink: 0;
 }
@@ -86,15 +72,25 @@ h5 {
   overflow-x: hidden;
   overflow-y: auto;
 
+  a {
+    padding: 13px $pad;
+    display: block;
+    color: #C5D0E1;
+    font-size: 15px;
+    font-weight: $font-semi;
+    text-decoration: none;
+
+    &:hover {
+      color: $white;
+    }
+  }
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-
   &::-webkit-scrollbar {
     width: 4px;
     background: transparent;
   }
-
   &::-webkit-scrollbar-thumb {
     background-color: $color-brand;
   }
