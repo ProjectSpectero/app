@@ -2,6 +2,9 @@
   <div v-if="tableData">
     <div class="datatable">
       <v-client-table :data="tableData" :columns="columns" :options="options">
+        <template slot="status" slot-scope="props">
+          <div class="badge">{{ $i18n.t('orders.ORDER_STATUS.' + props.row.status) }}</div>
+        </template>
         <template slot="total" slot-scope="props">
           {{ props.row.last_invoice.amount | currency }} {{ props.row.last_invoice.currency }}
         </template>
@@ -9,11 +12,11 @@
           {{ props.row.created_at | moment('MMM D, YYYY') }}
         </template>
         <template slot="due_next" slot-scope="props">
-          {{ props.row.due_next | moment('MMM D, YYYY') }}
+          {{ props.row.due_next !== '0000-00-00' ? (props.row.due_next | moment('MMM D, YYYY')) : '-' }}
         </template>
         <template slot="actions" slot-scope="props">
           <router-link class="button" :to="{ name: 'order', params: { id: props.row.id } }">
-            View Details
+            View
           </router-link>
 
           <div class="inline" v-if="props.row.last_invoice && props.row.last_invoice.status === 'UNPAID'">
@@ -65,26 +68,26 @@ export default {
     },
     setColumns () {
       this.columns = (this.type === 'simple')
-        ? ['id', 'created_at', 'total']
-        : ['id', 'created_at', 'due_next', 'status', 'total', 'actions']
+        ? ['id', 'status', 'actions']
+        : ['id', 'status', 'created_at', 'due_next', 'total', 'actions']
     },
     setSortableColumns () {
       this.sortableColumns = (this.type === 'simple')
-        ? ['id', 'created_at', 'total']
+        ? ['id', 'status']
         : ['id', 'created_at', 'due_next', 'status', 'total']
     },
     setHeadings () {
       this.headings = (this.type === 'simple')
         ? {
-          id: 'ID',
-          created_at: 'Created',
-          total: 'Total'
+          id: 'Order ID',
+          stauts: 'Status',
+          actions: ''
         } : {
-          id: 'ID',
+          id: 'Order ID',
           created_at: 'Created',
           status: 'Status',
-          actions: 'Actions',
-          due_next: 'Next Date Due'
+          due_next: 'Next Date Due',
+          actions: ''
         }
     },
     setTable () {
@@ -99,7 +102,7 @@ export default {
           filterPlaceholder: 'Search orders',
           limit: 'Records:',
           page: 'Page:',
-          noResults: 'No matching records',
+          noResults: 'No matching orders',
           filterBy: 'Filter by {column}',
           loading: 'Loading...',
           defaultOption: 'Select {column}',
@@ -108,7 +111,10 @@ export default {
         perPage: 5,
         headings: this.headings,
         sortable: this.sortableColumns,
-        filterable: null,
+        filterable: false,
+        columnsClasses: {
+          actions: 'table-actions'
+        },
         customSorting: {
           total: ascending => {
             return function (a, b) {
