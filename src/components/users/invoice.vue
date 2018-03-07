@@ -2,11 +2,11 @@
   <div>
     <top title="View Invoice">
       <div v-if="invoice.status === 'UNPAID'">
-        <router-link class="button" :to="{ name: 'paypal', params: { invoiceId: invoice.id } }">
+        <router-link class="button button-success" :to="{ name: 'paypal', params: { invoiceId: invoice.id } }">
           Pay with Paypal
         </router-link>
 
-        <router-link class="button" :to="{ name: 'stripe', params: { invoiceId: invoice.id } }">
+        <router-link class="button button-success" :to="{ name: 'stripe', params: { invoiceId: invoice.id } }">
           Pay with Credit Card
         </router-link>
       </div>
@@ -110,11 +110,11 @@
       </div>
 
       <div v-if="invoice.status === 'UNPAID'">
-        <router-link class="button" :to="{ name: 'paypal', params: { invoiceId: invoice.id } }">
+        <router-link class="button button-success" :to="{ name: 'paypal', params: { invoiceId: invoice.id } }">
           Pay with Paypal
         </router-link>
 
-        <router-link class="button" :to="{ name: 'stripe', params: { invoiceId: invoice.id } }">
+        <router-link class="button button-success" :to="{ name: 'stripe', params: { invoiceId: invoice.id } }">
           Pay with Credit Card
         </router-link>
       </div>

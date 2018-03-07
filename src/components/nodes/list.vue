@@ -28,8 +28,15 @@
         <div class="right">
           <div v-if="nodes" class="datatable">
             <v-client-table :data="nodes" :columns="columns" :options="options">
-              <template slot="created_at" slot-scope="props">
-                {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
+              <template slot="name" slot-scope="props">
+                <div>{{ props.row.friendly_name }}</div>
+                <small>{{ props.row.ip }}</small>
+              </template>
+
+              <template slot="services" slot-scope="props">
+                <div v-for="service in props.row.services" :key="service.id">
+                  {{ service.type }}
+                </div>
               </template>
 
               <template slot="status" slot-scope="props">
@@ -81,9 +88,9 @@ export default {
       selectedGroup: null,
       nodes: null,
       uncategorizedNodes: [],
-      columns: ['friendly_name', 'ip', 'market_model', 'created_at', 'status', 'actions'],
-      sortableColumns: ['friendly_name', 'ip', 'status', 'market_model', 'created_at'],
-      filterableColumns: ['friendly_name', 'ip', 'status', 'market_model', 'created_at'],
+      columns: ['name', 'market_model', 'services', 'status', 'actions'],
+      sortableColumns: ['name', 'status', 'market_model'],
+      filterableColumns: ['name', 'status', 'market_model'],
       headings: {
         friendly_name: 'Name',
         ip: 'IP Address',

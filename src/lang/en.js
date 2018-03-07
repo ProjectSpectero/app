@@ -1,5 +1,6 @@
 module.exports = {
   lang: 'en',
+
   misc: {
     NOT_FOUND: 'We were unable to find any {type}.',
     LOADING: 'Loading, please wait ...',
@@ -55,7 +56,25 @@ module.exports = {
     PAYPAL_CONNECT_HEADER: 'Connecting to Paypal',
     PAYPAL_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Paypal One Touch™...',
     PAYMENT_INVALID_PARAMETERS: 'The payment data you have supplied seems to be wrong. Please contact us for more details.',
-    PAYMENT_PROCESSOR_NOT_ENABLED: 'This payment processor is not enabled. Please contact us for more details.'
+    PAYMENT_PROCESSOR_NOT_ENABLED: 'This payment processor is not enabled. Please contact us for more details.',
+
+    INVOICE_STATUS: {
+      PAID: 'Paid',
+      UNPAID: 'Unpaid',
+      PARTIALLY_REFUNDED: 'Partially Refunded',
+      REFUNDED: 'Refunded',
+      CANCELLED: 'Cancelled'
+    }
+  },
+
+  orders: {
+    ORDER_STATUS: {
+      PENDING: 'Pending',
+      AUTOMATED_FRAUD_CHECK: 'Pending Fraud Check',
+      MANUAL_FRAUD_CHECK: 'Pending Fraud Check',
+      ACTIVE: 'Active',
+      CANCELLED: 'Cancelled'
+    }
   },
 
   services: {
@@ -79,7 +98,7 @@ module.exports = {
     LOGIN_BUTTON: 'Log In',
     REGISTER_BUTTON: 'Register',
     CLEAR_CREDIT_CARD: 'Your {card} card is saved and will be used for future payments. If you\'d like, you can remove it now.',
-    NO_CREDIT_CARD: 'You don\'t have any credit card associated with Spectero.',
+    NO_CREDIT_CARD: 'You don\'t have any credit cards saved.',
     CHANGE_EMAIL_DIALOG: 'You have changed your email from {oldEmail} to {newEmail}. If your new email is invalid, we will not be able to reach you and your account will be locked. Are you sure you want to change your email to {newEmail} and logout?'
   }
 }

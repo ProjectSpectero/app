@@ -1,5 +1,5 @@
 <template>
-  <div class="title-bar">
+  <div class="top">
     <h1 class="no-pad">{{ title }}</h1>
     <div>
       <slot></slot>
@@ -16,14 +16,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.title-bar {
+.top {
   width: 100%;
-  height: 70px;
+  height: 38px + $pad; // Matches button height + padding
+  padding-bottom: $pad;
+  margin-bottom: $pad;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 $pad;
-  background: $white;
   border-bottom: 1px solid $color-border;
 
   h1 {
@@ -31,6 +31,9 @@ export default {
     font-size: 26px;
     font-weight: $font-semi;
     line-height: 100%;
+  }
+  .button {
+    margin-left: 4px;
   }
 }
 </style>

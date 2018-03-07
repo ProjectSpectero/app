@@ -6,8 +6,7 @@
     <div v-if="!loading">
       <edit-form v-if="activeTab === 1" :group="group"></edit-form>
       <list-orders v-else-if="activeTab === 2" :orders="orders"></list-orders>
-      <list-ips v-else-if="activeTab === 3" :ips="ips"></list-ips>
-      <list-services v-else :services="services"></list-services>
+      <list-ips v-else :ips="ips"></list-ips>
     </div>
     <loading v-else></loading>
   </div>
@@ -20,7 +19,6 @@ import loading from '@/components/common/loading'
 import tabs from './tabs'
 import editForm from './editGroupForm'
 import listOrders from './listOrders'
-import listServices from './listServices'
 import listIps from './listIps'
 
 export default {
@@ -35,8 +33,6 @@ export default {
       ],
       activeTab: 1,
       group: null,
-      ips: [],
-      services: [],
       orders: [],
       loading: true
     }
@@ -102,7 +98,6 @@ export default {
     tabs,
     editForm,
     listOrders,
-    listServices,
     listIps
   }
 }

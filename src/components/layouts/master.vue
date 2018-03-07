@@ -31,7 +31,11 @@ export default {
   min-width: fit-content;
 }
 .content {
-  position: relative;
+  height: 100vh;
+  padding: $pad;
+  overflow: auto;
   flex: 1;
+  padding-bottom: 0;
+  position: relative;
 }
 </style>

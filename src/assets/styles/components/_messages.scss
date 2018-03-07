@@ -25,3 +25,15 @@
     background-color: $color-warning;
   }
 }
+
+.badge {
+  display: inline-block;
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: $font-bold;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: $color-info;
+  border-radius: 50px;
+}

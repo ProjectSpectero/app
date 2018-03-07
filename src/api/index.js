@@ -2,6 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import { getCookie, removeCookie } from 'tiny-cookie'
 import Err from '@/modules/error.js'
+import router from '../router'
 
 /**
  * API wrapper for making various calls from sub-wrappers.
@@ -65,12 +66,11 @@ async function API (method, path, data, success, failed) {
 
     let error = e.response
 
-    // Remove authorization cookie if 401 returned by any API call
+    // Remove authorization cookie if 401 returned by any API call. Redirects to
+    // a custom 401 error page that handles the process.
     if (error.status === 401 && getCookie(process.env.COOKIE_NAME) !== null) {
       removeCookie(process.env.COOKIE_NAME)
-      window.location.href = '/'
-    } else if (error.status === 404) {
-      // window.location.href = '/404'
+      router.push({ name: 'login', query: { redirect: router.history.current.name } })
     }
 
     let err = new Err(error.data.errors)

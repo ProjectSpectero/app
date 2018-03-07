@@ -2,6 +2,7 @@
   <div>
     <top title="Dashboard"></top>
     <div class="orders">
+      <h2>Orders</h2>
       <orders-list type="simple"></orders-list>
     </div>
   </div>
@@ -21,3 +22,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.orders {
+  width: 50%;
+}
+</style>

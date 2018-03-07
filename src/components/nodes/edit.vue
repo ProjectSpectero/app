@@ -6,8 +6,7 @@
     <div v-if="!loading">
       <edit-form v-if="activeTab === 1" :node="node"></edit-form>
       <list-orders v-else-if="activeTab === 2" :orders="orders"></list-orders>
-      <list-ips v-else-if="activeTab === 3" :ips="ips"></list-ips>
-      <list-services v-else :services="services"></list-services>
+      <list-ips v-else :ips="ips"></list-ips>
     </div>
     <loading v-else></loading>
   </div>
@@ -21,7 +20,6 @@ import loading from '@/components/common/loading'
 import tabs from './tabs'
 import editForm from './editForm'
 import listOrders from './listOrders'
-import listServices from './listServices'
 import listIps from './listIps'
 
 export default {
@@ -33,15 +31,13 @@ export default {
       tabs: [
         { id: 1, label: 'General details', hash: '#details' },
         { id: 2, label: 'Orders', hash: '#orders' },
-        { id: 3, label: 'IP Addresses', hash: '#ips' },
-        { id: 4, label: 'Services', hash: '#services' }
+        { id: 3, label: 'IP Addresses', hash: '#ips' }
       ],
       loading: true,
       node: null,
       activeTab: 1,
       group: null,
       ips: [],
-      services: [],
       orders: []
     }
   },
@@ -136,7 +132,6 @@ export default {
     tabs,
     editForm,
     listOrders,
-    listServices,
     listIps
   }
 }
