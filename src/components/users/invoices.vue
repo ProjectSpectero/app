@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="tableData">
     <top title="Invoices"></top>
     <div class="content-split">
       <div class="split-item split-list filters-side">
@@ -59,7 +59,7 @@ export default {
   },
   data () {
     return {
-      tableData: [],
+      tableData: null,
       columns: ['id', 'status', 'due_date', 'amount', 'actions'],
       sortableColumns: ['id', 'amount', 'status', 'due_date'],
       filterableColumns: ['id', 'amount', 'status', 'due_date'],

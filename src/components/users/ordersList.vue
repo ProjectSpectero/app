@@ -42,7 +42,7 @@ export default {
   },
   data () {
     return {
-      tableData: [],
+      tableData: null,
       columns: ['created_at'],
       sortableColumns: ['created_at'],
       filterableColumns: null,
@@ -101,7 +101,6 @@ export default {
           filter: '',
           filterPlaceholder: 'Search orders',
           limit: 'Records:',
-          page: 'Page:',
           noResults: 'No matching orders',
           filterBy: 'Filter by {column}',
           loading: 'Loading...',
@@ -111,7 +110,7 @@ export default {
         perPage: 5,
         headings: this.headings,
         sortable: this.sortableColumns,
-        filterable: false,
+        filterable: (this.type !== 'simple'),
         columnsClasses: {
           actions: 'table-actions'
         },

@@ -18,7 +18,7 @@
             <small>({{ group.nodes.length }} nodes)</small>
           </div>
 
-          <div v-if="uncategorizedNodes.length" @click="selectUncategorizedNodes" :class="selectedGroup === 0 ? 'active' : ''">
+          <div v-if="uncategorizedNodes && uncategorizedNodes.length" @click="selectUncategorizedNodes" :class="selectedGroup === 0 ? 'active' : ''">
             <div class="node-group">
               <div class="group-name">Uncategorized</div>
             </div>
@@ -87,7 +87,7 @@ export default {
       groups: null,
       selectedGroup: null,
       nodes: null,
-      uncategorizedNodes: [],
+      uncategorizedNodes: null,
       columns: ['name', 'market_model', 'services', 'status', 'actions'],
       sortableColumns: ['name', 'status', 'market_model'],
       filterableColumns: ['name', 'status', 'market_model'],
@@ -102,8 +102,10 @@ export default {
       options: {}
     }
   },
-  created () {
-    this.fetchNodes()
+  async created () {
+    await this.fetchNodes()
+    await this.fetchUncategorized()
+
     this.options = {
       skin: '',
       texts: {
@@ -175,27 +177,36 @@ export default {
     },
     fetchNodes () {
       nodeAPI.groups({
-        success: response => {
+        success: async response => {
           if (response.data.result) {
             this.groups = response.data.result
 
             // Select first node group
-            if (this.groups.length) {
-              this.selectGroup(this.groups[0])
-            }
-
-            // Load uncategorized nodes and add them to our list
-            nodeAPI.uncategorizedNodes({
-              success: response => {
-                this.uncategorizedNodes = response.data.result
-                this.loading = false
-              },
-              fail: (e) => {
-                console.log(e)
-                // this.error404()
+            for (let g = 0; g < this.groups.length; g++) {
+              if (this.groups[g].nodes && this.groups[g].nodes.length) {
+                this.selectGroup(this.groups[0])
+                console.log('Selected group ', this.groups[0])
+                break
               }
-            })
+            }
           }
+        },
+        fail: (e) => {
+          console.log(e)
+          // this.error404()
+        }
+      })
+    },
+    fetchUncategorized () {
+      nodeAPI.uncategorizedNodes({
+        success: response => {
+          this.uncategorizedNodes = response.data.result
+
+          if (!this.nodes && this.uncategorizedNodes.length) {
+            this.selectUncategorizedNodes()
+          }
+
+          this.loading = false
         },
         fail: (e) => {
           console.log(e)
