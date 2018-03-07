@@ -66,11 +66,16 @@ async function API (method, path, data, success, failed) {
 
     let error = e.response
 
-    // Remove authorization cookie if 401 returned by any API call. Redirects to
-    // a custom 401 error page that handles the process.
+    // Remove authorization cookie if 401 returned by any API call.
     if (error.status === 401 && getCookie(process.env.COOKIE_NAME) !== null) {
       removeCookie(process.env.COOKIE_NAME)
-      router.push({ name: 'login', query: { redirect: router.history.current.name } })
+
+      // Force the user to the login page with or without a redirect route param
+      if (router.history.current.name) {
+        router.push({ name: 'login', query: { redirect: router.history.current.name } })
+      } else {
+        router.push({ name: 'login' })
+      }
     }
 
     let err = new Err(error.data.errors)
