@@ -14,9 +14,6 @@ import defaultRoutes from './default'
 Vue.use(Router)
 Vue.use(Meta)
 
-// Meta keys for router:
-// auth:     redirect user when not logged in (login required from user to access route)
-// antiAuth: redirect user when already authenticated (route for non-logged in users only)
 const router = new Router({
   mode: 'history',
   saveScrollPosition: true,
@@ -46,6 +43,7 @@ router.beforeEach((to, from, next) => {
         // Force the same behavior as logging out (remove cookie + clean store)
         // for scenarios where our cookie has expired
         store.dispatch('auth/logout').then(loggedIn => {
+          console.log('Is logged out, redirecting to', to)
           next({ name: 'login', query: { redirect: to.fullPath } })
         })
       }

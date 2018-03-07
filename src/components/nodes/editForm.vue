@@ -49,6 +49,8 @@
 <script>
 import nodeAPI from '@/api/node.js'
 
+// Node group should be sent separately (See 'Assign Node To Group')
+
 export default {
   props: {
     node: Object

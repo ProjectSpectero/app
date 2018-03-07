@@ -108,7 +108,7 @@ export default {
         perPage: 5,
         headings: this.headings,
         sortable: this.sortableColumns,
-        filterable: null,
+        filterable: false,
         customSorting: {
           total: ascending => {
             return function (a, b) {
