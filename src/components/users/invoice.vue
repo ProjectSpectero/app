@@ -1,6 +1,16 @@
 <template>
   <div>
-    <top title="View Invoice"></top>
+    <top title="View Invoice">
+      <div v-if="invoice.status === 'UNPAID'">
+        <router-link class="button" :to="{ name: 'paypal', params: { invoiceId: invoice.id } }">
+          Pay with Paypal
+        </router-link>
+
+        <router-link class="button" :to="{ name: 'stripe', params: { invoiceId: invoice.id } }">
+          Pay with Credit Card
+        </router-link>
+      </div>
+    </top>
     <div v-if="!loading" class="invoice">
       <div class="header">
         <div class="logo-container">
