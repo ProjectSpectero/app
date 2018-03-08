@@ -17,10 +17,25 @@
         </router-link>
       </div>
       <div class="split-item split-details">
-        <div v-if="currentTab === 'profile'"><tab-profile :user="user" @submitUserUpdate="submitUserUpdate"></tab-profile></div>
-        <div v-if="currentTab === 'security'"><tab-security :user="user"></tab-security></div>
-        <div v-if="currentTab === 'payment'"><tab-payment :user="user" @submitUserUpdate="submitUserUpdate"></tab-payment></div>
-        <div v-if="currentTab === 'keys'"><tab-keys :user="user"></tab-keys></div>
+        <div v-if="currentTab === 'profile'"><tab-profile
+          :user="user"
+          :formDisable="formDisable"
+          @submitUserUpdate="submitUserUpdate">
+        </tab-profile></div>
+
+        <div v-if="currentTab === 'security'"><tab-security
+          :user="user">
+        </tab-security></div>
+
+        <div v-if="currentTab === 'payment'"><tab-payment
+          :user="user"
+          :formDisable="formDisable"
+          @submitUserUpdate="submitUserUpdate">
+        </tab-payment></div>
+
+        <div v-if="currentTab === 'keys'"><tab-keys
+          :user="user">
+        </tab-keys></div>
       </div>
     </div>
   </div>
@@ -50,7 +65,6 @@ export default {
     return {
       formError: null,
       formDisable: false,
-      changedEmail: false,
       form: null,
       nodeKey: null
     }
@@ -64,9 +78,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user'
-      // rules: 'users/editRules',
-      // countries: 'settings/countries'
+      user: 'auth/user',
+      countries: 'settings/countries'
     }),
     currentTab: function () {
       return this.$route.params.tab
@@ -88,55 +101,25 @@ export default {
       }
     },
     submitUserUpdate (data) {
-      console.warn(`SUBMIT USER UPDATE CALLED WITH DATA `, data)
+      this.processForm(data)
     },
-    regenerateNodeKey () {
-      userAPI.regenerateNodeKey({
-        success: response => {
-          this.nodeKey = response.data.result.node_key
-        },
-        fail: error => {
-          console.log('Unable to regenerate node key', error)
-        }
-      })
-    },
-    submit () {
-      this.$validator.validateAll().then((result) => {
-        if (!result) {
-          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
-        } else {
-          if (this.userAPI.email === this.form.email) {
-            this.changedEmail = false
-            this.processForm()
-          } else if (this.userAPI.email !== this.form.email &&
-            confirm(this.$i18n.t('users.CHANGE_EMAIL_DIALOG', { oldEmail: this.userAPI.email, newEmail: this.form.email }))) {
-            this.changedEmail = true
-            this.processForm()
-          }
-        }
-      })
-    },
-    logMeOut () {
-      this.logout().then(() => {
-        this.$router.push({ name: 'login' })
-      })
-    },
-    processForm () {
-      const country = this.countries.find(c => c.name === this.form.country)
-      let data = JSON.parse(JSON.stringify(this.form))
-
+    // regenerateNodeKey () {
+    //   userAPI.regenerateNodeKey({
+    //     success: response => {
+    //       this.nodeKey = response.data.result.node_key
+    //     },
+    //     fail: error => {
+    //       console.log('Unable to regenerate node key', error)
+    //     }
+    //   })
+    // },
+    processForm (data) {
       // Remove empty fields from the list
       for (var key in data) {
         if (data[key] === null || data[key] === '') {
           delete data[key]
         }
       }
-
-      // Format special fields
-      data.id = this.userAPI.id
-      data.country = country.code
-
-      this.formDisable = true
 
       userAPI.edit({
         data: data,
@@ -151,11 +134,6 @@ export default {
     dealWithSuccess () {
       this.$toasted.show('Your profile has been updated successfully!')
       this.formDisable = false
-
-      // Changing the email requires re-validation + logging in again
-      if (this.changedEmail) {
-        this.logMeOut()
-      }
     },
     dealWithError (err) {
       this.formDisable = false

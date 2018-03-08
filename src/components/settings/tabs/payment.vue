@@ -155,7 +155,7 @@
             </div>
             <div class="col">
               <select v-model="form.country">
-                <option v-for="country in countries" :key="country.code">
+                <option v-for="country in countries" :key="country.code" :value="country.code">
                   {{ country.name }}
                 </option>
               </select>
@@ -205,12 +205,12 @@ export default {
   },
   props: {
     user: Object,
+    formDisable: Boolean,
     submitUserUpdate: Function
   },
   data () {
     return {
       formError: null,
-      formDisable: null,
       form: null
     }
   },
@@ -230,10 +230,7 @@ export default {
 
     // Default country: USA
     if (!this.form.country) {
-      this.form.country = this.countries[0].name
-    } else {
-      let currentCountry = this.countries.find(c => c.code === this.form.country)
-      this.form.country = currentCountry.name
+      this.form.country = this.countries[0].code
     }
   },
   computed: {
