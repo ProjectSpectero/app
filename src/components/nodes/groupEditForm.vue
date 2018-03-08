@@ -38,7 +38,7 @@
             :disabled="formDisable"
             v-validate="rules['price']"
             data-vv-as="price">
-            <p>{{ $i18n.t('nodes.GROUP_PRICE_AVAILABILITY', { model1: marketModels[1], model2: marketModels[2] }) }}</p>
+            <p v-html="$i18n.t('nodes.GROUP_PRICE_AVAILABILITY', { model1: marketModels[1], model2: marketModels[2] })"></p>
 
           <span v-show="errors.has('price')" class="input-error-message">
             {{ errors.first('price') }}
