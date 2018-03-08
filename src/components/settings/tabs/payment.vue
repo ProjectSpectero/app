@@ -154,8 +154,8 @@
               </span>
             </div>
             <div class="col">
-              <select v-model="form.country">
-                <option v-for="country in countries" :key="country.code">
+              <select v-model="form.country" :disabled="formDisable">
+                <option v-for="country in countries" :key="country.code" :value="country.code">
                   {{ country.name }}
                 </option>
               </select>
@@ -204,13 +204,25 @@ export default {
     paymentMethods
   },
   props: {
-    user: Object
+    user: Object,
+    formDisable: Boolean,
+    submitUserUpdate: Function
   },
   data () {
     return {
       formError: null,
-      formDisable: null,
       form: null
+    }
+  },
+  methods: {
+    submit () {
+      this.$validator.validateAll().then((result) => {
+        if (!result) {
+          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
+        } else {
+          this.$emit('submitUserUpdate', this.form)
+        }
+      })
     }
   },
   created () {
@@ -218,10 +230,7 @@ export default {
 
     // Default country: USA
     if (!this.form.country) {
-      this.form.country = this.countries[0].name
-    } else {
-      let currentCountry = this.countries.find(c => c.code === this.form.country)
-      this.form.country = currentCountry.name
+      this.form.country = this.countries[0].code
     }
   },
   computed: {
