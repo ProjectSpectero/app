@@ -154,7 +154,7 @@
               </span>
             </div>
             <div class="col">
-              <select v-model="form.country">
+              <select v-model="form.country" :disabled="formDisable">
                 <option v-for="country in countries" :key="country.code" :value="country.code">
                   {{ country.name }}
                 </option>

@@ -114,6 +114,8 @@ export default {
     //   })
     // },
     processForm (data) {
+      this.formDisable = true
+
       // Remove empty fields from the list
       for (var key in data) {
         if (data[key] === null || data[key] === '') {
