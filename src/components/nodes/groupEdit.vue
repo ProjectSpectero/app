@@ -5,8 +5,7 @@
 
     <div v-if="!loading">
       <edit-form v-if="activeTab === 1" :group="group"></edit-form>
-      <list-orders v-else-if="activeTab === 2" :orders="orders"></list-orders>
-      <list-ips v-else :ips="ips"></list-ips>
+      <list-orders v-else :orders="orders"></list-orders>
     </div>
     <loading v-else></loading>
   </div>
@@ -19,7 +18,6 @@ import loading from '@/components/common/loading'
 import tabs from './tabs'
 import editForm from './groupEditForm'
 import listOrders from './listOrders'
-import listIps from './listIps'
 
 export default {
   metaInfo: {
@@ -53,9 +51,7 @@ export default {
             await this.fetchOrders(this.group.id)
 
             // Chech if the url has any anchors and load it immediately
-            this.parseTab()
-
-            this.loading = false
+            await this.parseTab()
           } else {
             this.error404()
           }
@@ -74,7 +70,7 @@ export default {
     },
     switchTab (data) {
       this.activeTab = data.id
-      this.$router.push({ name: 'group', params: { id: data.id }, hash: data.hash })
+      this.$router.push({ name: 'group', params: { id: this.group.id }, hash: data.hash })
     },
     fetchOrders (id) {
       nodeAPI.groupOrders({
@@ -84,6 +80,7 @@ export default {
         success: response => {
           if (response.data.result) {
             this.orders = response.data.result
+            this.loading = false
           }
         },
         fail: (e) => {
@@ -97,8 +94,7 @@ export default {
     loading,
     tabs,
     editForm,
-    listOrders,
-    listIps
+    listOrders
   }
 }
 </script>
