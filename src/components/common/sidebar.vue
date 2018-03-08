@@ -21,10 +21,7 @@
         <h5>Account</h5>
         <ul>
           <li><router-link :to="{ name: 'settings' }"><span class="icon-sliders"></span> Settings</router-link></li>
-
-          <li @click="logMeOut">
-            <a href="#"><span class="icon-user-x"></span> Logout</a>
-          </li>
+          <li><a href="#logout" @click="logMeOut"><span class="icon-user-x"></span> Logout</a></li>
         </ul>
       </section>
     </div>

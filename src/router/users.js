@@ -1,9 +1,7 @@
-// Authentication routes
-
-import Settings from '@/components/users/settings'
 import Dashboard from '@/components/users/dashboard'
+import Settings from '@/components/settings/settings'
 
 export default [
-  { path: '/user/settings', name: 'settings', component: Settings, meta: { auth: true } },
-  { path: '/', name: 'dashboard', component: Dashboard, meta: { auth: true } }
+  { path: '/', name: 'dashboard', component: Dashboard, meta: { auth: true } },
+  { path: '/settings/:tab?', name: 'settings', component: Settings, meta: { auth: true } }
 ]

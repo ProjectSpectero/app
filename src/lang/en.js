@@ -97,8 +97,6 @@ module.exports = {
   users: {
     LOGIN_BUTTON: 'Log In',
     REGISTER_BUTTON: 'Register',
-    CLEAR_CREDIT_CARD: 'Your {card} card is saved and will be used for future payments. If you\'d like, you can remove it now.',
-    NO_CREDIT_CARD: 'You don\'t have any credit cards saved.',
-    CHANGE_EMAIL_DIALOG: 'You have changed your email from {oldEmail} to {newEmail}. If your new email is invalid, we will not be able to reach you and your account will be locked. Are you sure you want to change your email to {newEmail} and logout?'
+    NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.'
   }
 }
