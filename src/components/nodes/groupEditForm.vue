@@ -5,23 +5,54 @@
 
       <h2>General Information</h2>
 
-      <div class="form-input">
-        <div class="label"><label for="friendly_name">Friendly Name</label></div>
-        <input
-          type="text"
-          v-model="form.friendly_name"
-          name="friendly_name"
-          id="friendly_name"
-          placeholder="Please add a name for this node group"
-          class="input max-width"
-          :class="{'input-error': errors.has('friendly_name')}"
-          :disabled="formDisable"
-          v-validate="rules['friendly_name']"
-          data-vv-as="friendly_name">
+      <div>
+        <div class="form-input">
+          <div class="label"><label for="friendly_name">Friendly Name</label></div>
+          <input
+            type="text"
+            v-model="form.friendly_name"
+            name="friendly_name"
+            id="friendly_name"
+            placeholder="Please add a name for this node group"
+            class="input max-width"
+            :class="{'input-error': errors.has('friendly_name')}"
+            :disabled="formDisable"
+            v-validate="rules['friendly_name']"
+            data-vv-as="friendly_name">
 
-        <span v-show="errors.has('friendly_name')" class="input-error-message">
-          {{ errors.first('friendly_name') }}
-        </span>
+          <span v-show="errors.has('friendly_name')" class="input-error-message">
+            {{ errors.first('friendly_name') }}
+          </span>
+        </div>
+
+        <div class="form-input" v-if="marketModels">
+          <div class="label"><label for="friendly_name">Price</label></div>
+          <input
+            type="number"
+            v-model="form.price"
+            name="price"
+            id="price"
+            placeholder="Price"
+            class="input max-width"
+            :class="{'input-error': errors.has('price')}"
+            :disabled="formDisable"
+            v-validate="rules['price']"
+            data-vv-as="price">
+            <p>{{ $i18n.t('nodes.GROUP_PRICE_AVAILABILITY', { model1: marketModels[1], model2: marketModels[2] }) }}</p>
+
+          <span v-show="errors.has('price')" class="input-error-message">
+            {{ errors.first('price') }}
+          </span>
+        </div>
+
+        <div class="form-input" v-if="marketModels">
+          <div class="label"><label :for="form.market_model">Market Model</label></div>
+          <select v-model="form.market_model">
+            <option v-for="model in marketModels" :key="model" :value="model">
+              {{ model }}
+            </option>
+          </select>
+        </div>
       </div>
     </div>
 
@@ -42,17 +73,31 @@ export default {
     return {
       formError: null,
       formDisable: false,
+      formFields: null,
       form: null,
-      loading: true,
+      marketModels: [
+        'UNLISTED',
+        'LISTED_SHARED',
+        'LISTED_DEDICATED'
+      ],
       rules: {
         friendly_name: {
           max: 50
+        },
+        market_model: {
+          in: this.marketModels
         }
       }
     }
   },
   created () {
     this.form = JSON.parse(JSON.stringify(this.group))
+
+    this.formFields = [
+      { name: 'friendly_name', label: 'Friendly name', placeholder: 'Name for this node', type: 'text' },
+      { name: 'market_model', label: 'Market Model', placeholder: 'Market Model', type: 'select', object: this.marketModels, objectKey: null },
+      { name: 'price', label: 'Friendly name', placeholder: 'Price', type: 'number' }
+    ]
   },
   methods: {
     async submit () {
@@ -68,9 +113,9 @@ export default {
             this.error404()
           }
         },
-        fail: (e) => {
-          console.log(e)
-          // this.error404()
+        fail: error => {
+          this.$toasted.error(this.errorAPI(error, 'nodes'))
+          this.formDisable = false
         }
       })
     }

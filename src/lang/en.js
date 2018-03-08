@@ -93,7 +93,8 @@ module.exports = {
     NODE_VERIFY_SUCCESS: 'Your node {node} is now queued for verification. We\'ll send you an email as soon as this is finished.',
     GROUP_UPDATE_SUCCESS: 'Node group updated successfully!',
     UPDATE_SUCCESS: 'Node updated successfully!',
-    HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!'
+    HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!',
+    GROUP_PRICE_AVAILABILITY: 'Note: Price will only be used for {model1} and {model2} market models.'
   },
 
   users: {
