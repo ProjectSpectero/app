@@ -1,55 +1,65 @@
 <template>
   <div>
-    <top title="Edit Node"></top>
-    <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
-
     <div v-if="!loading">
-      <edit-form v-if="activeTab === 1" :node="node"></edit-form>
-      <list-orders v-else-if="activeTab === 2" :orders="orders"></list-orders>
-      <list-ips v-else :ips="ips"></list-ips>
+      <component :is="component" :node="node" :group="group" :tabs="tabs" :action="$route.params.action" />
     </div>
     <loading v-else></loading>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import nodeAPI from '@/api/node.js'
-import top from '@/components/common/top'
 import loading from '@/components/common/loading'
-import tabs from './tabs'
-import editForm from './editForm'
-import listOrders from './listOrders'
-import listIps from './listIps'
+import nodeEdit from './nodeEdit'
+import nodeView from './nodeView'
 
 export default {
   metaInfo: {
-    title: 'Edit Node'
+    title: this.title
   },
   data () {
     return {
+      loading: true,
+      component: null,
+      node: null,
+      group: null,
       tabs: [
         { id: 1, label: 'General details', hash: '#details' },
         { id: 2, label: 'Orders', hash: '#orders' },
         { id: 3, label: 'IP Addresses', hash: '#ips' }
-      ],
-      loading: true,
-      node: null,
-      activeTab: 1,
-      group: null,
-      ips: [],
-      orders: []
+      ]
     }
   },
   created () {
+    this.setType()
     this.fetchNode()
   },
   computed: {
-    ...mapGetters({
-      user: 'auth/user'
-    })
+    title () {
+      return (this.$route.params.action === 'edit') ? 'Edit node' : 'View node'
+    }
   },
   methods: {
+    setType () {
+      this.component = (this.$route.params.action === 'edit') ? 'nodeEdit' : 'nodeView'
+    },
+    async fetchGroup (groupId) {
+      await nodeAPI.group({
+        data: {
+          id: groupId
+        },
+        success: response => {
+          if (response.data.result) {
+            this.group = response.data.result
+            this.loading = false
+          }
+        },
+        fail: (e) => {
+          console.log(e)
+          // this.error404()
+        }
+      })
+    },
     async fetchNode () {
       await nodeAPI.node({
         data: {
@@ -94,45 +104,16 @@ export default {
           console.log(e)
         }
       })
-    },
-    parseTab () {
-      if (window.location.hash) {
-        const activeTab = this.tabs.find(t => t.hash === window.location.hash)
-
-        if (activeTab) {
-          this.switchTab(activeTab.id, activeTab.hash)
-        }
-      }
-    },
-    switchTab (data) {
-      this.activeTab = data.id
-      this.$router.push({ name: 'node', params: { id: data.id }, hash: data.hash })
-    },
-    async fetchGroup (groupId) {
-      await nodeAPI.group({
-        data: {
-          id: groupId
-        },
-        success: response => {
-          if (response.data.result) {
-            this.group = response.data.result
-            this.loading = false
-          }
-        },
-        fail: (e) => {
-          console.log(e)
-          // this.error404()
-        }
-      })
     }
   },
   components: {
-    top,
-    loading,
-    tabs,
-    editForm,
-    listOrders,
-    listIps
+    nodeEdit,
+    nodeView,
+    loading
   }
 }
 </script>
+
+<style>
+
+</style>
