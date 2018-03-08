@@ -17,7 +17,7 @@ import nodeAPI from '@/api/node.js'
 import top from '@/components/common/top'
 import loading from '@/components/common/loading'
 import tabs from './tabs'
-import editForm from './editGroupForm'
+import editForm from './groupEditForm'
 import listOrders from './listOrders'
 import listIps from './listIps'
 

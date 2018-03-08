@@ -51,7 +51,11 @@
               </template>
 
               <template slot="actions" slot-scope="props">
-                <router-link class="button" :to="{ name: 'node', params: { id: props.row.id } }">
+                <router-link class="button" :to="{ name: 'node', params: { action: 'view', id: props.row.id } }">
+                  View
+                </router-link>
+
+                <router-link class="button" :to="{ name: 'node', params: { action: 'edit', id: props.row.id } }">
                   Edit
                 </router-link>
 
@@ -120,7 +124,10 @@ export default {
         defaultOption: 'Select {column}',
         columns: 'Columns'
       },
-      perPage: 10,
+      columnsClasses: {
+        actions: 'table-actions'
+      },
+      perPage: 100,
       headings: this.headings,
       sortable: this.sortableColumns,
       filterable: this.filterableColumns

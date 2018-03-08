@@ -91,7 +91,9 @@ module.exports = {
     GROUP_DELETE_SUCCESS: 'Group removed successfully!',
     DELETE_ERROR: 'An error ocurred while trying to delete your node. Please try again later.',
     NODE_VERIFY_SUCCESS: 'Your node {node} is now queued for verification. We\'ll send you an email as soon as this is finished.',
-    GROUP_UPDATE_SUCCESS: 'Node group updated successfully!'
+    GROUP_UPDATE_SUCCESS: 'Node group updated successfully!',
+    UPDATE_SUCCESS: 'Node updated successfully!',
+    HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!'
   },
 
   users: {

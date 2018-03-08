@@ -8,7 +8,7 @@
       <div v-for="field in formFields" :key="field.name">
         <template v-if="field.type === 'select'">
           <div class="form-input" v-if="field.object">
-            <div class="label"><label :for="field.name">Node Group</label></div>
+            <div class="label"><label :for="field.name">{{ field.label }}</label></div>
             <select v-model="form[field.name]">
               <option v-for="object in field.object" :key="object.id" :value="field.objectKey ? object[field.objectKey] : object">
                 <span v-if="field.objectKey">{{ object[field.objectKey] }}</span>
@@ -79,6 +79,12 @@ export default {
         city: {
           max: 255
         },
+        protocols: {
+          in: this.protocols
+        },
+        market_model: {
+          in: this.marketModels
+        },
         access_token: {
           max: 255,
           regex: /\s*:\s*/
@@ -103,6 +109,7 @@ export default {
       { name: 'city', label: 'City', placeholder: 'City', type: 'text' },
       { name: 'access_token', label: 'Access Token', placeholder: 'Add a new access token in the format username:password to update', type: 'text' },
       { name: 'protocol', label: 'Protocol', placeholder: 'Protocol', type: 'select', object: this.protocols, objectKey: null },
+      { name: 'market_model', label: 'Market Model', placeholder: 'Market Model', type: 'select', object: this.marketModels, objectKey: null },
       { name: 'price', label: 'Friendly name', placeholder: 'Price', type: 'number' },
       { name: 'group_id', label: 'Node Group', type: 'select', object: this.groups, objectKey: 'id' }
     ]
@@ -119,9 +126,9 @@ export default {
             this.$toasted.success(this.$i18n.t('nodes.UPDATE_SUCCESS'))
           }
         },
-        fail: (e) => {
-          console.log(e)
-          // this.error404()
+        fail: error => {
+          this.$toasted.error(this.errorAPI(error, 'nodes'))
+          this.formDisable = false
         }
       })
     },
