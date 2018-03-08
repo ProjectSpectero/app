@@ -204,13 +204,25 @@ export default {
     paymentMethods
   },
   props: {
-    user: Object
+    user: Object,
+    submitUserUpdate: Function
   },
   data () {
     return {
       formError: null,
       formDisable: null,
       form: null
+    }
+  },
+  methods: {
+    submit () {
+      this.$validator.validateAll().then((result) => {
+        if (!result) {
+          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
+        } else {
+          this.$emit('submitUserUpdate', this.form)
+        }
+      })
     }
   },
   created () {

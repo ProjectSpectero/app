@@ -17,9 +17,9 @@
         </router-link>
       </div>
       <div class="split-item split-details">
-        <div v-if="currentTab === 'profile'"><tab-profile :user="user"></tab-profile></div>
+        <div v-if="currentTab === 'profile'"><tab-profile :user="user" @submitUserUpdate="submitUserUpdate"></tab-profile></div>
         <div v-if="currentTab === 'security'"><tab-security :user="user"></tab-security></div>
-        <div v-if="currentTab === 'payment'"><tab-payment :user="user"></tab-payment></div>
+        <div v-if="currentTab === 'payment'"><tab-payment :user="user" @submitUserUpdate="submitUserUpdate"></tab-payment></div>
         <div v-if="currentTab === 'keys'"><tab-keys :user="user"></tab-keys></div>
       </div>
     </div>
@@ -86,6 +86,9 @@ export default {
       if ((allowed.indexOf(this.currentTab) > -1) === false) {
         this.error404()
       }
+    },
+    submitUserUpdate (data) {
+      console.warn(`SUBMIT USER UPDATE CALLED WITH DATA `, data)
     },
     regenerateNodeKey () {
       userAPI.regenerateNodeKey({
