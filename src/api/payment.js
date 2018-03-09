@@ -1,11 +1,10 @@
 import api from './index.js'
 
 export default {
+
   /**
    * Processes a Paypal payment.
-   *
-   * @param {String} stripeToken Stripe token.
-   * @param {Boolean} save Whether to save or not.
+   * @param {Integer} invoiceId The invoice id.
    */
   processPaypal (options) {
     return api('POST', `/payment/paypal/process/${options.data.invoiceId}`, options)
@@ -14,11 +13,19 @@ export default {
   /**
    * Processes a Stripe payment.
    *
-   * @param {String} stripeToken Stripe token.
-   * @param {Boolean} save Whether to save or not.
+   * @param {Integer} invoiceId The invoice id.
    */
   processStripe (options) {
     return api('POST', `/payment/stripe/process/${options.data.invoiceId}`, options)
+  },
+
+  /**
+   * Processes a direct account credit payment.
+   *
+   * @param {Integer} invoiceId The invoice id.
+   */
+  processAccountCredit (options) {
+    return api('POST', `/payment/account_credit/process/${options.data.invoiceId}`, options)
   },
 
   /**
@@ -30,6 +37,15 @@ export default {
    */
   paypalCallback (options) {
     return api('GET', `/payment/paypal/callback?mode=${options.data.mode}&token=${options.data.token}&payerID=${options.data.PayerID}`, options)
+  },
+
+  /**
+   * Creates a new orderless invoice for 'amount' number of credits.
+   *
+   * @param {Integer} amount The amount of credits to add
+   */
+  addCredit (options) {
+    return api('POST', `/credit/invoice`, options)
   },
 
   /**

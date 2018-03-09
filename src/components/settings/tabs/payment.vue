@@ -189,8 +189,8 @@
       <div class="col">
         <h3>Payment Methods</h3>
         <payment-methods :user="user"></payment-methods>
+        <credits :user="user"></credits>
       </div>
-
     </div>
   </div>
 </template>
@@ -198,11 +198,9 @@
 <script>
 import { mapGetters } from 'vuex'
 import paymentMethods from '../components/savedCards'
+import credits from '../components/credits'
 
 export default {
-  components: {
-    paymentMethods
-  },
   props: {
     user: Object,
     formDisable: Boolean,
@@ -212,17 +210,6 @@ export default {
     return {
       formError: null,
       form: null
-    }
-  },
-  methods: {
-    submit () {
-      this.$validator.validateAll().then((result) => {
-        if (!result) {
-          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
-        } else {
-          this.$emit('submitUserUpdate', this.form)
-        }
-      })
     }
   },
   created () {
@@ -238,10 +225,21 @@ export default {
       rules: 'users/editRules',
       countries: 'settings/countries'
     })
+  },
+  methods: {
+    submit () {
+      this.$validator.validateAll().then((result) => {
+        if (!result) {
+          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
+        } else {
+          this.$emit('submitUserUpdate', this.form)
+        }
+      })
+    }
+  },
+  components: {
+    paymentMethods,
+    credits
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

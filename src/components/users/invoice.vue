@@ -1,15 +1,7 @@
 <template>
-  <div>
+  <div v-if="invoice">
     <top title="View Invoice">
-      <div v-if="invoice.status === 'UNPAID'">
-        <router-link class="button button-success" :to="{ name: 'paypal', params: { invoiceId: invoice.id } }">
-          Pay with Paypal
-        </router-link>
-
-        <router-link class="button button-success" :to="{ name: 'stripe', params: { invoiceId: invoice.id } }">
-          Pay with Credit Card
-        </router-link>
-      </div>
+      <payment-buttons :invoice="invoice"></payment-buttons>
     </top>
     <div v-if="!loading" class="invoice">
       <div class="header">
@@ -73,7 +65,7 @@
 
       <div class="divider"></div>
 
-      <table v-if="order" class="table-styled">
+      <table v-if="engagement" class="table-styled">
         <thead>
           <tr>
             <th>Item</th>
@@ -83,7 +75,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in order.line_items" :key="item.id">
+          <tr v-for="item in engagement.line_items" :key="item.id">
             <td>{{ item.description }}</td>
             <td class="text-center">{{ item.quantity }}</td>
             <td>{{ item.amount | currency }}</td>
@@ -109,15 +101,7 @@
         </div>
       </div>
 
-      <div v-if="invoice.status === 'UNPAID'">
-        <router-link class="button button-success" :to="{ name: 'paypal', params: { invoiceId: invoice.id } }">
-          Pay with Paypal
-        </router-link>
-
-        <router-link class="button button-success" :to="{ name: 'stripe', params: { invoiceId: invoice.id } }">
-          Pay with Credit Card
-        </router-link>
-      </div>
+      <payment-buttons :invoice="invoice"></payment-buttons>
     </div>
   </div>
 </template>
@@ -126,6 +110,7 @@
 import top from '@/components/common/top'
 import { mapGetters, mapActions } from 'vuex'
 import paymentAPI from '@/api/payment.js'
+import paymentButtons from '../payments/buttons'
 
 export default {
   metaInfo: {
@@ -136,7 +121,7 @@ export default {
       loading: true,
       valid: false,
       invoice: null,
-      order: null,
+      engagement: null,
       due: 0,
       transactions: null
     }
@@ -241,7 +226,8 @@ export default {
     }
   },
   components: {
-    top
+    top,
+    paymentButtons
   }
 }
 </script>

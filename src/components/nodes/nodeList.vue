@@ -52,17 +52,17 @@
 
               <template slot="actions" slot-scope="props">
                 <router-link class="button" :to="{ name: 'node', params: { action: 'view', id: props.row.id } }">
-                  View
+                  {{ $i18n.t('misc.VIEW') }}
                 </router-link>
 
                 <router-link class="button" :to="{ name: 'node', params: { action: 'edit', id: props.row.id } }">
-                  Edit
+                  {{ $i18n.t('misc.EDIT') }}
                 </router-link>
 
                 <button class="button" @click.stop="removeNode(props.row.id)">Remove</button>
 
                 <button v-if="props.row.status === 'unconfirmed'" class="button" @click.stop="verifyNode(props.row)">
-                  Verify
+                  {{ $i18n.t('misc.VERIFY') }}
                 </button>
               </template>
             </v-client-table>

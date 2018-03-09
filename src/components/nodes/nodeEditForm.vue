@@ -3,7 +3,7 @@
     <div class="container">
       <div class="message error" v-if="formError">{{ formError }}</div>
 
-      <h2>General Information</h2>
+      <h2>{{ $i18n.t('misc.GENERAL_INFO') }}</h2>
 
       <div v-for="field in formFields" :key="field.name">
         <template v-if="field.type === 'select'">
@@ -104,14 +104,14 @@ export default {
     await this.fetchGroups()
 
     this.formFields = [
-      { name: 'friendly_name', label: 'Friendly name', placeholder: 'Name for this node', type: 'text' },
-      { name: 'ip', label: 'IP Address', placeholder: 'IP Address', type: 'text' },
-      { name: 'city', label: 'City', placeholder: 'City', type: 'text' },
-      { name: 'access_token', label: 'Access Token', placeholder: 'Add a new access token in the format username:password to update', type: 'text' },
-      { name: 'protocol', label: 'Protocol', placeholder: 'Protocol', type: 'select', object: this.protocols, objectKey: null },
-      { name: 'market_model', label: 'Market Model', placeholder: 'Market Model', type: 'select', object: this.marketModels, objectKey: null },
-      { name: 'price', label: 'Friendly name', placeholder: 'Price', type: 'number' },
-      { name: 'group_id', label: 'Node Group', type: 'select', object: this.groups, objectKey: 'id' }
+      { name: 'friendly_name', label: this.$i18n.t('misc.LABEL_FRIENDLY_NAME'), placeholder: this.$i18n.t('misc.LABEL_FRIENDLY_NAME'), type: 'text' },
+      { name: 'ip', label: this.$i18n.t('misc.LABEL_IP'), placeholder: this.$i18n.t('misc.LABEL_IP'), type: 'text' },
+      { name: 'city', label: this.$i18n.t('misc.LABEL_CITY'), placeholder: this.$i18n.t('misc.LABEL_CITY'), type: 'text' },
+      { name: 'access_token', label: this.$i18n.t('misc.LABEL_ACCESS_TOKEN'), placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'), type: 'text' },
+      { name: 'protocol', label: this.$i18n.t('misc.LABEL_PROTOCOL'), placeholder: this.$i18n.t('misc.LABEL_PROTOCOL'), type: 'select', object: this.protocols, objectKey: null },
+      { name: 'market_model', label: this.$i18n.t('misc.LABEL_MARKET_MODEL'), placeholder: this.$i18n.t('misc.LABEL_MARKET_MODEL'), type: 'select', object: this.marketModels, objectKey: null },
+      { name: 'price', label: this.$i18n.t('misc.LABEL_PRICE'), placeholder: this.$i18n.t('misc.LABEL_PRICE'), type: 'number' },
+      { name: 'group_id', label: this.$i18n.t('misc.LABEL_NODE_GROUP'), type: 'select', object: this.groups, objectKey: 'id' }
     ]
   },
   methods: {

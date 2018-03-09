@@ -5,7 +5,22 @@ module.exports = {
     NOT_FOUND: 'We were unable to find any {type}.',
     LOADING: 'Loading, please wait ...',
     CONTINUE: 'Continue',
-    SAVE: 'Save'
+    CANCEL: 'Cancel',
+    VIEW: 'View',
+    EDIT: 'Edit',
+    VERIFY: 'Verify',
+    PAY_NOW: 'Pay Now',
+    SAVE: 'Save',
+    GENERAL_INFO: 'General Information',
+    LABEL_PRICE: 'Price',
+    LABEL_FRIENDLY_NAME: 'Friendly name',
+    LABEL_MARKET_MODEL: 'Market Model',
+    LABEL_IP: 'IP Address',
+    LABEL_CITY: 'City',
+    LABEL_ACCESS_TOKEN: 'Access Token',
+    PLACEHOLDER_ACCESS_TOKEN: 'Add a new access token in the format username:password to update',
+    LABEL_PROTOCOL: 'Protocol',
+    LABEL_NODE_GROUP: 'Node Group'
   },
 
   errors: {
@@ -57,7 +72,16 @@ module.exports = {
     PAYPAL_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Paypal One Touch™...',
     PAYMENT_INVALID_PARAMETERS: 'The payment data you have supplied seems to be wrong. Please contact us for more details.',
     PAYMENT_PROCESSOR_NOT_ENABLED: 'This payment processor is not enabled. Please contact us for more details.',
-
+    PAY_WITH_PAYPAL: 'Pay with Paypal',
+    PAY_WITH_STRIPE: 'Pay with Credit Card',
+    PAY_WITH_ACCOUNT_CREDIT: 'Pay with account credit',
+    REQUEST_FAILED: 'We were unable to start the payment process. Please contact us if this keeps happening.',
+    ZERO_CREDIT_BALANCE: 'You don\'t have any balance in your account.',
+    ADD_CREDIT: 'Add credits',
+    ADD_MORE_CREDIT: 'Add additional credits',
+    NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.',
+    NO_ACCOUNT_CREDIT: 'You don\'t have any credit in your account.',
+    COUNT_ACCOUNT_CREDIT: 'You currently have {credit} credits in your account.',
     INVOICE_STATUS: {
       PAID: 'Paid',
       UNPAID: 'Unpaid',
@@ -94,12 +118,14 @@ module.exports = {
     GROUP_UPDATE_SUCCESS: 'Node group updated successfully!',
     UPDATE_SUCCESS: 'Node updated successfully!',
     HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!',
-    GROUP_PRICE_AVAILABILITY: 'Note: Price will only be used for <strong>{model1}</strong> and <strong>{model2}</strong> market models.'
+    GROUP_PRICE_AVAILABILITY: 'Note: Price will only be used for <strong>{model1}</strong> and <strong>{model2}</strong> market models.',
+    DELETE_ENGAGEMENT_CONFIRM_DIALOG: 'Are you sure you want to cancel this engagement?',
+    ENGAGEMENT_DELETE_SUCCESS: 'Engagement canceled!',
+    ORDER_NOT_ACTIVE_YET: 'Unable to cancel engagement: This order isn\'t active yet!'
   },
 
   users: {
     LOGIN_BUTTON: 'Log In',
-    REGISTER_BUTTON: 'Register',
-    NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.'
+    REGISTER_BUTTON: 'Register'
   }
 }

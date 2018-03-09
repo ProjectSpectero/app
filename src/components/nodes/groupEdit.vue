@@ -5,7 +5,7 @@
 
     <div v-if="!loading">
       <edit-form v-if="activeTab === 1" :group="group"></edit-form>
-      <list-orders v-else :orders="orders"></list-orders>
+      <list-engagements v-else :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
     </div>
     <loading v-else></loading>
   </div>
@@ -17,7 +17,7 @@ import top from '@/components/common/top'
 import loading from '@/components/common/loading'
 import tabs from './tabs'
 import editForm from './groupEditForm'
-import listOrders from './listOrders'
+import listEngagements from './listEngagements'
 
 export default {
   metaInfo: {
@@ -27,11 +27,11 @@ export default {
     return {
       tabs: [
         { id: 1, label: 'General details', hash: '#details' },
-        { id: 2, label: 'Orders', hash: '#orders' }
+        { id: 2, label: 'Engagements', hash: '#engagements' }
       ],
       activeTab: 1,
       group: null,
-      orders: [],
+      engagements: [],
       loading: true
     }
   },
@@ -48,7 +48,7 @@ export default {
           if (response.data.result) {
             this.group = response.data.result
 
-            await this.fetchOrders(this.group.id)
+            await this.fetchEngagements(this.group.id)
 
             // Chech if the url has any anchors and load it immediately
             await this.parseTab()
@@ -58,6 +58,9 @@ export default {
         },
         fail: () => this.error404()
       })
+    },
+    updateEngagements () {
+      this.$emit('updateEngagements')
     },
     parseTab () {
       if (window.location.hash) {
@@ -72,14 +75,14 @@ export default {
       this.activeTab = data.id
       this.$router.push({ name: 'group', params: { id: this.group.id }, hash: data.hash })
     },
-    fetchOrders (id) {
-      nodeAPI.groupOrders({
+    fetchEngagements (id) {
+      nodeAPI.groupEngagements({
         data: {
           id: id
         },
         success: response => {
           if (response.data.result) {
-            this.orders = response.data.result
+            this.engagements = response.data.result
             this.loading = false
           }
         },
@@ -94,7 +97,7 @@ export default {
     loading,
     tabs,
     editForm,
-    listOrders
+    listEngagements
   }
 }
 </script>

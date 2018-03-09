@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="order">
     <top title="Order Details">
       <router-link class="button" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
         View Invoice

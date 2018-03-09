@@ -24,11 +24,11 @@ export default {
   },
 
   /**
-   * Returns a node's orders.
+   * Returns a node's engagements.
    * @param {Integer} id Node id.
    */
-  nodeOrders (options) {
-    return api('GET', `/node/${options.data.id}/orders`, options)
+  nodeEngagements (options) {
+    return api('GET', `/node/${options.data.id}/engagements`, options)
   },
 
   /**
@@ -64,11 +64,11 @@ export default {
   },
 
   /**
-   * Returns a node group's orders.
+   * Returns a node group's engagements.
    * @param {Integer} id Node group id.
    */
-  groupOrders (options) {
-    return api('GET', `/node_group/${options.data.id}/orders`, options)
+  groupEngagements (options) {
+    return api('GET', `/node_group/${options.data.id}/engagements`, options)
   },
 
   /**
@@ -112,5 +112,14 @@ export default {
    */
   deleteGroup (options) {
     return api('DELETE', `/node_group/${options.data.id}`, options)
+  },
+
+  /**
+   * Delete engagement at given id.
+   *
+   * @param {Integer} id Engagement id to delete.
+   */
+  deleteEngagement (options) {
+    return api('DELETE', `/engagement/${options.data.id}`, options)
   }
 }

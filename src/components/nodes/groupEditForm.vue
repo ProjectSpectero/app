@@ -3,11 +3,13 @@
     <div class="container">
       <div class="message error" v-if="formError">{{ formError }}</div>
 
-      <h2>General Information</h2>
+      <h2>{{ $i18n.t('misc.GENERAL_INFO') }}</h2>
 
       <div>
         <div class="form-input">
-          <div class="label"><label for="friendly_name">Friendly Name</label></div>
+          <div class="label">
+            <label for="friendly_name">{{ $i18n.t('misc.LABEL_FRIENDLY_NAME') }}</label>
+          </div>
           <input
             type="text"
             v-model="form.friendly_name"
@@ -26,7 +28,9 @@
         </div>
 
         <div class="form-input" v-if="marketModels">
-          <div class="label"><label for="friendly_name">Price</label></div>
+          <div class="label">
+            <label for="price">{{ $i18n.t('misc.LABEL_PRICE') }}</label>
+          </div>
           <input
             type="number"
             v-model="form.price"
@@ -46,7 +50,7 @@
         </div>
 
         <div class="form-input" v-if="marketModels">
-          <div class="label"><label :for="form.market_model">Market Model</label></div>
+          <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.LABEL_MARKET_MODEL') }}</label></div>
           <select v-model="form.market_model">
             <option v-for="model in marketModels" :key="model" :value="model">
               {{ model }}

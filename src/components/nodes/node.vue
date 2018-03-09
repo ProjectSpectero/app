@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!loading">
-      <component :is="component" :node="node" :group="group" :tabs="tabs" :action="$route.params.action" />
+      <component :is="component" :node="node" :group="group" :tabs="tabs" :engagements="engagements" :ips="ips" :action="$route.params.action" @updateEngagements="updateEngagements" />
     </div>
     <loading v-else></loading>
   </div>
@@ -23,9 +23,11 @@ export default {
       component: null,
       node: null,
       group: null,
+      engagements: null,
+      ips: null,
       tabs: [
         { id: 1, label: 'General details', hash: '#details' },
-        { id: 2, label: 'Orders', hash: '#orders' },
+        { id: 2, label: 'Engagements', hash: '#engagements' },
         { id: 3, label: 'IP Addresses', hash: '#ips' }
       ]
     }
@@ -69,7 +71,7 @@ export default {
           if (response.data.result) {
             this.node = response.data.result
 
-            await this.fetchExtras('Orders', this.node.id)
+            await this.fetchExtras('Engagements', this.node.id)
             await this.fetchExtras('Services', this.node.id)
             await this.fetchExtras('Ips', this.node.id)
 
@@ -86,6 +88,9 @@ export default {
           // this.error404()
         }
       })
+    },
+    async updateEngagements () {
+      await this.fetchExtras('Engagements', this.node.id)
     },
     fetchExtras (type, id) {
       const method = nodeAPI['node' + type]

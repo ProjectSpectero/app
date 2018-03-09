@@ -1,10 +1,9 @@
 <template>
   <div class="boxed boxed-centered">
     <div class="boxed-container boxed-md">
-      <div v-if="error">{{ error }}</div>
+      <div v-if="error">{{ errorAPI(error, 'payments') }}</div>
       <div v-else>
-        <h2>{{ $i18n.t('payments.PAYPAL_CONNECT_HEADER') }}</h2>
-        <p>{{ $i18n.t('payments.PAYPAL_CONNECT_DESCRIPTION') }}</p>
+        {{ $i18n.t('payments.PAYMENT_PROCESSING') }}
       </div>
     </div>
   </div>
@@ -25,26 +24,21 @@ export default {
   methods: {
     processPayment () {
       if (this.$route.params.invoiceId) {
-        paymentAPI.processPaypal({
+        paymentAPI.processAccountCredit({
           data: {
             invoiceId: this.$route.params.invoiceId
           },
           success: response => {
-            if (response.data.result.redirectUrl) {
-              this.redirect(response.data.result.redirectUrl)
-            }
+            console.log('Success', response)
           },
           fail: error => {
-            const keys = Object.keys(error.errors)
-            this.error = this.$i18n.t(`errors.${keys[0]}`)
+            this.error = error
+            // this.error404()
           }
         })
       } else {
         this.error404()
       }
-    },
-    redirect (redirectUrl) {
-      window.location.href = redirectUrl
     }
   }
 }
