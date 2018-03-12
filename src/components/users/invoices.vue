@@ -5,15 +5,15 @@
       <div class="split-item split-list filters-side">
         <router-link :to="{ name: 'invoices' }" class="filter-link">
           <span>All invoices</span>
-          <div class="count">35</div>
+          <div class="count">-</div>
         </router-link>
         <router-link :to="{ name: 'invoices', params: { filter: 'unpaid' } }" class="filter-link">
           <span>Unpaid invoices</span>
-          <div class="count count-danger">3</div>
+          <div class="count count-danger">-</div>
         </router-link>
         <router-link :to="{ name: 'invoices', params: { filter: 'paid' } }" class="filter-link">
           <span>Paid invoices</span>
-          <div class="count">32</div>
+          <div class="count">-</div>
         </router-link>
       </div>
       <div class="split-item split-details">
