@@ -80,7 +80,7 @@ export default {
     this.options = {
       skin: '',
       texts: {
-        count: 'Showing {from} to {to} of {count} invoices|{count} invoices|One invoice',
+        count: '',
         filter: '',
         filterPlaceholder: 'Search invoices',
         limit: 'Invoices:',
@@ -91,7 +91,8 @@ export default {
         defaultOption: 'Select {column}',
         columns: 'Columns'
       },
-      perPage: 3,
+      perPage: 10,
+      pagination: null,
       headings: this.headings,
       sortable: this.sortableColumns,
       filterable: this.filterableColumns,
