@@ -1,14 +1,14 @@
 <template>
-  <div v-if="pagination.total > 0" class="paginator">
-    <div class="first" @click="toFirstPage">«</div>
+  <div v-if="pagination.total" class="paginator">
+    <div class="first" @click="toPage(1)">«</div>
 
     <ul class="pages">
-      <li v-for="page in totalPages" :key="page" @click="toPage(page)" class="page">
+      <li v-for="page in totalPages" :key="page" @click="toPage(page)" :class="['page', (active === page) ? 'active' : '']">
         {{ page }}
       </li>
     </ul>
 
-    <div class="last" @click="toLastPage">»</div>
+    <div class="last" @click="toPage(totalPages)">»</div>
   </div>
 </template>
 
@@ -17,19 +17,19 @@ export default {
   props: {
     pagination: Object
   },
+  data () {
+    return {
+      active: 1
+    }
+  },
   computed: {
     totalPages () {
       return Math.ceil(this.pagination.total / this.pagination.per_page)
     }
   },
   methods: {
-    toFirstPage () {
-      this.$emit('changedPage', 1)
-    },
-    toLastPage () {
-      this.$emit('changedPage', this.totalPages)
-    },
     toPage (page) {
+      this.active = page
       this.$emit('changedPage', page)
     }
   }
@@ -48,6 +48,10 @@ export default {
       .page {
         display: inline-block;
         cursor: pointer;
+
+        &.active {
+          color: red
+        }
       }
     }
   }
