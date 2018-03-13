@@ -1,14 +1,16 @@
 <template>
-  <div v-if="pagination.total" class="paginator">
-    <div class="first" @click="toPage(1)">«</div>
+  <div v-if="pagination.total" class="pagination">
+    <div class="paginator">
+      <div class="page first" @click="toPage(1)">«</div>
 
-    <ul class="pages">
-      <li v-for="page in totalPages" :key="page" @click="toPage(page)" :class="['page', (active === page) ? 'active' : '']">
-        {{ page }}
-      </li>
-    </ul>
+      <ul class="pages">
+        <li v-for="page in totalPages" :key="page" @click="toPage(page)" :class="['page', (active === page) ? 'active' : '']">
+          {{ page }}
+        </li>
+      </ul>
 
-    <div class="last" @click="toPage(totalPages)">»</div>
+      <div class="page last" @click="toPage(totalPages)">»</div>
+    </div>
   </div>
 </template>
 
@@ -37,22 +39,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .paginator {
-    display: flex;
+.pagination {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
 
-    .first, .last {
-      cursor: pointer;
+}
+.paginator {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid $color-border;
+  
+  .pages {
+    display: inline-block;
+    list-style: none;
+  }
+  .page {
+    display: inline-block;
+    padding: 0 14px;
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: $font-bold;
+    background-color: $white;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background: $color-border;
     }
-
-    .pages {
-      .page {
-        display: inline-block;
-        cursor: pointer;
-
-        &.active {
-          color: red
-        }
-      }
+    &.active {
+      color: $white;
+      background-color: $color-info;
     }
   }
+}
 </style>
