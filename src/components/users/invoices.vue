@@ -40,6 +40,8 @@
               </div>
             </template>
           </v-client-table>
+
+          <paginator :pagination="pagination" @changedPage="fetchInvoices"></paginator>
         </div>
       </div>
     </div>
@@ -48,17 +50,16 @@
 
 <script>
 import top from '@/components/common/top'
+import paginator from '@/components/common/paginator'
 import paymentAPI from '@/api/payment.js'
 
 export default {
-  components: {
-    top
-  },
   metaInfo: {
     title: 'Invoices'
   },
   data () {
     return {
+      pagination: null,
       tableData: null,
       columns: ['id', 'status', 'due_date', 'amount', 'actions'],
       sortableColumns: ['id', 'amount', 'status', 'due_date'],
@@ -73,8 +74,9 @@ export default {
       options: {}
     }
   },
-  created () {
-    this.fetchInvoices()
+  async created () {
+    await this.fetchInvoices(1)
+
     this.options = {
       skin: '',
       texts: {
@@ -89,7 +91,7 @@ export default {
         defaultOption: 'Select {column}',
         columns: 'Columns'
       },
-      perPage: 10,
+      perPage: 3,
       headings: this.headings,
       sortable: this.sortableColumns,
       filterable: this.filterableColumns,
@@ -99,9 +101,11 @@ export default {
     }
   },
   methods: {
-    fetchInvoices () {
+    fetchInvoices (page) {
       paymentAPI.myInvoices({
+        page: page,
         success: response => {
+          this.pagination = response.data.pagination
           this.tableData = response.data.result
         },
         fail: error => {
@@ -109,6 +113,10 @@ export default {
         }
       })
     }
+  },
+  components: {
+    top,
+    paginator
   }
 }
 </script>

@@ -28,7 +28,7 @@
     "vue-progressbar": "^0.7.3",
     "vue-router": "^3.0.1",
     "vue-stripe-elements-plus": "^0.2.8",
-    "vue-tables-2": "^1.3.61",
+    "vue-tables-2": "^1.3.70",
     "vue-toasted": "^1.1.24",
     "vuex": "^3.0.1"
   },

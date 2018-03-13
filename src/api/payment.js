@@ -1,4 +1,5 @@
-import api from './index.js'
+import api from './index'
+import helpers from './helpers'
 
 export default {
 
@@ -132,9 +133,10 @@ export default {
 
   /**
    * Returns invoices list for the logged in user.
+   * Uses the pagination helper to append a given page to the url.
    */
   myInvoices (options) {
-    return api('GET', `/invoice/self`, options)
+    return api('GET', helpers.appendPage(`/invoice/self`, options), options)
   },
 
   /**
