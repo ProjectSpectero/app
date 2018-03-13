@@ -91,7 +91,6 @@ export default {
         defaultOption: 'Select {column}',
         columns: 'Columns'
       },
-      perPage: 10,
       pagination: null,
       headings: this.headings,
       sortable: this.sortableColumns,
@@ -105,6 +104,7 @@ export default {
     fetchInvoices (page) {
       paymentAPI.myInvoices({
         page: page,
+        limit: 3,
         success: response => {
           this.pagination = response.data.pagination
           this.tableData = response.data.result

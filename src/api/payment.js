@@ -136,7 +136,7 @@ export default {
    * Uses the pagination helper to append a given page to the url.
    */
   myInvoices (options) {
-    return api('GET', helpers.appendPage(`/invoice/self`, options), options)
+    return api('GET', helpers.appendQuery(`/invoice/self`, options), options)
   },
 
   /**
