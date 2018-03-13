@@ -1,7 +1,7 @@
 <template>
   <div v-if="pagination.total" class="pagination">
     <div class="paginator">
-      <div class="page first" @click="toPage(1)">«</div>
+      <div @click="toPage(1)" :class="['page', 'first', (active === 1) ? 'disabled' : '']">«</div>
 
       <ul class="pages">
         <li v-for="page in totalPages" :key="page" @click="toPage(page)" :class="['page', (active === page) ? 'active' : '']">
@@ -9,7 +9,7 @@
         </li>
       </ul>
 
-      <div class="page last" @click="toPage(totalPages)">»</div>
+      <div @click="toPage(totalPages)" :class="['page', 'last', (active === totalPages) ? 'disabled' : '']">»</div>
     </div>
   </div>
 </template>
@@ -48,6 +48,7 @@ export default {
   justify-content: center;
 
 }
+
 .paginator {
   padding: 6px;
   border-radius: 4px;
@@ -57,6 +58,7 @@ export default {
     display: inline-block;
     list-style: none;
   }
+
   .page {
     display: inline-block;
     padding: 0 14px;
@@ -70,9 +72,15 @@ export default {
     &:hover {
       background: $color-border;
     }
+
     &.active {
       color: $white;
       background-color: $color-info;
+    }
+
+    &.disabled {
+      pointer-events: none;
+      color: $color-light;
     }
   }
 }
