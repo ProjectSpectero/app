@@ -52,7 +52,7 @@ export default {
   padding: 6px;
   border-radius: 4px;
   border: 1px solid $color-border;
-  
+
   .pages {
     display: inline-block;
     list-style: none;
