@@ -27,7 +27,7 @@
         </template>
       </v-client-table>
 
-      <paginator :pagination="pagination" @changedPage="fetchOrders"></paginator>
+      <paginator v-if="type !== 'simple'" :pagination="pagination" @changedPage="fetchOrders"></paginator>
     </div>
   </div>
 </template>
@@ -45,6 +45,7 @@ export default {
   },
   data () {
     return {
+      perPage: 10,
       pagination: null,
       tableData: null,
       columns: ['created_at'],
@@ -54,12 +55,15 @@ export default {
     }
   },
   created () {
+    this.perPage = (this.type === 'simple') ? 3 : 10
     this.fetchOrders()
   },
   methods: {
     async fetchOrders (page) {
       await paymentAPI.myOrders({
         page: page,
+        limit: this.perPage,
+        keepURL: (this.type === 'simple'),
         success: response => {
           this.pagination = response.data.pagination
           this.tableData = response.data.result
@@ -103,6 +107,8 @@ export default {
       this.options = {
         skin: '',
         texts: {
+          pagination: (this.type === 'simple') ? true : null,
+          perPage: this.perPage,
           count: '',
           filter: '',
           filterPlaceholder: 'Search orders',
@@ -113,7 +119,6 @@ export default {
           defaultOption: 'Select {column}',
           columns: 'Columns'
         },
-        pagination: null,
         headings: this.headings,
         sortable: this.sortableColumns,
         filterable: (this.type !== 'simple'),

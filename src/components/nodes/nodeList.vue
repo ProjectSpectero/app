@@ -182,7 +182,7 @@ export default {
         })
       }
     },
-    fetchNodes () {
+    fetchNodes (page) {
       nodeAPI.groups({
         success: async response => {
           if (response.data.result) {
@@ -192,7 +192,6 @@ export default {
             for (let g = 0; g < this.groups.length; g++) {
               if (this.groups[g].nodes && this.groups[g].nodes.length) {
                 this.selectGroup(this.groups[0])
-                console.log('Selected group ', this.groups[0])
                 break
               }
             }

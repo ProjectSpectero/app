@@ -7,6 +7,8 @@ export default {
    *
    * page: The page we want to fetch.
    * limit: The perPage results.
+   * keepURL (optional, defaults to false): wether to keep the URL as
+   *     change it with page number
    *
    * @param {String} url The API url.
    * @param {Object} options The options we're sending to axios.
@@ -17,7 +19,9 @@ export default {
     let query = '?page=' + page + '&perPage=' + limit
 
     // Update page (only with the page to prevent limit spamming)
-    this.appendPage(page)
+    if (options.keepURL === undefined || !options.keepURL) {
+      this.appendPage(page)
+    }
 
     return url + query
   },
