@@ -26,12 +26,15 @@
           </div>
         </template>
       </v-client-table>
+
+      <paginator :pagination="pagination" @changedPage="fetchOrders"></paginator>
     </div>
   </div>
 </template>
 
 <script>
 import paymentAPI from '@/api/payment.js'
+import paginator from '@/components/common/paginator'
 
 export default {
   props: {
@@ -42,6 +45,7 @@ export default {
   },
   data () {
     return {
+      pagination: null,
       tableData: null,
       columns: ['created_at'],
       sortableColumns: ['created_at'],
@@ -53,9 +57,11 @@ export default {
     this.fetchOrders()
   },
   methods: {
-    async fetchOrders () {
+    async fetchOrders (page) {
       await paymentAPI.myOrders({
+        page: page,
         success: response => {
+          this.pagination = response.data.pagination
           this.tableData = response.data.result
           this.setTable()
           this.setColumns()
@@ -97,7 +103,7 @@ export default {
       this.options = {
         skin: '',
         texts: {
-          count: 'Showing {from} to {to} of {count} orders|{count} orders|One order',
+          count: '',
           filter: '',
           filterPlaceholder: 'Search orders',
           limit: 'Records:',
@@ -107,7 +113,7 @@ export default {
           defaultOption: 'Select {column}',
           columns: 'Columns'
         },
-        perPage: 5,
+        pagination: null,
         headings: this.headings,
         sortable: this.sortableColumns,
         filterable: (this.type !== 'simple'),
@@ -130,6 +136,9 @@ export default {
         }
       }
     }
+  },
+  components: {
+    paginator
   }
 }
 

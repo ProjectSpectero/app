@@ -16,8 +16,8 @@ export default [
   { path: '/payment/paypal/:invoiceId', name: 'paypal', component: Paypal },
   { path: '/payment/credit/add', name: 'addCredit', component: addCredit, meta: { auth: true } },
   { path: '/payment/credit/:invoiceId', name: 'creditPayment', component: creditPayment, meta: { auth: true } },
-  { path: '/orders', name: 'orders', component: Orders, meta: { auth: true } },
-  { path: '/orders/:id', name: 'order', component: Order, meta: { auth: true } },
-  { path: '/invoices', name: 'invoices', component: Invoices, meta: { auth: true } },
-  { path: '/invoices/:id', name: 'invoice', component: Invoice, meta: { auth: true } }
+  { path: '/orders/:page?', name: 'orders', component: Orders, meta: { auth: true } },
+  { path: '/order/:id', name: 'order', component: Order, meta: { auth: true } },
+  { path: '/invoices/:page?', name: 'invoices', component: Invoices, meta: { auth: true } },
+  { path: '/invoice/:id', name: 'invoice', component: Invoice, meta: { auth: true } }
 ]

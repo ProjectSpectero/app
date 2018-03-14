@@ -104,7 +104,7 @@ export default {
    * @param {String} payerID Current payer unique ID.
    */
   myOrders (options) {
-    return api('GET', `/order/self`, options)
+    return api('GET', helpers.appendQuery(`/order/self`, options), options)
   },
 
   /**
