@@ -1,6 +1,6 @@
 .message {
-  color: $white;
-  background-color: $color-info;
+  color: #626C84;
+  background-color: #F2F3F5;
   padding: 8px 14px;
   border-radius: 4px;
   font-size: 16px;
@@ -23,6 +23,10 @@
   &.warning {
     color: rgba(0,0,0,0.7);
     background-color: $color-warning;
+  }
+  &.dark {
+    color: $white;
+    background-color: $color-dark;
   }
 }
 

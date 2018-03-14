@@ -25,40 +25,40 @@
               </div>
             </div>
             <div v-if="showEmailForm" class="change-email-form">
-              <p class="spaced">Your current email is <strong>{{ this.form.email }}</strong>. If your new email is invalid we will not be able to reach you and your account will be locked.</p>
+              <p class="spaced">Your current email is <strong>{{ this.currentEmail }}</strong>. If your new email is invalid we will not be able to reach you and your account will be locked.</p>
 
               <div class="form-input">
                 <input
                   type="email"
-                  v-model="form.emailChange"
-                  name="emailChange"
-                  id="emailChange"
+                  v-model="form.email"
+                  name="email"
+                  id="email"
                   placeholder="New Email Address"
                   class="input max-width"
-                  :class="{'input-error': errors.has('emailChange')}"
-                  :disabled="formDisable"
-                  v-validate="confirmedFieldRule('emailChange', rules['email'])"
+                  :class="{'input-error': errors.has('email')}"
+                  :disabled="formLoading"
+                  v-validate="confirmedFieldRule('email', rules['email'])"
                   data-vv-as="new email">
 
-                <span v-show="errors.has('emailChange')" class="input-error-message">
-                  {{ errors.first('emailChange') }}
+                <span v-show="errors.has('email')" class="input-error-message">
+                  {{ errors.first('email') }}
                 </span>
               </div>
               <div class="form-input">
                 <input
                   type="email"
-                  v-model="form.emailChangeConfirm"
-                  name="emailChangeConfirm"
-                  id="emailChangeConfirm"
+                  v-model="form.emailConfirm"
+                  name="emailConfirm"
+                  id="emailConfirm"
                   placeholder="Confirm Email Address"
                   class="input max-width"
-                  :class="{'input-error': errors.has('emailChangeConfirm')}"
-                  :disabled="formDisable"
+                  :class="{'input-error': errors.has('emailConfirm')}"
+                  :disabled="formLoading"
                   v-validate="rules['email']"
                   data-vv-as="new email confirmation">
 
-                <span v-show="errors.has('emailChangeConfirm')" class="input-error-message">
-                  {{ errors.first('emailChangeConfirm') }}
+                <span v-show="errors.has('emailConfirm')" class="input-error-message">
+                  {{ errors.first('emailConfirm') }}
                 </span>
               </div>
             </div>
@@ -89,50 +89,50 @@
                   id="passwordCurrent"
                   placeholder="Current Password"
                   class="input max-width"
-                  :disabled="formDisable"
+                  :disabled="formLoading"
                   data-vv-as="current password">
               </div>
 
               <div class="form-input">
                 <input
                   type="password"
-                  v-model="form.passwordChange"
-                  name="passwordChange"
-                  id="passwordChange"
+                  v-model="form.password"
+                  name="password"
+                  id="password"
                   placeholder="New Password"
                   class="input max-width"
-                  :class="{'input-error': errors.has('passwordChange')}"
-                  :disabled="formDisable"
-                  v-validate="confirmedFieldRule('passwordChange', rules['password'])"
+                  :class="{'input-error': errors.has('password')}"
+                  :disabled="formLoading"
+                  v-validate="confirmedFieldRule('password', rules['password'])"
                   data-vv-as="new password">
 
-                <span v-show="errors.has('passwordChange')" class="input-error-message">
-                  {{ errors.first('passwordChange') }}
+                <span v-show="errors.has('password')" class="input-error-message">
+                  {{ errors.first('password') }}
                 </span>
               </div>
 
               <div class="form-input">
                 <input
                   type="password"
-                  v-model="form.passwordChangeConfirm"
-                  name="passwordChangeConfirm"
-                  id="passwordChangeConfirm"
+                  v-model="form.passwordConfirm"
+                  name="passwordConfirm"
+                  id="passwordConfirm"
                   placeholder="Confirm New Password"
                   class="input max-width"
-                  :class="{'input-error': errors.has('passwordChangeConfirm')}"
-                  :disabled="formDisable"
+                  :class="{'input-error': errors.has('passwordConfirm')}"
+                  :disabled="formLoading"
                   v-validate="rules['password']"
                   data-vv-as="new password confirmation">
 
-                <span v-show="errors.has('passwordChangeConfirm')" class="input-error-message">
-                  {{ errors.first('passwordChangeConfirm') }}
+                <span v-show="errors.has('passwordConfirm')" class="input-error-message">
+                  {{ errors.first('passwordConfirm') }}
                 </span>
               </div>
             </div>
           </div>
 
-          <button type="submit" class="button button-info button-md max-width" :disabled="formDisable">
-            Update Profile
+          <button v-if="showEmailForm || showPasswordForm" type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+            Save Changes
           </button>
         </form>
       </div>
@@ -145,19 +145,26 @@ import { mapGetters } from 'vuex'
 
 export default {
   props: {
-    user: Object
+    user: Object,
+    formError: String,
+    formLoading: Boolean,
+    processForm: Function
+  },
+  metaInfo: {
+    title: 'Profile'
   },
   data () {
     return {
-      formError: null,
-      formDisable: null,
       form: null,
+      currentEmail: null,
       showEmailForm: false,
       showPasswordForm: false
     }
   },
   created () {
     this.form = JSON.parse(JSON.stringify(this.user))
+    this.formError = null
+    this.currentEmail = this.form.email
   },
   computed: {
     ...mapGetters({
@@ -174,6 +181,15 @@ export default {
     confirmedFieldRule: function (inputName, rules) {
       rules.confirmed = inputName + 'Confirm'
       return rules
+    },
+    submit () {
+      this.$validator.validateAll().then((result) => {
+        if (!result) {
+          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
+        } else {
+          this.$emit('processForm', this.form)
+        }
+      })
     }
   }
 }

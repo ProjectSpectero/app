@@ -6,31 +6,26 @@
         <router-link :to="{ name: 'settings', params: { tab: 'profile' } }" class="filter-link">
           <span>Profile</span>
         </router-link>
-        <router-link :to="{ name: 'settings', params: { tab: 'security' } }" class="filter-link">
-          <span>Security</span>
-        </router-link>
         <router-link :to="{ name: 'settings', params: { tab: 'payment' } }" class="filter-link">
           <span>Payment Details</span>
         </router-link>
         <router-link :to="{ name: 'settings', params: { tab: 'keys' } }" class="filter-link">
-          <span>Node Keys</span>
+          <span>Node Key</span>
         </router-link>
       </div>
       <div class="split-item split-details">
         <div v-if="currentTab === 'profile'"><tab-profile
           :user="user"
-          :formDisable="formDisable"
-          @submitUserUpdate="submitUserUpdate">
+          :formError="formError"
+          :formLoading="formLoading"
+          @processForm="processForm">
         </tab-profile></div>
-
-        <div v-if="currentTab === 'security'"><tab-security
-          :user="user">
-        </tab-security></div>
 
         <div v-if="currentTab === 'payment'"><tab-payment
           :user="user"
-          :formDisable="formDisable"
-          @submitUserUpdate="submitUserUpdate">
+          :formError="formError"
+          :formLoading="formLoading"
+          @processForm="processForm">
         </tab-payment></div>
 
         <div v-if="currentTab === 'keys'"><tab-keys
@@ -46,7 +41,6 @@ import top from '@/components/common/top'
 import { mapGetters } from 'vuex'
 import userAPI from '@/api/user.js'
 import tabProfile from './tabs/profile'
-import tabSecurity from './tabs/security'
 import tabPayment from './tabs/payment'
 import tabKeys from './tabs/keys'
 
@@ -54,7 +48,6 @@ export default {
   components: {
     top,
     tabProfile,
-    tabSecurity,
     tabPayment,
     tabKeys
   },
@@ -64,7 +57,7 @@ export default {
   data () {
     return {
       formError: null,
-      formDisable: false,
+      formLoading: false,
       form: null,
       nodeKey: null
     }
@@ -87,7 +80,7 @@ export default {
   },
   methods: {
     checkRouteTab () {
-      let allowed = ['profile', 'security', 'payment', 'keys']
+      let allowed = ['profile', 'payment', 'keys']
 
       // Redirect `/settings` to `/settings/profile`
       if (this.currentTab === undefined) {
@@ -100,21 +93,8 @@ export default {
         this.error404()
       }
     },
-    submitUserUpdate (data) {
-      this.processForm(data)
-    },
-    // regenerateNodeKey () {
-    //   userAPI.regenerateNodeKey({
-    //     success: response => {
-    //       this.nodeKey = response.data.result.node_key
-    //     },
-    //     fail: error => {
-    //       console.log('Unable to regenerate node key', error)
-    //     }
-    //   })
-    // },
     processForm (data) {
-      this.formDisable = true
+      this.formLoading = true
 
       // Remove empty fields from the list
       for (var key in data) {
@@ -134,11 +114,11 @@ export default {
       })
     },
     dealWithSuccess () {
-      this.$toasted.show('Your profile has been updated successfully!')
-      this.formDisable = false
+      this.$toasted.success('Your account has been updated successfully.')
+      this.formLoading = false
     },
     dealWithError (err) {
-      this.formDisable = false
+      this.formLoading = false
 
       // Get first error key to display main error msg
       for (var errorKey in err.errors) {
