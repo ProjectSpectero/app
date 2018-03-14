@@ -217,7 +217,6 @@ export default {
   },
   created () {
     this.form = JSON.parse(JSON.stringify(this.user))
-    this.formError = null
 
     // Default country: USA
     if (!this.form.country) {

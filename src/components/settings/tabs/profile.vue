@@ -163,7 +163,6 @@ export default {
   },
   created () {
     this.form = JSON.parse(JSON.stringify(this.user))
-    this.formError = null
     this.currentEmail = this.form.email
   },
   computed: {
