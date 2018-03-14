@@ -15,7 +15,7 @@
           placeholder="Email address"
           class="input max-width"
           :class="{'input-error': errors.has('username')}"
-          :disabled="formDisable"
+          :disabled="formLoading"
           v-validate="'required|email'"
           data-vv-as="email">
 
@@ -32,7 +32,7 @@
           placeholder="Password"
           class="input max-width"
           :class="{'input-error': errors.has('password')}"
-          :disabled="formDisable"
+          :disabled="formLoading"
           v-validate="'required'"
           data-vv-as="password">
 
@@ -41,8 +41,8 @@
         </span>
       </div>
 
-      <button class="button button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">
-        {{ formDisable ? $i18n.t('misc.LOADING') : $i18n.t('users.LOGIN_BUTTON') }}
+      <button class="button button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+        {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('users.LOGIN_BUTTON') }}
       </button>
     </form>
     <div class="bottom-link">
@@ -65,7 +65,7 @@ export default {
       username: null,
       password: null,
       formError: null,
-      formDisable: false
+      formLoading: false
     }
   },
   methods: {
@@ -78,7 +78,7 @@ export default {
           this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
         } else {
           // Disable form while HTTP request being made
-          this.formDisable = true
+          this.formLoading = true
           this.processLogin()
         }
       })
@@ -115,7 +115,7 @@ export default {
       })
     },
     dealWithError (err) {
-      this.formDisable = false
+      this.formLoading = false
 
       // Get first error key to display main error msg
       for (var errorKey in err.errors) {

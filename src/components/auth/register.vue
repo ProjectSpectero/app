@@ -11,7 +11,7 @@
           placeholder="Email address"
           class="input max-width"
           :class="{'input-error': errors.has('email')}"
-          :disabled="formDisable"
+          :disabled="formLoading"
           v-validate="'required|email'"
           data-vv-as="email">
 
@@ -28,7 +28,7 @@
           placeholder="Password"
           class="input max-width"
           :class="{'input-error': errors.has('password')}"
-          :disabled="formDisable"
+          :disabled="formLoading"
           v-validate="'required|min:5|max:72'"
           data-vv-as="password">
 
@@ -37,8 +37,8 @@
         </span>
       </div>
 
-      <button class="button button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">
-        {{ formDisable ? $i18n.t('misc.LOADING') : $i18n.t('user.REGISTER_BUTTON') }}
+      <button class="button button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+        {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('user.REGISTER_BUTTON') }}
       </button>
     </form>
     <div class="bottom-link">
@@ -59,7 +59,7 @@ export default {
       email: null,
       password: null,
       formError: null,
-      formDisable: false
+      formLoading: false
     }
   },
   methods: {
@@ -69,7 +69,7 @@ export default {
           this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
         } else {
           // Disable form while HTTP request being made
-          this.formDisable = true
+          this.formLoading = true
 
           auth.register({
             data: {
@@ -91,7 +91,7 @@ export default {
       this.$router.push({ name: 'pending' })
     },
     dealWithError (err) {
-      this.formDisable = false
+      this.formLoading = false
 
       // Get first error key to display main error msg
       for (var errorKey in err.errors) {

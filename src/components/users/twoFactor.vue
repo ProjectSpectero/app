@@ -13,7 +13,7 @@
           placeholder="Enter TFA Key"
           class="input max-width"
           :class="{'input-error': errors.has('tfaValue')}"
-          :disabled="formDisable"
+          :disabled="formLoading"
           v-validate="'required'"
           data-vv-as="two factor authentication key">
 
@@ -22,8 +22,8 @@
         </span>
       </div>
 
-      <button class="button button-info max-width" :disabled="formDisable">
-        {{ formDisable ? $i18n.t('misc.CONTINUE') : $i18n.t('misc.SAVE') }}
+      <button class="button button-info max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+        {{ formLoading ? $i18n.t('misc.CONTINUE') : $i18n.t('misc.SAVE') }}
       </button>
     </form>
     <div v-else>
@@ -41,7 +41,7 @@ export default {
     return {
       tfaValue: null,
       formError: null,
-      formDisable: false
+      formLoading: false
     }
   },
   methods: {

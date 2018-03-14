@@ -3,7 +3,7 @@ module.exports = {
 
   misc: {
     NOT_FOUND: 'We were unable to find any {type}.',
-    LOADING: 'Loading, please wait ...',
+    LOADING: 'Loading...',
     CONTINUE: 'Continue',
     CANCEL: 'Cancel',
     VIEW: 'View',
