@@ -127,5 +127,9 @@ module.exports = {
   users: {
     LOGIN_BUTTON: 'Log In',
     REGISTER_BUTTON: 'Register'
+  },
+
+  settings: {
+    EMAIL_CHANGE_NOTICE: 'Your current email is <strong>{email}</strong>. If your new email is invalid we will not be able to reach you and your account will be locked.'
   }
 }

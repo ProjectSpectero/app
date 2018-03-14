@@ -25,7 +25,7 @@
               </div>
             </div>
             <div v-if="showEmailForm" class="change-email-form">
-              <p class="spaced">Your current email is <strong>{{ this.currentEmail }}</strong>. If your new email is invalid we will not be able to reach you and your account will be locked.</p>
+              <p v-html="$i18n.t('settings.EMAIL_CHANGE_NOTICE', { email: this.currentEmail })" class="spaced"></p>
 
               <div class="form-input">
                 <input
