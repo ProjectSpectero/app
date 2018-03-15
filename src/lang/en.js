@@ -114,6 +114,7 @@ module.exports = {
     DELETE_SUCCESS: 'Node removed successfully!',
     GROUP_DELETE_SUCCESS: 'Group removed successfully!',
     DELETE_ERROR: 'An error ocurred while trying to delete your node. Please try again later.',
+    REQUEST_FAILED: 'The request failed. Please contact us if the error persists.',
     NODE_VERIFY_SUCCESS: 'Your node {node} is now queued for verification. We\'ll send you an email as soon as this is finished.',
     GROUP_UPDATE_SUCCESS: 'Node group updated successfully!',
     UPDATE_SUCCESS: 'Node updated successfully!',

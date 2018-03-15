@@ -73,7 +73,7 @@ export default {
             id: id
           },
           success: response => {
-            this.fetchNodes()
+            this.$emit('refetch')
             this.$toasted.show(this.$i18n.t('nodes.GROUP_DELETE_SUCCESS'))
           },
           fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
@@ -85,8 +85,8 @@ export default {
         data: {
           id: node.id
         },
-        success: response => {
-          this.fetchNodes()
+        success: async response => {
+          this.$emit('refetch')
           this.$toasted.success(this.$i18n.t('nodes.NODE_VERIFY_SUCCESS', { node: node.friendly_name }))
         },
         fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))

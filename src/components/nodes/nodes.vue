@@ -34,6 +34,7 @@
             :pagination="pagination"
             :serverPagination="selectedGroup === 0"
             @changedPage="fetchUncategorized"
+            @refetch="fetchAll"
           />
         </div>
       </div>
@@ -76,9 +77,8 @@ export default {
       options: {}
     }
   },
-  async created () {
-    await this.fetchNodes()
-    await this.fetchUncategorized(1)
+  created () {
+    this.fetchAll()
 
     this.options = {
       skin: '',
@@ -137,6 +137,10 @@ export default {
           fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
         })
       }
+    },
+    async fetchAll () {
+      await this.fetchNodes()
+      await this.fetchUncategorized(1)
     },
     fetchNodes (page) {
       nodeAPI.groups({
