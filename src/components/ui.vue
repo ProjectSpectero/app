@@ -2,6 +2,7 @@
   <div class="ui-guide">
     <section>
       <h2>Buttons</h2>
+      <h3>Regular</h3>
       <a href="#" class="button">Button</a>
       <a href="#" class="button button-dark">Dark</a>
       <a href="#" class="button button-info">Info</a>
@@ -9,9 +10,27 @@
       <a href="#" class="button button-warning">Warning</a>
       <a href="#" class="button button-danger">Danger</a>
       <a href="#" class="button" disabled>Disabled</a>
+      <br><br>
+      <h3>Loading</h3>
+      <a href="#" class="button button-loading" disabled>Button</a>
+      <a href="#" class="button button-dark button-loading" disabled>Dark</a>
+      <a href="#" class="button button-info button-loading" disabled>Info</a>
+      <a href="#" class="button button-success button-loading" disabled>Success</a>
+      <a href="#" class="button button-warning button-loading" disabled>Warning</a>
+      <a href="#" class="button button-danger button-loading" disabled>Danger</a>
+      <br><br>
+      <h3>Icons</h3>
+      <a href="#" class="button button-icon"><span class="icon-bell"></span></a>
+      <a href="#" class="button button-dark button-icon"><span class="icon-bar-chart"></span></a>
+      <a href="#" class="button button-info button-icon"><span class="icon-anchor"></span></a>
+      <a href="#" class="button button-success button-icon"><span class="icon-check"></span></a>
+      <a href="#" class="button button-warning button-icon"><span class="icon-alert-triangle"></span></a>
+      <a href="#" class="button button-danger button-icon"><span class="icon-x"></span></a>
     </section>
     <section>
       <h2>Messages</h2>
+      <div class="message">Plain message.</div>
+      <div class="message dark">Dark message.</div>
       <div class="message info">Info message.</div>
       <div class="message success">Success message.</div>
       <div class="message warning">Warning message.</div>
@@ -20,10 +39,10 @@
     <section>
       <h2>Inputs</h2>
       <div class="form-input">
-        <input type="text" class="input" placeholder="Text input">
+        <input type="text" class="input" placeholder="Regular input">
       </div>
       <div class="form-input">
-        <input type="password" class="input" placeholder="Password input">
+        <input type="password" class="input input-error" placeholder="Input with error">
       </div>
       <div class="form-input">
         <input type="text" class="input" placeholder="Disabled input" disabled>

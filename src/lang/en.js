@@ -3,7 +3,7 @@ module.exports = {
 
   misc: {
     NOT_FOUND: 'We were unable to find any {type}.',
-    LOADING: 'Loading, please wait ...',
+    LOADING: 'Loading...',
     CONTINUE: 'Continue',
     CANCEL: 'Cancel',
     VIEW: 'View',
@@ -46,6 +46,7 @@ module.exports = {
     AUTHENTICATION_FAILED: 'Invalid email or password.',
     UNABLE_TO_LOGOUT: 'Unable to log the user out.',
     ROLE_VALIDATION_FAILED: 'You don\'t have access to assign this role.',
+    CURRENT_PASSWORD_MISMATCH: 'Current password provided was incorrect.',
 
     INVALID_SERVICE_OR_ACTION_ATTEMPT: 'Invalid action attempt on service.',
     INVALID_IP_AS_LISTENER_REQUEST: 'Unable to bind httpProxy/openVPN server to this listener.',
@@ -77,8 +78,7 @@ module.exports = {
     PAY_WITH_ACCOUNT_CREDIT: 'Pay with account credit',
     REQUEST_FAILED: 'We were unable to start the payment process. Please contact us if this keeps happening.',
     ZERO_CREDIT_BALANCE: 'You don\'t have any balance in your account.',
-    ADD_CREDIT: 'Add credits',
-    ADD_MORE_CREDIT: 'Add additional credits',
+    ADD_CREDIT: 'Add Credit',
     NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.',
     NO_ACCOUNT_CREDIT: 'You don\'t have any credit in your account.',
     COUNT_ACCOUNT_CREDIT: 'You currently have {credit} credits in your account.',
@@ -128,5 +128,9 @@ module.exports = {
   users: {
     LOGIN_BUTTON: 'Log In',
     REGISTER_BUTTON: 'Register'
+  },
+
+  settings: {
+    EMAIL_CHANGE_NOTICE: 'Your current email is <strong>{email}</strong>. If your new email is invalid we will not be able to reach you and your account will be locked.'
   }
 }

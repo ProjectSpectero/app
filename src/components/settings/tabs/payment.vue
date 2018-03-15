@@ -17,7 +17,7 @@
               placeholder="Full Name"
               class="input max-width"
               :class="{'input-error': errors.has('name')}"
-              :disabled="formDisable"
+              :disabled="formLoading"
               v-validate="rules['name']"
               data-vv-as="name">
 
@@ -35,7 +35,7 @@
               placeholder="Phone Number"
               class="input max-width"
               :class="{'input-error': errors.has('phone_no')}"
-              :disabled="formDisable"
+              :disabled="formLoading"
               v-validate="rules['phone_no']"
               data-vv-as="phone_no">
 
@@ -53,7 +53,7 @@
               placeholder="Company Name"
               class="input max-width"
               :class="{'input-error': errors.has('organization')}"
-              :disabled="formDisable"
+              :disabled="formLoading"
               v-validate="rules['organization']"
               data-vv-as="organization">
 
@@ -71,7 +71,7 @@
               placeholder="Address Line 1"
               class="input max-width"
               :class="{'input-error': errors.has('address_line_1')}"
-              :disabled="formDisable"
+              :disabled="formLoading"
               v-validate="rules['address_line_1']"
               data-vv-as="address_line_1">
 
@@ -89,7 +89,7 @@
               placeholder="Address Line 2"
               class="input max-width"
               :class="{'input-error': errors.has('address_line_2')}"
-              :disabled="formDisable"
+              :disabled="formLoading"
               v-validate="rules['address_line_2']"
               data-vv-as="address_line_2">
 
@@ -108,7 +108,7 @@
                 placeholder="City"
                 class="input max-width"
                 :class="{'input-error': errors.has('city')}"
-                :disabled="formDisable"
+                :disabled="formLoading"
                 v-validate="rules['city']"
                 data-vv-as="city">
 
@@ -125,7 +125,7 @@
                 placeholder="State"
                 class="input max-width"
                 :class="{'input-error': errors.has('state')}"
-                :disabled="formDisable"
+                :disabled="formLoading"
                 v-validate="rules['state']"
                 data-vv-as="state">
 
@@ -145,7 +145,7 @@
                 placeholder="Postal Code"
                 class="input max-width"
                 :class="{'input-error': errors.has('post_code')}"
-                :disabled="formDisable"
+                :disabled="formLoading"
                 v-validate="rules['post_code']"
                 data-vv-as="post_code">
 
@@ -154,7 +154,7 @@
               </span>
             </div>
             <div class="col">
-              <select v-model="form.country" :disabled="formDisable">
+              <select v-model="form.country" :disabled="formLoading">
                 <option v-for="country in countries" :key="country.code" :value="country.code">
                   {{ country.name }}
                 </option>
@@ -171,7 +171,7 @@
               placeholder="Tax Identification Number"
               class="input max-width"
               :class="{'input-error': errors.has('tax_identification')}"
-              :disabled="formDisable"
+              :disabled="formLoading"
               v-validate="rules['tax_identification']"
               data-vv-as="tax_identification">
 
@@ -180,7 +180,7 @@
             </span>
           </div>
 
-          <button type="submit" class="button button-info button-md max-width" :disabled="formDisable">
+          <button type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
             Update Billing Address
           </button>
         </form>
@@ -188,7 +188,7 @@
 
       <div class="col">
         <h3>Payment Methods</h3>
-        <payment-methods :user="user"></payment-methods>
+        <saved-cards :user="user"></saved-cards>
         <credits :user="user"></credits>
       </div>
     </div>
@@ -197,18 +197,21 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import paymentMethods from '../components/savedCards'
+import savedCards from '../components/savedCards'
 import credits from '../components/credits'
 
 export default {
   props: {
     user: Object,
-    formDisable: Boolean,
-    submitUserUpdate: Function
+    formError: String,
+    formLoading: Boolean,
+    processForm: Function
+  },
+  metaInfo: {
+    title: 'Payment Details'
   },
   data () {
     return {
-      formError: null,
       form: null
     }
   },
@@ -232,13 +235,13 @@ export default {
         if (!result) {
           this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
         } else {
-          this.$emit('submitUserUpdate', this.form)
+          this.$emit('processForm', this.form)
         }
       })
     }
   },
   components: {
-    paymentMethods,
+    savedCards,
     credits
   }
 }

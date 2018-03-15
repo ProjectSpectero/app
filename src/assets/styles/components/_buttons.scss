@@ -28,29 +28,34 @@
   
   &[disabled] {
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.75;
   }
 
   // Button color styles
   &.button-info {
     color: $white;
     @include buttonBackgroundColor($color-info);
+    &.button-loading:after { border-left-color: $white }
   }
   &.button-success {
     color: $white;
     @include buttonBackgroundColor($color-success);
+    &.button-loading:after { border-left-color: $white }
   }
   &.button-danger {
     color: $white;
     @include buttonBackgroundColor($color-danger);
+    &.button-loading:after { border-left-color: $white }
   }
   &.button-warning {
     color: #4C421A;
     @include buttonBackgroundColor($color-warning);
+    &.button-loading:after { border-left-color: $white }
   }
   &.button-dark {
     color: $white;
     @include buttonBackgroundColor($color-dark);
+    &.button-loading:after { border-left-color: $white }
   }
 
   // Button sizes
@@ -71,5 +76,24 @@
     padding: 6px 7px;
     font-size: 17px;
     line-height: 90%;
+  }
+
+  // Loading buttons
+  &.button-loading {
+    &:after {
+      width: 10px;
+      height: 10px;
+      margin-left: 8px;
+      display: inline-block;
+      content: '';
+      vertical-align: middle;
+      border: 3px solid rgba(0, 0, 0, 0.15);
+      border-left-color: $color-info;
+      border-radius: 50%;
+      animation: donut-spin 1.2s linear infinite;
+    }
+    &[disabled] {
+      opacity: 1;
+    }
   }
 }

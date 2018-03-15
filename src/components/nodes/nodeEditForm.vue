@@ -28,7 +28,7 @@
               :placeholder="field.placeholder"
               class="input max-width"
               :class="{'input-error': errors.has(field.name)}"
-              :disabled="formDisable"
+              :disabled="formLoading"
               v-validate="rules[field.name]"
               :data-vv-as="field.name">
 
@@ -40,8 +40,8 @@
       </div>
     </div>
 
-    <button type="submit" class="button button-info button-md max-width" :disabled="formDisable">
-      {{ formDisable ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
+    <button type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+      {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
     </button>
   </form>
 </template>
@@ -59,7 +59,7 @@ export default {
     return {
       groups: null,
       formError: null,
-      formDisable: false,
+      formLoading: false,
       form: null,
       loading: true,
       protocols: [
@@ -116,19 +116,19 @@ export default {
   },
   methods: {
     async submit () {
-      this.formDisable = true
+      this.formLoading = true
 
       await nodeAPI.edit({
         data: this.form,
         success: response => {
           if (response.data.result) {
-            this.formDisable = false
+            this.formLoading = false
             this.$toasted.success(this.$i18n.t('nodes.UPDATE_SUCCESS'))
           }
         },
         fail: error => {
           this.$toasted.error(this.errorAPI(error, 'nodes'))
-          this.formDisable = false
+          this.formLoading = false
         }
       })
     },

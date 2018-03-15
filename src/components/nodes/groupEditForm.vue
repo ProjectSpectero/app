@@ -18,7 +18,7 @@
             placeholder="Please add a name for this node group"
             class="input max-width"
             :class="{'input-error': errors.has('friendly_name')}"
-            :disabled="formDisable"
+            :disabled="formLoading"
             v-validate="rules['friendly_name']"
             data-vv-as="friendly_name">
 
@@ -39,7 +39,7 @@
             placeholder="Price"
             class="input max-width"
             :class="{'input-error': errors.has('price')}"
-            :disabled="formDisable"
+            :disabled="formLoading"
             v-validate="rules['price']"
             data-vv-as="price">
             <p v-html="$i18n.t('nodes.GROUP_PRICE_AVAILABILITY', { model1: marketModels[1], model2: marketModels[2] })"></p>
@@ -60,8 +60,8 @@
       </div>
     </div>
 
-    <button type="submit" class="button button-info button-md max-width" :disabled="formDisable">
-      {{ formDisable ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
+    <button type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+      {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
     </button>
   </form>
 </template>
@@ -76,7 +76,7 @@ export default {
   data () {
     return {
       formError: null,
-      formDisable: false,
+      formLoading: false,
       formFields: null,
       form: null,
       marketModels: [
@@ -105,13 +105,13 @@ export default {
   },
   methods: {
     async submit () {
-      this.formDisable = true
+      this.formLoading = true
 
       await nodeAPI.editGroup({
         data: this.form,
         success: response => {
           if (response.data.result) {
-            this.formDisable = false
+            this.formLoading = false
             this.$toasted.success(this.$i18n.t('nodes.GROUP_UPDATE_SUCCESS'))
           } else {
             this.error404()
@@ -119,7 +119,7 @@ export default {
         },
         fail: error => {
           this.$toasted.error(this.errorAPI(error, 'nodes'))
-          this.formDisable = false
+          this.formLoading = false
         }
       })
     }

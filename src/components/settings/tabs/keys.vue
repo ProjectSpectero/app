@@ -1,40 +1,67 @@
 <template>
   <div>
-    <h2>Node Keys</h2>
+    <h2>Node Key</h2>
 
     <div class="col-container col-2">
       <div class="col-half">
-        <form @submit.prevent.stop="submit">
-          <h3>Regenerate Node Key</h3>
-          <div class="message error" v-if="formError">{{ formError }}</div>
-
-          <div class="form-input">
-            <button class="button button-info" @click.prevent.stop="regenerateNodeKey">Regenerate Node Key</button>
-            <p v-if="nodeKey" class="mt-3">Your node key was set to <strong>{{ nodeKey }}</strong>.</p>
-          </div>
-
-        </form>
+        <div class="form-input">
+          <div class="label"><label for="nodeKeyPlaceholder"><strong>Current Node Key</strong></label></div>
+          <textarea
+            type="email"
+            :value="nodeKey"
+            name="nodeKeyPlaceholder"
+            id="nodeKeyPlaceholder"
+            placeholder="Node Key"
+            class="input max-width"
+            disabled>
+          </textarea>
+        </div>
+        <br>
+        <h3>Generate New Key</h3>
+        <p>Use the button below to generate a new node key. Your old key will become invalid if you do this.</p><br>
+        <button class="button button-warning" @click.prevent.stop="regenerateNodeKey" :class="{ 'button-loading': formLoading }" :disabled="formLoading">Regenerate Node Key</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
+import userAPI from '@/api/user.js'
 
 export default {
   props: {
     user: Object
   },
+  metaInfo: {
+    title: 'Node Key'
+  },
   data () {
     return {
-      formError: null,
-      formDisable: null,
-      form: null
+      nodeKey: null,
+      formLoading: false
+    }
+  },
+  methods: {
+    regenerateNodeKey () {
+      this.formLoading = true
+
+      userAPI.regenerateNodeKey({
+        success: response => {
+          this.nodeKey = response.data.result.node_key
+          this.$toasted.success('New node key has been generated.')
+          this.formLoading = false
+        },
+        fail: error => {
+          console.error(`Node key generate error`, error)
+          this.$toasted.error('Unable to generate new node key.')
+          this.formLoading = false
+        }
+      })
     }
   },
   created () {
     this.form = JSON.parse(JSON.stringify(this.user))
+    this.nodeKey = this.form['node_key']
   }
 }
 </script>
