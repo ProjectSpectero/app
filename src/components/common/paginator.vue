@@ -81,6 +81,7 @@ export default {
     &.disabled {
       pointer-events: none;
       color: $color-light;
+      cursor: disabled;
     }
   }
 }
