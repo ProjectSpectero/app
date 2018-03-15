@@ -20,14 +20,42 @@ export default {
   },
   data () {
     return {
-      columns: ['ip', 'created_at'],
-      sortableColumns: ['ip', 'created_at'],
-      filterableColumns: ['ip', 'created_at'],
+      columns: ['ip', 'asn', 'cc', 'city', 'created_at'],
+      sortableColumns: ['ip', 'asn', 'cc', 'city', 'created_at'],
+      filterableColumns: ['ip', 'asn', 'cc', 'city', 'created_at'],
       headings: {
         ip: 'IP Address',
-        created_at: 'Created at'
+        asn: 'ASN',
+        cc: 'Credit Card',
+        city: 'City',
+        created_at: 'Creation Date'
       },
       options: {}
+    }
+  },
+  created () {
+    this.options = {
+      skin: '',
+      texts: {
+        count: 'Showing {from} to {to} of {count} IP addresses|{count} IP addresses|One IP address',
+        filter: '',
+        filterPlaceholder: 'Search IP addresses',
+        limit: 'IP addresses:',
+        page: 'Page:',
+        noresult: 'This node has no IP addresses yet.',
+        filterBy: 'Filter by {column}',
+        loading: 'Loading...',
+        defaultOption: 'Select {column}',
+        columns: 'Columns'
+      },
+      columnsClasses: {
+        actions: 'table-actions'
+      },
+      perPage: 10,
+      pagination: true,
+      headings: this.headings,
+      sortable: this.sortableColumns,
+      filterable: this.filterableColumns
     }
   },
   components: {
