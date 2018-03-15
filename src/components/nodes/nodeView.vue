@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Node #{{ node.id }} <span v-if="node.friendly_name">({{ node.friendly_name }})</span></h1>
-    <h3>In group #{{ group.id }} <span v-if="group.friendly_name">({{ node.friendly_name }})</span></h3>
+    <h3 v-if="group">In group #{{ group.id }} <span v-if="group.friendly_name">({{ node.friendly_name }})</span></h3>
     <ul>
       <li>Name: {{ node.friendly_name }}</li>
       <li>IP: {{ node.ip }}</li>
@@ -10,7 +10,7 @@
       <li>Protocol: {{ node.protocol }}</li>
       <li>Market Model: {{ node.market_model }}</li>
       <li>Price: {{ node.price }}</li>
-      <li>Group #: {{ group.id }}</li>
+      <li v-if="group">Group #: {{ group.id }}</li>
     </ul>
   </div>
 </template>
@@ -19,11 +19,10 @@
 export default {
   props: {
     node: Object,
-    group: Object
+    group: {
+      type: Object,
+      default: null
+    }
   }
 }
 </script>
-
-<style>
-
-</style>
