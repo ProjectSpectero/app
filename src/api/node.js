@@ -1,4 +1,5 @@
 import api from './index.js'
+import helpers from './helpers'
 
 export default {
   /**
@@ -20,7 +21,7 @@ export default {
    * Retrieves all uncategorized nodes.
    */
   uncategorizedNodes (options) {
-    return api('GET', `/node/self/uncategorized`, options)
+    return api('GET', helpers.appendQuery(`/node/self/uncategorized`, options), options)
   },
 
   /**

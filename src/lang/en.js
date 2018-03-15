@@ -118,6 +118,7 @@ module.exports = {
     GROUP_UPDATE_SUCCESS: 'Node group updated successfully!',
     UPDATE_SUCCESS: 'Node updated successfully!',
     HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!',
+    ORDERS_EXIST: 'Unable to remove: this node has active orders!',
     GROUP_PRICE_AVAILABILITY: 'Note: Price will only be used for <strong>{model1}</strong> and <strong>{model2}</strong> market models.',
     DELETE_ENGAGEMENT_CONFIRM_DIALOG: 'Are you sure you want to cancel this engagement?',
     ENGAGEMENT_DELETE_SUCCESS: 'Engagement canceled!',

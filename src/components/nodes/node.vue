@@ -1,7 +1,16 @@
 <template>
   <div>
     <div v-if="!loading">
-      <component :is="component" :node="node" :group="group" :tabs="tabs" :engagements="engagements" :ips="ips" :action="$route.params.action" @updateEngagements="updateEngagements" />
+      <component
+        :is="component"
+        :node="node"
+        :group="group"
+        :tabs="tabs"
+        :engagements="engagements"
+        :ips="ips"
+        :action="$route.params.action"
+        @updateEngagements="updateEngagements"
+      />
     </div>
     <loading v-else></loading>
   </div>

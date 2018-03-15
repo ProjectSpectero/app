@@ -1,4 +1,4 @@
-import nodes from '@/components/nodes/nodeList'
+import nodes from '@/components/nodes/nodes'
 import node from '@/components/nodes/node'
 import nodeGroupView from '@/components/nodes/groupEdit'
 

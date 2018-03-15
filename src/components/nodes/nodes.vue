@@ -3,9 +3,9 @@
     <top title="Nodes"></top>
 
     <div v-if="groups && !loading">
-      <div v-if="groups.length" class="list pad-margin">
+      <div v-if="groups.result.length" class="list pad-margin">
         <div class="left">
-          <div v-for="group in groups" :key="group.id" @click="selectGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
+          <div v-for="group in groups.result" :key="group.id" @click="selectGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
             <div class="node-group">
               <div class="group-name">Group #{{ group.id }}</div>
 
@@ -18,55 +18,23 @@
             <small>({{ group.nodes.length }} nodes)</small>
           </div>
 
-          <div v-if="uncategorizedNodes && uncategorizedNodes.length" @click="selectUncategorizedNodes" :class="selectedGroup === 0 ? 'active' : ''">
+          <div v-if="uncategorizedNodes.result && uncategorizedNodes.result.length" @click="selectUncategorizedNodes" :class="selectedGroup === 0 ? 'active' : ''">
             <div class="node-group">
               <div class="group-name">Uncategorized</div>
             </div>
-            <small>({{ uncategorizedNodes.length }} nodes)</small>
+            <small>({{ uncategorizedNodes.pagination.total }} nodes)</small>
           </div>
         </div>
         <div class="right">
-          <div v-if="nodes" class="datatable">
-            <v-client-table :data="nodes" :columns="columns" :options="options">
-              <template slot="name" slot-scope="props">
-                <div>{{ props.row.friendly_name }}</div>
-                <small>{{ props.row.ip }}</small>
-              </template>
-
-              <template slot="services" slot-scope="props">
-                <div v-for="service in props.row.services" :key="service.id">
-                  {{ service.type }}
-                </div>
-              </template>
-
-              <template slot="status" slot-scope="props">
-                <div :class="'status-' + props.row.status">
-                  <span v-if="props.row.status !== 'pending_verification'">
-                    {{ props.row.status[0].toUpperCase() + props.row.status.slice(1) }}
-                  </span>
-                  <span v-else>
-                    Pending Verification
-                  </span>
-                </div>
-              </template>
-
-              <template slot="actions" slot-scope="props">
-                <router-link class="button" :to="{ name: 'node', params: { action: 'view', id: props.row.id } }">
-                  {{ $i18n.t('misc.VIEW') }}
-                </router-link>
-
-                <router-link class="button" :to="{ name: 'node', params: { action: 'edit', id: props.row.id } }">
-                  {{ $i18n.t('misc.EDIT') }}
-                </router-link>
-
-                <button class="button" @click.stop="removeNode(props.row.id)">Remove</button>
-
-                <button v-if="props.row.status === 'unconfirmed'" class="button" @click.stop="verifyNode(props.row)">
-                  {{ $i18n.t('misc.VERIFY') }}
-                </button>
-              </template>
-            </v-client-table>
-          </div>
+          <nodes-list
+            v-if="nodes"
+            :nodes="nodes"
+            :options="options"
+            :columns="columns"
+            :pagination="pagination"
+            :serverPagination="selectedGroup === 0"
+            @changedPage="fetchUncategorized"
+          />
         </div>
       </div>
       <not-found v-else type="nodes"></not-found>
@@ -79,6 +47,7 @@
 import top from '@/components/common/top'
 import loading from '@/components/common/loading'
 import notFound from '@/components/common/notFound'
+import nodesList from './nodesList'
 import nodeAPI from '@/api/node.js'
 
 export default {
@@ -87,6 +56,7 @@ export default {
   },
   data () {
     return {
+      pagination: null,
       loading: true,
       groups: null,
       selectedGroup: null,
@@ -108,17 +78,17 @@ export default {
   },
   async created () {
     await this.fetchNodes()
-    await this.fetchUncategorized()
+    await this.fetchUncategorized(1)
 
     this.options = {
       skin: '',
       texts: {
-        count: 'Showing {from} to {to} of {count} nodes|{count} nodes|One node',
+        count: '',
         filter: '',
         filterPlaceholder: 'Search nodes',
         limit: 'Nodes:',
         page: 'Page:',
-        noResults: 'This node group has no nodes yet.',
+        noresult: 'This node group has no nodes yet.',
         filterBy: 'Filter by {column}',
         loading: 'Loading...',
         defaultOption: 'Select {column}',
@@ -127,7 +97,8 @@ export default {
       columnsClasses: {
         actions: 'table-actions'
       },
-      perPage: 100,
+      perPage: 10,
+      pagination: true,
       headings: this.headings,
       sortable: this.sortableColumns,
       filterable: this.filterableColumns
@@ -135,38 +106,23 @@ export default {
   },
   methods: {
     selectGroup (group) {
+      this.$set(this.options.texts, 'count', 'Showing {from} to {to} of {count} nodes|{count} nodes|One node')
+      this.$set(this.options, 'pagination', true)
+      this.$set(this.options, 'perPage', 10)
+
       this.nodes = group.nodes
       this.selectedGroup = group.id
     },
     selectUncategorizedNodes () {
-      this.nodes = this.uncategorizedNodes
+      // Uncategorized nodes will use server-side pagination
+      // so we need to disable a few options
+      this.$set(this.options.texts, 'count', '')
+      this.$set(this.options, 'pagination', false)
+      this.$set(this.options, 'perPage', 10)
+
+      this.nodes = this.uncategorizedNodes.result
+      this.pagination = this.uncategorizedNodes.pagination
       this.selectedGroup = 0
-    },
-    removeNode (id) {
-      if (confirm(this.$i18n.t('nodes.DELETE_CONFIRM_DIALOG'))) {
-        nodeAPI.delete({
-          data: {
-            id: id
-          },
-          success: response => {
-            this.fetchNodes()
-            this.$toasted.show(this.$i18n.t('nodes.GROUP_DELETE_SUCCESS'))
-          },
-          fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
-        })
-      }
-    },
-    verifyNode (node) {
-      nodeAPI.verify({
-        data: {
-          id: node.id
-        },
-        success: response => {
-          this.fetchNodes()
-          this.$toasted.success(this.$i18n.t('nodes.NODE_VERIFY_SUCCESS', { node: node.friendly_name }))
-        },
-        fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
-      })
     },
     removeGroup (id) {
       if (confirm(this.$i18n.t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {
@@ -184,14 +140,15 @@ export default {
     },
     fetchNodes (page) {
       nodeAPI.groups({
+        limit: 100,
         success: async response => {
           if (response.data.result) {
-            this.groups = response.data.result
+            this.groups = response.data
 
             // Select first node group
-            for (let g = 0; g < this.groups.length; g++) {
-              if (this.groups[g].nodes && this.groups[g].nodes.length) {
-                this.selectGroup(this.groups[0])
+            for (let g = 0; g < this.groups.result.length; g++) {
+              if (this.groups.result[g].nodes && this.groups.result[g].nodes.length) {
+                this.selectGroup(this.groups.result[0])
                 break
               }
             }
@@ -203,12 +160,14 @@ export default {
         }
       })
     },
-    fetchUncategorized () {
+    fetchUncategorized (page) {
       nodeAPI.uncategorizedNodes({
+        page: page,
+        limit: 3,
         success: response => {
-          this.uncategorizedNodes = response.data.result
+          this.uncategorizedNodes = response.data
 
-          if (!this.nodes && this.uncategorizedNodes.length) {
+          if (this.uncategorizedNodes.result.length) {
             this.selectUncategorizedNodes()
           }
 
@@ -224,7 +183,8 @@ export default {
   components: {
     top,
     loading,
-    notFound
+    notFound,
+    nodesList
   }
 }
 </script>
@@ -254,19 +214,6 @@ export default {
 
   .right {
     width: 75%;
-
-    .nodes {
-      > div {
-        display: flex;
-        align-items: center;
-        padding: 1rem;
-        border: 1px solid #ddd;
-
-        .actions {
-          margin-left: auto;
-        }
-      }
-    }
   }
 
   .node-group {
