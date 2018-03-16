@@ -1,6 +1,6 @@
 <template>
   <div v-if="invoice.status === 'UNPAID'">
-    <router-link v-for="type in types" :key="type.route" class="button button-success mr-1" :to="{ name: type.route, params: { invoiceId: invoice.id } }">
+    <router-link v-if="canUse(type)" v-for="type in types" :key="type.route" class="button button-success mr-1" :to="{ name: type.route, params: { invoiceId: invoice.id } }">
       {{ $i18n.t('payments.' + type.label) }}
     </router-link>
   </div>
@@ -14,10 +14,16 @@ export default {
   data () {
     return {
       types: [
-        { label: 'PAY_WITH_PAYPAL', route: 'paypal' },
-        { label: 'PAY_WITH_STRIPE', route: 'stripe' },
-        { label: 'PAY_WITH_ACCOUNT_CREDIT', route: 'creditPayment' }
+        { label: 'PAY_WITH_PAYPAL', route: 'paypal', usage: ['STANDARD', 'MANUAL', 'CREDIT'] },
+        { label: 'PAY_WITH_STRIPE', route: 'stripe', usage: ['STANDARD'] },
+        { label: 'PAY_WITH_ACCOUNT_CREDIT', route: 'creditPayment', usage: ['STANDARD'] }
       ]
+    }
+  },
+  methods: {
+    canUse (type) {
+      const found = type.usage.find(u => u === this.invoice.type)
+      return found || false
     }
   }
 }

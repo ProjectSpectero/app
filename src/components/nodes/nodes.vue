@@ -62,6 +62,7 @@ export default {
       groups: null,
       selectedGroup: null,
       nodes: null,
+      uncategorizedPage: 1,
       uncategorizedNodes: null,
       columns: ['name', 'market_model', 'services', 'status', 'actions'],
       sortableColumns: ['name', 'status', 'market_model'],
@@ -78,8 +79,6 @@ export default {
     }
   },
   created () {
-    this.fetchAll()
-
     this.options = {
       skin: '',
       texts: {
@@ -103,6 +102,8 @@ export default {
       sortable: this.sortableColumns,
       filterable: this.filterableColumns
     }
+
+    this.fetchAll()
   },
   methods: {
     selectGroup (group) {
@@ -112,6 +113,8 @@ export default {
 
       this.nodes = group.nodes
       this.selectedGroup = group.id
+
+      this.$router.push({ name: 'nodesByGroup', params: { id: group.id } })
     },
     selectUncategorizedNodes () {
       // Uncategorized nodes will use server-side pagination
@@ -123,6 +126,8 @@ export default {
       this.nodes = this.uncategorizedNodes.result
       this.pagination = this.uncategorizedNodes.pagination
       this.selectedGroup = 0
+
+      this.$router.push({ name: 'nodesByGroup', params: { id: 'uncategorized' } })
     },
     removeGroup (id) {
       if (confirm(this.$i18n.t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {
@@ -140,23 +145,14 @@ export default {
     },
     async fetchAll () {
       await this.fetchNodes()
-      await this.fetchUncategorized(1)
+      await this.fetchUncategorized(this.uncategorizedPage)
+      this.handleGroupSelection()
     },
-    fetchNodes (page) {
-      nodeAPI.groups({
+    async fetchNodes () {
+      await nodeAPI.groups({
         limit: 100,
-        success: async response => {
-          if (response.data.result) {
-            this.groups = response.data
-
-            // Select first node group
-            for (let g = 0; g < this.groups.result.length; g++) {
-              if (this.groups.result[g].nodes && this.groups.result[g].nodes.length) {
-                this.selectGroup(this.groups.result[0])
-                break
-              }
-            }
-          }
+        success: response => {
+          this.groups = response.data
         },
         fail: (e) => {
           console.log(e)
@@ -164,24 +160,63 @@ export default {
         }
       })
     },
-    fetchUncategorized (page) {
-      nodeAPI.uncategorizedNodes({
+    async fetchUncategorized (page) {
+      await nodeAPI.uncategorizedNodes({
         page: page,
-        limit: 3,
+        limit: 1,
         success: response => {
+          this.uncategorizedPage = page
           this.uncategorizedNodes = response.data
-
-          if (this.uncategorizedNodes.result.length) {
-            this.selectUncategorizedNodes()
-          }
-
-          this.loading = false
+          this.nodes = response.data.result
+          this.pagination = response.data.pagination
         },
         fail: (e) => {
           console.log(e)
           // this.error404()
         }
       })
+    },
+    selectDefaultGroup () {
+      let found = false
+      const groups = this.groups.result
+
+      // Attempt to pick the first node group with nodes
+      for (let g = 0; g < groups.length; g++) {
+        if (groups[g].nodes && groups[g].nodes.length) {
+          found = true
+          this.selectGroup(groups[0])
+          break
+        }
+      }
+
+      // No nodes found in ANY node group? Load uncategorized nodes by default
+      if (!found) {
+        this.selectUncategorizedNodes()
+      }
+
+      this.loading = false
+    },
+    handleGroupSelection () {
+      // If coming from a route with a node group id, use that id
+      if (this.$route.params.id) {
+        if (this.$route.params.id && this.$route.params.id === 'uncategorized') {
+          this.selectUncategorizedNodes()
+        } else {
+          const target = this.groups.result.find(g => g.id === parseInt(this.$route.params.id))
+
+          if (!target) {
+            this.error404()
+          } else {
+            this.selectGroup(target)
+          }
+        }
+
+        this.loading = false
+        return
+      }
+
+      // Select default group if no id exists
+      this.selectDefaultGroup()
     }
   },
   components: {
