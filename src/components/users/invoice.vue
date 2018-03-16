@@ -51,14 +51,31 @@
               <td><strong>Invoice Date:</strong></td>
               <td>{{ invoice.updated_at | moment('MMMM D, YYYY') }}</td>
             </tr>
-            <tr v-if="canShowDueAmount">
-              <td><strong>Payment Due:</strong></td>
-              <td>{{ invoice.due_date | moment('MMMM D, YYYY') }}</td>
-            </tr>
-            <tr v-if="canShowDueAmount" class="invert">
-              <td><strong>Amount Due:</strong></td>
-              <td><strong>{{ due.amount | currency }} {{ due.currency }}</strong></td>
-            </tr>
+            <template v-if="invoice.type === 'STANDARD'">
+              <tr v-if="canShowDueAmount">
+                <td><strong>Payment Due:</strong></td>
+                <td>{{ invoice.due_date | moment('MMMM D, YYYY') }}</td>
+              </tr>
+              <tr v-if="canShowDueAmount" class="invert">
+                <td><strong>Amount Due:</strong></td>
+                <td>
+                  <strong v-if="invoice.type === 'STANDARD'">{{ due.amount | currency }} {{ due.currency }}</strong>
+                  <strong v-else>{{ invoice.amount | currency }} {{ invoice.currency }}</strong>
+                </td>
+              </tr>
+            </template>
+            <template v-else>
+              <tr>
+                <td><strong>Payment Due:</strong></td>
+                <td>{{ invoice.due_date | moment('MMMM D, YYYY') }}</td>
+              </tr>
+              <tr class="invert">
+                <td><strong>Amount Due:</strong></td>
+                <td>
+                  <strong>{{ invoice.amount | currency }} {{ invoice.currency }}</strong>
+                </td>
+              </tr>
+            </template>
           </table>
         </div>
       </div>
@@ -175,31 +192,45 @@ export default {
               this.setPendingInvoiceStatus(false)
             }
 
-            // Fetch the order for this invoice
-            paymentAPI.order({
-              data: {
-                id: this.invoice.order_id
-              },
-              success: response => {
-                if (response.data.result) {
-                  this.valid = true
-                  this.loading = false
-                  this.order = response.data.result
-
-                  // Fetch extra info: total due amount and list of transactions
-                  this.fetchDue()
-                  this.fetchTransactions()
-                }
-              },
-              fail: () => this.error404()
-            })
+            // Non-standard invoices (MANUAL/CREDIT) don't have orders
+            // associated with them. We can only fetch orders for STANDARD invoices
+            if (this.invoice.type === 'STANDARD' && this.invoice.order_id) {
+              this.fetchOrder()
+            } else {
+              this.loading = false
+            }
           }
         },
-        fail: () => this.error404()
+        fail: (e) => {
+          console.log(e)
+          // this.error404()
+        }
       })
     },
-    fetchDue () {
-      paymentAPI.due({
+    async fetchOrder () {
+      await paymentAPI.order({
+        data: {
+          id: this.invoice.order_id
+        },
+        success: async response => {
+          if (response.data.result) {
+            this.valid = true
+            this.loading = false
+            this.order = response.data.result
+
+            // Fetch extra info: total due amount and list of transactions
+            await this.fetchDue()
+            await this.fetchTransactions()
+          }
+        },
+        fail: (e) => {
+          console.log(e)
+          // this.error404()
+        }
+      })
+    },
+    async fetchDue () {
+      await paymentAPI.due({
         data: {
           id: this.$route.params.id
         },
@@ -211,8 +242,8 @@ export default {
         fail: () => this.error404()
       })
     },
-    fetchTransactions () {
-      paymentAPI.transactions({
+    async fetchTransactions () {
+      await paymentAPI.transactions({
         data: {
           id: this.$route.params.id
         },
