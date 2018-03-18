@@ -50,6 +50,13 @@ export default {
   },
 
   /**
+   * Retrieves the maximum amount of USD credits a user can purchase.
+   */
+  getMaxCredit (options) {
+    return api('GET', `credit/max`, options)
+  },
+
+  /**
    * Creates an order.
    *
    * @param {Integer} user_id Current user id.
