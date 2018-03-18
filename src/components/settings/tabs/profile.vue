@@ -37,7 +37,7 @@
                   class="input max-width"
                   :class="{'input-error': errors.has('email')}"
                   :disabled="formLoading"
-                  v-validate="confirmedFieldRule('email', rules['email'])"
+                  v-validate="this.confirmedFieldRule('email', rules['email'])"
                   data-vv-as="new email">
 
                 <span v-show="errors.has('email')" class="input-error-message">
@@ -103,7 +103,7 @@
                   class="input max-width"
                   :class="{'input-error': errors.has('password')}"
                   :disabled="formLoading"
-                  v-validate="confirmedFieldRule('password', rules['password'])"
+                  v-validate="this.confirmedFieldRule('password', rules['password'])"
                   data-vv-as="new password">
 
                 <span v-show="errors.has('password')" class="input-error-message">
@@ -176,10 +176,6 @@ export default {
     },
     togglePasswordEdit () {
       this.showPasswordForm = !this.showPasswordForm
-    },
-    confirmedFieldRule: function (inputName, rules) {
-      rules.confirmed = inputName + 'Confirm'
-      return rules
     },
     submit () {
       this.$validator.validateAll().then((result) => {
