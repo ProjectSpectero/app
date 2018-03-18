@@ -12,7 +12,7 @@
           {{ props.row.created_at | moment('MMM D, YYYY') }}
         </template>
         <template slot="due_next" slot-scope="props">
-          {{ props.row.due_next !== '0000-00-00' ? (props.row.due_next | moment('MMM D, YYYY')) : '-' }}
+          {{ props.row.due_next | moment('MMM D, YYYY') }}
         </template>
         <template slot="actions" slot-scope="props">
           <router-link class="button" :to="{ name: 'order', params: { id: props.row.id } }">
