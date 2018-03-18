@@ -1,14 +1,22 @@
 <template>
-  <div>
-    <h1>{{ $i18n.t('payments.ADD_CREDIT_TITLE') }}</h1>
-    <h4>{{ $i18n.t('payments.ADD_CREDIT_MAX_WARNING', { remaining: this.remaining, max: this.max, currency: this.currency }) }}</h4>
+  <div class="boxed boxed-centered">
+    <div class="boxed-container boxed-md">
+      <h1>{{ $i18n.t('payments.ADD_CREDIT_TITLE') }}</h1>
+      <p>{{ $i18n.t('payments.ADD_CREDIT_DESC') }}</p>
+      <p class="credit-current">Balance: {{ user.credit | currency }} {{ this.currency }}</p>
 
-    <p>{{ $i18n.tc('payments.CURRENT_CREDIT', user.credit, { credit: user.credit, currency: this.currency }) }}</p>
-
-    <input type="number" v-model="amount" :placeholder="$i18n.t('payments.ADD_CREDIT_PLACEHOLDER')" @keyup="watchMaxValue">
-    <button @click="add(amount)">
-      {{ $i18n.t('misc.PURCHASE') }}
-    </button>
+      <div class="message" v-html="$i18n.t('payments.ADD_CREDIT_MAX_WARNING', { remaining: this.remaining, max: this.max, currency: this.currency })"></div>
+      <br>
+      <div class="form-input">
+        <div class="label">
+          <label for="creditAddAmount">{{ $i18n.t('payments.ADD_CREDIT_FORM_LABEL') }}</label>
+        </div>
+        <input type="number" id="creditAddAmount" class="input" v-model="amount" :placeholder="$i18n.t('payments.ADD_CREDIT_PLACEHOLDER')" @keyup="watchMaxValue">
+      </div>
+      <button @click="add(amount)" class="button button-md button-success button-full">
+        {{ $i18n.t('misc.PURCHASE') }}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -22,8 +30,11 @@ export default {
       amount: 10,
       max: 0,
       remaining: 0,
-      currency: 'EUR'
+      currency: 'USD'
     }
+  },
+  metaInfo: {
+    title: 'Add Credit'
   },
   async created () {
     await this.fetchMax()
@@ -63,3 +74,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+h1 {
+  margin-bottom: 12px;
+}
+.credit-current {
+  margin: 16px 0 18px 0;
+  font-size: 16px;
+  line-height: 100%;
+  font-weight: $font-bold;
+}
+</style>

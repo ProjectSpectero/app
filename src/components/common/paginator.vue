@@ -46,7 +46,6 @@ export default {
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-
 }
 
 .paginator {
