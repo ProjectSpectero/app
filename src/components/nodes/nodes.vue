@@ -5,14 +5,14 @@
     <div v-if="groups && !loading">
       <div v-if="groups.result.length" class="list">
         <div class="nodes-sidebar">
-          <div v-for="group in groups.result" class="node-group" :key="group.id" @click="selectGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
+          <div v-for="group in groups.result" class="node-group" :key="group.id" @click.prevent.stop="selectGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
             <div class="description">
               <div class="group-name">Group #{{ group.id }}</div>
               <div class="count">{{ group.nodes.length }} Nodes</div>
             </div>
             <div class="actions">
-              <router-link :to="{ name: 'group', params: { id: group.id } }">Edit</router-link>
-              <a href="#remove" class="action-remove" @click.prevent.stop="removeGroup(group.id)">Delete</a>
+              <a href="#edit" class="action-edit" @click.prevent.stop="editGroup(group.id)">Edit</a>
+              <a href="#delete" class="action-remove" @click.prevent.stop="removeGroup(group.id)">Delete</a>
             </div>
           </div>
 
@@ -126,6 +126,9 @@ export default {
       this.selectedGroup = 0
 
       this.$router.push({ name: 'nodesByGroup', params: { id: 'uncategorized' } })
+    },
+    editGroup (id) {
+      this.$router.push({ name: 'groupEdit', params: { id: id } })
     },
     removeGroup (id) {
       if (confirm(this.$i18n.t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {
@@ -270,6 +273,7 @@ export default {
         margin-left: 0;
       }
     }
+
     .action-remove {
       color: $color-danger;
     }

@@ -53,10 +53,14 @@ export default {
             // Chech if the url has any anchors and load it immediately
             await this.parseTab()
           } else {
-            this.error404()
+            console.log('wrong info')
+            // this.error404()
           }
         },
-        fail: () => this.error404()
+        fail: (e) => {
+          console.log(e)
+          // this.error404()
+        }
       })
     },
     updateEngagements () {
