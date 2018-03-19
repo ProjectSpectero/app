@@ -6,7 +6,8 @@
     <div class="menu-items">
       <section class="nav-section">
         <ul>
-          <li><router-link :to="{ name: 'dashboard' }"><span class="icon-zap"></span> Dashboard</router-link></li>
+          <li><router-link :to="{ name: 'dashboard' }"><span class="icon-pie-chart"></span> Dashboard</router-link></li>
+          <li><router-link :to="{ name: 'marketplace' }"><span class="icon-globe"></span> Marketplace</router-link></li>
         </ul>
       </section>
       <section class="nav-section">
