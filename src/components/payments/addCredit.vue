@@ -43,7 +43,7 @@ export default {
       paymentAPI.getMaxCredit({
         success: response => {
           this.remaining = response.data.result.can_add
-          this.max = parseInt(response.data.result.credit_limit)
+          this.max = response.data.result.credit_limit
           this.currency = response.data.result.currency
         },
         fail: error => this.$toasted.error(this.errorAPI(error, 'payments'))
