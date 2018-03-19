@@ -3,7 +3,7 @@
     <h2>Two-factor auth</h2>
 
     <form v-if="enabled" @submit.prevent="submit">
-      <div class="message error" v-if="formError">{{ formError }}</div>
+      <div class="message message-error" v-if="formError">{{ formError }}</div>
 
       <div class="form-input">
         <input

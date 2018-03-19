@@ -6,7 +6,7 @@
       <div class="col-half">
         <form @submit.prevent.stop="submit">
           <h3>General Information</h3>
-          <div class="message error" v-if="formError">{{ formError }}</div>
+          <div class="message message-error" v-if="formError">{{ formError }}</div>
 
           <div class="change-email">
             <div class="form-input">
