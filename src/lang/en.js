@@ -131,7 +131,18 @@ module.exports = {
     GROUP_PRICE_AVAILABILITY: 'Note: Price will only be used for <strong>{model1}</strong> and <strong>{model2}</strong> market models.',
     DELETE_ENGAGEMENT_CONFIRM_DIALOG: 'Are you sure you want to cancel this engagement?',
     ENGAGEMENT_DELETE_SUCCESS: 'Engagement canceled!',
-    ORDER_NOT_ACTIVE_YET: 'Unable to cancel engagement: This order isn\'t active yet!'
+    ORDER_NOT_ACTIVE_YET: 'Unable to cancel engagement: This order isn\'t active yet!',
+    STATUS: {
+      UNCONFIRMED: 'Unconfirmed',
+      CONFIRMED: 'Confirmed',
+      PENDING_VERIFICATION: 'Pending Verification'
+    },
+    MODEL: {
+      UNLISTED: 'Unlisted',
+      MANAGED: 'Managed',
+      LISTED_SHARED: 'Listed Shared',
+      LISTED_DEDICATED: 'Listed Dedicated'
+    }
   },
 
   users: {

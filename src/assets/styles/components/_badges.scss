@@ -1,30 +1,31 @@
-.message {
+.badge {
+  display: inline-block;
+  padding: 4px 8px 2px 8px;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: $font-bold;
+  text-transform: uppercase;
   color: #626C84;
   background-color: #F2F3F5;
-  padding: 8px 14px;
-  border-radius: 4px;
-  font-size: 16px;
-  line-height: 150%;
-  font-weight: 600;
-  margin-bottom: 12px;
+  border-radius: 50px;
 }
-.message-info {
+.badge-info {
   color: $white;
   background-color: $color-info;
 }
-.message-error {
+.badge-error {
   color: $white;
   background-color: $color-danger;
 }
-.message-success {
+.badge-success {
   color: $white;
   background-color: $color-success;
 }
-.message-warning {
+.badge-warning {
   color: rgba(0,0,0,0.7);
   background-color: $color-warning;
 }
-.message-dark {
+.badge-dark {
   color: $white;
   background-color: $color-dark;
 }

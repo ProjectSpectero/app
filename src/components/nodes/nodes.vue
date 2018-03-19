@@ -3,29 +3,27 @@
     <top title="Nodes"></top>
 
     <div v-if="groups && !loading">
-      <div v-if="groups.result.length" class="list pad-margin">
-        <div class="left">
-          <div v-for="group in groups.result" :key="group.id" @click="selectGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
-            <div class="node-group">
+      <div v-if="groups.result.length" class="list">
+        <div class="nodes-sidebar">
+          <div v-for="group in groups.result" class="node-group" :key="group.id" @click="selectGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
+            <div class="description">
               <div class="group-name">Group #{{ group.id }}</div>
-
-              <div class="group-actions">
-                <router-link :to="{ name: 'group', params: { id: group.id } }">Edit</router-link>
-                <a href="#" @click.prevent.stop="removeGroup(group.id)">Remove</a>
-              </div>
+              <div class="count">{{ group.nodes.length }} Nodes</div>
             </div>
-
-            <small>({{ group.nodes.length }} nodes)</small>
+            <div class="actions">
+              <router-link :to="{ name: 'group', params: { id: group.id } }">Edit</router-link>
+              <a href="#remove" class="action-remove" @click.prevent.stop="removeGroup(group.id)">Delete</a>
+            </div>
           </div>
 
-          <div v-if="uncategorizedNodes.result && uncategorizedNodes.result.length" @click="selectUncategorizedNodes" :class="selectedGroup === 0 ? 'active' : ''">
-            <div class="node-group">
+          <div class="node-group" v-if="uncategorizedNodes.result && uncategorizedNodes.result.length" @click="selectUncategorizedNodes" :class="selectedGroup === 0 ? 'active' : ''">
+            <div class="description">
               <div class="group-name">Uncategorized</div>
+              <div class="count">{{ uncategorizedNodes.pagination.total }} Nodes</div>
             </div>
-            <small>({{ uncategorizedNodes.pagination.total }} nodes)</small>
           </div>
         </div>
-        <div class="right">
+        <div class="nodes-details">
           <nodes-list
             v-if="nodes"
             :nodes="nodes"
@@ -52,9 +50,6 @@ import nodesList from './nodesList'
 import nodeAPI from '@/api/node.js'
 
 export default {
-  metaInfo: {
-    title: 'Nodes'
-  },
   data () {
     return {
       pagination: null,
@@ -64,7 +59,7 @@ export default {
       nodes: null,
       uncategorizedPage: 1,
       uncategorizedNodes: null,
-      columns: ['name', 'market_model', 'services', 'status', 'actions'],
+      columns: ['name', 'market_model', 'status', 'actions'],
       sortableColumns: ['name', 'status', 'market_model'],
       filterableColumns: ['name', 'status', 'market_model'],
       headings: {
@@ -73,10 +68,13 @@ export default {
         status: 'Status',
         market_model: 'Model',
         updated_at: 'Creation Date',
-        actions: 'Actions'
+        actions: ''
       },
       options: {}
     }
+  },
+  metaInfo: {
+    title: 'Nodes'
   },
   created () {
     this.options = {
@@ -163,7 +161,7 @@ export default {
     async fetchUncategorized (page) {
       await nodeAPI.uncategorizedNodes({
         page: page,
-        limit: 1,
+        limit: 10,
         success: response => {
           this.uncategorizedPage = page
           this.uncategorizedNodes = response.data
@@ -229,37 +227,61 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .list {
-    display: flex;
-    background: #fff;
-  }
+.list {
+  display: flex;
+  margin-bottom: $pad;
+  background: #fff;
+}
 
-  .left {
-    width: 25%;
-    border: 1px solid #ddd;
-    border-bottom: 0;
+.nodes-sidebar {
+  width: 300px;
+  margin-right: $pad;
+  border-bottom: 0;
 
-    > div {
-      border-bottom: 1px solid #ddd;
-      height: 60px;
-      padding: 1rem;
-      cursor: pointer;
-    }
+  > div {
+    height: 60px;
+    padding: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
 
-    .active {
-      background: #f9f9f9
-    }
-  }
-
-  .right {
-    width: 75%;
-  }
-
-  .node-group {
-    display: flex;
-
-    > .group-name {
-      flex: 1;
+    &.active {
+      background-color: rgba(9, 30, 66, 0.04);
     }
   }
+}
+
+.nodes-details {
+  flex: 1;
+}
+
+.node-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .description {
+    flex: 1;
+  }
+  .actions {
+    a {
+      padding-left: 6px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+    .action-remove {
+      color: $color-danger;
+    }
+  }
+  .group-name {
+    font-size: 16px;
+    font-weight: $font-semi;
+  }
+  .count {
+    margin-top: 4px;
+    font-size: 12px;
+    color: $color-light;
+  }
+}
 </style>

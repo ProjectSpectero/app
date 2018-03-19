@@ -31,6 +31,9 @@ export default {
       activeTab: 1
     }
   },
+  metaInfo: {
+    title: 'Edit Node'
+  },
   created () {
     this.parseTab()
   },
