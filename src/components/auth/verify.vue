@@ -1,24 +1,28 @@
 <template>
-  <div v-if="verified">
-    <h2>Great success!</h2>
-    <p>Your account {{ $route.params.email }} is now verified.</p>
-    <p>Please proceed to the <router-link :to="{ name: 'login' }">login page</router-link> to access Spectero.</p>
-  </div>
-  <div v-else>
-    <div v-if="error">
-      <h2>Something went wrong!</h2>
-
-      <div v-if="error === 'USER_ALREADY_VERIFIED'">
-        <p>Your account is already verified!</p>
-        <p>Please proceed to the <router-link :to="{ name: 'login' }">login page</router-link> to access Spectero.</p>
-      </div>
-      <div v-else>
-        <p>We were unable to verify your account. Please try again later.</p>
-      </div>
+  <div class="verify">
+    <div v-if="verified">
+      <h2>Account Activated!</h2>
+      <p>Your account with email <strong>{{ $route.params.email }}</strong> is now activated. Use the button below to login.</p>
+      <br>
+      <router-link class="button" :to="{ name: 'login' }">Go to Login</router-link>
     </div>
     <div v-else>
-      <h2>Verifying ...</h2>
-      <p>Please wait while we validate your account.</p>
+      <div v-if="error">
+        <div v-if="error === 'USER_ALREADY_VERIFIED'">
+          <p class="message message-success">Your account is already verified!</p>
+          <p>Click the button below to login now.</p>
+          <br>
+          <router-link class="button" :to="{ name: 'login' }">Go to Login</router-link>
+        </div>
+        <div v-else>
+          <p class="message message-error">We were unable to verify your account. Please try again later.</p>
+          <router-link class="button" :to="{ name: 'login' }">Go to Login</router-link>
+        </div>
+      </div>
+      <div v-else>
+        <h2>Verifying...</h2>
+        <p>Please wait while we validate your account.</p>
+      </div>
     </div>
   </div>
 </template>
@@ -62,3 +66,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.verify {
+  text-align: center;
+}
+</style>

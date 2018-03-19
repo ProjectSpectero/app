@@ -20,7 +20,7 @@
         <div class="datatable">
           <v-client-table :data="tableData" :columns="columns" :options="options">
             <template slot="status" slot-scope="props">
-              <div class="badge">{{ $i18n.t('payments.INVOICE_STATUS.' + props.row.status) }}</div>
+              <div :class="'badge status-' + props.row.status.toLowerCase()">{{ $i18n.t('payments.INVOICE_STATUS.' + props.row.status) }}</div>
             </template>
             <template slot="amount" slot-scope="props">
               {{ props.row.amount | currency }} {{ props.row.currency }}
@@ -120,3 +120,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~@styles/components/badges';
+
+.badge {
+  &.status-paid {
+    @extend .badge-success
+  }
+  &.status-unpaid {
+    @extend .badge-error
+  }
+}
+</style>

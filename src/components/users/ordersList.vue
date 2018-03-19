@@ -3,7 +3,7 @@
     <div class="datatable">
       <v-client-table :data="tableData" :columns="columns" :options="options">
         <template slot="status" slot-scope="props">
-          <div class="badge">{{ $i18n.t('orders.ORDER_STATUS.' + props.row.status) }}</div>
+          <div :class="'badge status-' + props.row.status.toLowerCase()">{{ $i18n.t('orders.ORDER_STATUS.' + props.row.status) }}</div>
         </template>
         <template slot="total" slot-scope="props">
           {{ props.row.last_invoice.amount | currency }} {{ props.row.last_invoice.currency }}
@@ -155,3 +155,16 @@ function processTotal (row) {
   return invoice ? parseFloat(invoice.amount).toFixed(2) + ' ' + invoice.currency : '-'
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~@styles/components/badges';
+
+.badge {
+  &.status-active {
+    @extend .badge-success
+  }
+  &.status-automated_fraud_check, &.status-manual_fraud_check {
+    @extend .badge-warning
+  }
+}
+</style>
