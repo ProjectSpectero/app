@@ -6,7 +6,7 @@
       <div class="col">
         <form @submit.prevent.stop="submit">
           <h3>Billing Address</h3>
-          <div class="message error" v-if="formError">{{ formError }}</div>
+          <div class="message message-error" v-if="formError">{{ formError }}</div>
 
           <div class="form-input">
             <input

@@ -68,7 +68,7 @@ select {
 
   &[disabled] {
     color: $color-dark;
-    background: $color-smoke;
+    background-color: $color-smoke;
     cursor: not-allowed;
   }
 }

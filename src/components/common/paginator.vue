@@ -46,7 +46,6 @@ export default {
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-
 }
 
 .paginator {
@@ -81,6 +80,7 @@ export default {
     &.disabled {
       pointer-events: none;
       color: $color-light;
+      cursor: disabled;
     }
   }
 }

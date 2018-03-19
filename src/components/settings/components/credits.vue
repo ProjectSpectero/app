@@ -1,18 +1,11 @@
 <template>
   <div class="credit-details">
-    <h3>Account credits</h3>
-    <div v-if="user.credit && user.credit > 0">
-      <p>{{ $i18n.t('payments.COUNT_ACCOUNT_CREDIT', { credit: user.credit }) }}</p>
-      <router-link :to="{ name: 'addCredit' }" class="button">
-        {{ $i18n.t('payments.ADD_CREDIT') }}
-      </router-link>
-    </div>
-    <div v-else>
-      <p>{{ $i18n.t('payments.NO_ACCOUNT_CREDIT')}}</p>
-      <router-link :to="{ name: 'addCredit' }" class="button">
-        {{ $i18n.t('payments.ADD_CREDIT') }}
-      </router-link>
-    </div>
+    <h3>Account credit</h3>
+    <p v-if="user.credit && user.credit > 0" v-html="$i18n.t('payments.COUNT_ACCOUNT_CREDIT', { credit: user.credit })"></p>
+    <p v-else>{{ $i18n.t('payments.NO_ACCOUNT_CREDIT')}}</p>
+    <router-link :to="{ name: 'addCredit' }" class="button">
+      {{ $i18n.t('payments.ADD_CREDIT') }}
+    </router-link>
   </div>
 </template>
 
@@ -20,6 +13,9 @@
 export default {
   props: {
     user: Object
+  },
+  metaInfo: {
+    title: 'Add Credit'
   }
 }
 </script>

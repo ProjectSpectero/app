@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent.stop="submit">
     <div class="container">
-      <div class="message error" v-if="formError">{{ formError }}</div>
+      <div class="message message-error" v-if="formError">{{ formError }}</div>
 
       <h2>{{ $i18n.t('misc.GENERAL_INFO') }}</h2>
 

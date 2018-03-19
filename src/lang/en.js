@@ -76,19 +76,20 @@ module.exports = {
     PAYMENT_PROCESSOR_NOT_ENABLED: 'This payment processor is not enabled. Please contact us for more details.',
     PAY_WITH_PAYPAL: 'Pay with Paypal',
     PAY_WITH_STRIPE: 'Pay with Credit Card',
-    PAY_WITH_ACCOUNT_CREDIT: 'Pay with account credit',
+    PAY_WITH_ACCOUNT_CREDIT: 'Pay with Account Credit',
     REQUEST_FAILED: 'We were unable to start the payment process. Please contact us if this keeps happening.',
     ZERO_CREDIT_BALANCE: 'You don\'t have any balance in your account.',
     UNPAID_CREDIT_INVOICES_ARE_PRESENT: 'Unable to invoice credits: you already have one invoice queued for payment!',
-    CURRENT_CREDIT: 'You don\'t have any credit in your account | You have 1 {currency} credit in your account. | You currently have {credit} {currency} in your account.',
     ADD_CREDIT: 'Add Credit',
-    ADD_CREDIT_TITLE: 'Add credit to your account',
-    ADD_CREDIT_MAX_WARNING: 'You can purchase {remaining}/{max} {currency} worth of credit.',
+    ADD_CREDIT_TITLE: 'Add Credit',
+    ADD_CREDIT_DESC: 'Use the form below to add credit to your account for making payments in the future.',
+    ADD_CREDIT_MAX_WARNING: 'You may add up to <span>$</span>{remaining} {currency} more credit to this account.',
+    ADD_CREDIT_FORM_LABEL: 'Enter amount of credit (in $USD) you\'d like to purchase:',
     CREDIT_INVOICED: '{amount} {currency} worth of credit invoiced!',
-    ADD_CREDIT_PLACEHOLDER: 'Please type the amount of credit you wish to purchase (in {currency})',
+    ADD_CREDIT_PLACEHOLDER: 'Enter amount of credit you wish to purchase',
     NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.',
     NO_ACCOUNT_CREDIT: 'You don\'t have any credit in your account.',
-    COUNT_ACCOUNT_CREDIT: 'You currently have {credit} USD in your account.',
+    COUNT_ACCOUNT_CREDIT: 'You currently have <strong><span>$</span>{credit} USD</strong> of credit in your account.',
     INVOICE_STATUS: {
       PAID: 'Paid',
       UNPAID: 'Unpaid',
@@ -130,7 +131,18 @@ module.exports = {
     GROUP_PRICE_AVAILABILITY: 'Note: Price will only be used for <strong>{model1}</strong> and <strong>{model2}</strong> market models.',
     DELETE_ENGAGEMENT_CONFIRM_DIALOG: 'Are you sure you want to cancel this engagement?',
     ENGAGEMENT_DELETE_SUCCESS: 'Engagement canceled!',
-    ORDER_NOT_ACTIVE_YET: 'Unable to cancel engagement: This order isn\'t active yet!'
+    ORDER_NOT_ACTIVE_YET: 'Unable to cancel engagement: This order isn\'t active yet!',
+    STATUS: {
+      UNCONFIRMED: 'Unconfirmed',
+      CONFIRMED: 'Confirmed',
+      PENDING_VERIFICATION: 'Pending Verification'
+    },
+    MODEL: {
+      UNLISTED: 'Unlisted',
+      MANAGED: 'Managed',
+      LISTED_SHARED: 'Listed Shared',
+      LISTED_DEDICATED: 'Listed Dedicated'
+    }
   },
 
   users: {

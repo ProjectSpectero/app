@@ -35,6 +35,7 @@
 .content-split {
   width: 100%;
   display: flex;
+  margin-bottom: $pad;
 
   .split-list {
     width: 240px;
@@ -67,8 +68,5 @@
   > .col-half {
     width: 50%;
     padding-right: $pad/2;
-  }
-  .col-2 {
-
   }
 }

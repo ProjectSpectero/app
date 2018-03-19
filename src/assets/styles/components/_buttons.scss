@@ -17,7 +17,7 @@
   font-family: $font-family;
   font-size: $font-size;
   line-height: 38px;
-  font-weight: $font-bold;
+  font-weight: $font-semi;
   border-radius: 4px;
   color: #626C84;
   text-decoration: none;
@@ -25,6 +25,7 @@
   border: none;
   transition: all 0.1s ease-out;
   cursor: pointer;
+  vertical-align: top;
   
   &[disabled] {
     cursor: not-allowed;
@@ -61,7 +62,7 @@
   // Button sizes
   &.button-sm {
     padding: 0 12px;
-    line-height: 36px;
+    line-height: 31px;
   }
   &.button-md {
     line-height: 44px;

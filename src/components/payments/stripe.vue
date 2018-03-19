@@ -104,37 +104,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.checkout {
-
-  .header {
-    margin-bottom: $pad;
-
-    h1 {
-      margin-bottom: 12px;
-    }
-    .order-number {
-      margin-bottom: 16px;
-      font-size: 15px;
-      line-height: 100%;
-      color: $color-dark;
-      font-weight: $font-regular;
-    }
-    .order-description {
-      font-size: 14px;
-      color: $color-dark;
-    }
-    .order-secure {
-      margin-top: 12px;
-      color: $color-success;
-      font-size: 15px;
-      font-weight: $font-bold;
-    }
-    .order-total {
-      margin: 16px 0 18px 0;
-      font-size: 16px;
-      line-height: 100%;
-      font-weight: $font-bold;
-    }
-  }
+.header {
+  margin-bottom: $pad;
+}
+h1 {
+  margin-bottom: 12px;
+}
+.order-number {
+  margin-bottom: 16px;
+  font-size: 15px;
+  line-height: 100%;
+  color: $color-dark;
+  font-weight: $font-regular;
+}
+.order-description {
+  font-size: 14px;
+  color: $color-dark;
+}
+.order-secure {
+  margin-top: 12px;
+  color: $color-success;
+  font-size: 15px;
+  font-weight: $font-bold;
+}
+.order-total {
+  margin: 16px 0 18px 0;
+  font-size: 16px;
+  line-height: 100%;
+  font-weight: $font-bold;
 }
 </style>

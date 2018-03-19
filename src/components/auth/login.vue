@@ -1,7 +1,7 @@
 <template>
   <div>
     <form id="form-login">
-      <div class="message info" v-if="!formError && this.$route.query.redirect">
+      <div class="message message-info" v-if="!formError && this.$route.query.redirect">
         Please log in to continue.
       </div>
 

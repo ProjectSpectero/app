@@ -30,11 +30,11 @@
     <section>
       <h2>Messages</h2>
       <div class="message">Plain message.</div>
-      <div class="message dark">Dark message.</div>
-      <div class="message info">Info message.</div>
-      <div class="message success">Success message.</div>
-      <div class="message warning">Warning message.</div>
-      <div class="message error no-bottom-margin">Error message.</div>
+      <div class="message message-dark">Dark message.</div>
+      <div class="message message-info">Info message.</div>
+      <div class="message message-success">Success message.</div>
+      <div class="message message-warning">Warning message.</div>
+      <div class="message message-error no-bottom-margin">Error message.</div>
     </section>
     <section>
       <h2>Inputs</h2>

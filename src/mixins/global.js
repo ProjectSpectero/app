@@ -8,6 +8,10 @@ function globalMixin (i18n) {
         const keys = Object.keys(error.errors)
         console.log(error)
         return i18n.t(`${module}.${keys[0]}`)
+      },
+      confirmedFieldRule: (inputName, rules) => {
+        rules.confirmed = inputName + 'Confirm'
+        return rules
       }
     }
   }
