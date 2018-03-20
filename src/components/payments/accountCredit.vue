@@ -1,45 +1,60 @@
 <template>
-  <div class="boxed boxed-centered">
-    <div class="boxed-container boxed-md">
-      <div v-if="error">{{ errorAPI(error, 'payments') }}</div>
-      <div v-else>
-        {{ $i18n.t('payments.PAYMENT_PROCESSING') }}
+  <div>
+    <div v-if="!loading" class="boxed boxed-centered">
+      <div v-if="!success" class="boxed-container boxed-md">
+        <h2>We were unable to process your payment</h2>
+        <p>{{ $i18n.t('payments.PAYMENT_INVALID_PARAMETERS') }}</p>
       </div>
     </div>
+    <loading v-else></loading>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import paymentAPI from '@/api/payment.js'
+import loading from '@/components/common/loading'
 
 export default {
   data () {
     return {
-      error: null
+      loading: true,
+      success: false
     }
   },
   created () {
     this.processPayment()
   },
   methods: {
+    ...mapActions({
+      setPendingInvoiceStatus: 'users/setPendingInvoiceStatus'
+    }),
     processPayment () {
       if (this.$route.params.invoiceId) {
         paymentAPI.processAccountCredit({
           data: {
             invoiceId: this.$route.params.invoiceId
           },
-          success: response => {
-            console.log('Success', response)
+          success: async processResponse => {
+            this.loading = false
+            this.success = true
+            await this.setPendingInvoiceStatus(true)
+            this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
+            this.$router.push({ name: 'invoice', params: { id: this.$route.params.invoiceId } })
           },
           fail: error => {
-            this.error = error
-            // this.error404()
+            console.log('Error while finishing payment:', error)
+            this.loading = false
+            this.success = false
           }
         })
       } else {
         this.error404()
       }
     }
+  },
+  components: {
+    loading
   }
 }
 </script>

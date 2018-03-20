@@ -1,18 +1,19 @@
 <template>
-  <div v-if="!loading">
-    <div v-if="!success">
-      <h2>We were unable to process your payment</h2>
-      <p>{{ $i18n.t('payments.PAYMENT_INVALID_PARAMETERS') }}</p>
+  <div>
+    <div v-if="!loading">
+      <div v-if="!success">
+        <h2>We were unable to process your payment</h2>
+        <p>{{ $i18n.t('payments.PAYMENT_INVALID_PARAMETERS') }}</p>
+      </div>
     </div>
-  </div>
-  <div v-else>
-    Loading...
+    <loading v-else></loading>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import paymentAPI from '@/api/payment.js'
+import loading from '@/components/common/loading'
 
 export default {
   data () {
@@ -51,6 +52,9 @@ export default {
         })
       }
     }
+  },
+  components: {
+    loading
   }
 }
 </script>

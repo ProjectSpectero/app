@@ -31,6 +31,7 @@ module.exports = {
     RESOURCE_NOT_FOUND: 'We could not find that resource. Please contact us if the error persists.',
     REQUEST_FAILED: 'The request failed. Please contact us if the error persists.',
     UNAUTHORIZED: 'You are not authorized to do this. Please contact us if the error persists.',
+    PAYMENT_FAILED: 'Payment failed',
 
     FIELD_REQUIRED: 'This field is required.',
     FIELD_MAXLENGTH: 'Cannot be longer than {x} characters.',
@@ -90,6 +91,7 @@ module.exports = {
     NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.',
     NO_ACCOUNT_CREDIT: 'You don\'t have any credit in your account.',
     COUNT_ACCOUNT_CREDIT: 'You currently have <strong><span>$</span>{credit} USD</strong> of credit in your account.',
+    ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!',
     INVOICE_STATUS: {
       PAID: 'Paid',
       UNPAID: 'Unpaid',

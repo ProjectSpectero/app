@@ -16,7 +16,7 @@ export default {
       types: [
         { label: 'PAY_WITH_PAYPAL', route: 'paypal', usage: ['STANDARD', 'MANUAL', 'CREDIT'] },
         { label: 'PAY_WITH_STRIPE', route: 'stripe', usage: ['STANDARD'] },
-        { label: 'PAY_WITH_ACCOUNT_CREDIT', route: 'creditPayment', usage: ['STANDARD'] }
+        { label: 'PAY_WITH_ACCOUNT_CREDIT', route: 'paypalCredit', usage: ['STANDARD'] }
       ]
     }
   },
