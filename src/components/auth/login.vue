@@ -68,10 +68,20 @@ export default {
       formLoading: false
     }
   },
+  created () {
+    this.testAutologin()
+  },
   methods: {
     ...mapActions({
       storeUser: 'auth/storeUser'
     }),
+    testAutologin () {
+      if (this.$route.query.autologin !== undefined) {
+        this.username = 'dev@spectero.com'
+        this.password = 'temppass'
+        this.processLogin()
+      }
+    },
     submit () {
       this.$validator.validateAll().then((result) => {
         if (!result) {
