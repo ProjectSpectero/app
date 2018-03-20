@@ -21,6 +21,7 @@
       <section class="nav-section">
         <h5>Account</h5>
         <ul>
+          <li v-if="supportLink"><a :href="supportLink"><span class="icon-sliders"></span> Support</a></li>
           <li><router-link :to="{ name: 'settings' }"><span class="icon-sliders"></span> Settings</router-link></li>
           <li><a href="#logout" @click="logMeOut"><span class="icon-user-x"></span> Logout</a></li>
         </ul>
@@ -30,13 +31,34 @@
 </template>
 
 <script>
+import userAPI from '@/api/user.js'
 import { mapActions } from 'vuex'
 
 export default {
+  data () {
+    return {
+      supportLink: null
+    }
+  },
+  created () {
+    this.fetchSupportLink()
+  },
   methods: {
     ...mapActions({
       logout: 'auth/logout'
     }),
+    async fetchSupportLink () {
+      await userAPI.getSupportLink({
+        success: response => {
+          if (response.data.result.redirect_uri !== undefined) {
+            this.supportLink = response.data.result.redirect_uri
+          }
+        },
+        fail: e => {
+          console.log(e)
+        }
+      })
+    },
     logMeOut () {
       this.logout().then(() => {
         this.$router.push({ name: 'login' })

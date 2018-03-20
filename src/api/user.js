@@ -44,6 +44,14 @@ export default {
   },
 
   /**
+   * Retrieves freshdesk.com's support link with auto-login.
+   *
+   */
+  getSupportLink (options) {
+    return api('GET', `/integrations/support`, options)
+  },
+
+  /**
    * Creates user from given parameters.
    *
    * @param {String} password     Password.
