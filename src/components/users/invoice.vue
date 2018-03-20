@@ -28,6 +28,7 @@
           <strong class="name">
             <div v-if="user.organization">{{ user.organization }}</div>
             <div v-if="user.name">{{ user.name }}</div>
+            <div v-if="user.tax_identification">{{ user.tax_identification }}</div>
           </strong>
 
           <div class="address">
@@ -42,6 +43,10 @@
             <tr>
               <td><strong>Invoice Number:</strong></td>
               <td>{{ invoice.id }}</td>
+            </tr>
+            <tr>
+              <td><strong>Invoice Type:</strong></td>
+              <td>{{ invoice.type }}</td>
             </tr>
             <tr>
               <td><strong>Invoice Status:</strong></td>
@@ -82,7 +87,7 @@
 
       <div class="divider"></div>
 
-      <table v-if="engagement" class="table-styled">
+      <table v-if="order" class="table-styled">
         <thead>
           <tr>
             <th>Item</th>
@@ -92,7 +97,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in engagement.line_items" :key="item.id">
+          <tr v-for="item in order.line_items" :key="item.id">
             <td>{{ item.description }}</td>
             <td class="text-center">{{ item.quantity }}</td>
             <td>{{ item.amount | currency }}</td>
