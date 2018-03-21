@@ -21,7 +21,11 @@
       <section class="nav-section">
         <h5>Account</h5>
         <ul>
-          <li v-if="supportLink"><a :href="supportLink" target="_blank"><span class="icon-sliders"></span> Support</a></li>
+          <li v-if="supportLink">
+            <a :href="supportLink" target="_blank">
+              <span class="icon-sliders"></span> Support
+            </a>
+          </li>
           <li><router-link :to="{ name: 'settings' }"><span class="icon-sliders"></span> Settings</router-link></li>
           <li><a href="#logout" @click="logMeOut"><span class="icon-user-x"></span> Logout</a></li>
         </ul>

@@ -117,17 +117,20 @@ export default {
     }
   }
 }
+
 .ip {
   margin-top: 4px;
   font-size: 12px;
   color: $color-light;
 }
+
 .badge {
   &.status-confirmed {
-    @extend .badge-success
+    @extend .badge-success;
   }
+
   &.status-unconfirmed {
-    @extend .badge-error
+    @extend .badge-error;
   }
 }
 </style>

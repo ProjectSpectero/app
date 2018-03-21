@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pagination.total" class="pagination">
+  <div v-if="pagination && pagination.total" class="pagination">
     <div class="paginator">
       <div @click="toPage(1)" :class="['page', 'first', (active === 1) ? 'disabled' : '']">«</div>
 
