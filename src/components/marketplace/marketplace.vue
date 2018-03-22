@@ -3,7 +3,7 @@
     <top title="Marketplace"></top>
 
     <div class="engine">
-      <filters @changedFilters="filtersChanged"></filters>
+      <filters @changedRules="changedRules"></filters>
 
       <div class="datatable">
         <v-client-table :data="results" :columns="columns" :options="options">
@@ -67,7 +67,9 @@ export default {
     },
     async search () {
       await marketplaceAPI.search({
-        rules: this.rules,
+        data: {
+          rules: this.rules
+        },
         success: response => {
           this.pagination = response.data.pagination
           this.results = response.data.result
@@ -78,10 +80,10 @@ export default {
         }
       })
     },
-    filtersChanged (filters) {
-      this.rules = {
-        rules: filters
-      }
+    changedRules (rules) {
+      this.rules = rules
+
+      console.log('Changed rules to ', this.rules)
 
       this.search()
     }
