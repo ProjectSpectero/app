@@ -3,7 +3,7 @@
     <top title="Marketplace"></top>
 
     <div class="engine">
-      <filters @filtersChanged="filtersChanged"></filters>
+      <filters @changedFilters="filtersChanged"></filters>
 
       <div class="datatable">
         <v-client-table :data="results" :columns="columns" :options="options">
@@ -78,8 +78,12 @@ export default {
         }
       })
     },
-    filtersChanged () {
+    filtersChanged (filters) {
+      this.rules = {
+        rules: filters
+      }
 
+      this.search()
     }
   },
   metaInfo: {
