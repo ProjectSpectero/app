@@ -7,6 +7,21 @@
 
       <div class="datatable">
         <v-client-table :data="results" :columns="columns" :options="options">
+          <template slot="price" slot-scope="props">
+            {{ props.row.price | currency }} USD
+          </template>
+
+          <template slot="ips_count" slot-scope="props">
+            <span v-if="props.row.ip_addresses">{{ props.row.ip_addresses.length }}</span>
+            <span v-else>
+              {{ countIpsInNodeGroup(props.row) }}
+            </span>
+          </template>
+
+          <template slot="type" slot-scope="props">
+            <span v-if="props.row.type === 'NODE_GROUP'">Node Group</span>
+            <span v-else>Node</span>
+          </template>
         </v-client-table>
 
         <paginator :pagination="pagination" @changedPage="search"></paginator>
@@ -26,10 +41,11 @@ export default {
     return {
       pagination: null,
       results: [],
-      columns: ['id', 'friendly_name'],
-      sortableColumns: ['id', 'friendly_name'],
+      columns: ['id', 'friendly_name', 'market_model', 'ips_count', 'type', 'price'],
+      sortableColumns: ['id', 'friendly_name', 'type'],
       headings: {
-        id: 'Invoice ID',
+        id: 'ID',
+        ips_count: 'IPs',
         friendly_name: 'Name'
       },
       rules: [],
@@ -41,6 +57,17 @@ export default {
     this.search()
   },
   methods: {
+    countIpsInNodeGroup (group) {
+      let ips = 0
+      let nodes = 0
+
+      group.nodes.forEach(node => {
+        nodes++
+        ips += node.ip_addresses.length
+      })
+
+      return this.$i18n.t('marketplace.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
+    },
     setup () {
       this.options = {
         skin: '',
@@ -56,6 +83,7 @@ export default {
           defaultOption: 'Select {column}',
           columns: 'Columns'
         },
+        perPage: 25,
         pagination: null,
         headings: this.headings,
         sortable: this.sortableColumns,

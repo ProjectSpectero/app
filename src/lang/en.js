@@ -154,5 +154,9 @@ module.exports = {
 
   settings: {
     EMAIL_CHANGE_NOTICE: 'Your current email is <strong>{email}</strong>. If your new email is invalid we will not be able to reach you and your account will be locked.'
+  },
+
+  marketplace: {
+    NODE_GROUP_IP_COUNT: '{ips} in {nodes} nodes'
   }
 }
