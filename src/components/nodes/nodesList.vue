@@ -20,7 +20,7 @@
 
       <template slot="status" slot-scope="props">
         <div :class="'badge status-' + props.row.status">
-          {{ $i18n.t(`nodes.STATUS.${props.row.status.toUpperCase()}`) }}
+          {{ $i18n.t(`nodes.STATUS.${props.row.status}`) }}
         </div>
       </template>
 
@@ -125,11 +125,11 @@ export default {
 }
 
 .badge {
-  &.status-confirmed {
+  &.status-CONFIRMED {
     @extend .badge-success;
   }
 
-  &.status-unconfirmed {
+  &.status-UNCONFIRMED {
     @extend .badge-error;
   }
 }
