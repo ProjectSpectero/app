@@ -9,10 +9,11 @@ import VeeValidate from 'vee-validate'
 import VueProgressBar from 'vue-progressbar'
 import Toasted from 'vue-toasted'
 import VueMoment from 'vue-moment'
-import VueAnalytics from 'vue-analytics'
 import { ClientTable, ServerTable } from 'vue-tables-2'
 import VueCurrencyFilter from 'vue-currency-filter'
 import globalMixin from './mixins/global'
+
+import VueAnalytics from 'vue-ua'
 
 // Load .env configurations
 require('dotenv').config()
@@ -24,6 +25,7 @@ Vue.use(VeeValidate)
 Vue.use(ClientTable)
 Vue.use(ServerTable)
 Vue.use(VueMoment)
+
 Vue.use(VueCurrencyFilter, {
   symbol: '$',
   symbolSpacing: false,
@@ -45,9 +47,17 @@ Vue.use(Toasted, {
   singleton: false
 })
 
-Vue.use(VueAnalytics, {
-  id: process.env.GOOGLE_ANALYTICS_ID
-})
+if (process.env.NODE_ENV !== 'development') {
+  Vue.use(VueAnalytics, {
+    appName: 'Spectero',
+    appVersion: '1.0',
+    trackingId: process.env.GOOGLE_ANALYTICS_ID,
+    debug: process.env.NODE_ENV === 'development',
+    vueRouter: router,
+    trackPage: true // Whether you want page changes to be recorded as pageviews (website) or screenviews (app)
+    // ignoredViews: ['homepage'], // If router, you can exclude some routes name (case insensitive) (optional)
+  })
+}
 
 // i18n data
 const messages = { en: require('./lang/en.js') }
