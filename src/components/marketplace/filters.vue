@@ -113,6 +113,7 @@ export default {
     },
     clearFilter (index) {
       this.rules.splice(index, 1)
+      this.updateFilters()
     },
     updateFilters (filter, index) {
       // Update pre-filled filter with the new value and operator
@@ -137,18 +138,15 @@ export default {
 
       if (filter.value === 'null') {
         this.clearFilter(index)
-        this.updateFilters()
-        return
+      } else {
+        this.updateFilters(filter, index)
       }
-
-      this.updateFilters(filter, index)
     },
     changeInFilter (field) {
       const index = this.findIndex(field)
 
       if (!this.nodes[field]) {
         this.clearFilter(index)
-        this.updateFilters()
       } else {
         const filter = {
           field: 'nodes.' + field,
@@ -195,20 +193,18 @@ export default {
       // Remove price if min = 0 and max = slider maxValue value
       if (range[0] === 0 && range[1] === this.sliders.price.maxValue) {
         this.clearFilter(index)
-        this.updateFilters()
-        return
-      }
-
-      const filter = {
-        field: 'nodes.price',
-        operator: 'RANGE',
-        value: {
-          start: range[1],
-          end: range[0]
+      } else {
+        const filter = {
+          field: 'nodes.price',
+          operator: 'RANGE',
+          value: {
+            start: range[1],
+            end: range[0]
+          }
         }
-      }
 
-      this.updateFilters(filter, index)
+        this.updateFilters(filter, index)
+      }
     },
     filterIPCount () {
       const field = 'ip_count'
@@ -232,11 +228,9 @@ export default {
 
       if (this.nodes[field] === 'null') {
         this.clearFilter(index)
-        this.updateFilters()
-        return
+      } else {
+        this.updateFilters(filter, index)
       }
-
-      this.updateFilters(filter, index)
     }
   },
   computed: {
