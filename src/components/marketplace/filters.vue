@@ -75,7 +75,7 @@ export default {
         city: null,
         cc: null,
         service_type: [],
-        ip_count: null
+        ip_count: 0
       },
       rules: [],
       sliders: {
