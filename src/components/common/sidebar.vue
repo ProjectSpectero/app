@@ -23,7 +23,7 @@
         <ul>
           <li v-if="supportLink">
             <a :href="supportLink" target="_blank">
-              <span class="icon-sliders"></span> Support
+              <span class="icon-life-buoy"></span> Support
             </a>
           </li>
           <li><router-link :to="{ name: 'settings' }"><span class="icon-sliders"></span> Settings</router-link></li>

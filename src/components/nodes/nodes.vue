@@ -66,7 +66,7 @@ export default {
         friendly_name: 'Name',
         ip: 'IP Address',
         status: 'Status',
-        market_model: 'Model',
+        market_model: 'Market Model',
         updated_at: 'Creation Date',
         actions: ''
       },

@@ -147,6 +147,15 @@ module.exports = {
     }
   },
 
+  market: {
+    MODEL_NODE: {
+      UNLISTED: 'Unlisted',
+      MANAGED: 'Managed',
+      LISTED_SHARED: 'Listed Shared',
+      LISTED_DEDICATED: 'Listed Dedicated'
+    }
+  },
+
   users: {
     LOGIN_BUTTON: 'Log In',
     REGISTER_BUTTON: 'Register'

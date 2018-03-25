@@ -1,7 +1,7 @@
 <template>
   <form class="filters" @submit.prevent.stop="">
     <div class="form-input">
-      <div class="label"><label for="market-model">Node Type</label></div>
+      <div class="label"><label for="market-model">Market Model</label></div>
       <select name="market-model" id="market-model" v-model="nodes.market_model" @change="changeConditionalFilter('market_model', '=')">
         <option value="null" selected>Any Type</option>
         <option value="LISTED_SHARED">Shared</option>

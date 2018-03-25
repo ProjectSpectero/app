@@ -8,8 +8,10 @@
       </div>
       <div class="split-item split-details">
         <v-client-table :data="results" :columns="columns" :options="options">
-          <template slot="price" slot-scope="props">
-            {{ props.row.price | currency }} USD
+          <template slot="market_model" slot-scope="props">
+             <div class="badge">
+               {{ $i18n.t(`market.MODEL_NODE.${props.row.market_model}`) }}
+            </div>
           </template>
 
           <template slot="ips_count" slot-scope="props">
@@ -22,6 +24,14 @@
           <template slot="type" slot-scope="props">
             <span v-if="props.row.type === 'NODE_GROUP'">Node Group</span>
             <span v-else>Node</span>
+          </template>
+
+          <template slot="price" slot-scope="props">
+            {{ props.row.price | currency }} USD
+          </template>
+
+          <template slot="actions" slot-scope="props">
+            <button class="button button-success">Purchase</button>
           </template>
         </v-client-table>
 
@@ -43,12 +53,14 @@ export default {
       perPage: 10,
       pagination: null,
       results: [],
-      columns: ['id', 'friendly_name', 'market_model', 'ips_count', 'type', 'price'],
+      columns: ['id', 'friendly_name', 'market_model', 'ips_count', 'type', 'price', 'actions'],
       sortableColumns: ['id', 'friendly_name', 'type'],
       headings: {
         id: 'ID',
+        friendly_name: 'Name',
+        market_model: 'Market Model',
         ips_count: 'IPs',
-        friendly_name: 'Name'
+        actions: ''
       },
       rules: [],
       options: {}
@@ -85,14 +97,14 @@ export default {
           defaultOption: 'Select {column}',
           columns: 'Columns'
         },
-        perPage: 25,
+        columnsClasses: {
+          actions: 'table-actions'
+        },
+        perPage: 10,
         pagination: null,
         headings: this.headings,
         sortable: this.sortableColumns,
-        filterable: false,
-        columnsClasses: {
-          actions: 'table-actions'
-        }
+        filterable: false
       }
     },
     async search (page) {
