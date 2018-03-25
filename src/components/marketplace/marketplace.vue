@@ -40,6 +40,7 @@ import marketplaceAPI from '@/api/marketplace.js'
 export default {
   data () {
     return {
+      perPage: 10,
       pagination: null,
       results: [],
       columns: ['id', 'friendly_name', 'market_model', 'ips_count', 'type', 'price'],
@@ -94,8 +95,11 @@ export default {
         }
       }
     },
-    async search () {
+    async search (page) {
       await marketplaceAPI.search({
+        page: page,
+        limit: this.perPage,
+        includeGrouped: true,
         data: {
           rules: this.rules
         },

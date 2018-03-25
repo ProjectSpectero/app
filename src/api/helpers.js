@@ -16,7 +16,11 @@ export default {
   appendQuery (url, options) {
     let limit = options.limit || '10'
     let page = options.page || '1'
-    let query = '?page=' + page + '&perPage=' + limit
+    let query = `?page=${page}&perPage=${limit}`
+
+    if (options.includeGrouped) {
+      query += `&includeGrouped=${options.includeGrouped}`
+    }
 
     // Update page (only with the page to prevent limit spamming)
     if (options.keepURL === undefined || !options.keepURL) {

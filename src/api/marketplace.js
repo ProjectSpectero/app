@@ -1,10 +1,11 @@
 import api from './index.js'
+import helpers from './helpers'
 
 export default {
   /**
    * Searches the marketplace.
    */
   search (options) {
-    return api('POST', `/market/search?includeGrouped=true&perPage=15&page=1`, options)
+    return api('POST', helpers.appendQuery(`/market/search`, options), options)
   }
 }
