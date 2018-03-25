@@ -1,62 +1,68 @@
 <template>
-  <form class="filters" @submit.prevent.stop="">
-    <div>
-      <label for="">Market model</label>
-      <div>
-        <label>
-          <input type="radio" name="market-model" value="LISTED_SHARED" v-model="nodes.market_model" @change="changeConditionalFilter('market_model', '=')">
-          Listed (Shared)
-        </label>
-      </div>
-
-      <div>
-        <label>
-          <input type="radio" name="market-model" value="LISTED_DEDICATED" v-model="nodes.market_model" @change="changeConditionalFilter('market_model', '=')">
-          Listed (Dedicated)
-        </label>
-      </div>
+  <form class="filters" @submit.prevent.stop="null">
+    <div class="form-input">
+      <div class="label"><label for="market-model">Node Type</label></div>
+      <select name="market-model" id="market-model" v-model="nodes.market_model" @change="changeConditionalFilter('market_model', '=')">
+        <option selected>Any Type</option>
+        <option value="LISTED_SHARED">Shared</option>
+        <option value="LISTED_DEDICATED">Dedicated</option>
+      </select>
     </div>
-    <div>
-      <label>
-        <input type="number" v-model="nodes.asn" placeholder="ASN">
-        ASN
-      </label>
+
+    <div class="form-input">
+      <div class="label"><label for="market-asn">ASN</label></div>
+      <input type="text" name="market-asn" id="market-asn" v-model="nodes.asn" class="input">
       <button @click="changeInFilter('asn')">Apply</button>
     </div>
-    <div>
-      <label :for="'service-type-' + type" v-for="type in serviceTypes" :key="type">
+
+    <div class="form-input">
+      <div class="label"><label>Service Types</label></div>
+      <div class="form-checkbox" :for="'service-type-' + type" v-for="type in serviceTypes" :key="type">
         <input :id="'service-type-' + type" type="checkbox" @change="toggleServiceType(type)">
-        {{ type }}
-      </label>
+        <label :for="'service-type-' + type">{{ type }}</label>
+      </div>
     </div>
-    <div>
-      <button @click.prevent.stop="filterPriceRange(50,80)">Filter price between 50 and 80</button>
+
+    <div class="form-input">
+      <div class="label"><label for="filter-price">Price Range</label></div>
+      <vue-slider ref="slider-price" v-bind="sliders.price" v-model="sliders.price.value" class="slider" v-on:callback="filterPriceRange">
+        <template slot="label" slot-scope="{ label, active }">
+          <span :class="['custom-label', { active }]" v-if="label % 25 === 0">
+            ${{ label }}{{ (parseInt(label) === sliders.price.maxValue) ? '+' : '' }}
+          </span>
+        </template>
+      </vue-slider>
     </div>
-    <div>
-      <label>
-        <input type="number" v-model="nodes.ip_count" placeholder="Minimum number of IP addresses">
-        Minimum number of IP addresses
-      </label>
-      <button @click="filterIPCount">Apply</button>
+
+    <div class="form-input">
+      <div class="label"><label for="filter-country">Country</label></div>
+      <select id="filter-country" v-model="nodes.cc" @change="filterCountryCode()">
+        <option selected>Any Country</option>
+        <option disabled>&nbsp;</option>
+        <option v-for="country in countries" :key="country.code" :value="country.code">
+          {{ country.name }}
+        </option>
+      </select>
     </div>
-    <div>
-      <label>
-        <input type="text" v-model="nodes.cc" placeholder="Country code">
-        Country code
-      </label>
-      <button @click="filterCountryCode">Apply</button>
-    </div>
-    <div>
-      <label>
-        <input type="text" v-model="nodes.city" placeholder="City">
-        City
-      </label>
+
+    <div class="form-input">
+      <div class="label"><label for="filter-city">City</label></div>
+      <input type="text" v-model="nodes.city" id="filter-city" class="input">
       <button @click="changeConditionalFilter('city', '=')">Apply</button>
+    </div>
+
+    <div class="form-input">
+      <div class="label"><label for="filter-nodeCount">Minimum number of IP addresses</label></div>
+      <input type="number" v-model="nodes.ip_count" id="filter-nodeCount" class="input">
+      <button @click="filterIPCount">Apply</button>
     </div>
   </form>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import vueSlider from 'vue-slider-component'
+
 export default {
   data () {
     return {
@@ -70,7 +76,32 @@ export default {
         service_type: [],
         ip_count: null
       },
-      rules: []
+      rules: [],
+      sliders: {
+        price: {
+          maxValue: 100,
+          value: [0, 0],
+          width: '100%',
+          height: 8,
+          dotSize: 16,
+          min: 0,
+          max: 0,
+          interval: 0,
+          disabled: false,
+          show: true,
+          useKeyboard: true,
+          piecewiseLabel: true,
+          tooltip: false,
+          formatter: '{value}',
+          bgStyle: {
+            backgroundColor: '#f3f3f3'
+          },
+          processStyle: {
+            backgroundColor: '#44BD32'
+          },
+          lazy: true
+        }
+      }
     }
   },
   methods: {
@@ -151,15 +182,22 @@ export default {
       console.log('Pushed service type', this.nodes.service_type)
       this.changeServiceTypeFilter()
     },
-    filterPriceRange (min, max) {
+    filterPriceRange (range) {
       const index = this.findIndex('price')
+
+      // Remove price if min = 0 and max = slider maxValue value
+      if (range[0] === 0 && range[1] === this.sliders.price.maxValue) {
+        this.clearFilter(this.findIndex('price'))
+        this.updateFilters()
+        return
+      }
 
       const filter = {
         field: 'nodes.price',
         operator: 'RANGE',
         value: {
-          start: min,
-          end: max
+          start: range[1],
+          end: range[0]
         }
       }
 
@@ -187,6 +225,52 @@ export default {
 
       this.updateFilters(filter, index)
     }
+  },
+  computed: {
+    ...mapGetters({
+      countries: 'settings/countries'
+    })
+  },
+  created () {
+    this.$set(this.sliders.price, 'value', [0, this.sliders.price.maxValue])
+    this.$set(this.sliders.price, 'interval', this.sliders.price.maxValue / 4)
+    this.$set(this.sliders.price, 'max', this.sliders.price.maxValue)
+  },
+  components: {
+    vueSlider
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.slider {
+  margin-top: 30px;
+}
+.custom-label {
+  position: absolute;
+  bottom: 120%;
+  left: 0;
+  transform: translate(-50%, -12px);
+  margin-left: 3px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 5px);
+    width: 1px;
+    height: 5px;
+    background-color: #ccc;
+  }
+  &.active {
+    color: $color-success;
+    font-weight: $font-bold;
+
+    &::after {
+      width: 2px;
+      background-color: $color-success;
+    }
+  }
+}
+</style>

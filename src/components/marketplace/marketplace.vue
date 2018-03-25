@@ -2,10 +2,11 @@
   <div>
     <top title="Marketplace"></top>
 
-    <div class="engine">
-      <filters @changedRules="changedRules"></filters>
-
-      <div class="datatable">
+    <div class="content-split">
+      <div class="split-item split-list filters-side">
+        <filters @changedRules="changedRules"></filters>
+      </div>
+      <div class="split-item split-details">
         <v-client-table :data="results" :columns="columns" :options="options">
           <template slot="price" slot-scope="props">
             {{ props.row.price | currency }} USD
@@ -128,15 +129,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .engine {
-    display: flex;
 
-    > .filters {
-      width: 200px;
-    }
-
-    > .datatable {
-      flex: 1;
-    }
-  }
 </style>
