@@ -9,11 +9,10 @@ import VeeValidate from 'vee-validate'
 import VueProgressBar from 'vue-progressbar'
 import Toasted from 'vue-toasted'
 import VueMoment from 'vue-moment'
+import VueAnalytics from 'vue-ua'
 import { ClientTable, ServerTable } from 'vue-tables-2'
 import VueCurrencyFilter from 'vue-currency-filter'
 import globalMixin from './mixins/global'
-
-import VueAnalytics from 'vue-ua'
 
 // Load .env configurations
 require('dotenv').config()

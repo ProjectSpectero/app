@@ -2,6 +2,17 @@
 .form-input {
   margin-bottom: 12px;
 }
+.form-checkbox {
+  margin-bottom: 8px;
+  vertical-align: middle;
+
+  label, input {
+    cursor: pointer;
+  }
+  input {
+    margin-right: 2px;
+  }
+}
 
 // Input error messages
 .input-error-message {

@@ -17,13 +17,15 @@
     <div class="form-input">
       <div class="label"><label>Service Types</label></div>
       <div class="form-checkbox" :for="'service-type-' + type" v-for="type in serviceTypes" :key="type">
-        <input :id="'service-type-' + type" type="checkbox" @change="toggleServiceType(type)">
-        <label :for="'service-type-' + type">{{ type }}</label>
+        <label :for="'service-type-' + type">
+          <input :id="'service-type-' + type" type="checkbox" @change="toggleServiceType(type)">
+          {{ type }}
+        </label>
       </div>
     </div>
 
     <div class="form-input">
-      <div class="label"><label for="filter-price">Price Range</label></div>
+      <div class="label"><label>Price Range</label></div>
       <vue-slider ref="slider-price" v-bind="sliders.price" v-model="sliders.price.value" class="slider" v-on:callback="filterPriceRange">
         <template slot="label" slot-scope="{ label, active }">
           <span :class="['custom-label', { active }]" v-if="label % 25 === 0">
@@ -51,10 +53,10 @@
 
     <div class="form-input">
       <div class="label"><label for="filter-nodeCount">Minimum number of IP addresses</label></div>
-      <input type="number" id="filter-nodeCount" v-model="nodes.ip_count" @keydown="filterIPCount()" @change="filterIPCount()" class="input">
+      <input type="number" id="filter-nodeCount" v-model="nodes.ip_count" @keydown="filterIPCount()" @change="filterIPCount()" class="input" min="0">
     </div>
 
-    <button class="button button-md max-width" :class="{ 'button-success': this.filtersChanged }" :disabled="!this.filtersChanged" @click="submitFilters()">Apply Filters</button>
+    <button class="button button-md max-width" :class="{ 'button-success': this.filtersChanged, 'buttonFilterSubmit': true }" :disabled="!this.filtersChanged" @click="submitFilters()">Apply Filters</button>
   </form>
 </template>
 
