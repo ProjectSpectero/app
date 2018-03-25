@@ -1,5 +1,5 @@
 <template>
-  <form class="filters" @submit.prevent.stop="null">
+  <form class="filters" @submit.prevent.stop="">
     <div class="form-input">
       <div class="label"><label for="market-model">Node Type</label></div>
       <select name="market-model" id="market-model" v-model="nodes.market_model" @change="changeConditionalFilter('market_model', '=')">
@@ -148,6 +148,7 @@ export default {
 
       if (!this.nodes[field]) {
         this.clearFilter(index)
+        this.updateFilters()
       } else {
         const filter = {
           field: 'nodes.' + field,
