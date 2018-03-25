@@ -3,7 +3,7 @@
     <div class="form-input">
       <div class="label"><label for="market-model">Node Type</label></div>
       <select name="market-model" id="market-model" v-model="nodes.market_model" @change="changeConditionalFilter('market_model', '=')">
-        <option selected>Any Type</option>
+        <option value="null" selected>Any Type</option>
         <option value="LISTED_SHARED">Shared</option>
         <option value="LISTED_DEDICATED">Dedicated</option>
       </select>
@@ -37,7 +37,7 @@
     <div class="form-input">
       <div class="label"><label for="filter-country">Country</label></div>
       <select id="filter-country" v-model="nodes.cc" @change="filterCountryCode()">
-        <option selected>Any Country</option>
+        <option value="null" selected>Any Country</option>
         <option disabled>&nbsp;</option>
         <option v-for="country in countries" :key="country.code" :value="country.code">
           {{ country.name }}
@@ -135,6 +135,12 @@ export default {
         value: this.nodes[field]
       }
 
+      if (filter.value === 'null') {
+        this.clearFilter(index)
+        this.updateFilters()
+        return
+      }
+
       this.updateFilters(filter, index)
     },
     changeInFilter (field) {
@@ -187,7 +193,7 @@ export default {
 
       // Remove price if min = 0 and max = slider maxValue value
       if (range[0] === 0 && range[1] === this.sliders.price.maxValue) {
-        this.clearFilter(this.findIndex('price'))
+        this.clearFilter(index)
         this.updateFilters()
         return
       }
@@ -221,6 +227,12 @@ export default {
         field: 'nodes.' + field,
         operator: 'IN',
         value: [this.nodes[field]]
+      }
+
+      if (this.nodes[field] === 'null') {
+        this.clearFilter(index)
+        this.updateFilters()
+        return
       }
 
       this.updateFilters(filter, index)
