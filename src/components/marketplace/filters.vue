@@ -11,8 +11,7 @@
 
     <div class="form-input">
       <div class="label"><label for="market-asn">ASN</label></div>
-      <input type="text" name="market-asn" id="market-asn" v-model="nodes.asn" class="input">
-      <button @click="changeInFilter('asn')">Apply</button>
+      <input type="text" name="market-asn" id="market-asn" v-model="nodes.asn" @keydown="changeInFilter('asn')" class="input">
     </div>
 
     <div class="form-input">
@@ -47,15 +46,15 @@
 
     <div class="form-input">
       <div class="label"><label for="filter-city">City</label></div>
-      <input type="text" v-model="nodes.city" id="filter-city" class="input">
-      <button @click="changeConditionalFilter('city', '=')">Apply</button>
+      <input type="text" id="filter-city" v-model="nodes.city" @keydown="changeConditionalFilter('city', '=')" class="input">
     </div>
 
     <div class="form-input">
       <div class="label"><label for="filter-nodeCount">Minimum number of IP addresses</label></div>
-      <input type="number" v-model="nodes.ip_count" id="filter-nodeCount" class="input">
-      <button @click="filterIPCount">Apply</button>
+      <input type="number" id="filter-nodeCount" v-model="nodes.ip_count" @keydown="filterIPCount()" @change="filterIPCount()" class="input">
     </div>
+
+    <button class="button button-md max-width" :class="{ 'button-success': this.filtersChanged }" :disabled="!this.filtersChanged" @click="submitFilters()">Apply Filters</button>
   </form>
 </template>
 
@@ -97,11 +96,12 @@ export default {
             backgroundColor: '#f3f3f3'
           },
           processStyle: {
-            backgroundColor: '#44BD32'
+            backgroundColor: '#0747A6'
           },
           lazy: true
         }
-      }
+      },
+      filtersChanged: false
     }
   },
   methods: {
@@ -124,8 +124,11 @@ export default {
         this.rules.push(filter)
       }
 
-      console.log('changed rules', this.rules)
-
+      console.log('Changed rules', this.rules)
+      this.filtersChanged = true
+    },
+    submitFilters () {
+      this.filtersChanged = false
       this.$emit('changedRules', this.rules)
     },
     changeConditionalFilter (field, operator) {
@@ -231,6 +234,9 @@ export default {
       } else {
         this.updateFilters(filter, index)
       }
+    },
+    test () {
+      console.log(`test`)
     }
   },
   computed: {
@@ -271,12 +277,12 @@ export default {
     background-color: #ccc;
   }
   &.active {
-    color: $color-success;
+    color: $color-info;
     font-weight: $font-bold;
 
     &::after {
       width: 2px;
-      background-color: $color-success;
+      background-color: $color-info;
     }
   }
 }
