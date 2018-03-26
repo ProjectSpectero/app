@@ -15,6 +15,16 @@
     </div>
 
     <div class="form-input">
+      <div class="label"><label>Grouped Results</label></div>
+      <div class="form-checkbox">
+        <label for="filter-grouped">
+          <input id="filter-grouped" type="checkbox" v-model="nodes.grouped" @change="updateFilters">
+          Show Grouped Results
+        </label>
+      </div>
+    </div>
+
+    <div class="form-input">
       <div class="label"><label>Service Types</label></div>
       <div class="form-checkbox" :for="'service-type-' + type" v-for="type in serviceTypes" :key="type">
         <label :for="'service-type-' + type">
@@ -75,7 +85,8 @@ export default {
         city: null,
         cc: null,
         service_type: [],
-        ip_count: 0
+        ip_count: 0,
+        grouped: true
       },
       rules: [],
       sliders: {
@@ -131,7 +142,7 @@ export default {
     },
     submitFilters () {
       this.filtersChanged = false
-      this.$emit('changedRules', this.rules)
+      this.$emit('changedRules', this.rules, this.nodes.grouped)
     },
     changeConditionalFilter (field, operator) {
       const index = this.findIndex(field)
@@ -236,9 +247,6 @@ export default {
       } else {
         this.updateFilters(filter, index)
       }
-    },
-    test () {
-      console.log(`test`)
     }
   },
   computed: {

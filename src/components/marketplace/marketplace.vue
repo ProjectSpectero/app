@@ -63,7 +63,8 @@ export default {
         actions: ''
       },
       rules: [],
-      options: {}
+      options: {},
+      grouped: true
     }
   },
   created () {
@@ -111,7 +112,7 @@ export default {
       await marketplaceAPI.search({
         page: page,
         limit: this.perPage,
-        includeGrouped: true,
+        includeGrouped: this.grouped,
         data: {
           rules: this.rules
         },
@@ -125,8 +126,9 @@ export default {
         }
       })
     },
-    changedRules (rules) {
+    changedRules (rules, grouped) {
       this.rules = rules
+      this.grouped = grouped
 
       console.log('Changed rules to ', this.rules)
 
