@@ -31,7 +31,9 @@
           </template>
 
           <template slot="actions" slot-scope="props">
-            <button class="button button-success">Purchase</button>
+            <router-link class="button button-success" :to="{ name: 'marketplaceView', params: { type: parseType(props.row.type), id: props.row.id } }">
+              {{ $i18n.t('misc.VIEW') }}
+            </router-link>
           </template>
         </v-client-table>
 
@@ -72,6 +74,13 @@ export default {
     this.search()
   },
   methods: {
+    parseType (type) {
+      if (type.toLowerCase() === 'node') {
+        return 'node'
+      }
+
+      return 'group'
+    },
     countIpsInNodeGroup (group) {
       let ips = 0
       let nodes = 0
