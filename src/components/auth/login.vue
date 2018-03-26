@@ -5,7 +5,7 @@
         Please log in to continue.
       </div>
 
-      <div class="message error" v-if="formError">{{ formError }}</div>
+      <div class="message message-error" v-if="formError">{{ formError }}</div>
 
       <div class="form-input">
         <input
