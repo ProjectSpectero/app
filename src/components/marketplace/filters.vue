@@ -1,5 +1,5 @@
 <template>
-  <form class="filters" @submit.prevent.stop="">
+  <form class="filters" @submit.prevent.stop="submitFilters">
     <div class="form-input">
       <div class="label"><label for="market-model">Market Model</label></div>
       <select name="market-model" id="market-model" v-model="nodes.market_model" @change="changeConditionalFilter('market_model', '=')">
@@ -66,7 +66,12 @@
       <input type="number" id="filter-nodeCount" v-model="nodes.ip_count" @keydown="filterIPCount()" @change="filterIPCount()" class="input" min="0">
     </div>
 
-    <button class="button button-md max-width" :class="{ 'button-success': this.filtersChanged, 'buttonFilterSubmit': true }" :disabled="!this.filtersChanged" @click="submitFilters()">Apply Filters</button>
+    <input
+      type="submit"
+      class="button button-md max-width buttonFilterSubmit"
+      :class="{ 'button-success': this.filtersChanged }"
+      :disabled="!this.filtersChanged"
+      value="Apply Filters">
   </form>
 </template>
 
@@ -117,6 +122,11 @@ export default {
       filtersChanged: false
     }
   },
+  computed: {
+    ...mapGetters({
+      countries: 'settings/countries'
+    })
+  },
   methods: {
     findIndex (field) {
       return this.rules.findIndex(r => r.field === 'nodes.' + field)
@@ -137,7 +147,6 @@ export default {
         this.rules.push(filter)
       }
 
-      console.log('Changed rules', this.rules)
       this.filtersChanged = true
     },
     submitFilters () {
@@ -200,7 +209,6 @@ export default {
         this.nodes.service_type.push(type)
       }
 
-      console.log('Pushed service type', this.nodes.service_type)
       this.changeServiceTypeFilter()
     },
     filterPriceRange (range) {
@@ -248,11 +256,6 @@ export default {
         this.updateFilters(filter, index)
       }
     }
-  },
-  computed: {
-    ...mapGetters({
-      countries: 'settings/countries'
-    })
   },
   created () {
     this.$set(this.sliders.price, 'value', [0, this.sliders.price.maxValue])
