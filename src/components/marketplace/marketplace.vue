@@ -126,13 +126,10 @@ export default {
         }
       })
     },
-    changedRules (rules, grouped) {
+    async changedRules (rules, grouped) {
       this.rules = rules
       this.grouped = grouped
-
-      console.log('Changed rules to ', this.rules)
-
-      this.search()
+      await this.search()
     }
   },
   metaInfo: {

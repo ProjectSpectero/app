@@ -34,6 +34,16 @@ export default {
       this.active = page
       this.$emit('changedPage', page)
     }
+  },
+  watch: {
+    pagination: {
+      handler (futurePagination, pastPagination) {
+        if (pastPagination && futurePagination.last_page < pastPagination.last_page) {
+          this.toPage(1)
+        }
+      },
+      deep: true
+    }
   }
 }
 </script>
