@@ -203,8 +203,8 @@ export default {
           field: 'nodes.price',
           operator: 'RANGE',
           value: {
-            start: range[1],
-            end: range[0]
+            start: range[0],
+            end: range[1]
           }
         }
 
