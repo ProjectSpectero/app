@@ -5,11 +5,13 @@ const state = {
   user: null,
   accessToken: null,
   refreshToken: null,
-  expiry: null
+  expiry: null,
+  freshdeskUrl: null
 }
 
 const getters = {
   user: (state) => state.user,
+  freshdeskUrl: (state) => state.freshdeskUrl,
   accessToken: (state) => state.accessToken,
   refreshToken: (state) => state.refreshToken,
   expiry: (state) => state.expiry,
@@ -29,6 +31,18 @@ const actions = {
       }
     })
   },
+  async fetchFreshdeskURL ({ commit }) {
+    await userAPI.getSupportLink({
+      success: response => {
+        if (response.data.result.redirect_uri !== undefined) {
+          commit('SET_FRESHDESK_URL', response.data.result.redirect_uri)
+        }
+      },
+      fail: error => {
+        console.log(error)
+      }
+    })
+  },
   async checkLogin ({ commit, getters, dispatch }) {
     const cookie = getCookie(process.env.COOKIE_NAME)
     let data = null
@@ -42,7 +56,7 @@ const actions = {
       data = JSON.parse(cookie)
 
       // If no data is set we're first-landing the page and
-      // we'll need to decode the cookie and retrieve the current user
+      // we'll need to decode the cookie,retrieve the current user
       if (data) {
         commit('SET_LOGIN_INFO', data)
         await dispatch('syncCurrentUser')
@@ -76,6 +90,9 @@ const actions = {
 const mutations = {
   SET_CURRENT_USER (state, payload) {
     state.user = payload
+  },
+  SET_FRESHDESK_URL (state, payload) {
+    state.freshdeskUrl = payload
   },
   SET_LOGIN_INFO (state, payload) {
     state.accessToken = payload.accessToken

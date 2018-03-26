@@ -40,12 +40,18 @@ router.beforeEach((to, from, next) => {
     // else handles regular routes
     if (to.matched.some(record => record.meta.auth)) {
       if (loggedIn) {
-        next()
+        // Fetch freshdesk url if not found
+        if (!store.state.auth.freshdeskUrl) {
+          store.dispatch('auth/fetchFreshdeskURL').then(() => {
+            next()
+          })
+        } else {
+          next()
+        }
       } else {
         // Force the same behavior as logging out (remove cookie + clean store)
         // for scenarios where our cookie has expired
         store.dispatch('auth/logout').then(loggedIn => {
-          console.log('Is logged out, redirecting to', to)
           next({ name: 'login', query: { redirect: to.fullPath } })
         })
       }

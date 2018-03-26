@@ -21,8 +21,8 @@
       <section class="nav-section">
         <h5>Account</h5>
         <ul>
-          <li v-if="supportLink">
-            <a :href="supportLink" target="_blank">
+          <li v-if="freshdeskUrl">
+            <a :href="freshdeskUrl" target="_blank">
               <span class="icon-life-buoy"></span> Support
             </a>
           </li>
@@ -35,8 +35,7 @@
 </template>
 
 <script>
-import userAPI from '@/api/user.js'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -44,25 +43,15 @@ export default {
       supportLink: null
     }
   },
-  created () {
-    this.fetchSupportLink()
+  computed: {
+    ...mapGetters({
+      freshdeskUrl: 'auth/freshdeskUrl'
+    })
   },
   methods: {
     ...mapActions({
       logout: 'auth/logout'
     }),
-    async fetchSupportLink () {
-      await userAPI.getSupportLink({
-        success: response => {
-          if (response.data.result.redirect_uri !== undefined) {
-            this.supportLink = response.data.result.redirect_uri
-          }
-        },
-        fail: e => {
-          console.log(e)
-        }
-      })
-    },
     logMeOut () {
       this.logout().then(() => {
         this.$router.push({ name: 'login' })
