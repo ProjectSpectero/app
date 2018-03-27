@@ -135,8 +135,10 @@ export default {
       return this.rules.find(r => r.field === 'nodes.' + field)
     },
     clearFilter (index) {
-      this.rules.splice(index, 1)
-      this.updateFilters()
+      if (index !== undefined && index !== -1) {
+        this.rules.splice(index, 1)
+        this.updateFilters()
+      }
     },
     updateFilters (filter, index) {
       // Update pre-filled filter with the new value and operator
@@ -171,10 +173,8 @@ export default {
       const index = this.findIndex(field)
 
       if (!this.nodes[field] || this.nodes[field].length === 0) {
-        console.log('Clearing filter', this.nodes[field])
         this.clearFilter(index)
       } else {
-        console.log('Adding filter', this.nodes[field])
         const filter = {
           field: 'nodes.' + field,
           operator: 'IN',
@@ -233,9 +233,7 @@ export default {
     filterIPCount () {
       const field = 'ip_count'
       const index = this.findIndex(field)
-      console.log('this.rules is', this.rules)
-      if (!this.nodes[field]) {
-        console.log('Will clear the following rule', this.rules[index])
+      if (!this.nodes[field] || this.nodes[field] === '0') {
         this.clearFilter(index)
       } else {
         const filter = {
