@@ -4,7 +4,7 @@
 
     <div class="content-split">
       <div class="split-item split-list filters-side">
-        <filters @changedRules="changedRules"></filters>
+        <filters @changedFilters="search"></filters>
       </div>
       <div class="split-item split-details">
         <v-client-table :data="results" :columns="columns" :options="options">
@@ -50,14 +50,12 @@ import top from '@/components/common/top'
 import paginator from '@/components/common/paginator'
 import filters from './filters'
 import addToCart from './addToCart'
-import marketplaceAPI from '@/api/marketplace.js'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
     return {
       perPage: 10,
-      pagination: null,
-      results: [],
       columns: ['id', 'friendly_name', 'market_model', 'ips_count', 'type', 'price', 'actions'],
       sortableColumns: ['id', 'friendly_name', 'type'],
       headings: {
@@ -67,7 +65,7 @@ export default {
         ips_count: 'IPs',
         actions: ''
       },
-      rules: [],
+      filters: [],
       options: {},
       grouped: true
     }
@@ -76,7 +74,16 @@ export default {
     this.setup()
     this.search()
   },
+  computed: {
+    ...mapGetters({
+      results: 'marketplace/results',
+      pagination: 'marketplace/pagination'
+    })
+  },
   methods: {
+    ...mapActions({
+      fetch: 'marketplace/fetch'
+    }),
     showModal (item) {
       this.$modal.show(addToCart, {
         item: item
@@ -127,28 +134,8 @@ export default {
         filterable: false
       }
     },
-    async search (page) {
-      await marketplaceAPI.search({
-        page: page,
-        limit: this.perPage,
-        includeGrouped: this.grouped,
-        data: {
-          rules: this.rules
-        },
-        success: response => {
-          this.pagination = response.data.pagination
-          this.results = response.data.result
-        },
-        fail: (e) => {
-          console.log(e)
-          // this.error404()
-        }
-      })
-    },
-    async changedRules (rules, grouped) {
-      this.rules = rules
-      this.grouped = grouped
-      await this.search()
+    search (page) {
+      this.fetch({ page: page || 1, perPage: this.perPage, grouped: this.grouped })
     }
   },
   metaInfo: {

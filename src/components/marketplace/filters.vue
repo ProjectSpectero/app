@@ -18,7 +18,7 @@
       <div class="label"><label>Grouped Results</label></div>
       <div class="form-checkbox">
         <label for="filter-grouped">
-          <input id="filter-grouped" type="checkbox" v-model="nodes.grouped" @change="updateFilters">
+          <input id="filter-grouped" type="checkbox" v-model="nodes.grouped" @change="update">
           Show Grouped Results
         </label>
       </div>
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import vueSlider from 'vue-slider-component'
 
 export default {
@@ -93,7 +93,6 @@ export default {
         ip_count: null,
         grouped: true
       },
-      rules: [],
       sliders: {
         price: {
           maxValue: 100,
@@ -122,38 +121,69 @@ export default {
       filtersChanged: false
     }
   },
+  created () {
+    this.$set(this.sliders.price, 'value', [0, this.sliders.price.maxValue])
+    this.$set(this.sliders.price, 'interval', this.sliders.price.maxValue / 4)
+    this.$set(this.sliders.price, 'max', this.sliders.price.maxValue)
+    this.setupForm()
+  },
   computed: {
     ...mapGetters({
+      filters: 'marketplace/filters',
       countries: 'settings/countries'
     })
   },
   methods: {
-    findIndex (field) {
-      return this.rules.findIndex(r => r.field === 'nodes.' + field)
-    },
-    find (field) {
-      return this.rules.find(r => r.field === 'nodes.' + field)
-    },
-    clearFilter (index) {
-      if (index !== undefined && index !== -1) {
-        this.rules.splice(index, 1)
-        this.updateFilters()
-      }
-    },
-    updateFilters (filter, index) {
-      // Update pre-filled filter with the new value and operator
-      // or create a new instance of it
-      if (index !== -1) {
-        this.rules[index] = filter
-      } else {
-        this.rules.push(filter)
+    ...mapActions({
+      removeFilter: 'marketplace/removeFilter',
+      updateFilter: 'marketplace/updateFilter'
+    }),
+    setupForm () {
+      const marketModel = this.find('market_model')
+      const asn = this.find('asn')
+      const ipCount = this.find('ip_count')
+      const cc = this.find('cc')
+      const city = this.find('city')
+
+      // To do: service types, grouped, price range
+      // Also: fix empty values on inputs not triggering a change
+
+      console.log('this.filters', this.filters)
+      console.log('this.nodes', this.nodes)
+
+      if (marketModel && marketModel.value !== this.nodes.market_model) {
+        this.nodes.market_model = marketModel.value
       }
 
+      if (asn && asn.value.length && asn.value[0] !== this.nodes.asn) {
+        this.nodes.asn = asn.value[0]
+      }
+
+      if (cc && cc.value !== this.nodes.cc) {
+        this.nodes.cc = cc.value
+      }
+
+      if (city && city.value !== this.nodes.city) {
+        this.nodes.city = city.value
+      }
+
+      if (ipCount && ipCount.value !== this.nodes.ip_count) {
+        this.nodes.ip_count = ipCount.value
+      }
+    },
+    findIndex (field) {
+      return this.filters.findIndex(r => r.field === 'nodes.' + field)
+    },
+    find (field) {
+      return this.filters.find(r => r.field === 'nodes.' + field)
+    },
+    update (filter, index) {
+      this.updateFilter({ filter: filter, index: index })
       this.filtersChanged = true
     },
     submitFilters () {
+      this.$emit('changedFilters')
       this.filtersChanged = false
-      this.$emit('changedRules', this.rules, this.nodes.grouped)
     },
     changeConditionalFilter (field, operator) {
       const index = this.findIndex(field)
@@ -164,16 +194,16 @@ export default {
       }
 
       if (filter.value === '') {
-        this.clearFilter(index)
+        this.removeFilter(index)
       } else {
-        this.updateFilters(filter, index)
+        this.update(filter, index)
       }
     },
     changeNumericInFilter (field) {
       const index = this.findIndex(field)
 
       if (!this.nodes[field] || this.nodes[field].length === 0) {
-        this.clearFilter(index)
+        this.removeFilter(index)
       } else {
         const filter = {
           field: 'nodes.' + field,
@@ -181,7 +211,7 @@ export default {
           value: [parseInt(this.nodes[field])]
         }
 
-        this.updateFilters(filter, index)
+        this.update(filter, index)
       }
     },
     changeServiceTypeFilter () {
@@ -189,7 +219,7 @@ export default {
       const index = this.findIndex(field)
 
       if (!this.nodes[field] || this.nodes[field].length === 0) {
-        this.clearFilter(index)
+        this.removeFilter(index)
       } else {
         const filter = {
           field: 'nodes.' + field,
@@ -197,7 +227,7 @@ export default {
           value: this.nodes[field]
         }
 
-        this.updateFilters(filter, index)
+        this.update(filter, index)
       }
     },
     toggleServiceType (type) {
@@ -216,7 +246,7 @@ export default {
 
       // Remove price if min = 0 and max = slider maxValue value
       if (range[0] === 0 && range[1] === this.sliders.price.maxValue) {
-        this.clearFilter(index)
+        this.removeFilter(index)
       } else {
         const filter = {
           field: 'nodes.price',
@@ -227,14 +257,14 @@ export default {
           }
         }
 
-        this.updateFilters(filter, index)
+        this.update(filter, index)
       }
     },
     filterIPCount () {
       const field = 'ip_count'
       const index = this.findIndex(field)
       if (!this.nodes[field] || this.nodes[field] === '0') {
-        this.clearFilter(index)
+        this.removeFilter(index)
       } else {
         const filter = {
           field: 'nodes.' + field,
@@ -242,7 +272,7 @@ export default {
           value: parseInt(this.nodes[field])
         }
 
-        this.updateFilters(filter, index)
+        this.update(filter, index)
       }
     },
     filterCountryCode () {
@@ -255,16 +285,11 @@ export default {
       }
 
       if (this.nodes[field] === '') {
-        this.clearFilter(index)
+        this.removeFilter(index)
       } else {
-        this.updateFilters(filter, index)
+        this.update(filter, index)
       }
     }
-  },
-  created () {
-    this.$set(this.sliders.price, 'value', [0, this.sliders.price.maxValue])
-    this.$set(this.sliders.price, 'interval', this.sliders.price.maxValue / 4)
-    this.$set(this.sliders.price, 'max', this.sliders.price.maxValue)
   },
   components: {
     vueSlider
