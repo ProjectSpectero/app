@@ -37,7 +37,7 @@ export default {
       this.$emit('close')
 
       if (checkout) {
-        this.$router.push('cart')
+        this.$router.push({ name: 'cart' })
       }
     }
   }

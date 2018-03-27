@@ -1,15 +1,6 @@
 <template>
   <div class="item">
-    <h2>{{ item.friendly_name }}</h2>
-    <ul>
-      <li v-if="item.asn">ASN: {{ item.asn }}</li>
-      <li v-if="item.city">City: {{ item.city }}</li>
-      <li v-if="item.cc">Country Code: {{ item.cc }}</li>
-      <li>Market model: {{ item.market_model }}</li>
-      <li>Status: {{ item.status }}</li>
-      <li>Price: {{ item.price }}</li>
-      <li v-if="item.plan">{{ item.plan }}</li>
-    </ul>
+    <basic :item="item"></basic>
 
     <template v-if="item.nodes">
       <h4>Nodes</h4>
@@ -24,6 +15,7 @@
 </template>
 
 <script>
+import basic from './basicInfo'
 import ips from '@/components/nodes/listIps'
 import nodes from './nodes'
 import notFound from '@/components/common/notFound'
@@ -74,7 +66,8 @@ export default {
   components: {
     notFound,
     ips,
-    nodes
+    nodes,
+    basic
   }
 }
 </script>
