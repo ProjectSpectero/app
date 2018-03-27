@@ -2,6 +2,9 @@
   <div>
       <div v-if="ips && ips.length" class="list pad-margin">
         <v-client-table :data="ips" :columns="columns" :options="options">
+          <template v-if="props.row.ip" slot="ip" slot-scope="props">
+            {{ props.row.ip }}
+          </template>
           <template slot="created_at" slot-scope="props">
             {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
           </template>
@@ -16,13 +19,17 @@ import notFound from '@/components/common/notFound'
 
 export default {
   props: {
-    ips: Array
+    ips: Array,
+    showAddresses: {
+      type: Boolean,
+      default: true
+    }
   },
   data () {
     return {
-      columns: ['ip', 'asn', 'cc', 'city', 'created_at'],
-      sortableColumns: ['ip', 'asn', 'cc', 'city', 'created_at'],
-      filterableColumns: ['ip', 'asn', 'cc', 'city', 'created_at'],
+      columns: null,
+      sortableColumns: null,
+      filterableColumns: null,
       headings: {
         ip: 'IP Address',
         asn: 'ASN',
@@ -34,6 +41,7 @@ export default {
     }
   },
   created () {
+    this.setColumns()
     this.options = {
       skin: '',
       texts: {
@@ -56,6 +64,14 @@ export default {
       headings: this.headings,
       sortable: this.sortableColumns,
       filterable: this.filterableColumns
+    }
+  },
+  methods: {
+    setColumns () {
+      const columns = this.showAddresses ? ['ip', 'asn', 'cc', 'city', 'created_at'] : ['asn', 'cc', 'city', 'created_at']
+      this.columns = columns
+      this.sortableColumns = columns
+      this.filterableColumns = columns
     }
   },
   components: {
