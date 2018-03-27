@@ -21,7 +21,9 @@ module.exports = {
     LABEL_ACCESS_TOKEN: 'Access Token',
     PLACEHOLDER_ACCESS_TOKEN: 'Add a new access token in the format username:password to update',
     LABEL_PROTOCOL: 'Protocol',
-    LABEL_NODE_GROUP: 'Node Group'
+    LABEL_NODE_GROUP: 'Node Group',
+    ADD_TO_CART: 'Add to cart',
+    CHECKOUT: 'Checkout'
   },
 
   errors: {

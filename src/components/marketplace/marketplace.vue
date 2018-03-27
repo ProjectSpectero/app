@@ -34,6 +34,8 @@
             <router-link class="button button-success" :to="{ name: 'marketplaceView', params: { type: parseType(props.row.type), id: props.row.id } }">
               {{ $i18n.t('misc.VIEW') }}
             </router-link>
+
+            <button @click.stop="showModal(props.row)" class="button">{{ $i18n.t('misc.PURCHASE') }}</button>
           </template>
         </v-client-table>
 
@@ -47,6 +49,7 @@
 import top from '@/components/common/top'
 import paginator from '@/components/common/paginator'
 import filters from './filters'
+import addToCart from './addToCart'
 import marketplaceAPI from '@/api/marketplace.js'
 
 export default {
@@ -74,6 +77,13 @@ export default {
     this.search()
   },
   methods: {
+    showModal (item) {
+      this.$modal.show(addToCart, {
+        item: item
+      }, {
+        draggable: true
+      })
+    },
     parseType (type) {
       if (type.toLowerCase() === 'node') {
         return 'node'
@@ -147,7 +157,8 @@ export default {
   components: {
     top,
     paginator,
-    filters
+    filters,
+    addToCart
   }
 }
 </script>

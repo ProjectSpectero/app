@@ -2,6 +2,7 @@
   <div v-if="!loading" class="spectero">
     <sidebar></sidebar>
     <div class="content">
+      <modals-container/>
       <router-view></router-view>
     </div>
   </div>
