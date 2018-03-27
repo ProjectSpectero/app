@@ -3,7 +3,7 @@
     <div class="form-input">
       <div class="label"><label for="market-model">Market Model</label></div>
       <select name="market-model" id="market-model" v-model="nodes.market_model" @change="changeConditionalFilter('market_model', '=')">
-        <option value="null" selected>Any Type</option>
+        <option value="" selected>Any Type</option>
         <option value="LISTED_SHARED">Shared</option>
         <option value="LISTED_DEDICATED">Dedicated</option>
       </select>
@@ -11,7 +11,7 @@
 
     <div class="form-input">
       <div class="label"><label for="market-asn">ASN</label></div>
-      <input type="text" name="market-asn" id="market-asn" v-model="nodes.asn" @keydown="changeInFilter('asn')" class="input">
+      <input type="text" name="market-asn" id="market-asn" v-model="nodes.asn" @keyup="changeNumericInFilter('asn')" class="input">
     </div>
 
     <div class="form-input">
@@ -47,8 +47,8 @@
 
     <div class="form-input">
       <div class="label"><label for="filter-country">Country</label></div>
-      <select id="filter-country" v-model="nodes.cc" @change="filterCountryCode()">
-        <option value="null" selected>Any Country</option>
+      <select id="filter-country" v-model="nodes.cc" @change="filterCountryCode">
+        <option value="" selected>Any Country</option>
         <option disabled>&nbsp;</option>
         <option v-for="country in countries" :key="country.code" :value="country.code">
           {{ country.name }}
@@ -58,12 +58,12 @@
 
     <div class="form-input">
       <div class="label"><label for="filter-city">City</label></div>
-      <input type="text" id="filter-city" v-model="nodes.city" @keydown="changeConditionalFilter('city', '=')" class="input">
+      <input type="text" id="filter-city" v-model="nodes.city" @keyup="changeConditionalFilter('city', '=')" class="input">
     </div>
 
     <div class="form-input">
       <div class="label"><label for="filter-nodeCount">Minimum number of IP addresses</label></div>
-      <input type="number" id="filter-nodeCount" v-model="nodes.ip_count" @keydown="filterIPCount()" @change="filterIPCount()" class="input" min="0">
+      <input type="number" id="filter-nodeCount" v-model="nodes.ip_count" @keyup="filterIPCount" @change="filterIPCount" class="input" min="0">
     </div>
 
     <input
@@ -84,13 +84,13 @@ export default {
     return {
       serviceTypes: ['HTTPProxy', 'OpenVPN'],
       nodes: {
-        market_model: null,
+        market_model: '',
         price: null,
         asn: null,
         city: null,
-        cc: null,
+        cc: '',
         service_type: [],
-        ip_count: 0,
+        ip_count: null,
         grouped: true
       },
       rules: [],
@@ -161,22 +161,24 @@ export default {
         value: this.nodes[field]
       }
 
-      if (filter.value === 'null') {
+      if (filter.value === '') {
         this.clearFilter(index)
       } else {
         this.updateFilters(filter, index)
       }
     },
-    changeInFilter (field) {
+    changeNumericInFilter (field) {
       const index = this.findIndex(field)
 
-      if (!this.nodes[field]) {
+      if (!this.nodes[field] || this.nodes[field].length === 0) {
+        console.log('Clearing filter', this.nodes[field])
         this.clearFilter(index)
       } else {
+        console.log('Adding filter', this.nodes[field])
         const filter = {
           field: 'nodes.' + field,
           operator: 'IN',
-          value: [this.nodes[field]]
+          value: [parseInt(this.nodes[field])]
         }
 
         this.updateFilters(filter, index)
@@ -194,8 +196,6 @@ export default {
           operator: 'ALL',
           value: this.nodes[field]
         }
-
-        console.log(field, ' filter is now ', filter)
 
         this.updateFilters(filter, index)
       }
@@ -233,13 +233,19 @@ export default {
     filterIPCount () {
       const field = 'ip_count'
       const index = this.findIndex(field)
-      const filter = {
-        field: 'nodes.' + field,
-        operator: '>=',
-        value: parseInt(this.nodes[field])
-      }
+      console.log('this.rules is', this.rules)
+      if (!this.nodes[field]) {
+        console.log('Will clear the following rule', this.rules[index])
+        this.clearFilter(index)
+      } else {
+        const filter = {
+          field: 'nodes.' + field,
+          operator: '>=',
+          value: parseInt(this.nodes[field])
+        }
 
-      this.updateFilters(filter, index)
+        this.updateFilters(filter, index)
+      }
     },
     filterCountryCode () {
       const field = 'cc'
@@ -250,7 +256,7 @@ export default {
         value: [this.nodes[field]]
       }
 
-      if (this.nodes[field] === 'null') {
+      if (this.nodes[field] === '') {
         this.clearFilter(index)
       } else {
         this.updateFilters(filter, index)
