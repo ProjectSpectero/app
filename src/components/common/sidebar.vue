@@ -19,6 +19,12 @@
         </ul>
       </section>
       <section class="nav-section">
+        <h5>Daemon</h5>
+        <ul>
+          <li><router-link :to="{ name: 'downloads' }"><span class="icon-download"></span> Downloads</router-link></li>
+        </ul>
+      </section>
+      <section class="nav-section">
         <h5>Account</h5>
         <ul>
           <li v-if="freshdeskUrl">
