@@ -100,7 +100,7 @@ export default {
     }
   },
   async created () {
-    this.form = JSON.parse(JSON.stringify(this.node))
+    this.form = this.node.slice()
     await this.fetchGroups()
 
     this.formFields = [

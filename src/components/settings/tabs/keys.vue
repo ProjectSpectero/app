@@ -60,7 +60,7 @@ export default {
     }
   },
   created () {
-    this.form = JSON.parse(JSON.stringify(this.user))
+    this.form = this.user.slice()
     this.nodeKey = this.form['node_key']
   }
 }

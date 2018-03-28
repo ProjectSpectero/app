@@ -95,7 +95,7 @@ export default {
     }
   },
   created () {
-    this.form = JSON.parse(JSON.stringify(this.group))
+    this.form = this.group.slice()
 
     this.formFields = [
       { name: 'friendly_name', label: 'Friendly name', placeholder: 'Name for this node', type: 'text' },

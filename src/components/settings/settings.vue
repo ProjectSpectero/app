@@ -63,7 +63,7 @@ export default {
     }
   },
   created () {
-    this.form = JSON.parse(JSON.stringify(this.user))
+    this.form = this.user.slice()
     this.checkRouteTab()
   },
   watch: {

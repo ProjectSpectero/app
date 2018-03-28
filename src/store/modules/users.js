@@ -47,7 +47,7 @@ const getters = {
     }
   },
   createRules: (state, getters) => {
-    let rules = JSON.parse(JSON.stringify(getters.editRules))
+    let rules = getters.editRules.slice()
     rules.password.required = true
     return rules
   },
