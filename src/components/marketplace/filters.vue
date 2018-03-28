@@ -85,10 +85,10 @@ export default {
       serviceTypes: ['HTTPProxy', 'OpenVPN'],
       nodes: {
         market_model: '',
-        price: null,
         asn: null,
         city: null,
         cc: '',
+        price: null,
         service_type: [],
         ip_count: null,
         grouped: true
@@ -122,9 +122,7 @@ export default {
     }
   },
   created () {
-    this.$set(this.sliders.price, 'value', [0, this.sliders.price.maxValue])
-    this.$set(this.sliders.price, 'interval', this.sliders.price.maxValue / 4)
-    this.$set(this.sliders.price, 'max', this.sliders.price.maxValue)
+    this.setupSlider()
     this.setupForm()
   },
   computed: {
@@ -138,12 +136,18 @@ export default {
       removeFilter: 'marketplace/removeFilter',
       updateFilter: 'marketplace/updateFilter'
     }),
+    setupSlider () {
+      this.$set(this.sliders.price, 'value', [0, this.sliders.price.maxValue])
+      this.$set(this.sliders.price, 'interval', this.sliders.price.maxValue / 4)
+      this.$set(this.sliders.price, 'max', this.sliders.price.maxValue)
+    },
     setupForm () {
       const marketModel = this.find('market_model')
       const asn = this.find('asn')
       const ipCount = this.find('ip_count')
       const cc = this.find('cc')
       const city = this.find('city')
+      const price = this.find('price')
 
       // To do: service types, grouped, price range
       // Also: fix empty values on inputs not triggering a change
@@ -161,6 +165,11 @@ export default {
 
       if (cc && cc.value !== this.nodes.cc) {
         this.nodes.cc = cc.value
+      }
+
+      if (price && price.value !== this.nodes.price) {
+        this.nodes.price = price.value
+        this.$set(this.sliders.price, 'value', [this.nodes.price.start, this.nodes.price.end])
       }
 
       if (city && city.value !== this.nodes.city) {
