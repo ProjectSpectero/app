@@ -26,9 +26,9 @@
 
     <div class="form-input">
       <div class="label"><label>Service Types</label></div>
-      <div class="form-checkbox" :for="'service-type-' + type" v-for="type in serviceTypes" :key="type">
-        <label :for="'service-type-' + type">
-          <input :id="'service-type-' + type" type="checkbox" @change="toggleServiceType(type)">
+      <div class="form-checkbox" :for="type" v-for="type in serviceTypes" :key="type">
+        <label :for="type">
+          <input :id="type" type="checkbox" :checked="isServiceTypeSelected(type)" @change="toggleServiceType(type)">
           {{ type }}
         </label>
       </div>
@@ -150,6 +150,7 @@ export default {
         'asn'
       ]
       const price = this.find('price')
+      const serviceType = this.find('service_type')
 
       // To do: service types, grouped, price range
       // Also: fix empty values on inputs not triggering a change
@@ -160,9 +161,8 @@ export default {
       for (let field in basicFields) {
         console.log('On field', field)
         const obj = this.find(basicFields[field])
-        console.log('Found object', obj)
 
-        if (obj && obj.value !== this.nodes[basicFields[field]]) {
+        if (obj !== undefined && obj && obj.value !== this.nodes[basicFields[field]]) {
           console.log('Applying filter')
           this.nodes[basicFields[field]] = (obj instanceof Array) ? obj[0].value : obj.value
         }
@@ -172,6 +172,13 @@ export default {
       if (price && price.value !== this.nodes.price) {
         this.nodes.price = price.value
         this.$set(this.sliders.price, 'value', [this.nodes.price.start, this.nodes.price.end])
+      }
+
+      // (Multiple) service_type checkboxes
+      if (serviceType && serviceType.value.length && serviceType.value !== this.nodes.service_type) {
+        console.log('Changing service types from', this.nodes.service_type)
+        this.nodes.service_type = serviceType.value
+        console.log('to', this.nodes.service_type)
       }
     },
     findIndex (field) {
@@ -187,6 +194,9 @@ export default {
     submitFilters () {
       this.$emit('changedFilters')
       this.filtersChanged = false
+    },
+    isServiceTypeSelected (type) {
+      return this.nodes.service_type.find(t => t === type) || false
     },
     changeConditionalFilter (field, operator) {
       const index = this.findIndex(field)
@@ -213,36 +223,37 @@ export default {
           operator: 'IN',
           value: [parseInt(this.nodes[field])]
         }
-
-        this.update(filter, index)
-      }
-    },
-    changeServiceTypeFilter () {
-      const field = 'service_type'
-      const index = this.findIndex(field)
-
-      if (!this.nodes[field] || this.nodes[field].length === 0) {
-        this.removeFilter(index)
-      } else {
-        const filter = {
-          field: 'nodes.' + field,
-          operator: 'ALL',
-          value: this.nodes[field]
-        }
-
+        console.log('Updating field', field, ' with ', filter)
         this.update(filter, index)
       }
     },
     toggleServiceType (type) {
-      const serviceTypeIndex = this.nodes.service_type.findIndex(s => s === type)
+      const field = 'service_type'
+      const list = this.nodes.service_type
+      const serviceTypeIndex = list.findIndex(s => s === type)
+      const selectionsIndex = this.findIndex(field)
 
+      // Search for each selected service type from the list and toggle the one we clicked on
       if (serviceTypeIndex !== -1) {
-        this.nodes.service_type.splice(serviceTypeIndex, 1)
+        console.log('splicing', list)
+        list.splice(serviceTypeIndex, 1)
+        console.log('spliced', list)
       } else {
-        this.nodes.service_type.push(type)
+        list.push(type)
       }
 
-      this.changeServiceTypeFilter()
+      // Add or remove the service type filter from the list of rules
+      if (!list || list.length === 0) {
+        this.removeFilter(selectionsIndex)
+      } else {
+        const filter = {
+          field: 'nodes.' + field,
+          operator: 'ALL',
+          value: list
+        }
+
+        this.update(filter, selectionsIndex)
+      }
     },
     filterPriceRange (range) {
       const index = this.findIndex('price')
