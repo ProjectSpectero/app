@@ -150,20 +150,14 @@ export default {
         'asn'
       ]
       const price = this.find('price')
-      const serviceType = this.find('service_type')
+      let serviceType = this.find('service_type')
 
-      // To do: service types, grouped, price range
-      // Also: fix empty values on inputs not triggering a change
-
-      console.log('this.filters', this.filters)
-      console.log('this.nodes', this.nodes)
+      console.log('this.filters vs. this.nodes', this.filters, this.nodes)
 
       for (let field in basicFields) {
-        console.log('On field', field)
         const obj = this.find(basicFields[field])
 
         if (obj !== undefined && obj && obj.value !== this.nodes[basicFields[field]]) {
-          console.log('Applying filter')
           this.nodes[basicFields[field]] = (obj instanceof Array) ? obj[0].value : obj.value
         }
       }
@@ -188,12 +182,12 @@ export default {
       return this.filters.find(r => r.field === 'nodes.' + field)
     },
     update (filter, index) {
-      this.updateFilter({ filter: filter, index: index })
       this.filtersChanged = true
+      this.updateFilter({ filter: filter, index: index })
     },
     submitFilters () {
-      this.$emit('changedFilters')
       this.filtersChanged = false
+      this.$emit('changedFilters')
     },
     isServiceTypeSelected (type) {
       return this.nodes.service_type.find(t => t === type) || false
@@ -223,36 +217,41 @@ export default {
           operator: 'IN',
           value: [parseInt(this.nodes[field])]
         }
-        console.log('Updating field', field, ' with ', filter)
+
         this.update(filter, index)
       }
     },
     toggleServiceType (type) {
-      const field = 'service_type'
-      const list = this.nodes.service_type
-      const serviceTypeIndex = list.findIndex(s => s === type)
-      const selectionsIndex = this.findIndex(field)
+      const list = this.nodes.service_type.slice()
+      const index = list.findIndex(s => s === type)
 
       // Search for each selected service type from the list and toggle the one we clicked on
-      if (serviceTypeIndex !== -1) {
-        console.log('splicing', list)
-        list.splice(serviceTypeIndex, 1)
-        console.log('spliced', list)
+      if (index !== -1) {
+        list.splice(index, 1)
       } else {
         list.push(type)
       }
 
+      // Set the updated list of service types
+      this.$set(this.nodes, 'service_type', list)
+
+      this.updateServiceTypes()
+    },
+    updateServiceTypes (list) {
+      const field = 'service_type'
+      const index = this.findIndex(field)
+
       // Add or remove the service type filter from the list of rules
-      if (!list || list.length === 0) {
-        this.removeFilter(selectionsIndex)
+      if (!this.nodes[field] || this.nodes[field].length === 0) {
+        this.removeFilter(index)
       } else {
         const filter = {
           field: 'nodes.' + field,
           operator: 'ALL',
-          value: list
+          value: this.nodes[field]
         }
 
-        this.update(filter, selectionsIndex)
+        this.update(filter, index)
       }
     },
     filterPriceRange (range) {
