@@ -36,7 +36,6 @@ const actions = {
   },
   removeFilter: ({ commit, dispatch }, index) => {
     commit('REMOVE_FILTER', index)
-    dispatch('updateFilters')
   }
 }
 

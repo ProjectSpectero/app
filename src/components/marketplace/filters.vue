@@ -142,11 +142,13 @@ export default {
       this.$set(this.sliders.price, 'max', this.sliders.price.maxValue)
     },
     setupForm () {
-      const marketModel = this.find('market_model')
-      const asn = this.find('asn')
-      const ipCount = this.find('ip_count')
-      const cc = this.find('cc')
-      const city = this.find('city')
+      const basicFields = [
+        'market_model',
+        'cc',
+        'city',
+        'ip_count',
+        'asn'
+      ]
       const price = this.find('price')
 
       // To do: service types, grouped, price range
@@ -155,29 +157,21 @@ export default {
       console.log('this.filters', this.filters)
       console.log('this.nodes', this.nodes)
 
-      if (marketModel && marketModel.value !== this.nodes.market_model) {
-        this.nodes.market_model = marketModel.value
+      for (let field in basicFields) {
+        console.log('On field', field)
+        const obj = this.find(basicFields[field])
+        console.log('Found object', obj)
+
+        if (obj && obj.value !== this.nodes[basicFields[field]]) {
+          console.log('Applying filter')
+          this.nodes[basicFields[field]] = (obj instanceof Array) ? obj[0].value : obj.value
+        }
       }
 
-      if (asn && asn.value.length && asn.value[0] !== this.nodes.asn) {
-        this.nodes.asn = asn.value[0]
-      }
-
-      if (cc && cc.value !== this.nodes.cc) {
-        this.nodes.cc = cc.value
-      }
-
+      // Price range slider
       if (price && price.value !== this.nodes.price) {
         this.nodes.price = price.value
         this.$set(this.sliders.price, 'value', [this.nodes.price.start, this.nodes.price.end])
-      }
-
-      if (city && city.value !== this.nodes.city) {
-        this.nodes.city = city.value
-      }
-
-      if (ipCount && ipCount.value !== this.nodes.ip_count) {
-        this.nodes.ip_count = ipCount.value
       }
     },
     findIndex (field) {
