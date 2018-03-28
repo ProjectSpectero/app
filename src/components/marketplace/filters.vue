@@ -69,8 +69,8 @@
     <input
       type="submit"
       class="button button-md max-width buttonFilterSubmit"
-      :class="{ 'button-success': this.filtersChanged }"
-      :disabled="!this.filtersChanged"
+      :class="{ 'button-success': this.buttonEnabled }"
+      :disabled="!this.buttonEnabled"
       value="Apply Filters">
   </form>
 </template>
@@ -117,8 +117,7 @@ export default {
           },
           lazy: true
         }
-      },
-      filtersChanged: false
+      }
     }
   },
   created () {
@@ -128,13 +127,15 @@ export default {
   computed: {
     ...mapGetters({
       filters: 'marketplace/filters',
-      countries: 'settings/countries'
+      countries: 'settings/countries',
+      buttonEnabled: 'marketplace/buttonEnabled'
     })
   },
   methods: {
     ...mapActions({
       removeFilter: 'marketplace/removeFilter',
-      updateFilter: 'marketplace/updateFilter'
+      updateFilter: 'marketplace/updateFilter',
+      toggleButton: 'marketplace/toggleButton'
     }),
     setupSlider () {
       this.$set(this.sliders.price, 'value', [0, this.sliders.price.maxValue])
@@ -182,15 +183,13 @@ export default {
       return this.filters.find(r => r.field === 'nodes.' + field)
     },
     remove (index) {
-      this.filtersChanged = true
       this.removeFilter(index)
     },
     update (filter, index) {
-      this.filtersChanged = true
       this.updateFilter({ filter: filter, index: index })
     },
     submitFilters () {
-      this.filtersChanged = false
+      this.toggleButton(false)
       this.$emit('changedFilters')
     },
     isServiceTypeSelected (type) {

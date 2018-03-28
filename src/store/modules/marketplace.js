@@ -4,10 +4,12 @@ const state = {
   results: [],
   pagination: null,
   filters: [],
-  grouped: true
+  grouped: true,
+  buttonEnabled: false
 }
 
 const getters = {
+  buttonEnabled: (state) => state.buttonEnabled,
   filters: (state) => state.filters,
   grouped: (state) => state.grouped,
   pagination: (state) => state.pagination,
@@ -33,9 +35,14 @@ const actions = {
   },
   updateFilter: ({ commit }, data) => {
     commit('UPDATE_FILTER', data)
+    commit('TOGGLE_BUTTON', true)
   },
   removeFilter: ({ commit, dispatch }, index) => {
     commit('REMOVE_FILTER', index)
+    commit('TOGGLE_BUTTON', true)
+  },
+  toggleButton ({ commit }, status) {
+    commit('TOGGLE_BUTTON', status)
   }
 }
 
@@ -43,6 +50,9 @@ const mutations = {
   UPDATE_RESULTS: (state, data) => {
     state.results = data.results
     state.pagination = data.pagination
+  },
+  TOGGLE_BUTTON: (state, status) => {
+    state.buttonEnabled = status
   },
   UPDATE_FILTER: (state, data) => {
     // Update pre-filled filter with the new value and operator
