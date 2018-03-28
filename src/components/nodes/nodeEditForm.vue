@@ -100,7 +100,7 @@ export default {
     }
   },
   async created () {
-    this.form = this.node.slice()
+    this.form = Object.assign({}, this.node)
     await this.fetchGroups()
 
     this.formFields = [

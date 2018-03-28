@@ -95,7 +95,7 @@ export default {
     }
   },
   created () {
-    this.form = this.group.slice()
+    this.form = Object.assign({}, this.group)
 
     this.formFields = [
       { name: 'friendly_name', label: 'Friendly name', placeholder: 'Name for this node', type: 'text' },

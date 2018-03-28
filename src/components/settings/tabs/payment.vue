@@ -216,7 +216,7 @@ export default {
     }
   },
   created () {
-    this.form = this.user.slice()
+    this.form = Object.assign({}, this.user)
 
     // Default country: USA
     if (!this.form.country) {

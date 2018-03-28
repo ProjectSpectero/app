@@ -47,7 +47,7 @@ const getters = {
     }
   },
   createRules: (state, getters) => {
-    let rules = getters.editRules.slice()
+    let rules = Object.assign({}, getters.editRules)
     rules.password.required = true
     return rules
   },

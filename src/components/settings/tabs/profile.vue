@@ -162,7 +162,7 @@ export default {
     }
   },
   created () {
-    this.form = this.user.slice()
+    this.form = Object.assign({}, this.user)
     this.currentEmail = this.form.email
   },
   computed: {
