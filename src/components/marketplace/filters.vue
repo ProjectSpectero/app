@@ -191,6 +191,10 @@ export default {
       this.updateFilter({ filter: filter, index: index })
       this.filtersChanged = true
     },
+    remove (index) {
+      this.removeFilter(index)
+      this.filtersChanged = true
+    },
     submitFilters () {
       this.$emit('changedFilters')
       this.filtersChanged = false
@@ -207,7 +211,7 @@ export default {
       }
 
       if (filter.value === '') {
-        this.removeFilter(index)
+        this.remove(index)
       } else {
         this.update(filter, index)
       }
@@ -216,7 +220,7 @@ export default {
       const index = this.findIndex(field)
 
       if (!this.nodes[field] || this.nodes[field].length === 0) {
-        this.removeFilter(index)
+        this.remove(index)
       } else {
         const filter = {
           field: 'nodes.' + field,
@@ -244,7 +248,7 @@ export default {
 
       // Add or remove the service type filter from the list of rules
       if (!list || list.length === 0) {
-        this.removeFilter(selectionsIndex)
+        this.remove(selectionsIndex)
       } else {
         const filter = {
           field: 'nodes.' + field,
@@ -260,7 +264,7 @@ export default {
 
       // Remove price if min = 0 and max = slider maxValue value
       if (range[0] === 0 && range[1] === this.sliders.price.maxValue) {
-        this.removeFilter(index)
+        this.remove(index)
       } else {
         const filter = {
           field: 'nodes.price',
@@ -278,7 +282,7 @@ export default {
       const field = 'ip_count'
       const index = this.findIndex(field)
       if (!this.nodes[field] || this.nodes[field] === '0') {
-        this.removeFilter(index)
+        this.remove(index)
       } else {
         const filter = {
           field: 'nodes.' + field,
@@ -299,7 +303,7 @@ export default {
       }
 
       if (this.nodes[field] === '') {
-        this.removeFilter(index)
+        this.remove(index)
       } else {
         this.update(filter, index)
       }
