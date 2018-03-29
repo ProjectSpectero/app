@@ -35,7 +35,12 @@
               {{ $i18n.t('misc.VIEW') }}
             </router-link>
 
-            <button @click.stop="showModal(props.row)" class="button">{{ $i18n.t('misc.PURCHASE') }}</button>
+            <template v-if="existsInCart(props.row.id)">
+              <button disabled class="button">{{ $i18n.t('misc.IN_CART') }}</button>
+            </template>
+            <template v-else>
+              <button @click.stop="showModal(props.row)" class="button">{{ $i18n.t('misc.PURCHASE') }}</button>
+            </template>
           </template>
         </v-client-table>
 
@@ -76,6 +81,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      cart: 'marketplace/cart',
       results: 'marketplace/results',
       pagination: 'marketplace/pagination'
     })
@@ -84,6 +90,9 @@ export default {
     ...mapActions({
       fetch: 'marketplace/fetch'
     }),
+    existsInCart (id) {
+      return this.cart.find(i => i.id === id)
+    },
     showModal (item) {
       this.$modal.show(addToCart, {
         item: item

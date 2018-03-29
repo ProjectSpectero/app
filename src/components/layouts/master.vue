@@ -9,19 +9,26 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import sidebar from '@/components/common/sidebar'
 
 export default {
-  components: {
-    sidebar
-  },
   data () {
     return {
       loading: true
     }
   },
-  mounted () {
+  created () {
+    this.refreshCart()
     this.loading = false
+  },
+  methods: {
+    ...mapActions({
+      refreshCart: 'marketplace/refreshCart'
+    })
+  },
+  components: {
+    sidebar
   }
 }
 </script>

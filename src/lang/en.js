@@ -35,6 +35,7 @@ module.exports = {
     LABEL_PROTOCOL: 'Protocol',
     LABEL_NODE_GROUP: 'Node Group',
     ADD_TO_CART: 'Add to cart',
+    IN_CART: 'In cart',
     CHECKOUT: 'Checkout'
   },
 
