@@ -38,33 +38,37 @@ router.beforeEach((to, from, next) => {
     // Handle routes requiring authentication
     // or handle routes that arent view-able by already logged in users (default to /dashboard)
     // else handles regular routes
-    if (to.matched.some(record => record.meta.auth)) {
-      if (loggedIn) {
-        // Fetch freshdesk url if not found
-        if (!store.state.auth.freshdeskUrl) {
-          store.dispatch('auth/fetchFreshdeskURL').then(() => {
-            next()
-          })
-        } else {
-          next()
-        }
-      } else {
-        // Force the same behavior as logging out (remove cookie + clean store)
-        // for scenarios where our cookie has expired
-        store.dispatch('auth/logout').then(loggedIn => {
-          next({ name: 'login', query: { redirect: to.fullPath } })
-        })
-      }
-    } else if (to.matched.some(record => record.meta.antiAuth)) {
-      if (loggedIn) {
-        next({ name: 'dashboard' })
-      } else {
-        next()
-      }
+    if (loggedIn) {
+      // Fetch freshdesk url if not found
+      store.dispatch('auth/fetchFreshdeskURL').then(() => {
+        processRoute(loggedIn, to, from, next)
+      })
     } else {
-      next()
+      processRoute(loggedIn, to, from, next)
     }
   })
 })
+
+function processRoute (loggedIn, to, from, next) {
+  if (to.matched.some(record => record.meta.auth)) {
+    if (loggedIn) {
+      next()
+    } else {
+      // Force the same behavior as logging out (remove cookie + clean store)
+      // for scenarios where our cookie has expired
+      store.dispatch('auth/logout').then(loggedIn => {
+        next({ name: 'login', query: { redirect: to.fullPath } })
+      })
+    }
+  } else if (to.matched.some(record => record.meta.antiAuth)) {
+    if (loggedIn) {
+      next({ name: 'dashboard' })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+}
 
 export default router
