@@ -7,7 +7,7 @@
 
 <script>
 import loading from '@/components/common/loading'
-import marketplaceAPI from '@/api/marketplace.js'
+import marketAPI from '@/api/market.js'
 import itemDetails from './details'
 
 export default {
@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     async fetchData () {
-      await marketplaceAPI.fetch({
+      await marketAPI.fetch({
         data: {
           id: this.$route.params.id,
           type: this.$route.params.type

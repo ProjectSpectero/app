@@ -15,9 +15,9 @@
             </router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'marketplace' }">
+            <router-link :to="{ name: 'market' }">
               <span class="icon-globe"></span>
-              {{ $i18n.t('misc.MARKETPLACE') }}
+              {{ $i18n.t('misc.MARKET') }}
             </router-link>
           </li>
         </ul>
@@ -102,7 +102,7 @@ export default {
   computed: {
     ...mapGetters({
       freshdeskUrl: 'auth/freshdeskUrl',
-      count: 'marketplace/cartCounter'
+      count: 'market/cartCounter'
     })
   },
   methods: {

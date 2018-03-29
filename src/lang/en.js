@@ -3,7 +3,7 @@ module.exports = {
 
   misc: {
     DASHBOARD: 'Dashboard',
-    MARKETPLACE: 'Marketplace',
+    MARKET: 'Market',
     ORDERS: 'Orders',
     INVOICES: 'Invoices',
     NODES: 'Nodes',
@@ -24,6 +24,7 @@ module.exports = {
     PURCHASE: 'Purchase',
     PAY_NOW: 'Pay Now',
     SAVE: 'Save',
+    REMOVE: 'Remove',
     GENERAL_INFO: 'General Information',
     LABEL_PRICE: 'Price',
     LABEL_FRIENDLY_NAME: 'Friendly name',
@@ -168,7 +169,11 @@ module.exports = {
       MANAGED: 'Managed',
       LISTED_SHARED: 'Listed Shared',
       LISTED_DEDICATED: 'Listed Dedicated'
-    }
+    },
+    ORDER_PROCESSED: 'Success! Invoice #{invoice} has been issued.',
+    REMOVED_FROM_CART: '{name} was removed from your cart!',
+    NODE_GROUP_IP_COUNT: '{ips} in {nodes} nodes',
+    CART_EMPTY: 'Your cart is empty.'
   },
 
   users: {
@@ -178,9 +183,5 @@ module.exports = {
 
   settings: {
     EMAIL_CHANGE_NOTICE: 'Your current email is <strong>{email}</strong>. If your new email is invalid we will not be able to reach you and your account will be locked.'
-  },
-
-  marketplace: {
-    NODE_GROUP_IP_COUNT: '{ips} in {nodes} nodes'
   }
 }

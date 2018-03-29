@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      addToCart: 'marketplace/addToCart'
+      addToCart: 'market/addToCart'
     }),
     add (item, checkout) {
       this.addToCart(item)

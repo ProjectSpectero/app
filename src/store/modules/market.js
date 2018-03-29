@@ -1,4 +1,4 @@
-import marketplaceAPI from '@/api/marketplace.js'
+import marketAPI from '@/api/market.js'
 
 const state = {
   cart: [],
@@ -21,7 +21,7 @@ const getters = {
 
 const actions = {
   async fetch ({ getters, commit }, data) {
-    await marketplaceAPI.search({
+    await marketAPI.search({
       page: data.page,
       limit: data.perPage,
       includeGrouped: getters.grouped,
@@ -47,6 +47,9 @@ const actions = {
     commit('REMOVE_FROM_CART', item)
     commit('REFRESH_CART')
   },
+  clearCart: ({ commit }) => {
+    commit('CLEAR_CART')
+  },
   updateFilter: ({ commit }, data) => {
     commit('UPDATE_FILTER', data)
     commit('TOGGLE_BUTTON', true)
@@ -67,8 +70,6 @@ const mutations = {
     if (cart) {
       state.cart = JSON.parse(cart)
     }
-
-    console.log('Cart refreshed, store holds localStorage data:', state.cart)
   },
   ADD_TO_CART: (state, item) => {
     let cart = JSON.parse(localStorage.getItem('specteroCart')) || []
@@ -88,6 +89,10 @@ const mutations = {
         localStorage.setItem('specteroCart', JSON.stringify(cart))
       }
     }
+  },
+  CLEAR_CART: (state) => {
+    localStorage.removeItem('specteroCart')
+    state.cart = []
   },
   UPDATE_RESULTS: (state, data) => {
     state.results = data.results

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top title="Marketplace"></top>
+    <top title="Market"></top>
 
     <div class="content-split">
       <div class="split-item split-list filters-side">
@@ -31,7 +31,7 @@
           </template>
 
           <template slot="actions" slot-scope="props">
-            <router-link class="button button-success" :to="{ name: 'marketplaceView', params: { type: parseType(props.row.type), id: props.row.id } }">
+            <router-link class="button button-success" :to="{ name: 'marketView', params: { type: parseType(props.row.type), id: props.row.id } }">
               {{ $i18n.t('misc.VIEW') }}
             </router-link>
 
@@ -81,14 +81,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      cart: 'marketplace/cart',
-      results: 'marketplace/results',
-      pagination: 'marketplace/pagination'
+      cart: 'market/cart',
+      results: 'market/results',
+      pagination: 'market/pagination'
     })
   },
   methods: {
     ...mapActions({
-      fetch: 'marketplace/fetch'
+      fetch: 'market/fetch'
     }),
     existsInCart (id) {
       return this.cart.find(i => i.id === id)
@@ -116,7 +116,7 @@ export default {
         ips += node.ip_addresses.length
       })
 
-      return this.$i18n.t('marketplace.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
+      return this.$i18n.t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
     },
     setup () {
       this.options = {
@@ -148,7 +148,7 @@ export default {
     }
   },
   metaInfo: {
-    title: 'Marketplace'
+    title: 'Market'
   },
   components: {
     top,
