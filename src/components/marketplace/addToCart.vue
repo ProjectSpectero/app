@@ -14,27 +14,27 @@
         <li v-if="item.plan">{{ item.plan }}</li>
       </ul>
 
-      <button @click.stop="add(false)" class="button">{{ $i18n.t('misc.ADD_TO_CART') }}</button>
-      <button @click.stop="add(true)" class="button">{{ $i18n.t('misc.CHECKOUT') }}</button>
+      <button @click.stop="add(item, false)" class="button">{{ $i18n.t('misc.ADD_TO_CART') }}</button>
+      <button @click.stop="add(item, true)" class="button">{{ $i18n.t('misc.CHECKOUT') }}</button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: {
     item: Object
   },
   methods: {
-    add (checkout) {
-      let cart = JSON.parse(localStorage.getItem('specteroCart')) || []
-
-      cart.push(this.item)
-      localStorage.setItem('specteroCart', JSON.stringify(cart))
-
-      console.log('current cart is', JSON.parse(localStorage.getItem('specteroCart')))
-
+    ...mapActions({
+      addToCart: 'marketplace/addToCart'
+    }),
+    add (item, checkout) {
+      this.addToCart(item)
       this.$emit('close')
+      this.$toasted.success(item.friendly_name + ' added to cart!')
 
       if (checkout) {
         this.$router.push({ name: 'cart' })

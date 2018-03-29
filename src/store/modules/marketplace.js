@@ -1,6 +1,7 @@
 import marketplaceAPI from '@/api/marketplace.js'
 
 const state = {
+  cart: [],
   results: [],
   pagination: null,
   filters: [],
@@ -9,6 +10,8 @@ const state = {
 }
 
 const getters = {
+  cart: (state) => state.cart,
+  cartCounter: (state) => state.cart.length,
   buttonEnabled: (state) => state.buttonEnabled,
   filters: (state) => state.filters,
   grouped: (state) => state.grouped,
@@ -33,6 +36,17 @@ const actions = {
       }
     })
   },
+  refreshCart: ({ commit }) => {
+    commit('REFRESH_CART')
+  },
+  addToCart: ({ commit }, item) => {
+    commit('ADD_TO_CART', item)
+    commit('REFRESH_CART')
+  },
+  removeFromCart: ({ commit }, item) => {
+    commit('REMOVE_FROM_CART', item)
+    commit('REFRESH_CART')
+  },
   updateFilter: ({ commit }, data) => {
     commit('UPDATE_FILTER', data)
     commit('TOGGLE_BUTTON', true)
@@ -47,6 +61,34 @@ const actions = {
 }
 
 const mutations = {
+  REFRESH_CART: (state) => {
+    const cart = localStorage.getItem('specteroCart')
+
+    if (cart) {
+      state.cart = JSON.parse(cart)
+    }
+
+    console.log('Cart refreshed, store holds localStorage data:', state.cart)
+  },
+  ADD_TO_CART: (state, item) => {
+    let cart = JSON.parse(localStorage.getItem('specteroCart')) || []
+    cart.push(item)
+    localStorage.setItem('specteroCart', JSON.stringify(cart))
+  },
+  REMOVE_FROM_CART: (state, item) => {
+    let cart = JSON.parse(localStorage.getItem('specteroCart'))
+
+    if (cart && cart.length) {
+      console.log('found a cart', cart)
+      const index = cart.find(i => i === item)
+
+      if (index !== -1) {
+        console.log('found an index', index)
+        cart.splice(index, 1)
+        localStorage.setItem('specteroCart', JSON.stringify(cart))
+      }
+    }
+  },
   UPDATE_RESULTS: (state, data) => {
     state.results = data.results
     state.pagination = data.pagination

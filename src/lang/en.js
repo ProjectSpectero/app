@@ -2,6 +2,18 @@ module.exports = {
   lang: 'en',
 
   misc: {
+    DASHBOARD: 'Dashboard',
+    MARKETPLACE: 'Marketplace',
+    ORDERS: 'Orders',
+    INVOICES: 'Invoices',
+    NODES: 'Nodes',
+    DAEMON: 'Daemon',
+    DOWNLOADS: 'Downloads',
+    ACCOUNT: 'Account',
+    SUPPORT: 'Support',
+    CART: 'Cart',
+    SETTINGS: 'Settings',
+    LOGOUT: 'Logout',
     NOT_FOUND: 'We were unable to find any {type}.',
     LOADING: 'Loading...',
     CONTINUE: 'Continue',

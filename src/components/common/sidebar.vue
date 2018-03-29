@@ -1,39 +1,89 @@
 <template>
   <div class="sidebar">
     <div class="menu-logo">
-      <router-link :to="{ name: 'dashboard' }"><div class="logo logo-sm"></div></router-link>
+      <router-link :to="{ name: 'dashboard' }">
+        <div class="logo logo-sm"></div>
+      </router-link>
     </div>
     <div class="menu-items">
       <section class="nav-section">
         <ul>
-          <li><router-link :to="{ name: 'dashboard' }"><span class="icon-pie-chart"></span> Dashboard</router-link></li>
-          <li><router-link :to="{ name: 'marketplace' }"><span class="icon-globe"></span> Marketplace</router-link></li>
+          <li>
+            <router-link :to="{ name: 'dashboard' }">
+              <span class="icon-pie-chart"></span>
+              {{ $i18n.t('misc.DASHBOARD') }}
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'marketplace' }">
+              <span class="icon-globe"></span>
+              {{ $i18n.t('misc.MARKETPLACE') }}
+            </router-link>
+          </li>
         </ul>
       </section>
       <section class="nav-section">
-        <h5>Orders</h5>
+        <h5>{{ $i18n.t('misc.ORDERS') }}</h5>
         <ul>
-          <li><router-link :to="{ name: 'orders' }"><span class="icon-codepen"></span> Orders</router-link></li>
-          <li><router-link :to="{ name: 'invoices' }"><span class="icon-credit-card"></span> Invoices</router-link></li>
-          <li><router-link :to="{ name: 'nodes' }"><span class="icon-server"></span> Nodes</router-link></li>
+          <li>
+            <router-link :to="{ name: 'orders' }">
+              <span class="icon-codepen"></span>
+              {{ $i18n.t('misc.ORDERS') }}
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'invoices' }">
+              <span class="icon-credit-card"></span>
+              {{ $i18n.t('misc.INVOICES') }}
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'nodes' }">
+              <span class="icon-server"></span>
+              {{ $i18n.t('misc.NODES') }}
+            </router-link>
+          </li>
         </ul>
       </section>
       <section class="nav-section">
-        <h5>Daemon</h5>
+        <h5>{{ $i18n.t('misc.DAEMON') }}</h5>
         <ul>
-          <li><router-link :to="{ name: 'downloads' }"><span class="icon-download"></span> Downloads</router-link></li>
+          <li>
+            <router-link :to="{ name: 'downloads' }">
+              <span class="icon-download"></span>
+              {{ $i18n.t('misc.DOWNLOADS') }}
+            </router-link>
+          </li>
         </ul>
       </section>
       <section class="nav-section">
-        <h5>Account</h5>
+        <h5>{{ $i18n.t('misc.ACCOUNT') }}</h5>
         <ul>
           <li v-if="freshdeskUrl">
             <a :href="freshdeskUrl" target="_blank">
-              <span class="icon-life-buoy"></span> Support
+              <span class="icon-life-buoy"></span>
+              {{ $i18n.t('misc.SUPPORT') }}
             </a>
           </li>
-          <li><router-link :to="{ name: 'settings' }"><span class="icon-sliders"></span> Settings</router-link></li>
-          <li><a href="#logout" @click="logMeOut"><span class="icon-user-x"></span> Logout</a></li>
+          <li>
+            <router-link :to="{ name: 'cart' }">
+              <span class="icon-sliders"></span>
+              {{ $i18n.t('misc.CART') }}
+              <span v-if="count">({{ count }})</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'settings' }">
+              <span class="icon-sliders"></span>
+              {{ $i18n.t('misc.SETTINGS') }}
+            </router-link>
+          </li>
+          <li>
+            <a href="#logout" @click="logMeOut">
+              <span class="icon-user-x"></span>
+              {{ $i18n.t('misc.LOGOUT') }}
+            </a>
+          </li>
         </ul>
       </section>
     </div>
@@ -51,7 +101,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      freshdeskUrl: 'auth/freshdeskUrl'
+      freshdeskUrl: 'auth/freshdeskUrl',
+      count: 'marketplace/cartCounter'
     })
   },
   methods: {
