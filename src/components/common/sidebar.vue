@@ -17,7 +17,7 @@
         </ul>
       </section>
       <section class="nav-section">
-        <h5>{{ $i18n.t('misc.MARKETPLACE') }}</h5>
+        <h5>{{ $i18n.t('misc.MARKET') }}</h5>
         <ul>
           <li>
             <router-link :to="{ name: 'market' }">
