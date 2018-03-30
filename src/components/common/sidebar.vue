@@ -32,27 +32,10 @@
               <span v-if="count">({{ count }})</span>
             </router-link>
           </li>
-        </ul>
-      </section>
-      <section class="nav-section">
-        <h5>{{ $i18n.t('misc.ORDERS') }}</h5>
-        <ul>
           <li>
             <router-link :to="{ name: 'orders' }">
               <span class="icon-codepen"></span>
               {{ $i18n.t('misc.ORDERS') }}
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{ name: 'invoices' }">
-              <span class="icon-credit-card"></span>
-              {{ $i18n.t('misc.INVOICES') }}
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{ name: 'nodes' }">
-              <span class="icon-server"></span>
-              {{ $i18n.t('misc.NODES') }}
             </router-link>
           </li>
         </ul>
@@ -60,6 +43,12 @@
       <section class="nav-section">
         <h5>{{ $i18n.t('misc.DAEMON') }}</h5>
         <ul>
+          <li>
+            <router-link :to="{ name: 'nodes' }">
+              <span class="icon-server"></span>
+              {{ $i18n.t('misc.NODES') }}
+            </router-link>
+          </li>
           <li>
             <router-link :to="{ name: 'downloads' }">
               <span class="icon-download"></span>
@@ -81,6 +70,12 @@
             <router-link :to="{ name: 'settings' }">
               <span class="icon-sliders"></span>
               {{ $i18n.t('misc.SETTINGS') }}
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'invoices' }">
+              <span class="icon-credit-card"></span>
+              {{ $i18n.t('misc.INVOICES') }}
             </router-link>
           </li>
           <li>
