@@ -20,9 +20,9 @@
         <h5>{{ $i18n.t('misc.MARKETPLACE') }}</h5>
         <ul>
           <li>
-            <router-link :to="{ name: 'marketplace' }">
+            <router-link :to="{ name: 'market' }">
               <span class="icon-globe"></span>
-              {{ $i18n.t('misc.MARKETPLACE') }}
+              {{ $i18n.t('misc.MARKET') }}
             </router-link>
           </li>
           <li>
@@ -71,8 +71,8 @@
       <section class="nav-section">
         <h5>{{ $i18n.t('misc.ACCOUNT') }}</h5>
         <ul>
-          <li v-if="freshdeskUrl">
-            <a :href="freshdeskUrl" target="_blank">
+          <li>
+            <a :href="freshdeskUrl ? freshdeskUrl : '#'" target="_blank">
               <span class="icon-life-buoy"></span>
               {{ $i18n.t('misc.SUPPORT') }}
             </a>
@@ -107,7 +107,7 @@ export default {
   computed: {
     ...mapGetters({
       freshdeskUrl: 'auth/freshdeskUrl',
-      count: 'marketplace/cartCounter'
+      count: 'market/cartCounter'
     })
   },
   methods: {

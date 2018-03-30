@@ -26,7 +26,7 @@
         <li>Please change your working dir into the `daemon` directory with `cd` (or your OS equivalent)</li>
         <li>Please run `ASPNETCORE_ENVIRONMENT=Production dotnet daemon.dll`. On firstrun, the daemon will set itself up (and share its Administrator password with you in the active console. Please take note of this.)</li>
         <li>
-          If you'd like to connect the daemon to the Spectero P2P marketplace for easier management / bandwidth sales, please run the CLI:
+          If you'd like to connect the daemon to the Spectero P2P market for easier management / bandwidth sales, please run the CLI:
           <ol>
             <li>Change dirs into the `cli` dir and run `dotnet Spectero.daemon.CLI.dll`.</li>
             <li>This will open an interactive shell, please type `help` there or look at the documentation for further guidance.</li>

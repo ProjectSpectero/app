@@ -126,16 +126,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      filters: 'marketplace/filters',
+      filters: 'market/filters',
       countries: 'settings/countries',
-      buttonEnabled: 'marketplace/buttonEnabled'
+      buttonEnabled: 'market/buttonEnabled'
     })
   },
   methods: {
     ...mapActions({
-      removeFilter: 'marketplace/removeFilter',
-      updateFilter: 'marketplace/updateFilter',
-      toggleButton: 'marketplace/toggleButton'
+      removeFilter: 'market/removeFilter',
+      updateFilter: 'market/updateFilter',
+      toggleButton: 'market/toggleButton'
     }),
     setupSlider () {
       this.$set(this.sliders.price, 'value', [0, this.sliders.price.maxValue])

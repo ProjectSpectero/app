@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      refreshCart: 'marketplace/refreshCart'
+      refreshCart: 'market/refreshCart'
     })
   },
   components: {

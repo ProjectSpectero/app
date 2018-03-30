@@ -87,7 +87,7 @@
 
       <div class="divider"></div>
 
-      <table v-if="order" class="table-styled">
+      <table v-if="order && order.line_items" class="table-styled">
         <thead>
           <tr>
             <th>Item</th>
@@ -140,6 +140,7 @@ export default {
   },
   data () {
     return {
+      order: null,
       loading: true,
       valid: false,
       invoice: null,
