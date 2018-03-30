@@ -14,10 +14,22 @@
               {{ $i18n.t('misc.DASHBOARD') }}
             </router-link>
           </li>
+        </ul>
+      </section>
+      <section class="nav-section">
+        <h5>{{ $i18n.t('misc.MARKETPLACE') }}</h5>
+        <ul>
           <li>
             <router-link :to="{ name: 'marketplace' }">
               <span class="icon-globe"></span>
               {{ $i18n.t('misc.MARKETPLACE') }}
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'cart' }">
+              <span class="icon-shopping-cart"></span>
+              {{ $i18n.t('misc.CART') }}
+              <span v-if="count">({{ count }})</span>
             </router-link>
           </li>
         </ul>
@@ -64,13 +76,6 @@
               <span class="icon-life-buoy"></span>
               {{ $i18n.t('misc.SUPPORT') }}
             </a>
-          </li>
-          <li>
-            <router-link :to="{ name: 'cart' }">
-              <span class="icon-sliders"></span>
-              {{ $i18n.t('misc.CART') }}
-              <span v-if="count">({{ count }})</span>
-            </router-link>
           </li>
           <li>
             <router-link :to="{ name: 'settings' }">
