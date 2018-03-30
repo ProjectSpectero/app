@@ -19,6 +19,9 @@
       <button class="button" @click.stop="pay">
         {{ $i18n.t('misc.PAY_NOW') }}
       </button>
+      <button class="button" @click.stop="clearCart">
+        {{ $i18n.t('market.CLEAR_CART') }}
+      </button>
     </div>
     <div v-else>
       <p>{{ $i18n.t('market.CART_EMPTY') }}</p>
@@ -62,6 +65,7 @@ export default {
         },
         success: response => {
           this.clearCart()
+          this.$router.push({ name: 'invoice', params: { id: response.data.result.last_invoice_id } })
           this.$toasted.success(this.$i18n.t('market.ORDER_PROCESSED', { invoice: response.data.result.last_invoice_id }))
         },
         fail: error => this.$toasted.error(this.errorAPI(error, 'market'))

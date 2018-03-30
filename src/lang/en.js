@@ -173,7 +173,8 @@ module.exports = {
     ORDER_PROCESSED: 'Success! Invoice #{invoice} has been issued.',
     REMOVED_FROM_CART: '{name} was removed from your cart!',
     NODE_GROUP_IP_COUNT: '{ips} in {nodes} nodes',
-    CART_EMPTY: 'Your cart is empty.'
+    CART_EMPTY: 'Your cart is empty.',
+    CLEAR_CART: 'Remove all'
   },
 
   users: {
