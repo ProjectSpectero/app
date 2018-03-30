@@ -17,6 +17,23 @@
         </ul>
       </section>
       <section class="nav-section">
+        <h5>{{ $i18n.t('misc.DAEMON') }}</h5>
+        <ul>
+          <li>
+            <router-link :to="{ name: 'nodes' }">
+              <span class="icon-server"></span>
+              {{ $i18n.t('misc.NODES') }}
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'downloads' }">
+              <span class="icon-download"></span>
+              {{ $i18n.t('misc.DOWNLOADS') }}
+            </router-link>
+          </li>
+        </ul>
+      </section>
+      <section class="nav-section">
         <h5>{{ $i18n.t('misc.MARKET') }}</h5>
         <ul>
           <li>
@@ -36,23 +53,6 @@
             <router-link :to="{ name: 'orders' }">
               <span class="icon-codepen"></span>
               {{ $i18n.t('misc.ORDERS') }}
-            </router-link>
-          </li>
-        </ul>
-      </section>
-      <section class="nav-section">
-        <h5>{{ $i18n.t('misc.DAEMON') }}</h5>
-        <ul>
-          <li>
-            <router-link :to="{ name: 'nodes' }">
-              <span class="icon-server"></span>
-              {{ $i18n.t('misc.NODES') }}
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{ name: 'downloads' }">
-              <span class="icon-download"></span>
-              {{ $i18n.t('misc.DOWNLOADS') }}
             </router-link>
           </li>
         </ul>
