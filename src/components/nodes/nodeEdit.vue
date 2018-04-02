@@ -46,6 +46,8 @@ export default {
         if (tab) {
           this.switchTab(tab)
         }
+      } else {
+        this.switchTab(this.tabs[0])
       }
     },
     updateEngagements () {
@@ -55,6 +57,9 @@ export default {
       this.activeTab = tab.id
       this.$router.push({ name: 'node', params: { action: this.action, id: this.node.id }, hash: tab.hash })
     }
+  },
+  watch: {
+    '$route': 'parseTab'
   },
   components: {
     top,

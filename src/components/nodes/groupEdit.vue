@@ -68,16 +68,19 @@ export default {
     },
     parseTab () {
       if (window.location.hash) {
-        const activeTab = this.tabs.find(t => t.hash === window.location.hash)
+        const hash = window.location.hash.toString()
+        const tab = this.tabs.find(t => t.hash === hash)
 
-        if (activeTab) {
-          this.switchTab(activeTab.id, activeTab.hash)
+        if (tab) {
+          this.switchTab(tab)
         }
+      } else {
+        this.switchTab(this.tabs[0])
       }
     },
     switchTab (data) {
       this.activeTab = data.id
-      this.$router.push({ name: 'group', params: { id: this.group.id }, hash: data.hash })
+      this.$router.push({ name: 'groupEdit', params: { id: this.group.id }, hash: data.hash })
     },
     fetchEngagements (id) {
       nodeAPI.groupEngagements({
@@ -95,6 +98,9 @@ export default {
         }
       })
     }
+  },
+  watch: {
+    '$route': 'parseTab'
   },
   components: {
     top,

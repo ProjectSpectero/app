@@ -14,7 +14,7 @@
             <template v-else-if="props.row.type === 'NODE_GROUP'">
               <div>Node Group #{{ props.row.resource }}</div>
               <small>
-                <router-link :to="{ name: 'group', params: { id: props.row.resource, type: 'view' }, hash: '#details' }">
+                <router-link :to="{ name: 'groupEdit', params: { id: props.row.resource, type: 'view' }, hash: '#details' }">
                   Go to Node Group
                 </router-link>
               </small>
