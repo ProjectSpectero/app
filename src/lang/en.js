@@ -3,7 +3,7 @@ module.exports = {
 
   misc: {
     DASHBOARD: 'Dashboard',
-    MARKET: 'Market',
+    MARKET: 'Marketplace',
     ORDERS: 'Orders',
     INVOICES: 'Invoices',
     NODES: 'Nodes',
