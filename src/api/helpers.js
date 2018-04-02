@@ -22,6 +22,10 @@ export default {
       query += `&includeGrouped=${options.includeGrouped}`
     }
 
+    if (options.searchId !== undefined && options.searchId) {
+      query += `&searchId=${options.searchId}`
+    }
+
     // Update page (only with the page to prevent limit spamming)
     if (options.keepURL === undefined || !options.keepURL) {
       this.appendPage(page)

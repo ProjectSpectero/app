@@ -42,7 +42,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import top from '@/components/common/top'
-import paymentAPI from '@/api/payment.js'
+import orderAPI from '@/api/order.js'
 import lineItems from './itemsList'
 
 export default {
@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     async fetchOrder () {
-      await paymentAPI.order({
+      await orderAPI.order({
         data: {
           id: this.$route.params.id
         },

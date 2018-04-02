@@ -57,20 +57,6 @@ export default {
   },
 
   /**
-   * Creates an order.
-   *
-   * @param {Integer} user_id Current user id.
-   * @param {String} status Order status.
-   * @param {String} subscription_provider Subscription provider (stripe or paypal).
-   * @param {String} subscription_reference Subscription reference.
-   * @param {String} term Term.
-   * @param {String} due_next Next due date.
-   */
-  createOrder (options) {
-    return api('POST', `/order`, options)
-  },
-
-  /**
    * Creates an invoice.
    *
    * @param {Integer} order_id Current order id.
@@ -82,36 +68,6 @@ export default {
    */
   createInvoice (options) {
     return api('POST', `/invoice`, options)
-  },
-
-  /**
-   * Returns an order.
-   * @param {Integer} id Order id.
-   */
-  order (options) {
-    return api('GET', `/order/${options.data.id}`, options)
-  },
-
-  /**
-   * Returns orders list.
-   *
-   * @param {String} mode Payment mode.
-   * @param {String} token Payment token.
-   * @param {String} payerID Current payer unique ID.
-   */
-  orders (options) {
-    return api('GET', `/order`, options)
-  },
-
-  /**
-   * Returns orders list for the logged in user.
-   *
-   * @param {String} mode Payment mode.
-   * @param {String} token Payment token.
-   * @param {String} payerID Current payer unique ID.
-   */
-  myOrders (options) {
-    return api('GET', helpers.appendQuery(`/order/self`, options), options)
   },
 
   /**

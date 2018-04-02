@@ -33,21 +33,24 @@
 </template>
 
 <script>
-import paymentAPI from '@/api/payment.js'
 import paginator from '@/components/common/paginator'
 
 export default {
   props: {
+    searchId: {
+      type: String,
+      default: null
+    },
     type: {
       type: String,
       default: 'simple'
-    }
+    },
+    pagination: Object,
+    tableData: Array
   },
   data () {
     return {
       perPage: 10,
-      pagination: null,
-      tableData: null,
       columns: ['created_at'],
       sortableColumns: ['created_at'],
       filterableColumns: null,
@@ -59,19 +62,10 @@ export default {
     this.fetchOrders()
   },
   methods: {
-    async fetchOrders (page) {
-      await paymentAPI.myOrders({
-        page: page,
-        limit: this.perPage,
-        keepURL: (this.type === 'simple'),
-        success: response => {
-          this.pagination = response.data.pagination
-          this.tableData = response.data.result
-          this.setTable()
-          this.setColumns()
-        },
-        fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
-      })
+    fetchOrders (page) {
+      this.$emit('fetchOrders', page)
+      this.setTable()
+      this.setColumns()
     },
     processTotal (row) {
       return processTotal(row)
