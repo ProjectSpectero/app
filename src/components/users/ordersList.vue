@@ -1,34 +1,85 @@
 <template>
   <div v-if="tableData">
     <div class="datatable">
-      <v-client-table :data="tableData" :columns="columns" :options="options">
-        <template slot="status" slot-scope="props">
-          <div :class="'badge status-' + props.row.status.toLowerCase()">{{ $i18n.t('orders.ORDER_STATUS.' + props.row.status) }}</div>
-        </template>
-        <template slot="total" slot-scope="props">
-          {{ props.row.last_invoice.amount | currency }} {{ props.row.last_invoice.currency }}
-        </template>
-        <template slot="created_at" slot-scope="props">
-          {{ props.row.created_at | moment('MMM D, YYYY') }}
-        </template>
-        <template slot="due_next" slot-scope="props">
-          {{ props.row.due_next | moment('MMM D, YYYY') }}
-        </template>
-        <template slot="actions" slot-scope="props">
-          <router-link class="button" :to="{ name: 'order', params: { id: props.row.id } }">
-            View
-          </router-link>
+      <div class="search">
+        <input type="text" @keyup.enter="search" placeholder="Search orders">
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th v-for="column in columns" :key="column">
+              <div v-if="(sortable.includes(column))" @click.stop="sortByColumn(column)" class="sortable">
+                {{ headings[column] }}
+                <span v-if="sort.column === column" :class="['direction', sort.direction]"></span>
+              </div>
+              <div v-else>
+                {{ headings[column] }}
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="row in tableData" :key="row.id">
+            <td>
+              {{ row.id }}
+            </td>
+            <td>
+              <div :class="'badge status-' + row.status.toLowerCase()">
+                {{ $i18n.t('orders.ORDER_STATUS.' + row.status) }}
+              </div>
+            </td>
+            <td>
+              {{ row.created_at | moment('MMM D, YYYY') }}
+            </td>
+            <td>
+              {{ row.due_next | moment('MMM D, YYYY') }}
+            </td>
+            <td>
+              {{ row.last_invoice.amount | currency }} {{ row.last_invoice.currency }}
+            </td>
+            <td>
+              <router-link class="button" :to="{ name: 'order', params: { id: row.id } }">
+                {{ $i18n.t('misc.VIEW') }}
+              </router-link>
 
-          <div class="inline" v-if="props.row.last_invoice && props.row.last_invoice.status === 'UNPAID'">
-            <router-link class="button button-success" :to="{ name: 'invoice', params: { id: props.row.last_invoice.id } }">
-              Pay Now
-            </router-link>
-          </div>
-        </template>
-      </v-client-table>
-
-      <paginator v-if="type !== 'simple'" :pagination="pagination" @changedPage="fetchOrders"></paginator>
+              <div class="inline" v-if="row.last_invoice && row.last_invoice.status === 'UNPAID'">
+                <router-link class="button button-success" :to="{ name: 'invoice', params: { id: row.last_invoice.id } }">
+                  {{ $i18n.t('misc.PAY_NOW') }}
+                </router-link>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+
+    <!-- <v-client-table :data="tableData" :columns="columns" :options="options">
+      <template slot="status" slot-scope="props">
+        <div :class="'badge status-' + props.row.status.toLowerCase()">{{ $i18n.t('orders.ORDER_STATUS.' + props.row.status) }}</div>
+      </template>
+      <template slot="total" slot-scope="props">
+        {{ props.row.last_invoice.amount | currency }} {{ props.row.last_invoice.currency }}
+      </template>
+      <template slot="created_at" slot-scope="props">
+        {{ props.row.created_at | moment('MMM D, YYYY') }}
+      </template>
+      <template slot="due_next" slot-scope="props">
+        {{ props.row.due_next | moment('MMM D, YYYY') }}
+      </template>
+      <template slot="actions" slot-scope="props">
+        <router-link class="button" :to="{ name: 'order', params: { id: props.row.id } }">
+          View
+        </router-link>
+
+        <div class="inline" v-if="props.row.last_invoice && props.row.last_invoice.status === 'UNPAID'">
+          <router-link class="button button-success" :to="{ name: 'invoice', params: { id: props.row.last_invoice.id } }">
+            Pay Now
+          </router-link>
+        </div>
+      </template>
+    </v-client-table> -->
+
+    <paginator v-if="type !== 'simple'" :pagination="pagination" @changedPage="fetchOrders"></paginator>
   </div>
 </template>
 
@@ -51,102 +102,57 @@ export default {
   data () {
     return {
       perPage: 10,
-      columns: ['created_at'],
-      sortableColumns: ['created_at'],
-      filterableColumns: null,
-      options: {}
+      headings: [],
+      columns: [],
+      sortable: [],
+      sort: {
+        column: 'id',
+        direction: 'desc'
+      }
     }
   },
   created () {
-    this.perPage = (this.type === 'simple') ? 3 : 10
+    this.setup()
     this.fetchOrders()
   },
   methods: {
-    fetchOrders (page) {
-      this.$emit('fetchOrders', page)
-      this.setTable()
-      this.setColumns()
-    },
-    processTotal (row) {
-      return processTotal(row)
-    },
-    setColumns () {
+    setup () {
+      this.perPage = (this.type === 'simple') ? 3 : 10
+      this.sortable = (this.type === 'simple')
+        ? ['id', 'status']
+        : ['id', 'status', 'created_at', 'due_next']
       this.columns = (this.type === 'simple')
         ? ['id', 'status', 'actions']
         : ['id', 'status', 'created_at', 'due_next', 'total', 'actions']
-    },
-    setSortableColumns () {
-      this.sortableColumns = (this.type === 'simple')
-        ? ['id', 'status']
-        : ['id', 'created_at', 'due_next', 'status', 'total']
-    },
-    setHeadings () {
       this.headings = (this.type === 'simple')
         ? {
           id: 'Order ID',
-          stauts: 'Status',
+          status: 'Status',
           actions: ''
         } : {
           id: 'Order ID',
-          created_at: 'Created',
           status: 'Status',
+          created_at: 'Created',
           due_next: 'Next Date Due',
+          total: 'Total',
           actions: ''
         }
     },
-    setTable () {
-      this.setHeadings()
-      this.setSortableColumns()
-
-      this.options = {
-        skin: '',
-        texts: {
-          pagination: (this.type === 'simple') ? true : null,
-          perPage: this.perPage,
-          count: '',
-          filter: '',
-          filterPlaceholder: 'Search orders',
-          limit: 'Records:',
-          noResults: 'No matching orders',
-          filterBy: 'Filter by {column}',
-          loading: 'Loading...',
-          defaultOption: 'Select {column}',
-          columns: 'Columns'
-        },
-        headings: this.headings,
-        sortable: this.sortableColumns,
-        filterable: (this.type !== 'simple'),
-        columnsClasses: {
-          actions: 'table-actions'
-        },
-        customSorting: {
-          total: ascending => {
-            return function (a, b) {
-              let totalA = processTotal(a)
-              let totalB = processTotal(b)
-
-              if (ascending) {
-                return totalA <= totalB ? 1 : -1
-              }
-
-              return totalA >= totalB ? 1 : -1
-            }
-          }
-        }
+    sortByColumn (column) {
+      this.sort = {
+        column: column,
+        direction: (this.sort.direction === 'asc') ? 'desc' : 'asc'
       }
+
+      this.$emit('sortByColumn', this.sort)
+    },
+    fetchOrders (page) {
+      this.$emit('fetchOrders', page)
     }
   },
   components: {
     paginator
   }
-}
-
-// Process the total amount * quantity for a given row (multiple line orders).
-// We're recycling this method when custom sorting by total, so we need to have it
-// outside of 'this' scope
-function processTotal (row) {
-  const invoice = row.last_invoice
-  return invoice ? parseFloat(invoice.amount).toFixed(2) + ' ' + invoice.currency : '-'
 }
 </script>
 

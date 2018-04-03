@@ -132,6 +132,7 @@
 import top from '@/components/common/top'
 import { mapGetters, mapActions } from 'vuex'
 import paymentAPI from '@/api/payment.js'
+import orderAPI from '@/api/order.js'
 import paymentButtons from '../payments/buttons'
 
 export default {
@@ -214,7 +215,7 @@ export default {
       })
     },
     async fetchOrder () {
-      await paymentAPI.order({
+      await orderAPI.order({
         data: {
           id: this.invoice.order_id
         },
