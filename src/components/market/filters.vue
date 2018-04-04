@@ -18,7 +18,7 @@
       <div class="label"><label>Grouped Results</label></div>
       <div class="form-checkbox">
         <label for="filter-grouped">
-          <input id="filter-grouped" type="checkbox" v-model="nodes.grouped" @change="toggleGrouped" :checked="nodes.grouped">
+          <input id="filter-grouped" type="checkbox" v-model="nodes.grouped" @change="toggleGrouped">
           Show Grouped Results
         </label>
       </div>
@@ -127,6 +127,7 @@ export default {
   computed: {
     ...mapGetters({
       filters: 'market/filters',
+      grouped: 'market/grouped',
       countries: 'settings/countries',
       buttonEnabled: 'market/buttonEnabled'
     })
@@ -144,6 +145,8 @@ export default {
       this.$set(this.sliders.price, 'max', this.sliders.price.maxValue)
     },
     setupForm () {
+      const price = this.find('price')
+      let serviceType = this.find('service_type')
       const basicFields = [
         'market_model',
         'cc',
@@ -151,18 +154,17 @@ export default {
         'ip_count',
         'asn'
       ]
-      const price = this.find('price')
-      let serviceType = this.find('service_type')
-
-      console.log('this.filters vs. this.nodes', this.filters, this.nodes)
 
       for (let field in basicFields) {
         const obj = this.find(basicFields[field])
 
         if (obj !== undefined && obj && obj.value !== this.nodes[basicFields[field]]) {
-          this.nodes[basicFields[field]] = (obj instanceof Array) ? obj[0].value : obj.value
+          this.$set(this.nodes, basicFields[field], ((obj instanceof Array) ? obj[0].value : obj.value))
         }
       }
+
+      // 'grouped' is not a filter, we need to update it manually
+      this.$set(this.nodes, 'grouped', this.grouped)
 
       // Price range slider
       if (price && price.value !== this.nodes.price) {
@@ -172,9 +174,7 @@ export default {
 
       // (Multiple) service_type checkboxes
       if (serviceType && serviceType.value.length && serviceType.value !== this.nodes.service_type) {
-        console.log('Changing service types from', this.nodes.service_type)
         this.nodes.service_type = serviceType.value
-        console.log('to', this.nodes.service_type)
       }
     },
     findIndex (field) {
