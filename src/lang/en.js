@@ -11,6 +11,7 @@ module.exports = {
     DOWNLOADS: 'Downloads',
     ACCOUNT: 'Account',
     SUPPORT: 'Support',
+    HELP: 'Help',
     CART: 'Cart',
     SETTINGS: 'Settings',
     LOGOUT: 'Logout',
