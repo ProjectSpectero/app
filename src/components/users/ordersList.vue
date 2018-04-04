@@ -3,6 +3,7 @@
     <div class="datatable">
       <div class="search">
         <input type="text" @keyup.enter="search" placeholder="Search orders">
+        <button @click.prevent.stop="reset" class="button reset">{{ $i18n.t('misc.RESET') }}</button>
       </div>
       <table>
         <thead>
@@ -137,6 +138,12 @@ export default {
           total: 'Total',
           actions: ''
         }
+    },
+    search (event) {
+      this.$emit('search', event.target.value.toLowerCase())
+    },
+    reset () {
+      this.$emit('reset')
     },
     sortByColumn (column) {
       this.sort = {

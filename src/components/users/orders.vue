@@ -20,7 +20,9 @@
           :pagination="pagination"
           :tableData="tableData"
           @fetchOrders="fetchOrders"
-          @sortByColumn="sortByColumn">
+          @sortByColumn="sortByColumn"
+          @search="search"
+          @reset="reset">
         </orders-list>
       </div>
     </div>
@@ -45,14 +47,10 @@ export default {
   methods: {
     sortByStatus (status) {
       this.rules = [{ field: 'status', operator: '=', value: status }]
-      this.generateSearchQuery()
+      this.fetchWithFilters()
     },
     sortByColumn (data) {
-      const index = this.rules.findIndex(r => r.operator === 'SORT')
-
-      if (index !== -1) {
-        this.rules.splice(index, 1)
-      }
+      this.removeFilter('SORT')
 
       this.rules.push({
         field: data.column,
@@ -60,24 +58,65 @@ export default {
         value: data.direction.toUpperCase()
       })
 
-      this.generateSearchQuery()
+      this.fetchWithFilters()
     },
-    async generateSearchQuery () {
-      console.log('generateSearchQuery with rules', this.rules)
-      await orderAPI.search({
-        rules: this.rules,
-        success: async response => {
-          if (response.data.result.searchId) {
-            this.currentStatus = status
-            this.searchId = response.data.result.searchId
-          } else {
-            this.currentStatus = null
-          }
+    removeFilter (operator) {
+      const index = this.rules.findIndex(r => r.operator === operator)
 
-          this.fetchOrders()
-        },
-        fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
+      if (index !== -1) {
+        this.rules.splice(index, 1)
+      }
+    },
+    search (value) {
+      if (value.length >= 2) {
+        this.removeFilter('SORT')
+        this.removeFilter('LIKE')
+
+        this.rules.push({
+          field: 'due_next',
+          operator: 'LIKE',
+          value: '%' + value + '%'
+        })
+      } else if (value.length === 0) {
+        this.removeFilter('LIKE')
+      }
+
+      this.fetchWithFilters()
+    },
+    reset () {
+      this.rules.forEach(r => {
+        if (r.field !== 'status') {
+          console.log('removing rule', r)
+          const i = this.rules.indexOf(r)
+          this.rules.splice(i, 1)
+          console.log('rules now', this.rules)
+        }
       })
+
+      console.log('rules are now', this.rules)
+
+      this.fetchWithFilters()
+    },
+    async fetchWithFilters () {
+      if (this.rules.length) {
+        await orderAPI.search({
+          rules: this.rules,
+          success: async response => {
+            if (response.data.result.searchId) {
+              this.currentStatus = status
+              this.searchId = response.data.result.searchId
+            } else {
+              this.currentStatus = null
+            }
+
+            this.fetchOrders()
+          },
+          fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
+        })
+      } else {
+        this.searchId = null
+        this.fetchOrders()
+      }
     },
     async fetchOrders (page) {
       await orderAPI.myOrders({

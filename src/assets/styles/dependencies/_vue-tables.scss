@@ -43,11 +43,12 @@
   }
 
   .search {
-    flex: 1;
+    display: flex;
     margin-bottom: 12px;
 
     input[type=text] {
       @extend .input;
+      margin-right: 1rem;
     }
   }
 

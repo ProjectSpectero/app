@@ -19,6 +19,7 @@ module.exports = {
     CONTINUE: 'Continue',
     CANCEL: 'Cancel',
     VIEW: 'View',
+    RESET: 'Reset',
     EDIT: 'Edit',
     VERIFY: 'Verify',
     PURCHASE: 'Purchase',
