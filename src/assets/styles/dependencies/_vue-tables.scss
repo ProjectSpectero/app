@@ -59,6 +59,23 @@
       margin-left: 4px;
     }
   }
+  .VueTables__sort-icon, .sortable .direction {
+    @extend [class^="icon-"];
+    margin-left: 5px;
+    position: relative;
+    top: 1px;
+
+    &.glyphicon-sort:before {
+      @extend .icon-menu:before;
+      display: none;
+    }
+    &.glyphicon-chevron-down:before, &.desc:before {
+      @extend .icon-chevron-down:before;
+    }
+    &.glyphicon-chevron-up:before, &.asc:before {
+      @extend .icon-chevron-up:before;
+    }
+  }
 }
 
 // VueTables table
@@ -188,22 +205,5 @@
   }
   .VueTables__sortable .VueTables__heading {
     cursor: pointer;
-  }
-  .VueTables__sort-icon {
-    @extend [class^="icon-"];
-    margin-left: 5px;
-    position: relative;
-    top: 1px;
-
-    &.glyphicon-sort:before {
-      @extend .icon-menu:before;
-      display: none;
-    }
-    &.glyphicon-chevron-down:before {
-      @extend .icon-chevron-down:before;
-    }
-    &.glyphicon-chevron-up:before {
-      @extend .icon-chevron-up:before;
-    }
   }
 }
