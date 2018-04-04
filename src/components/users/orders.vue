@@ -20,9 +20,7 @@
           :pagination="pagination"
           :tableData="tableData"
           @fetchOrders="fetchOrders"
-          @sortByColumn="sortByColumn"
-          @search="search"
-          @reset="reset">
+          @sortByColumn="sortByColumn">
         </orders-list>
       </div>
     </div>
@@ -86,15 +84,10 @@ export default {
     reset () {
       this.rules.forEach(r => {
         if (r.field !== 'status') {
-          console.log('removing rule', r)
           const i = this.rules.indexOf(r)
           this.rules.splice(i, 1)
-          console.log('rules now', this.rules)
         }
       })
-
-      console.log('rules are now', this.rules)
-
       this.fetchWithFilters()
     },
     async fetchWithFilters () {

@@ -54,6 +54,10 @@ const actions = {
     commit('UPDATE_FILTER', data)
     commit('TOGGLE_BUTTON', true)
   },
+  updateGrouped: ({ commit }, status) => {
+    commit('UPDATE_GROUPED', status)
+    commit('TOGGLE_BUTTON', true)
+  },
   removeFilter: ({ commit, dispatch }, index) => {
     commit('REMOVE_FILTER', index)
     commit('TOGGLE_BUTTON', true)
@@ -100,6 +104,10 @@ const mutations = {
   },
   TOGGLE_BUTTON: (state, status) => {
     state.buttonEnabled = status
+  },
+  UPDATE_GROUPED: (state, status) => {
+    state.grouped = status
+    console.log('Updated grouped to', state.grouped)
   },
   UPDATE_FILTER: (state, data) => {
     // Update pre-filled filter with the new value and operator

@@ -1,7 +1,6 @@
 <template>
   <div v-if="tableData">
     <div class="datatable">
-      <table-search @search="search" @reset="reset" />
       <table>
         <table-header :columns="columns" :headings="headings" :sortable="sortable" @sortByColumn="sortByColumn"/>
         <tbody>
@@ -38,7 +37,6 @@
 <script>
 import paginator from '@/components/common/paginator'
 import tableHeader from '@/components/common/table/thead'
-import tableSearch from '@/components/common/table/search'
 
 export default {
   props: {
@@ -88,12 +86,6 @@ export default {
           actions: ''
         }
     },
-    search (value) {
-      this.$emit('search', value)
-    },
-    reset () {
-      this.$emit('reset')
-    },
     sortByColumn (data) {
       this.$emit('sortByColumn', data)
     },
@@ -103,8 +95,7 @@ export default {
   },
   components: {
     paginator,
-    tableHeader,
-    tableSearch
+    tableHeader
   }
 }
 </script>

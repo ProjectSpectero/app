@@ -18,7 +18,7 @@
       <div class="label"><label>Grouped Results</label></div>
       <div class="form-checkbox">
         <label for="filter-grouped">
-          <input id="filter-grouped" type="checkbox" v-model="nodes.grouped" @change="update">
+          <input id="filter-grouped" type="checkbox" v-model="nodes.grouped" @change="toggleGrouped" :checked="nodes.grouped">
           Show Grouped Results
         </label>
       </div>
@@ -135,6 +135,7 @@ export default {
     ...mapActions({
       removeFilter: 'market/removeFilter',
       updateFilter: 'market/updateFilter',
+      updateGrouped: 'market/updateGrouped',
       toggleButton: 'market/toggleButton'
     }),
     setupSlider () {
@@ -194,6 +195,9 @@ export default {
     },
     isServiceTypeSelected (type) {
       return this.nodes.service_type.find(t => t === type) || false
+    },
+    toggleGrouped () {
+      this.updateGrouped(this.nodes.grouped)
     },
     changeConditionalFilter (field, operator) {
       const index = this.findIndex(field)
