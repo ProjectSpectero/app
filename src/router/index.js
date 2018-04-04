@@ -10,6 +10,7 @@ import userRoutes from './users'
 import paymentRoutes from './payments'
 import nodeRoutes from './nodes'
 import marketRoutes from './market'
+import orderRoutes from './orders'
 import defaultRoutes from './default'
 
 Vue.use(Router)
@@ -25,6 +26,7 @@ const router = new Router({
     ...paymentRoutes,
     ...nodeRoutes,
     ...marketRoutes,
+    ...orderRoutes,
     ...defaultRoutes
   ]
 })

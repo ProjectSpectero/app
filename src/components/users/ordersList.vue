@@ -1,43 +1,20 @@
 <template>
   <div v-if="tableData">
     <div class="datatable">
-      <div class="search">
-        <input type="text" @keyup.enter="search" placeholder="Search orders">
-        <button @click.prevent.stop="reset" class="button reset">{{ $i18n.t('misc.RESET') }}</button>
-      </div>
+      <table-search @search="search" @reset="reset" />
       <table>
-        <thead>
-          <tr>
-            <th v-for="column in columns" :key="column">
-              <div v-if="(sortable.includes(column))" @click.stop="sortByColumn(column)" class="sortable">
-                {{ headings[column] }}
-                <span v-if="sort.column === column" :class="['direction', sort.direction]"></span>
-              </div>
-              <div v-else>
-                {{ headings[column] }}
-              </div>
-            </th>
-          </tr>
-        </thead>
+        <table-header :columns="columns" :headings="headings" :sortable="sortable" @sortByColumn="sortByColumn"/>
         <tbody>
           <tr v-for="row in tableData" :key="row.id">
-            <td>
-              {{ row.id }}
-            </td>
+            <td>{{ row.id }}</td>
             <td>
               <div :class="'badge status-' + row.status.toLowerCase()">
                 {{ $i18n.t('orders.ORDER_STATUS.' + row.status) }}
               </div>
             </td>
-            <td>
-              {{ row.created_at | moment('MMM D, YYYY') }}
-            </td>
-            <td>
-              {{ row.due_next | moment('MMM D, YYYY') }}
-            </td>
-            <td>
-              {{ row.last_invoice.amount | currency }} {{ row.last_invoice.currency }}
-            </td>
+            <td>{{ row.created_at | moment('MMM D, YYYY') }}</td>
+            <td>{{ row.due_next | moment('MMM D, YYYY') }}</td>
+            <td>{{ row.last_invoice.amount | currency }} {{ row.last_invoice.currency }}</td>
             <td>
               <router-link class="button" :to="{ name: 'order', params: { id: row.id } }">
                 {{ $i18n.t('misc.VIEW') }}
@@ -54,38 +31,14 @@
       </table>
     </div>
 
-    <!-- <v-client-table :data="tableData" :columns="columns" :options="options">
-      <template slot="status" slot-scope="props">
-        <div :class="'badge status-' + props.row.status.toLowerCase()">{{ $i18n.t('orders.ORDER_STATUS.' + props.row.status) }}</div>
-      </template>
-      <template slot="total" slot-scope="props">
-        {{ props.row.last_invoice.amount | currency }} {{ props.row.last_invoice.currency }}
-      </template>
-      <template slot="created_at" slot-scope="props">
-        {{ props.row.created_at | moment('MMM D, YYYY') }}
-      </template>
-      <template slot="due_next" slot-scope="props">
-        {{ props.row.due_next | moment('MMM D, YYYY') }}
-      </template>
-      <template slot="actions" slot-scope="props">
-        <router-link class="button" :to="{ name: 'order', params: { id: props.row.id } }">
-          View
-        </router-link>
-
-        <div class="inline" v-if="props.row.last_invoice && props.row.last_invoice.status === 'UNPAID'">
-          <router-link class="button button-success" :to="{ name: 'invoice', params: { id: props.row.last_invoice.id } }">
-            Pay Now
-          </router-link>
-        </div>
-      </template>
-    </v-client-table> -->
-
     <paginator v-if="type !== 'simple'" :pagination="pagination" @changedPage="fetchOrders"></paginator>
   </div>
 </template>
 
 <script>
 import paginator from '@/components/common/paginator'
+import tableHeader from '@/components/common/table/thead'
+import tableSearch from '@/components/common/table/search'
 
 export default {
   props: {
@@ -105,11 +58,7 @@ export default {
       perPage: 10,
       headings: [],
       columns: [],
-      sortable: [],
-      sort: {
-        column: 'id',
-        direction: 'desc'
-      }
+      sortable: []
     }
   },
   created () {
@@ -139,26 +88,23 @@ export default {
           actions: ''
         }
     },
-    search (event) {
-      this.$emit('search', event.target.value.toLowerCase())
+    search (value) {
+      this.$emit('search', value)
     },
     reset () {
       this.$emit('reset')
     },
-    sortByColumn (column) {
-      this.sort = {
-        column: column,
-        direction: (this.sort.direction === 'asc') ? 'desc' : 'asc'
-      }
-
-      this.$emit('sortByColumn', this.sort)
+    sortByColumn (data) {
+      this.$emit('sortByColumn', data)
     },
     fetchOrders (page) {
       this.$emit('fetchOrders', page)
     }
   },
   components: {
-    paginator
+    paginator,
+    tableHeader,
+    tableSearch
   }
 }
 </script>
