@@ -86,6 +86,17 @@
           </li>
         </ul>
       </section>
+      <section class="nav-section">
+        <h5>{{ $i18n.t('misc.HELP') }}</h5>
+        <ul>
+          <li>
+            <a :href="freshdeskUrl ? freshdeskUrl : '#'" target="_blank">
+              <span class="icon-life-buoy"></span>
+              {{ $i18n.t('misc.SUPPORT') }}
+            </a>
+          </li>
+        </ul>
+      </section>
     </div>
   </div>
 </template>
