@@ -3,15 +3,9 @@
     <top title="Orders"></top>
     <div class="content-split">
       <div class="split-item split-list filters-side">
-        <a href="#" @click.prevent.stop="fetchOrders" class="filter-link" :class="{ badge: !currentStatus }">
-          <span>All orders</span>
-        </a>
-        <a href="#" @click.prevent.stop="sortByStatus('ACTIVE')" class="filter-link" :class="{ badge: currentStatus === 'ACTIVE' }">
-          <span>Active orders</span>
-        </a>
-        <a href="#" @click.prevent.stop="sortByStatus('CANCELLED')" class="filter-link" :class="{ badge: currentStatus === 'CANCELLED' }">
-          <span>Cancelled orders</span>
-        </a>
+        <router-link v-for="s in status" :key="s" :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ badge: currentStatus === s }">
+          <span>{{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}</span>
+        </router-link>
       </div>
       <div class="split-item split-details">
         <orders-list
@@ -35,16 +29,31 @@ import ordersList from './ordersList'
 export default {
   data () {
     return {
+      status: ['all', 'active', 'cancelled'],
       searchId: null,
       pagination: null,
       tableData: null,
-      currentStatus: null,
+      currentStatus: 'all',
       rules: []
+    }
+  },
+  created () {
+    console.log('params:', this.$route.params)
+    if (this.$route.name === 'orders') {
+      this.$router.push({ name: 'ordersByStatus', params: { status: 'all', page: 1 } })
+    }
+
+    if (this.$route.params.status && this.$route.params.status !== 'all') {
+      this.currentStatus = this.$route.params.status
+      this.sortByStatus(this.$route.params.status)
     }
   },
   methods: {
     sortByStatus (status) {
-      this.rules = [{ field: 'status', operator: '=', value: status }]
+      if (this.status.find(s => s === status)) {
+        this.rules = [{ field: 'status', operator: '=', value: status.toUpperCase() }]
+      }
+
       this.fetchWithFilters()
     },
     sortByColumn (data) {
@@ -96,10 +105,10 @@ export default {
           rules: this.rules,
           success: async response => {
             if (response.data.result.searchId) {
-              this.currentStatus = status
+              this.currentStatus = status.toLowerCase()
               this.searchId = response.data.result.searchId
             } else {
-              this.currentStatus = null
+              this.currentStatus = 'all'
             }
 
             this.fetchOrders()
