@@ -38,21 +38,23 @@ export default {
     }
   },
   created () {
-    console.log('params:', this.$route.params)
-    if (this.$route.name === 'orders') {
-      this.$router.push({ name: 'ordersByStatus', params: { status: 'all', page: 1 } })
-    }
-
-    if (this.$route.params.status && this.$route.params.status !== 'all') {
-      this.currentStatus = this.$route.params.status
-      this.sortByStatus(this.$route.params.status)
-    }
+    this.setup()
   },
   methods: {
-    sortByStatus (status) {
-      if (this.status.find(s => s === status)) {
-        this.rules = [{ field: 'status', operator: '=', value: status.toUpperCase() }]
+    setup () {
+      if (this.$route.name === 'orders') {
+        this.$router.push({ name: 'ordersByStatus', params: { status: 'all', page: 1 } })
       }
+    },
+    sortByStatus (status) {
+      const lcStatus = status.toLowerCase()
+
+      if (this.status.find(s => s === lcStatus)) {
+        this.currentStatus = lcStatus
+        this.rules = [{ field: 'status', operator: '=', value: status }]
+      }
+
+      console.log('rules', this.rules)
 
       this.fetchWithFilters()
     },
@@ -105,10 +107,7 @@ export default {
           rules: this.rules,
           success: async response => {
             if (response.data.result.searchId) {
-              this.currentStatus = status.toLowerCase()
               this.searchId = response.data.result.searchId
-            } else {
-              this.currentStatus = 'all'
             }
 
             this.fetchOrders()
@@ -132,6 +131,21 @@ export default {
         },
         fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
       })
+    }
+  },
+  watch: {
+    '$route': {
+      handler (n, o) {
+        console.log(o, n)
+        if (o.params.status !== n.params.status) {
+          if (n.params.status !== 'all') {
+            this.sortByStatus(n.params.status)
+          } else {
+            this.fetchOrders()
+          }
+        }
+      },
+      deep: true
     }
   },
   components: {

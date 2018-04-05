@@ -40,6 +40,9 @@ export default {
    * @param {Object} page The page we're going to
    */
   appendPage (page) {
-    router.push({ name: router.history.current.name, params: { page: page } })
+    let params = Object.assign({}, router.history.current.params)
+    params.page = page
+
+    router.push({ name: router.history.current.name, params: params })
   }
 }
