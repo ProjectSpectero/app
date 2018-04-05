@@ -128,6 +128,11 @@ module.exports = {
       MANUAL_FRAUD_CHECK: 'Pending Fraud Check',
       ACTIVE: 'Active',
       CANCELLED: 'Cancelled'
+    },
+    MENU_STATUS: {
+      ALL: 'All orders',
+      ACTIVE: 'Active orders',
+      CANCELLED: 'Cancelled orders'
     }
   },
 
