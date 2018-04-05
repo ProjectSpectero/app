@@ -4,10 +4,6 @@
         <div>{{ props.row.friendly_name }}</div>
       </template>
 
-      <template slot="market_model" slot-scope="props">
-        {{ $i18n.t(`nodes.MODEL.${props.row.market_model}`) }}
-      </template>
-
       <template slot="services" slot-scope="props">
         <ul>
           <li v-for="service in props.row.services" :key="service.id">{{ service.type }}</li>
@@ -29,13 +25,13 @@
 <script>
 export default {
   props: {
-    nodes: Object
+    nodes: Array
   },
   data () {
     return {
-      columns: ['friendly_name', 'market_model', 'services', 'ips', 'status'],
-      sortableColumns: ['friendly_name', 'market_model', 'services', 'ips', 'status'],
-      filterableColumns: ['friendly_name', 'market_model', 'services', 'ips', 'status'],
+      columns: ['friendly_name', 'services', 'ips', 'status'],
+      sortableColumns: ['friendly_name', 'services', 'ips', 'status'],
+      filterableColumns: ['friendly_name', 'services', 'ips', 'status'],
       options: {}
     }
   },
@@ -67,6 +63,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>

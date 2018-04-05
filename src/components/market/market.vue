@@ -1,6 +1,10 @@
 <template>
   <div>
-    <top title="Market"></top>
+    <top title="Market">
+      <router-link :to="{ name: 'cart' }" v-if="totals.total > 0" class="button">
+        {{ $i18n.t('misc.VIEW_CART') }}
+      </router-link>
+    </top>
 
     <div class="content-split">
       <div class="split-item split-list filters-side">

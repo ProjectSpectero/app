@@ -41,7 +41,8 @@ module.exports = {
     ADD_TO_CART: 'Add To Cart',
     IN_CART: 'In Cart',
     CHECKOUT: 'Checkout',
-    BUY_NOW: 'Buy Now'
+    BUY_NOW: 'Buy Now',
+    VIEW_CART: 'View Cart'
   },
 
   errors: {
