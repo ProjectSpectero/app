@@ -32,7 +32,7 @@ export default {
       filterableColumns: ['asn', 'cc', 'city'],
       headings: {
         asn: 'ASN',
-        cc: 'Credit Card',
+        cc: 'Country Code',
         city: 'City'
       },
       options: {}

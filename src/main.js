@@ -26,7 +26,10 @@ Vue.use(VeeValidate)
 Vue.use(ClientTable)
 Vue.use(ServerTable)
 Vue.use(VueMoment)
-Vue.use(VueModal, { dynamic: true })
+
+Vue.use(VueModal, {
+  dynamic: true
+})
 
 Vue.use(VueCurrencyFilter, {
   symbol: '$',

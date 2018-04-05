@@ -33,7 +33,7 @@ export default {
       headings: {
         ip: 'IP Address',
         asn: 'ASN',
-        cc: 'Credit Card',
+        cc: 'Country Code',
         city: 'City',
         created_at: 'Creation Date'
       },

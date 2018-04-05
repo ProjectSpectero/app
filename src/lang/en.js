@@ -20,6 +20,7 @@ module.exports = {
     CONTINUE: 'Continue',
     CANCEL: 'Cancel',
     VIEW: 'View',
+    VIEW_DETAILS: 'View Details',
     RESET: 'Reset',
     EDIT: 'Edit',
     VERIFY: 'Verify',
@@ -37,9 +38,10 @@ module.exports = {
     PLACEHOLDER_ACCESS_TOKEN: 'Add a new access token in the format username:password to update',
     LABEL_PROTOCOL: 'Protocol',
     LABEL_NODE_GROUP: 'Node Group',
-    ADD_TO_CART: 'Add to cart',
-    IN_CART: 'In cart',
-    CHECKOUT: 'Checkout'
+    ADD_TO_CART: 'Add To Cart',
+    IN_CART: 'In Cart',
+    CHECKOUT: 'Checkout',
+    BUY_NOW: 'Buy Now'
   },
 
   errors: {
@@ -155,7 +157,9 @@ module.exports = {
     STATUS: {
       UNCONFIRMED: 'Unconfirmed',
       CONFIRMED: 'Confirmed',
-      PENDING_VERIFICATION: 'Pending Verification'
+      PENDING_VERIFICATION: 'Pending Verification',
+      ENABLED: 'Enabled',
+      DISABLED: 'Disabled'
     },
     MODEL: {
       UNLISTED: 'Unlisted',
@@ -176,7 +180,9 @@ module.exports = {
     REMOVED_FROM_CART: '{name} was removed from your cart!',
     NODE_GROUP_IP_COUNT: '{ips} in {nodes} nodes',
     CART_EMPTY: 'Your cart is empty.',
-    CLEAR_CART: 'Remove all'
+    CLEAR_CART: 'Empty Cart',
+    ITEM_IS_GROUP_WARNING: 'Purchasing this node group will grant you access to all {count} nodes within it.',
+    ITEM_IS_GROUP_VIEW_DETAILS: 'Click "View Details" to see all nodes within this group.'
   },
 
   users: {

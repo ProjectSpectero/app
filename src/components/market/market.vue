@@ -7,6 +7,17 @@
         <filters @changedFilters="search"></filters>
       </div>
       <div class="split-item split-details">
+        <div class="cart" v-if="totals.total > 0">
+          <div class="info">
+            <h4><span class="icon icon-shopping-cart"></span> {{ $i18n.t('misc.CART') }}: {{ totals.total | currency }} USD</h4>
+          </div>
+          <div class="actions">
+            <router-link :to="{ name: 'cart' }" class="button button-info">
+              {{ $i18n.t('misc.CHECKOUT') }}
+            </router-link>
+          </div>
+        </div>
+
         <v-client-table :data="results" :columns="columns" :options="options">
           <template slot="market_model" slot-scope="props">
              <div class="badge">
@@ -31,16 +42,16 @@
           </template>
 
           <template slot="actions" slot-scope="props">
-            <router-link class="button button-success" :to="{ name: 'marketView', params: { type: parseType(props.row.type), id: props.row.id } }">
-              {{ $i18n.t('misc.VIEW') }}
-            </router-link>
-
             <template v-if="existsInCart(props.row.id)">
               <button disabled class="button">{{ $i18n.t('misc.IN_CART') }}</button>
             </template>
             <template v-else>
-              <button @click.stop="showModal(props.row)" class="button">{{ $i18n.t('misc.PURCHASE') }}</button>
+              <button @click.stop="showModal(props.row)" class="button button-success">{{ $i18n.t('misc.PURCHASE') }}</button>
             </template>
+
+            <router-link class="button button" :to="{ name: 'marketView', params: { type: ((props.row.type.toLowerCase() === 'node') ? 'node' : 'group'), id: props.row.id } }">
+              {{ $i18n.t('misc.VIEW') }}
+            </router-link>
           </template>
         </v-client-table>
 
@@ -83,7 +94,8 @@ export default {
     ...mapGetters({
       cart: 'market/cart',
       results: 'market/results',
-      pagination: 'market/pagination'
+      pagination: 'market/pagination',
+      totals: 'market/totals'
     })
   },
   methods: {
@@ -97,15 +109,8 @@ export default {
       this.$modal.show(addToCart, {
         item: item
       }, {
-        draggable: true
+        height: 'auto'
       })
-    },
-    parseType (type) {
-      if (type.toLowerCase() === 'node') {
-        return 'node'
-      }
-
-      return 'group'
     },
     countIpsInNodeGroup (group) {
       let ips = 0
@@ -160,5 +165,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.cart {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $pad;
+  padding: 14px;
+  border: 1px solid $color-border;
+  border-radius: 4px;
 
+  h4 {
+    font-size: 120%;
+    font-weight: $font-semi;
+    margin-bottom: 0;
+  }
+  .icon {
+    margin-right: 6px;
+  }
+}
 </style>

@@ -1,0 +1,33 @@
+.modal {
+  padding: $pad;
+
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $pad;
+  padding-bottom: $pad;
+  border-bottom: 1px solid $color-border;
+
+  h2 {
+    margin-bottom: 0;
+    font-weight: $font-semi;
+  }
+}
+.modal-close {
+  @extend [class^="icon-"];
+  padding: 2px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.3;
+
+  &:hover {
+    opacity: 0.7;
+  }
+  &:after {
+    @extend .icon-x-circle:before;
+  }
+}

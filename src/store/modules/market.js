@@ -16,7 +16,26 @@ const getters = {
   filters: (state) => state.filters,
   grouped: (state) => state.grouped,
   pagination: (state) => state.pagination,
-  results: (state) => state.results
+  results: (state) => state.results,
+  totals: (state) => {
+    const cart = state.cart
+
+    let totals = {
+      total: 0,
+      nodes: 0,
+      nodeGroups: 0
+    }
+
+    for (let i = 0; i < cart.length; i++) {
+      let item = cart[i]
+      let price = parseInt(item.price)
+
+      totals.total += price
+      totals[(item.type === 'NODE_GROUP') ? 'nodeGroups' : 'nodes'] += price
+    }
+
+    return totals
+  }
 }
 
 const actions = {
@@ -84,11 +103,16 @@ const mutations = {
     let cart = JSON.parse(localStorage.getItem('specteroCart'))
 
     if (cart && cart.length) {
-      console.log('found a cart', cart)
-      const index = cart.find(i => i === item)
+      // Gets index of cart item from cart array based on item.id
+      let index = -1
+      for (let i = 0; i < cart.length; i++) {
+        if (cart[i].id === item.id) {
+          index = i
+          break
+        }
+      }
 
       if (index !== -1) {
-        console.log('found an index', index)
         cart.splice(index, 1)
         localStorage.setItem('specteroCart', JSON.stringify(cart))
       }

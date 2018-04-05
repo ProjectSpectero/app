@@ -1,21 +1,35 @@
 <template>
-  <div>
-    <div class="modal-close" @click="$emit('close')">&#215;</div>
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Purchase {{ (item.type.toLowerCase() === 'node') ? 'Node' : 'Node Group' }}</h2>
+      <button class="modal-close" @click="$emit('close')"></button>
+    </div>
+    <div class="modal-content">
+      <div class="message message-info message-group-warning" v-if="item.type === 'NODE_GROUP'">
+        {{ $i18n.t('market.ITEM_IS_GROUP_WARNING', { count: item.nodes.length }) }}<br><br>
+        {{ $i18n.t('market.ITEM_IS_GROUP_VIEW_DETAILS') }}
+      </div>
 
-    <div>
-      <h2>{{ item.friendly_name }}</h2>
-      <ul>
-        <li v-if="item.asn">ASN: {{ item.asn }}</li>
-        <li v-if="item.city">City: {{ item.city }}</li>
-        <li v-if="item.cc">Country Code: {{ item.cc }}</li>
-        <li>Market model: {{ item.market_model }}</li>
-        <li>Status: {{ item.status }}</li>
-        <li>Price: {{ item.price }}</li>
+      <h3>{{ item.friendly_name }}</h3>
+
+      <ul class="details">
+        <li v-if="item.type === 'NODE_GROUP'">Total Nodes: <strong>{{ item.nodes.length }} Nodes</strong></li>
+        <li v-if="item.asn">ASN: <strong>{{ item.asn }}</strong></li>
+        <li v-if="item.city">City: <strong>{{ item.city }}</strong></li>
+        <li v-if="item.cc">Country Code: <strong>{{ item.cc }}</strong></li>
+        <li>Market Model: <strong>{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</strong></li>
+        <li>Status: <strong>{{ $i18n.t(`nodes.STATUS.${item.status}`) }}</strong></li>
+        <li>Price: <strong>{{ item.price | currency }} USD</strong></li>
         <li v-if="item.plan">{{ item.plan }}</li>
       </ul>
 
-      <button @click.stop="add(item, false)" class="button">{{ $i18n.t('misc.ADD_TO_CART') }}</button>
-      <button @click.stop="add(item, true)" class="button">{{ $i18n.t('misc.CHECKOUT') }}</button>
+      <div class="actions">
+        <button @click.stop="add(item, false)" class="button button-success">{{ $i18n.t('misc.ADD_TO_CART') }}</button>
+        <button @click.stop="add(item, true)" class="button">{{ $i18n.t('misc.BUY_NOW') }}</button>
+        <router-link class="button right" :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }" v-on:click.native="$emit('close')">
+          {{ $i18n.t('misc.VIEW_DETAILS') }}
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -43,3 +57,22 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+h3 {
+  font-weight: $font-semi;
+}
+.actions {
+  margin-top: $pad;
+}
+.details {
+  list-style: none;
+
+  li {
+    line-height: 150%;
+  }
+}
+.message-group-warning {
+  margin-bottom: $pad;
+}
+</style>
