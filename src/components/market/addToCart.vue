@@ -7,10 +7,16 @@
     <div class="modal-content">
       <h3>{{ item.friendly_name }}</h3>
 
-      <div v-if="item.plan" v-html="$i18n.t(`market.PLAN_WARNING`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })" class="message message-brand"></div>
+      <div
+        v-if="item.plan"
+        v-html="$i18n.t(`market.PLAN_WARNING`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })"
+        class="message message-brand">
+      </div>
 
-      <div class="message message-group-warning" v-if="item.type === 'NODE_GROUP'">
-        {{ $i18n.t('market.ITEM_IS_GROUP_WARNING', { count: item.nodes.length }) }}
+      <div
+        v-if="item.type === 'NODE_GROUP'"
+        v-html="$i18n.t(`market.ITEM_IS_GROUP_WARNING`, { count: item.nodes.length })"
+        class="message message-group-warning">
       </div>
 
       <ul class="details">
@@ -24,11 +30,13 @@
       </ul>
 
       <div class="actions">
-        <button @click.stop="add(item, false)" class="button button-success">{{ $i18n.t('misc.ADD_TO_CART') }}</button>
-        <button @click.stop="add(item, true)" class="button">{{ $i18n.t('misc.BUY_NOW') }}</button>
-        <router-link class="button right" :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }" v-on:click.native="$emit('close')">
-          {{ $i18n.t('misc.VIEW_DETAILS') }}
+        <router-link class="button" :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }" v-on:click.native="$emit('close')">
+          {{ $i18n.t('misc.VIEW_FULL_DETAILS') }}
         </router-link>
+        <div class="right">
+          <button @click.stop="add(item, true)" class="button">{{ $i18n.t('misc.BUY_NOW') }}</button>
+          <button @click.stop="add(item, false)" class="button button-success">{{ $i18n.t('misc.ADD_TO_CART') }}</button>
+        </div>
       </div>
     </div>
   </div>
