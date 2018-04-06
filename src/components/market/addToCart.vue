@@ -5,12 +5,13 @@
       <button class="modal-close" @click="$emit('close')"></button>
     </div>
     <div class="modal-content">
-      <div class="message message-info message-group-warning" v-if="item.type === 'NODE_GROUP'">
-        {{ $i18n.t('market.ITEM_IS_GROUP_WARNING', { count: item.nodes.length }) }}<br><br>
-        {{ $i18n.t('market.ITEM_IS_GROUP_VIEW_DETAILS') }}
-      </div>
-
       <h3>{{ item.friendly_name }}</h3>
+
+      <div v-if="item.plan" v-html="$i18n.t(`market.PLAN_WARNING`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })" class="message message-brand"></div>
+
+      <div class="message message-group-warning" v-if="item.type === 'NODE_GROUP'">
+        {{ $i18n.t('market.ITEM_IS_GROUP_WARNING', { count: item.nodes.length }) }}
+      </div>
 
       <ul class="details">
         <li v-if="item.type === 'NODE_GROUP'">Total Nodes: <strong>{{ item.nodes.length }} Nodes</strong></li>
@@ -20,7 +21,6 @@
         <li>Market Model: <strong>{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</strong></li>
         <li>Status: <strong>{{ $i18n.t(`nodes.STATUS.${item.status}`) }}</strong></li>
         <li>Price: <strong>{{ item.price | currency }} USD</strong></li>
-        <li v-if="item.plan">{{ item.plan }}</li>
       </ul>
 
       <div class="actions">

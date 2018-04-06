@@ -187,8 +187,8 @@ module.exports = {
     NODE_GROUP_IP_COUNT: '{ips} in {nodes} nodes',
     CART_EMPTY: 'Your cart is empty.',
     CLEAR_CART: 'Empty Cart',
-    ITEM_IS_GROUP_WARNING: 'Purchasing this node group will grant you access to all {count} nodes within it.',
-    ITEM_IS_GROUP_VIEW_DETAILS: 'Click "View Details" to see all nodes within this group.'
+    ITEM_IS_GROUP_WARNING: 'Purchasing this node group will grant you access to all {count} nodes within it. Click "View Details" to see all nodes associated to this group.',
+    PLAN_WARNING: 'Purchasing this node group will also unlock access to {planName}. <a href="{planUrl}" target="_blank">Learn more</a>'
   },
 
   users: {

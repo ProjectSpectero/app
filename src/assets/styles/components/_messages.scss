@@ -1,12 +1,17 @@
 .message {
-  color: #626C84;
+  color: rgba(0,0,0,0.6);
   background-color: #F2F3F5;
   padding: 10px 14px;
   border-radius: 4px;
   font-size: 15px;
-  line-height: 130%;
+  line-height: 140%;
   font-weight: 600;
   margin-bottom: 12px;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
 }
 .message-info {
   color: $white;
@@ -27,4 +32,8 @@
 .message-dark {
   color: $white;
   background-color: $color-dark;
+}
+.message-brand {
+  color: $color-primary;
+  background-color: $color-brand;
 }

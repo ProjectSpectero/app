@@ -34,7 +34,8 @@
       <div class="message message-info">Info message.</div>
       <div class="message message-success">Success message.</div>
       <div class="message message-warning">Warning message.</div>
-      <div class="message message-error no-bottom-margin">Error message.</div>
+      <div class="message message-error">Error message.</div>
+      <div class="message message-brand no-bottom-margin">Brand message.</div>
     </section>
     <section>
       <h2>Inputs</h2>
