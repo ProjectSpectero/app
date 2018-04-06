@@ -13,7 +13,7 @@
           :searchId="searchId"
           :pagination="pagination"
           :tableData="tableData"
-          @fetchOrders="fetchOrders"
+          @changedPage="changedPage"
           @sortByColumn="sortByColumn">
         </orders-list>
       </div>
@@ -33,30 +33,36 @@ export default {
       searchId: null,
       pagination: null,
       tableData: null,
-      currentStatus: 'all',
       rules: []
     }
   },
   created () {
-    this.setup()
+    if (this.$route.name === 'orders') {
+      this.$router.push({ name: 'ordersByStatus', params: { status: 'all', page: 1 } })
+    } else {
+      this.sortByStatus(this.currentPage)
+    }
+  },
+  computed: {
+    currentStatus () {
+      return this.$route.params.status ? this.$route.params.status.toLowerCase() : 'all'
+    },
+    currentPage () {
+      return (this.$route.params.page !== undefined) ? this.$route.params.page : 1
+    }
   },
   methods: {
-    setup () {
-      if (this.$route.name === 'orders') {
-        this.$router.push({ name: 'ordersByStatus', params: { status: 'all', page: 1 } })
-      }
-    },
-    sortByStatus (status) {
-      const lcStatus = status.toLowerCase()
-
-      if (this.status.find(s => s === lcStatus)) {
-        this.currentStatus = lcStatus
-        this.rules = [{ field: 'status', operator: '=', value: status }]
+    sortByStatus (page) {
+      if (this.status.find(s => s === this.currentStatus)) {
+        if (this.currentStatus !== 'all') {
+          this.rules = [{ field: 'status', operator: '=', value: this.currentStatus.toUpperCase() }]
+        } else {
+          this.removeFilter('=')
+        }
       }
 
-      console.log('rules', this.rules)
-
-      this.fetchWithFilters()
+      console.log('sortByStatus CurrentPage', page)
+      this.fetch(page)
     },
     sortByColumn (data) {
       this.removeFilter('SORT')
@@ -67,7 +73,7 @@ export default {
         value: data.direction.toUpperCase()
       })
 
-      this.fetchWithFilters()
+      this.fetch(1)
     },
     removeFilter (operator) {
       const index = this.rules.findIndex(r => r.operator === operator)
@@ -75,6 +81,43 @@ export default {
       if (index !== -1) {
         this.rules.splice(index, 1)
       }
+    },
+    changedPage (page) {
+      this.$router.push({ name: 'ordersByStatus', params: { page: page, status: this.currentStatus } })
+    },
+    async fetch (page) {
+      if (this.rules.length) {
+        await orderAPI.search({
+          rules: this.rules,
+          success: async response => {
+            if (response.data.result.searchId) {
+              this.searchId = response.data.result.searchId
+            }
+
+            this.fetchOrders(page)
+          },
+          fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
+        })
+      } else {
+        this.searchId = null
+        this.fetchOrders(page)
+      }
+    },
+    async fetchOrders (page) {
+      console.warn('fetchOrders called with status ', this.currentStatus, ' and this.searchId', this.searchId, 'and page', page)
+      await orderAPI.myOrders({
+        searchId: this.searchId,
+        page: page,
+        limit: this.perPage,
+        keepURL: (this.type === 'simple'),
+        success: response => {
+          this.pagination = response.data.pagination
+          this.tableData = response.data.result
+
+          console.log(this.pagination)
+        },
+        fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
+      })
     },
     search (value) {
       if (value.length >= 2) {
@@ -90,7 +133,7 @@ export default {
         this.removeFilter('LIKE')
       }
 
-      this.fetchWithFilters()
+      this.fetch()
     },
     reset () {
       this.rules.forEach(r => {
@@ -99,53 +142,20 @@ export default {
           this.rules.splice(i, 1)
         }
       })
-      this.fetchWithFilters()
-    },
-    async fetchWithFilters () {
-      if (this.rules.length) {
-        await orderAPI.search({
-          rules: this.rules,
-          success: async response => {
-            if (response.data.result.searchId) {
-              this.searchId = response.data.result.searchId
-            }
-
-            this.fetchOrders()
-          },
-          fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
-        })
-      } else {
-        this.searchId = null
-        this.fetchOrders()
-      }
-    },
-    async fetchOrders (page) {
-      await orderAPI.myOrders({
-        searchId: this.searchId,
-        page: page,
-        limit: this.perPage,
-        keepURL: (this.type === 'simple'),
-        success: response => {
-          this.pagination = response.data.pagination
-          this.tableData = response.data.result
-        },
-        fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
-      })
+      this.fetch()
     }
   },
   watch: {
     '$route': {
       handler (n, o) {
-        console.log(o, n)
-        if (o.params.status !== n.params.status) {
-          if (n.params.status !== 'all') {
-            this.sortByStatus(n.params.status)
-          } else {
-            this.fetchOrders()
-          }
-        }
+        console.warn('WATCHER KICKED IN')
+        console.log('page n, o', n.params.page, o.params.page)
+        console.log('status n, o', n.params.status, o.params.status)
+
+        this.sortByStatus(n.params.page)
       },
-      deep: true
+      deep: true,
+      immediate: false
     }
   },
   components: {

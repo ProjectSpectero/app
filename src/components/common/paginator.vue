@@ -19,19 +19,16 @@ export default {
   props: {
     pagination: Object
   },
-  data () {
-    return {
-      active: 1
-    }
-  },
   computed: {
     totalPages () {
       return Math.ceil(this.pagination.total / this.pagination.per_page)
+    },
+    active () {
+      return this.pagination.current_page || 1
     }
   },
   methods: {
     toPage (page) {
-      this.active = page
       this.$emit('changedPage', page)
     }
   },

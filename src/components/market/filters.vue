@@ -187,6 +187,7 @@ export default {
       this.removeFilter(index)
     },
     update (filter, index) {
+      console.log('Updating filter', filter, 'on index', index)
       this.updateFilter({ filter: filter, index: index })
     },
     submitFilters () {

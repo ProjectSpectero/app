@@ -47,6 +47,7 @@ module.exports = {
   },
 
   errors: {
+    REQUESTED_PAGE_DOES_NOT_EXIST: 'Invalid page!',
     VALIDATION_FAILED: 'Please correct any errors and try again.',
     OBJECT_PERSIST_FAILED: 'Something went wrong, please try again later.',
     RESOURCE_CREATION_FAILED: 'Unable to create resource, please try again later.',

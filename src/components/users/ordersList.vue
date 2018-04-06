@@ -30,7 +30,7 @@
       </table>
     </div>
 
-    <paginator v-if="type !== 'simple'" :pagination="pagination" @changedPage="fetchOrders"></paginator>
+    <paginator v-if="type !== 'simple'" :pagination="pagination" @changedPage="changedPage"></paginator>
   </div>
 </template>
 
@@ -61,7 +61,6 @@ export default {
   },
   created () {
     this.setup()
-    this.fetchOrders()
   },
   methods: {
     setup () {
@@ -89,8 +88,8 @@ export default {
     sortByColumn (data) {
       this.$emit('sortByColumn', data)
     },
-    fetchOrders (page) {
-      this.$emit('fetchOrders', page)
+    changedPage (page) {
+      this.$emit('changedPage', page)
     }
   },
   components: {
