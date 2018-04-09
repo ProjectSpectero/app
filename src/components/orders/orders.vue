@@ -9,7 +9,6 @@
       </div>
       <div class="split-item split-details">
         <orders-list
-          type="expanded"
           :searchId="searchId"
           :pagination="pagination"
           :tableData="tableData"
@@ -24,7 +23,7 @@
 <script>
 import orderAPI from '@/api/order.js'
 import top from '@/components/common/top'
-import ordersList from './ordersList'
+import ordersList from './list'
 import filtersMixin from '@/mixins/listFilters'
 
 export default {

@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <line-items :items="order.line_items"></line-items>
+      <items :items="order.line_items"></items>
     </div>
   </div>
 </template>
@@ -43,16 +43,9 @@
 import { mapGetters } from 'vuex'
 import top from '@/components/common/top'
 import orderAPI from '@/api/order.js'
-import lineItems from './itemsList'
+import items from './items'
 
 export default {
-  components: {
-    top,
-    lineItems
-  },
-  metaInfo: {
-    title: 'Order Details'
-  },
   data () {
     return {
       loading: true,
@@ -85,6 +78,13 @@ export default {
         fail: () => this.error404()
       })
     }
+  },
+  components: {
+    top,
+    items
+  },
+  metaInfo: {
+    title: 'Order Details'
   }
 }
 </script>

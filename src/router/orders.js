@@ -1,5 +1,5 @@
-import Orders from '@/components/users/orders'
-import Order from '@/components/users/order'
+import Orders from '@/components/orders/orders'
+import Order from '@/components/orders/order'
 
 export default [
   { path: '/orders', name: 'orders', component: Orders, meta: { auth: true } },

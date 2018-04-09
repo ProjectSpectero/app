@@ -30,7 +30,7 @@
       </table>
     </div>
 
-    <paginator v-if="type !== 'simple'" :pagination="pagination" @changedPage="changedPage"></paginator>
+    <paginator :pagination="pagination" @changedPage="changedPage"></paginator>
   </div>
 </template>
 
@@ -44,47 +44,25 @@ export default {
       type: String,
       default: null
     },
-    type: {
-      type: String,
-      default: 'simple'
-    },
     pagination: Object,
     tableData: Array
   },
   data () {
     return {
       perPage: 10,
-      headings: [],
-      columns: [],
-      sortable: []
+      headings: {
+        id: 'Order ID',
+        status: 'Status',
+        created_at: 'Created',
+        due_next: 'Next Date Due',
+        total: 'Total',
+        actions: ''
+      },
+      columns: ['id', 'status', 'created_at', 'due_next', 'total', 'actions'],
+      sortable: ['id', 'status', 'created_at', 'due_next']
     }
   },
-  created () {
-    this.setup()
-  },
   methods: {
-    setup () {
-      this.perPage = (this.type === 'simple') ? 3 : 10
-      this.sortable = (this.type === 'simple')
-        ? ['id', 'status']
-        : ['id', 'status', 'created_at', 'due_next']
-      this.columns = (this.type === 'simple')
-        ? ['id', 'status', 'actions']
-        : ['id', 'status', 'created_at', 'due_next', 'total', 'actions']
-      this.headings = (this.type === 'simple')
-        ? {
-          id: 'Order ID',
-          status: 'Status',
-          actions: ''
-        } : {
-          id: 'Order ID',
-          status: 'Status',
-          created_at: 'Created',
-          due_next: 'Next Date Due',
-          total: 'Total',
-          actions: ''
-        }
-    },
     sortByColumn (data) {
       this.$emit('sortByColumn', data)
     },
