@@ -104,10 +104,10 @@ export default {
 
 .badge {
   &.status-active {
-    @extend .badge-success
+    @extend .badge-success;
   }
   &.status-automated_fraud_check, &.status-manual_fraud_check {
-    @extend .badge-warning
+    @extend .badge-warning;
   }
 }
 </style>
