@@ -2,7 +2,7 @@
   <div>
     <top :title="$i18n.t('misc.CART')">
       <div v-if="cart && cart.length">
-        <button class="button" @click.stop="clearCart">
+        <button class="button button-dark button-bordered" @click.stop="clearCart">
           {{ $i18n.t('market.CLEAR_CART') }}
         </button>
       </div>
@@ -10,75 +10,67 @@
 
     <div class="cart">
       <div class="cart-items">
-        <div v-if="cart && cart.length">
-          <ul>
-            <li v-for="(item, index) in cart" :key="index">
-              <div class="info">
-                <h4>{{ item.friendly_name }}</h4>
-                <div class="extras">
-                  <ol>
-                    <li class="bold">
-                      {{ item.price | currency }} USD
-                    </li>
-                    <li>
-                      Type: <span v-if="item.type === 'NODE_GROUP'">Node Group</span><span v-else>Node</span>
-                    </li>
-                    <li>
-                      Model: {{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}
-                    </li>
-                  </ol>
-                </div>
-              </div>
-              <div class="actions">
-                <router-link class="button button-dark button-sm" :to="{ name: 'marketView', params: { type: parseType(item.type), id: item.id } }">
-                  {{ $i18n.t('misc.VIEW') }}
-                </router-link>
-                <button class="button button-danger button-icon" @click.stop="remove(item)">
-                  <span class="icon-trash-2"></span>
-                </button>
-              </div>
-            </li>
-          </ul>
+        <div v-if="cart && cart.length" class="container-bordered">
+          <cartItem v-for="(item, index) in cart" :key="index" :item="item"></cartItem>
         </div>
-        <div v-else>
+        <div v-else class="cart-empty">
           <p>{{ $i18n.t('market.CART_EMPTY') }}</p>
         </div>
       </div>
+      <template v-if="cart && cart.length">
+        <div class="summary-box-container">
+          <div class="summary-box container-bordered">
+            <section>
+              <h3>Cart Summary</h3>
+              <div class="line-items">
+                <div class="item" v-if="totals.nodes > 0">
+                  <p>Nodes</p>
+                  <div class="amount">{{ totals.nodes | currency }}</div>
+                </div>
+                <div class="item" v-if="totals.nodeGroups > 0">
+                  <p>Node Groups</p>
+                  <div class="amount">{{ totals.nodeGroups | currency }}</div>
+                </div>
 
-      <div v-if="cart && cart.length">
-        <div class="summary-box">
-          <section>
-            <h3>Cart Summary</h3>
-            <div class="line-items">
-              <div class="item" v-if="totals.nodes > 0">
-                <p>Nodes</p>
-                <div class="amount">{{ totals.nodes | currency }} USD</div>
+                <div class="separator"></div>
+
+                <div class="item total">
+                  <p>Due Today</p>
+                  <div class="amount">{{ totals.total | currency }} USD</div>
+                </div>
               </div>
-              <div class="item" v-if="totals.nodeGroups > 0">
-                <p>Node Groups</p>
-                <div class="amount">{{ totals.nodeGroups | currency }} USD</div>
+              <button class="button button-success button-md max-width" @click.stop="pay">
+                {{ $i18n.t('misc.CHECKOUT') }}
+              </button>
+            </section>
+          </div>
+          <div v-if="totals.monthly > 0 || totals.yearly > 0" class="summary-box container-bordered">
+            <section class="recurring">
+              <h3>Recurring Fees</h3>
+              <p>There are recurring fees associated with items in this cart.</p>
+              <div class="line-items">
+                <div class="item" v-if="totals.monthly > 0">
+                  <p>Monthly</p>
+                  <div class="amount">{{ totals.monthly | currency }} /month</div>
+                </div>
+                <div class="item" v-if="totals.yearly > 0">
+                  <p>Yearly</p>
+                  <div class="amount">{{ totals.yearly | currency }} /year</div>
+                </div>
               </div>
-              <div class="item total">
-                <p>Subtotal</p>
-                <div class="amount">{{ totals.total | currency }} USD</div>
-              </div>
-            </div>
-          </section>
-          <div class="checkout-button">
-            <button class="button button-info button-md max-width" @click.stop="pay">
-              {{ $i18n.t('misc.CHECKOUT') }}
-            </button>
+            </section>
           </div>
         </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import top from '@/components/common/top'
 import marketAPI from '@/api/market.js'
-import { mapGetters, mapActions } from 'vuex'
+import cartItem from './cartItem'
 
 export default {
   created () {
@@ -93,16 +85,8 @@ export default {
   methods: {
     ...mapActions({
       refreshCart: 'market/refreshCart',
-      removeFromCart: 'market/removeFromCart',
       clearCart: 'market/clearCart'
     }),
-    parseType (type) {
-      if (type.toLowerCase() === 'node') {
-        return 'node'
-      }
-
-      return 'group'
-    },
     pay () {
       marketAPI.order({
         data: {
@@ -118,17 +102,14 @@ export default {
         },
         fail: error => this.$toasted.error(this.errorAPI(error, 'market'))
       })
-    },
-    remove (item) {
-      this.removeFromCart(item)
-      this.$toasted.success(this.$i18n.t('market.REMOVED_FROM_CART', { name: item.friendly_name }))
     }
   },
   metaInfo: {
     title: 'Cart'
   },
   components: {
-    top
+    top,
+    cartItem
   }
 }
 </script>
@@ -142,63 +123,38 @@ export default {
 .cart-items {
   flex: 1;
 
-  ul {
-    list-style: none;
-
-    > li {
-      display: flex;
-      align-items: center;
-      margin-bottom: $pad;
-      padding-bottom: $pad;
-      border-bottom: 1px solid $color-border;
-    }
+  .item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
   }
-  .info {
-    flex: 1;
-
-    h4 {
-      font-size: 110%;
-      font-weight: $font-semi;
-      margin-bottom: 0;
-    }
-  }
-  .extras {
-    margin-top: 10px;
-
-    ol {
-      list-style: none;
-
-      > li {
-        display: inline-block;
-        margin-right: 8px;
-        padding-right: 10px;
-        font-size: 90%;
-        color: $color-light;
-        border-right: 1px solid $color-border;
-
-        &.bold {
-          color: $color-primary;
-        }
-        &:last-child {
-          margin-right: 0;
-          padding-right: 0;
-          border-right: none;
-        }
-      }
-    }
+  .container-bordered {
+    padding: 16px 0;
   }
 }
-.summary-box {
-  width: 300px;
-  margin-left: $pad;
+.container-bordered {
+  width: 100%;
+  margin-bottom: $pad;
   padding: $pad;
-  background-color: $color-smoke;
   border-radius: 4px;
+  border: 1px solid $color-border;
 
-  .separate {
-    margin-top: $pad;
-    padding-top: $pad;
-    border-top: 1px solid $color-border;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.summary-box-container {
+  width: 320px;
+  margin-left: $pad;
+}
+.summary-box {
+  .separator {
+    width: 100%;
+    height: 1px;
+    display: block;
+    margin: 16px 0;
+    background-color: $color-border;
+    content: '';
   }
   section {
     display: flex;
@@ -206,26 +162,32 @@ export default {
     flex-wrap: nowrap;
 
     h3 {
-      margin-bottom: 0;
+      margin-bottom: $pad;
     }
   }
   .line-items {
-    @extend .separate;
-
     .item {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 4px;
 
       &.total {
-        @extend .separate;
+        margin-bottom: 20px;
         font-size: 120%;
         font-weight: $font-bold;
       }
     }
   }
-  .checkout-button {
-    @extend .separate;
+  .recurring {
+    h3 {
+      margin-bottom: 14px;
+    }
+    > p {
+      margin-bottom: 14px;
+      font-size: 95%;
+      color: $color-light;
+    }
   }
 }
 </style>

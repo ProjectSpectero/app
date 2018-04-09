@@ -24,5 +24,12 @@ export default {
    */
   order (options) {
     return api('POST', '/order/cart', options)
+  },
+
+  /**
+   * Returns available plans
+   */
+  plans (options) {
+    return api('GET', '/plan', options)
   }
 }
