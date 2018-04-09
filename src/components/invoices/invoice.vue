@@ -133,6 +133,7 @@ import top from '@/components/common/top'
 import { mapGetters, mapActions } from 'vuex'
 import paymentAPI from '@/api/payment.js'
 import orderAPI from '@/api/order.js'
+import invoiceAPI from '@/api/invoice.js'
 import paymentButtons from '../payments/buttons'
 
 export default {
@@ -183,7 +184,7 @@ export default {
       syncCurrentUser: 'auth/syncCurrentUser'
     }),
     async fetchInvoice () {
-      await paymentAPI.invoice({
+      await invoiceAPI.invoice({
         data: {
           id: this.$route.params.id
         },

@@ -51,7 +51,7 @@
 <script>
 import top from '@/components/common/top'
 import paginator from '@/components/common/paginator'
-import paymentAPI from '@/api/payment.js'
+import invoiceAPI from '@/api/invoice.js'
 
 export default {
   metaInfo: {
@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     fetchInvoices (page) {
-      paymentAPI.myInvoices({
+      invoiceAPI.myInvoices({
         page: page,
         success: response => {
           this.pagination = response.data.pagination
