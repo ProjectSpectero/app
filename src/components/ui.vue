@@ -11,6 +11,15 @@
       <a href="#" class="button button-danger">Danger</a>
       <a href="#" class="button" disabled>Disabled</a>
       <br><br>
+      <h3>Bordered</h3>
+      <a href="#" class="button button-bordered">Button</a>
+      <a href="#" class="button button-dark button-bordered">Dark</a>
+      <a href="#" class="button button-info button-bordered">Info</a>
+      <a href="#" class="button button-success button-bordered">Success</a>
+      <a href="#" class="button button-warning button-bordered">Warning</a>
+      <a href="#" class="button button-danger button-bordered">Danger</a>
+      <a href="#" class="button button-bordered" disabled>Disabled</a>
+      <br><br>
       <h3>Loading</h3>
       <a href="#" class="button button-loading" disabled>Button</a>
       <a href="#" class="button button-dark button-loading" disabled>Dark</a>

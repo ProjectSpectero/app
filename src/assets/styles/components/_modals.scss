@@ -1,12 +1,9 @@
-.modal {
-  padding: $pad;
-
-}
 .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: $pad;
+  margin: $pad;
+  margin-bottom: 0;
   padding-bottom: $pad;
   border-bottom: 1px solid $color-border;
 
@@ -14,6 +11,9 @@
     margin-bottom: 0;
     font-weight: $font-semi;
   }
+}
+.modal-content {
+  margin: $pad;
 }
 .modal-close {
   @extend [class^="icon-"];

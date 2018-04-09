@@ -1,7 +1,11 @@
 // Mixin to create hover & disabled states for solid colored buttons
-@mixin buttonBackgroundColor($color) {
+@mixin buttonBackgroundColor($color, $darkText: false, $hoverLighten: 50%, $whiteLoader: true) {
   background-color: $color;
+  border-color: $color;
   background-image: none;
+
+  @if $darkText { color: rgba(0,0,0,0.7) }
+  @else { color: $white; }
 
   &:hover {
     background-color: darken($color, 4%);
@@ -9,23 +13,41 @@
   &[disabled] {
     background-color: $color;
   }
+  &.button-bordered {
+    background-color: transparent;
+    color: $color;
+
+    &:hover {
+      background-color: $color;
+
+      @if $darkText { color: rgba(0,0,0,0.7) }
+      @else { color: $white; }
+    }
+    &[disabled] {
+      background-color: transparent;
+      color: $color;
+    }
+  }
+  &.button-loading:after {
+    @if $whiteLoader { border-left-color: $white }
+  }
 }
 
 .button {
   display: inline-block;
-  padding: 0 14px;
+  padding: 0 12px;
   font-family: $font-family;
   font-size: $font-size;
-  line-height: 38px;
+  line-height: 36px;
   font-weight: $font-semi;
   border-radius: 4px;
   color: #626C84;
   text-decoration: none;
-  @include buttonBackgroundColor(#F2F3F5);
-  border: none;
+  border: 1px solid transparent;
   transition: all 0.1s ease-out;
   cursor: pointer;
   vertical-align: top;
+  @include buttonBackgroundColor(#E9E9E9, true, 0%, false);
   
   &[disabled] {
     cursor: not-allowed;
@@ -34,29 +56,19 @@
 
   // Button color styles
   &.button-info {
-    color: $white;
-    @include buttonBackgroundColor($color-info);
-    &.button-loading:after { border-left-color: $white }
+    @include buttonBackgroundColor($color-info, false, 62%);
   }
   &.button-success {
-    color: $white;
-    @include buttonBackgroundColor($color-success);
-    &.button-loading:after { border-left-color: $white }
+    @include buttonBackgroundColor($color-success, false, 50%);
   }
   &.button-danger {
-    color: $white;
-    @include buttonBackgroundColor($color-danger);
-    &.button-loading:after { border-left-color: $white }
+    @include buttonBackgroundColor($color-danger, false, 10%);
   }
   &.button-warning {
-    color: #4C421A;
-    @include buttonBackgroundColor($color-warning);
-    &.button-loading:after { border-left-color: $white }
+    @include buttonBackgroundColor($color-warning, true, 30%);
   }
   &.button-dark {
-    color: $white;
-    @include buttonBackgroundColor($color-dark);
-    &.button-loading:after { border-left-color: $white }
+    @include buttonBackgroundColor($color-dark, false, 64%);
   }
 
   // Button sizes
@@ -72,15 +84,29 @@
     width: 100%;
   }
 
+  // Icons within buttons
+  [class^="icon-"] {
+    margin-right: 5px;
+    position: relative;
+    top: 1px;
+  }
+
   // Icon buttons
   &.button-icon {
     padding: 6px 7px;
     font-size: 17px;
     line-height: 90%;
+
+    [class^="icon-"] {
+      margin-right: 0;
+      top: 0;
+    }
   }
 
   // Loading buttons
   &.button-loading {
+    cursor: progress;
+
     &:after {
       width: 10px;
       height: 10px;
@@ -95,6 +121,7 @@
     }
     &[disabled] {
       opacity: 1;
+      cursor: progress;
     }
   }
 }

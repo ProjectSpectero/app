@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import top from '@/components/common/top'
 
 export default {
@@ -46,6 +47,27 @@ export default {
   },
   metaInfo: {
     title: 'Downloads'
+  },
+  methods: {
+    async fetchDownloadInfo () {
+      try {
+        const response = axios({
+          method: 'GET',
+          timeout: 10000,
+          url: 'https://spectero.com/releases.json'
+        })
+
+        if (response) {
+          console.log(response)
+        }
+      } catch (e) {
+        let error = e.response
+        console.error(error)
+      }
+    }
+  },
+  created () {
+    this.fetchDownloadInfo()
   }
 }
 </script>

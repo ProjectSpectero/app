@@ -46,12 +46,14 @@
           </template>
 
           <template slot="actions" slot-scope="props">
-            <template v-if="existsInCart(props.row.id)">
-              <button disabled class="button">{{ $i18n.t('misc.IN_CART') }}</button>
-            </template>
-            <template v-else>
-              <button @click.stop="showModal(props.row)" class="button button-success">{{ $i18n.t('misc.PURCHASE') }}</button>
-            </template>
+            <button @click.stop="showModal(props.row)" class="button button-success" :class="{ 'button-bordered': existsInCart(props.row.id) }">
+              <template v-if="existsInCart(props.row.id)">
+                <span class="icon-check-circle"></span> {{ $i18n.t('misc.IN_CART') }}
+              </template>
+              <template v-else>
+                <span class="icon-dollar-sign"></span> {{ $i18n.t('misc.PURCHASE') }}
+              </template>
+            </button>
 
             <router-link class="button button" :to="{ name: 'marketView', params: { type: ((props.row.type.toLowerCase() === 'node') ? 'node' : 'group'), id: props.row.id } }">
               {{ $i18n.t('misc.VIEW') }}
@@ -93,6 +95,7 @@ export default {
   created () {
     this.setup()
     this.search()
+    this.getPlans()
   },
   computed: {
     ...mapGetters({
@@ -104,7 +107,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetch: 'market/fetch'
+      fetch: 'market/fetch',
+      fetchPlans: 'market/fetchPlans'
     }),
     existsInCart (id) {
       return this.cart.find(i => i.id === id)
@@ -154,6 +158,9 @@ export default {
     },
     search (page) {
       this.fetch({ page: page || 1, perPage: this.perPage, grouped: this.grouped })
+    },
+    getPlans () {
+      this.fetchPlans()
     }
   },
   metaInfo: {

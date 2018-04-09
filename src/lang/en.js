@@ -42,8 +42,9 @@ module.exports = {
     ADD_TO_CART: 'Add To Cart',
     IN_CART: 'In Cart',
     CHECKOUT: 'Checkout',
-    BUY_NOW: 'Buy Now',
-    VIEW_CART: 'View Cart'
+    VIEW_CART: 'View Cart',
+    CONTINUE_SHOPPING: 'Continue Shopping',
+    CHANGE_TERM: 'Change Term'
   },
 
   errors: {
@@ -185,12 +186,18 @@ module.exports = {
       LISTED_DEDICATED: 'Listed Dedicated'
     },
     ORDER_PROCESSED: 'Success! Invoice #{invoice} has been issued.',
-    REMOVED_FROM_CART: '{name} was removed from your cart!',
+    ADDED_TO_CART: '{name} was added to your cart.',
+    REMOVED_FROM_CART: '{name} was removed from your cart.',
+    TERM_MODIFIED: 'Term has been changed to {term}.',
     NODE_GROUP_IP_COUNT: '{ips} in {nodes} nodes',
     CART_EMPTY: 'Your cart is empty.',
     CLEAR_CART: 'Empty Cart',
     ITEM_IS_GROUP_WARNING: 'Purchasing this node group will grant you access to the {count} nodes within it. Click "View Full Details" to see all nodes associated to this group.',
-    PLAN_WARNING: 'Purchasing this node group will also unlock access to {planName}. <a href="{planUrl}" target="_blank">Learn more</a>'
+    PLAN_WARNING: 'Purchasing this node group will also unlock access to {planName}. <a href="{planUrl}" target="_blank">Learn more</a>',
+    TERM: {
+      MONTHLY: 'Monthly',
+      YEARLY: 'Yearly'
+    }
   },
 
   users: {
