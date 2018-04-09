@@ -1,7 +1,6 @@
 export default {
   data () {
     return {
-      status: ['all', 'active', 'cancelled'],
       rules: [],
       searchId: null,
       pagination: null,
@@ -33,6 +32,8 @@ export default {
         operator: 'SORT',
         value: data.direction.toUpperCase()
       })
+
+      console.log('Sorting by column with', this.rules)
 
       this.fetch(1)
     },

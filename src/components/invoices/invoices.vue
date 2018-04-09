@@ -3,46 +3,18 @@
     <top title="Invoices"></top>
     <div class="content-split">
       <div class="split-item split-list filters-side">
-        <router-link :to="{ name: 'invoices' }" class="filter-link">
-          <span>All invoices</span>
-          <div class="count">-</div>
-        </router-link>
-        <router-link :to="{ name: 'invoices', params: { filter: 'unpaid' } }" class="filter-link">
-          <span>Unpaid invoices</span>
-          <div class="count count-danger">-</div>
-        </router-link>
-        <router-link :to="{ name: 'invoices', params: { filter: 'paid' } }" class="filter-link">
-          <span>Paid invoices</span>
-          <div class="count">-</div>
+        <router-link v-for="s in status" :key="s" :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ badge: currentStatus === s }">
+          <span>{{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}</span>
         </router-link>
       </div>
       <div class="split-item split-details">
-        <div class="datatable">
-          <v-client-table :data="tableData" :columns="columns" :options="options">
-            <template slot="status" slot-scope="props">
-              <div :class="'badge status-' + props.row.status.toLowerCase()">{{ $i18n.t('payments.INVOICE_STATUS.' + props.row.status) }}</div>
-            </template>
-            <template slot="amount" slot-scope="props">
-              {{ props.row.amount | currency }} {{ props.row.currency }}
-            </template>
-            <template slot="due_date" slot-scope="props">
-              {{ props.row.due_date | moment('MMM D, YYYY') }}
-            </template>
-            <template slot="actions" slot-scope="props">
-              <router-link class="button" :to="{ name: 'invoice', params: { id: props.row.id } }">
-                View
-              </router-link>
-
-              <div class="inline" v-if="props.row.status === 'UNPAID'">
-                <router-link class="button button-success" :to="{ name: 'invoice', params: { id: props.row.id } }">
-                  Pay Now
-                </router-link>
-              </div>
-            </template>
-          </v-client-table>
-
-          <paginator :pagination="pagination" @changedPage="fetchInvoices"></paginator>
-        </div>
+        <invoices-list
+          :searchId="searchId"
+          :pagination="pagination"
+          :tableData="tableData"
+          @changedPage="changedPage"
+          @sortByColumn="sortByColumn">
+        </invoices-list>
       </div>
     </div>
   </div>
@@ -51,72 +23,83 @@
 <script>
 import top from '@/components/common/top'
 import paginator from '@/components/common/paginator'
+import invoicesList from './list'
 import invoiceAPI from '@/api/invoice.js'
+import filtersMixin from '@/mixins/listFilters'
 
 export default {
-  metaInfo: {
-    title: 'Invoices'
-  },
+  mixins: [filtersMixin],
   data () {
     return {
-      pagination: null,
-      tableData: null,
-      columns: ['id', 'status', 'due_date', 'amount', 'actions'],
-      sortableColumns: ['id', 'amount', 'status', 'due_date'],
-      filterableColumns: ['id', 'amount', 'status', 'due_date'],
-      headings: {
-        id: 'Invoice ID',
-        status: 'Status',
-        amount: 'Amount',
-        due_date: 'Due Date',
-        actions: ''
-      },
-      options: {}
+      status: ['all', 'paid', 'unpaid']
     }
   },
-  async created () {
-    await this.fetchInvoices(1)
-
-    this.options = {
-      skin: '',
-      texts: {
-        count: '',
-        filter: '',
-        filterPlaceholder: 'Search invoices',
-        limit: 'Invoices:',
-        page: 'Page:',
-        noResults: 'No matching invoices',
-        filterBy: 'Filter by {column}',
-        loading: 'Loading...',
-        defaultOption: 'Select {column}',
-        columns: 'Columns'
-      },
-      pagination: null,
-      headings: this.headings,
-      sortable: this.sortableColumns,
-      filterable: this.filterableColumns,
-      columnsClasses: {
-        actions: 'table-actions'
-      }
+  created () {
+    if (this.$route.name === 'invoices') {
+      this.$router.push({ name: 'invoicesByStatus', params: { status: 'all', page: 1 } })
+    } else {
+      this.sidebarSort('status', this.currentStatus, this.currentPage)
+    }
+  },
+  computed: {
+    currentStatus () {
+      return this.$route.params.status ? this.$route.params.status.toLowerCase() : 'all'
     }
   },
   methods: {
-    fetchInvoices (page) {
-      invoiceAPI.myInvoices({
+    changedPage (page) {
+      this.$router.push({ name: 'invoicesByStatus', params: { page: page, status: this.currentStatus } })
+    },
+    async fetch (page) {
+      if (this.rules.length) {
+        await invoiceAPI.search({
+          rules: this.rules,
+          success: async response => {
+            if (response.data.result.searchId) {
+              this.searchId = response.data.result.searchId
+            }
+
+            console.log('Fetching with searchId', this.searchId)
+
+            this.fetchInvoices(page)
+          },
+          fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
+        })
+      } else {
+        this.searchId = null
+        console.log('Fetching with searchId', this.searchId)
+        this.fetchInvoices(page)
+      }
+    },
+    async fetchInvoices (page) {
+      await invoiceAPI.myInvoices({
+        searchId: this.searchId,
         page: page,
+        limit: this.perPage,
         success: response => {
           this.pagination = response.data.pagination
           this.tableData = response.data.result
         },
-        fail: error => {
-          console.log(this.errorAPI(error, 'errors'))
-        }
+        fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
       })
+    }
+  },
+  watch: {
+    '$route': {
+      handler (n, o) {
+        this.sidebarSort('status', this.currentStatus, n.params.page)
+      },
+      deep: true,
+      immediate: false
     }
   },
   components: {
     top,
-    paginator
+    paginator,
+    invoicesList
+  },
+  metaInfo: {
+    title: 'Invoices'
   }
 }
 </script>

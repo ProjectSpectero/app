@@ -131,7 +131,6 @@
 <script>
 import top from '@/components/common/top'
 import { mapGetters, mapActions } from 'vuex'
-import paymentAPI from '@/api/payment.js'
 import orderAPI from '@/api/order.js'
 import invoiceAPI from '@/api/invoice.js'
 import paymentButtons from '../payments/buttons'
@@ -238,7 +237,7 @@ export default {
       })
     },
     async fetchDue () {
-      await paymentAPI.due({
+      await invoiceAPI.due({
         data: {
           id: this.$route.params.id
         },
@@ -251,7 +250,7 @@ export default {
       })
     },
     async fetchTransactions () {
-      await paymentAPI.transactions({
+      await invoiceAPI.transactions({
         data: {
           id: this.$route.params.id
         },

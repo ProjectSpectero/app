@@ -115,13 +115,21 @@ module.exports = {
     NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.',
     NO_ACCOUNT_CREDIT: 'You don\'t have any credit in your account.',
     COUNT_ACCOUNT_CREDIT: 'You currently have <strong><span>$</span>{credit} USD</strong> of credit in your account.',
-    ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!',
+    ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!'
+  },
+
+  invoices: {
     INVOICE_STATUS: {
       PAID: 'Paid',
       UNPAID: 'Unpaid',
       PARTIALLY_REFUNDED: 'Partially Refunded',
       REFUNDED: 'Refunded',
       CANCELLED: 'Cancelled'
+    },
+    MENU_STATUS: {
+      ALL: 'All invoices',
+      PAID: 'Paid invoices',
+      UNPAID: 'Unpaid invoices'
     }
   },
 

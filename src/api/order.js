@@ -38,8 +38,6 @@ export default {
       rules: options.rules
     }
 
-    console.log(options)
-
     return api('POST', `/search`, options)
   }
 }

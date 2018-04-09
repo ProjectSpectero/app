@@ -41,10 +41,29 @@ export default {
   },
 
   /**
-   * Returns invoices list for the logged in user.
-   * Uses the pagination helper to append a given page to the url.
+   * Returns the invoices list for the logged in user.
    */
   myInvoices (options) {
     return api('GET', helpers.appendQuery(`/invoice/self`, options), options)
+  },
+
+  /**
+   * Searches and filters orders. Example rules:
+   * "rules": [
+   *     {
+   *         "field": "status",
+   *         "operator": "=",
+   *         "value": "ACTIVE"
+   *     }
+   * ]
+   */
+  search (options) {
+    options.data = {
+      resource: 'invoice',
+      expires: 600,
+      rules: options.rules
+    }
+
+    return api('POST', `/search`, options)
   }
 }

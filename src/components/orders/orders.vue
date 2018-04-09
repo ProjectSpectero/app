@@ -28,6 +28,11 @@ import filtersMixin from '@/mixins/listFilters'
 
 export default {
   mixins: [filtersMixin],
+  data () {
+    return {
+      status: ['all', 'active', 'cancelled']
+    }
+  },
   created () {
     if (this.$route.name === 'orders') {
       this.$router.push({ name: 'ordersByStatus', params: { status: 'all', page: 1 } })
