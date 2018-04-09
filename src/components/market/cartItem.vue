@@ -90,6 +90,9 @@ export default {
     font-weight: $font-regular;
   }
 }
+.price {
+  max-width: 200px;
+}
 .renews {
   display: block;
   font-size: 100%;
@@ -120,7 +123,7 @@ export default {
   padding: 4px;
   font-size: 22px;
   line-height: 100%;
-  color: lighten($color-light, 30%);
+  color: lighten($color-light, 20%);
   cursor: pointer;
 
   &:hover {
