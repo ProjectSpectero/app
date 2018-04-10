@@ -79,7 +79,7 @@
             </router-link>
           </li>
           <li>
-            <a href="#logout" @click="logMeOut">
+            <a href="#logout" @click.prevent="logMeOut">
               <span class="icon-user-x"></span>
               {{ $i18n.t('misc.LOGOUT') }}
             </a>

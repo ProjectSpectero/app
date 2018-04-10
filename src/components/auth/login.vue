@@ -114,7 +114,7 @@ export default {
           this.storeUser(response.data.result)
 
           if (this.$route.query.redirect) {
-            this.$router.push({ path: this.$route.query.redirect })
+            this.$router.push({ name: this.$route.query.redirect })
           } else {
             this.$router.push({ name: 'dashboard' })
           }
