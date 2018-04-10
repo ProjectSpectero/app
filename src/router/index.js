@@ -1,18 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Meta from 'vue-meta'
-
 import store from '@/store'
 
-// Routes
-import authRoutes from './auth'
-import userRoutes from './users'
-import paymentRoutes from './payments'
-import nodeRoutes from './nodes'
-import marketRoutes from './market'
-import orderRoutes from './orders'
-import invoiceRoutes from './invoices'
-import defaultRoutes from './default'
+import appRoutes from './app'
+import daemonRoutes from './daemon'
 
 Vue.use(Router)
 Vue.use(Meta)
@@ -22,14 +14,8 @@ const router = new Router({
   saveScrollPosition: true,
   scrollBehavior: (to, from, pos) => to.hash ? { selector: to.hash } : { x: 0, y: 0 },
   routes: [
-    ...authRoutes,
-    ...userRoutes,
-    ...paymentRoutes,
-    ...nodeRoutes,
-    ...marketRoutes,
-    ...orderRoutes,
-    ...invoiceRoutes,
-    ...defaultRoutes
+    ...appRoutes,
+    ...daemonRoutes
   ]
 })
 

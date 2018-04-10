@@ -14,7 +14,7 @@ import VueModal from 'vue-js-modal'
 
 import { ClientTable, ServerTable } from 'vue-tables-2'
 import VueCurrencyFilter from 'vue-currency-filter'
-import globalMixin from './mixins/global'
+import globalMixin from './mixins/app/global'
 
 // Load .env configurations
 require('dotenv').config()
