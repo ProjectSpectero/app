@@ -14,7 +14,7 @@ import VueModal from 'vue-js-modal'
 
 import { ClientTable, ServerTable } from 'vue-tables-2'
 import VueCurrencyFilter from 'vue-currency-filter'
-import globalMixin from './mixins/app/global'
+import globalMixin from './shared/mixins/global'
 
 // Load .env configurations
 require('dotenv').config()
@@ -65,7 +65,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 // i18n data
-const messages = { en: require('./lang/en.js') }
+const messages = { en: require('./shared/lang/en.js') }
 const i18n = new VueI18n({ locale: 'en', messages })
 const globalMethods = globalMixin(i18n)
 
