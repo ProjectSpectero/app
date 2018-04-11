@@ -44,7 +44,7 @@ const actions = {
     })
   },
   async checkLogin ({ commit, getters, dispatch }) {
-    const cookie = getCookie(process.env.COOKIE_NAME)
+    const cookie = getCookie(process.env.APP_COOKIE)
     let data = null
 
     if (cookie) {
@@ -76,10 +76,10 @@ const actions = {
       expiry: payload.expiry
     }
 
-    setCookie(process.env.COOKIE_NAME, JSON.stringify(data), { expires: payload.expiry + 's' })
+    setCookie(process.env.APP_COOKIE, JSON.stringify(data), { expires: payload.expiry + 's' })
   },
   logout ({ commit }) {
-    removeCookie(process.env.COOKIE_NAME)
+    removeCookie(process.env.APP_COOKIE)
     commit('CLEAR_LOGIN_INFO')
   },
   setLoginInfo ({ commit, dispatch }, payload) {

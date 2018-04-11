@@ -5,13 +5,13 @@ class Err {
 
   /**
    * Parser for error data returned from API.
-   * 
+   *
    * Used to parse error fields, for instance: `FIELD_MAXLENGTH:authKey:50` decodes to
    * a FIELD_MAXLENGTH error on the authKey field, with a max allowed length of 50.
-   * 
+   *
    * Note: error keys may contain more than one error, this function will return an array
    * of keys, with an array of error fields (if any) within each key.
-   * 
+   *
    * @param {String} data Data string from error passed from API.
    */
   parse (data) {

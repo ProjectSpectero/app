@@ -20,6 +20,12 @@
         <h5>{{ $i18n.t('misc.DAEMON') }}</h5>
         <ul>
           <li>
+            <router-link :to="{ name: 'services' }">
+              <span class="icon-server"></span>
+              {{ $i18n.t('misc.SERVICES') }}
+            </router-link>
+          </li>
+          <li>
             <router-link :to="{ name: 'nodes' }">
               <span class="icon-server"></span>
               {{ $i18n.t('misc.NODES') }}

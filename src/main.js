@@ -11,10 +11,10 @@ import Toasted from 'vue-toasted'
 import VueMoment from 'vue-moment'
 import VueAnalytics from 'vue-ua'
 import VueModal from 'vue-js-modal'
-
-import { ClientTable, ServerTable } from 'vue-tables-2'
+import { ClientTable } from 'vue-tables-2'
 import VueCurrencyFilter from 'vue-currency-filter'
-import globalMixin from './shared/mixins/global'
+
+import globalMixin from '@/shared/mixins/global'
 
 // Load .env configurations
 require('dotenv').config()
@@ -24,7 +24,6 @@ Vue.use(VueI18n)
 Vue.use(VueCookie)
 Vue.use(VeeValidate)
 Vue.use(ClientTable)
-Vue.use(ServerTable)
 Vue.use(VueMoment)
 
 Vue.use(VueModal, {
