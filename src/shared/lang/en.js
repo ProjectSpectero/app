@@ -78,7 +78,9 @@ module.exports = {
     INVALID_IP_AS_LISTENER_REQUEST: 'Unable to bind httpProxy/openVPN server to this listener.',
     INVALID_HTTP_MODE_REQUEST: 'Invalid HTTP mode change requested.',
     STORED_CONFIG_WAS_NULL: 'Unable to store service configuration.',
-    CANNOT_DELETE_SELF: 'You can\'t delete yourself.'
+    CANNOT_DELETE_SELF: 'You can\'t delete yourself.',
+    ROLE_ESCALATION_FAILED: 'You don\'t have permission to add users of this role level.',
+    CLOUD_USER_ALTER_NOT_ALLOWED: 'You can\'t alter this cloud user.'
   },
 
   payments: {
@@ -210,7 +212,15 @@ module.exports = {
 
   users: {
     LOGIN_BUTTON: 'Log In',
-    REGISTER_BUTTON: 'Register'
+    REGISTER_BUTTON: 'Register',
+    USER_CREATE_SUCCESS: 'User created!',
+    USER_UPDATE_SUCCESS: 'User saved!',
+    USER_UPDATE_ERROR: 'Something went wrong. Please try again!',
+    USER_DELETE_SUCCESS: 'User deleted!',
+    USER_DELETE_ERROR: 'There was a problem while deleting this user. Please try again later.',
+    UNABLE_TO_DISPLAY_BANNED_DOMAINS: 'Proxy Mode must be set to Normal to edit banned domains.',
+    UNABLE_TO_DISPLAY_ALLOWED_DOMAINS: 'Proxy Mode must be set to ExclusiveAllow to edit allowed domains.',
+    LEAVE_CONFIRM_DIALOG: 'Are you sure you want to leave? Any unsaved changes will be lost.'
   },
 
   settings: {
