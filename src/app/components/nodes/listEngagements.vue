@@ -34,7 +34,7 @@
 
 <script>
 import nodeAPI from '@/app/api/node.js'
-import notFound from '@/app/components/common/notFound'
+import notFound from '@/shared/components/notFound'
 
 export default {
   props: {

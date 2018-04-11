@@ -49,7 +49,7 @@
 
 <script>
 import nodeAPI from '@/app/api/node.js'
-import paginator from '@/app/components/common/paginator'
+import paginator from '@/shared/components/paginator'
 
 export default {
   props: {

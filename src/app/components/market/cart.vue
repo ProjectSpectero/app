@@ -68,7 +68,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import top from '@/app/components/common/top'
+import top from '@/shared/components/top'
 import marketAPI from '@/app/api/market.js'
 import cartItem from './cartItem'
 

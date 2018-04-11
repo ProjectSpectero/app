@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import top from '@/app/components/common/top'
+import top from '@/shared/components/top'
 import { mapGetters } from 'vuex'
 import userAPI from '@/app/api/user.js'
 import tabProfile from './tabs/profile'
@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user',
+      user: 'appAuth/user',
       countries: 'settings/countries'
     }),
     currentTab: function () {

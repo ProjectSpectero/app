@@ -41,7 +41,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import top from '@/app/components/common/top'
+import top from '@/shared/components/top'
 import orderAPI from '@/app/api/order.js'
 import items from './items'
 
@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user'
+      user: 'appAuth/user'
     })
   },
   methods: {

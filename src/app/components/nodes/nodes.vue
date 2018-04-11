@@ -43,9 +43,9 @@
 </template>
 
 <script>
-import top from '@/app/components/common/top'
-import loading from '@/app/components/common/loading'
-import notFound from '@/app/components/common/notFound'
+import top from '@/shared/components/top'
+import loading from '@/shared/components/loading'
+import notFound from '@/shared/components/notFound'
 import nodesList from './nodesList'
 import nodeAPI from '@/app/api/node.js'
 

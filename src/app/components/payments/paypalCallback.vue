@@ -13,7 +13,7 @@
 <script>
 import { mapActions } from 'vuex'
 import paymentAPI from '@/app/api/payment.js'
-import loading from '@/app/components/common/loading'
+import loading from '@/shared/components/loading'
 
 export default {
   data () {

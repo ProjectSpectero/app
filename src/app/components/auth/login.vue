@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      storeUser: 'auth/storeUser'
+      storeUser: 'appAuth/storeUser'
     }),
     testAutologin () {
       if (this.$route.query.autologin !== undefined) {

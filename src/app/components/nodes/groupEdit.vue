@@ -13,8 +13,8 @@
 
 <script>
 import nodeAPI from '@/app/api/node.js'
-import top from '@/app/components/common/top'
-import loading from '@/app/components/common/loading'
+import top from '@/shared/components/top'
+import loading from '@/shared/components/loading'
 import tabs from './tabs'
 import editForm from './groupEditForm'
 import listEngagements from './listEngagements'

@@ -7,10 +7,10 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import auth from '@/app/components/layouts/auth'
-import basic from '@/app/components/layouts/basic'
-import error from '@/app/components/layouts/error'
-import master from '@/app/components/layouts/master'
+import auth from '@/shared/layouts/auth'
+import basic from '@/shared/layouts/basic'
+import error from '@/shared/layouts/error'
+import master from '@/shared/layouts/master'
 
 export default {
   name: 'Spectero',

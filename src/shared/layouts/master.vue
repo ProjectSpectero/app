@@ -10,7 +10,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import sidebar from '@/app/components/common/sidebar'
+import sidebar from '@/shared/components/sidebar'
 
 export default {
   data () {

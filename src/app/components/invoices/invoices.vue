@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import top from '@/app/components/common/top'
-import paginator from '@/app/components/common/paginator'
+import top from '@/shared/components/top'
+import paginator from '@/shared/components/paginator'
 import invoicesList from './list'
 import invoiceAPI from '@/app/api/invoice.js'
 import filtersMixin from '@/app/mixins/listFilters'

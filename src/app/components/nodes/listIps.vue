@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import notFound from '@/app/components/common/notFound'
+import notFound from '@/shared/components/notFound'
 
 export default {
   props: {

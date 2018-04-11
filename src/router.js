@@ -5,6 +5,7 @@ import store from '@/store'
 
 import appRoutes from '@/app/routes'
 import daemonRoutes from '@/daemon/routes'
+import sharedRoutes from '@/shared/routes'
 
 Vue.use(Router)
 Vue.use(Meta)
@@ -15,7 +16,8 @@ const router = new Router({
   scrollBehavior: (to, from, pos) => to.hash ? { selector: to.hash } : { x: 0, y: 0 },
   routes: [
     ...appRoutes,
-    ...daemonRoutes
+    ...daemonRoutes,
+    ...sharedRoutes
   ]
 })
 
@@ -24,13 +26,13 @@ router.beforeEach((to, from, next) => {
   // Check login status by either decoding the cookie or
   // testing for a token in store (if any)
 
-  store.dispatch('auth/checkLogin').then(loggedIn => {
+  store.dispatch('appAuth/checkLogin').then(loggedIn => {
     // Handle routes requiring authentication
     // or handle routes that arent view-able by already logged in users (default to /dashboard)
     // else handles regular routes
     if (loggedIn) {
       // Fetch freshdesk url if not found
-      store.dispatch('auth/fetchFreshdeskURL').then(() => {
+      store.dispatch('appAuth/fetchFreshdeskURL').then(() => {
         processRoute(loggedIn, to, from, next)
       })
     } else {
@@ -46,7 +48,7 @@ function processRoute (loggedIn, to, from, next) {
     } else {
       // Force the same behavior as logging out (remove cookie + clean store)
       // for scenarios where our cookie has expired
-      store.dispatch('auth/logout').then(loggedIn => {
+      store.dispatch('appAuth/logout').then(loggedIn => {
         next({ name: 'login', query: { redirect: to.fullPath } })
       })
     }

@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import paginator from '@/app/components/common/paginator'
-import tableHeader from '@/app/components/common/table/thead'
+import paginator from '@/shared/components/paginator'
+import tableHeader from '@/shared/components/table/thead'
 
 export default {
   props: {

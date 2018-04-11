@@ -112,13 +112,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      freshdeskUrl: 'auth/freshdeskUrl',
+      freshdeskUrl: 'appAuth/freshdeskUrl',
       count: 'market/cartCounter'
     })
   },
   methods: {
     ...mapActions({
-      logout: 'auth/logout'
+      logout: 'appAuth/logout'
     }),
     logMeOut () {
       this.logout().then(() => {

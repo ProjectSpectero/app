@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import loading from '@/app/components/common/loading'
+import loading from '@/shared/components/loading'
 import marketAPI from '@/app/api/market.js'
 import itemDetails from './details'
 

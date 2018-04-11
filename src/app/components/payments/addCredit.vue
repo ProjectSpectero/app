@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user'
+      user: 'appAuth/user'
     })
   },
   methods: {

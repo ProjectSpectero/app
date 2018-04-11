@@ -129,7 +129,7 @@
 </template>
 
 <script>
-import top from '@/app/components/common/top'
+import top from '@/shared/components/top'
 import { mapGetters, mapActions } from 'vuex'
 import orderAPI from '@/app/api/order.js'
 import invoiceAPI from '@/app/api/invoice.js'
@@ -156,8 +156,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user',
-      pendingPayment: 'users/pendingPayment'
+      user: 'appAuth/user',
+      pendingPayment: 'appUsers/pendingPayment'
     }),
     status () {
       return this.invoice.status
@@ -179,8 +179,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      setPendingInvoiceStatus: 'users/setPendingInvoiceStatus',
-      syncCurrentUser: 'auth/syncCurrentUser'
+      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus',
+      syncCurrentUser: 'appAuth/syncCurrentUser'
     }),
     async fetchInvoice () {
       await invoiceAPI.invoice({

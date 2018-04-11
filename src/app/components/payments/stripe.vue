@@ -51,7 +51,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user'
+      user: 'appAuth/user'
     }),
     invoiceId () {
       return parseInt(this.$route.params.invoiceId)
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      setPendingInvoiceStatus: 'users/setPendingInvoiceStatus'
+      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus'
     }),
     fetchDue () {
       paymentAPI.due({

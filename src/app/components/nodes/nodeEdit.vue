@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import top from '@/app/components/common/top'
+import top from '@/shared/components/top'
 import tabs from './tabs'
 import editForm from './nodeEditForm'
 import listEngagements from './listEngagements'

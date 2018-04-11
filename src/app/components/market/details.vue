@@ -26,7 +26,7 @@
 <script>
 import ips from '@/app/components/nodes/listIps'
 import nodes from './nodes'
-import notFound from '@/app/components/common/notFound'
+import notFound from '@/shared/components/notFound'
 
 export default {
   props: {

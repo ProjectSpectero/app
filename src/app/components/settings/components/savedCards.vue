@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      syncCurrentUser: 'auth/syncCurrentUser'
+      syncCurrentUser: 'appAuth/syncCurrentUser'
     }),
     clearStripe () {
       paymentAPI.clearStripeData({

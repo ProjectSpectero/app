@@ -39,7 +39,7 @@
 
 <script>
 import axios from 'axios'
-import top from '@/app/components/common/top'
+import top from '@/shared/components/top'
 
 export default {
   components: {

@@ -15,9 +15,9 @@ const login = function (options) {
         const result = response.data.result
 
         // Bind cookie
-        store.dispatch('auth/addCookie', result).then(() => {
+        store.dispatch('appAuth/addCookie', result).then(() => {
           // Add tokens to the store
-          store.dispatch('auth/setLoginInfo', result).then(() => {
+          store.dispatch('appAuth/setLoginInfo', result).then(() => {
             options.loginSuccess()
           })
         })

@@ -18,7 +18,7 @@
 
 <script>
 import nodeAPI from '@/app/api/node.js'
-import loading from '@/app/components/common/loading'
+import loading from '@/shared/components/loading'
 import nodeEdit from './nodeEdit'
 import nodeView from './nodeView'
 

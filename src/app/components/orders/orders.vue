@@ -22,7 +22,7 @@
 
 <script>
 import orderAPI from '@/app/api/order.js'
-import top from '@/app/components/common/top'
+import top from '@/shared/components/top'
 import ordersList from './list'
 import filtersMixin from '@/app/mixins/listFilters'
 
