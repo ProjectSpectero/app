@@ -18,7 +18,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Top from '@/shared/components/top'
+import top from '@/shared/components/top'
 
 export default {
   created () {
@@ -46,18 +46,10 @@ export default {
     }
   },
   components: {
-    Top
+    top
   },
   metaInfo: {
     title: 'Services'
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  // @import '../../assets/styles/_vars.scss';
-
-  // .buttonActions {
-  //   margin-top: $pad;
-  // }
-</style>

@@ -11,6 +11,7 @@ import auth from '@/shared/layouts/auth'
 import basic from '@/shared/layouts/basic'
 import error from '@/shared/layouts/error'
 import master from '@/shared/layouts/master'
+import daemon from '@/shared/layouts/daemon'
 
 export default {
   name: 'Spectero',
@@ -58,7 +59,8 @@ export default {
     auth,
     basic,
     error,
-    master
+    master,
+    daemon
   }
 }
 </script>

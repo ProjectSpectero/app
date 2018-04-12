@@ -122,5 +122,16 @@ export default {
    */
   deleteEngagement (options) {
     return api('DELETE', `/engagement/${options.data.id}`, options)
+  },
+
+  /**
+   * Automatically logs into the daemon application, retrieving the JWT token
+   * for a given node.
+   *
+   * @param {Integer} id Node group id to delete.
+   */
+
+  nodeLogin (options) {
+    return api('GET', `/node/${options.data.id}/auth`, options)
   }
 }

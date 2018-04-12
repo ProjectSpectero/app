@@ -1,42 +1,89 @@
-import userAPI from '@/daemon/api/user'
+import { setCookie, getCookie, removeCookie } from 'tiny-cookie'
+import nodeAPI from '@/app/api/node.js'
+import router from '@/router'
 
 const state = {
-  user: null,
-  jwt: null
+  accessToken: null,
+  refreshToken: null,
+  expiry: null
 }
 
 const getters = {
-  currentUser: (state) => state.user,
-  currentJWT: (state) => state.jwt,
-  currentUserRoles: (state) => state.user !== null ? state.user.roles : [],
-  isSuperAdmin: (state, getters) => getters.currentUserRoles ? getters.currentUserRoles.indexOf('SuperAdmin') > -1 : false
+  accessToken: (state) => state.accessToken,
+  refreshToken: (state) => state.refreshToken,
+  expiry: (state) => state.expiry
 }
 
 const actions = {
-  syncCurrentUser ({ commit }) {
-    userAPI.get({
-      data: { id: state.user.id },
-      success: (response) => {
-        commit('SET_CURRENT_USER', response.data.result)
+  addCookie ({ commit }, payload) {
+    const data = {
+      accessToken: payload.accessToken,
+      refreshToken: payload.refreshToken,
+      expiry: 604800 // 7 days
+    }
+
+    console.log('data', data)
+
+    setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: payload.expiry + 's' })
+    console.log('Added cookie info for DAEMON_COOKIE', getCookie(process.env.DAEMON_COOKIE))
+  },
+  async autologin ({ commit, dispatch }, nodeId) {
+    await nodeAPI.nodeLogin({
+      data: {
+        id: nodeId
       },
-      fail: (error) => {
+      success: response => {
+        dispatch('addCookie', response.data.result)
+        commit('SET_LOGIN_INFO', response.data.result)
+        router.push({ name: 'daemon', params: { nodeId: nodeId } })
+      },
+      fail: error => {
         console.log(error)
-        // TODO: implement
+        router.push({ path: '/404' })
       }
     })
   },
-  setCurrentJWT ({ commit }, payload) {
-    commit('SET_CURRENT_JWT', payload)
+  checkLogin ({ state, commit, dispatch }) {
+    const cookie = getCookie(process.env.DAEMON_COOKIE)
+    let data = null
+
+    if (cookie) {
+      // Access token found, no need to decode cookie
+      if (state.accessToken) {
+        return
+      }
+
+      data = JSON.parse(cookie)
+
+      // If no data is set we're first-landing the page and we need to decode the cookie
+      if (data) {
+        commit('SET_LOGIN_INFO', data)
+      }
+    } else {
+      if (router.params.nodeId) {
+        dispatch('autologin', router.params.nodeId)
+      } else {
+        router.push({ name: 'nodes' })
+      }
+    }
+  },
+  logout ({ commit }) {
+    removeCookie(process.env.DAEMON_COOKIE)
+    commit('CLEAR_LOGIN_INFO')
   }
 }
 
 const mutations = {
-  SET_CURRENT_USER (state, payload) {
-    state.user = payload
+  SET_LOGIN_INFO (state, payload) {
+    state.accessToken = payload.accessToken
+    state.refreshToken = payload.refreshToken
+    state.expiry = 604800 // 7 days
+    console.log('Set login info for daemon in store', state.accessToken)
   },
-  SET_CURRENT_JWT (state, payload) {
-    state.user = payload.data
-    state.jwt = payload.token
+  CLEAR_LOGIN_INFO (state) {
+    state.accessToken = null
+    state.refreshToken = null
+    state.expiry = null
   }
 }
 

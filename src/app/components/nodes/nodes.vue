@@ -2,6 +2,10 @@
   <div>
     <top title="Nodes"></top>
 
+    <div @click.stop="autologin(101)">
+      Manage node 101 (accessible by dev@spectero.com only)
+    </div>
+
     <div v-if="groups && !loading">
       <div v-if="groups.result.length" class="list">
         <div class="nodes-sidebar">
@@ -43,11 +47,12 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import nodesList from './nodesList'
+import nodeAPI from '@/app/api/node.js'
 import top from '@/shared/components/top'
 import loading from '@/shared/components/loading'
 import notFound from '@/shared/components/notFound'
-import nodesList from './nodesList'
-import nodeAPI from '@/app/api/node.js'
 
 export default {
   data () {
@@ -76,7 +81,7 @@ export default {
   metaInfo: {
     title: 'Nodes'
   },
-  created () {
+  async created () {
     this.options = {
       skin: '',
       texts: {
@@ -101,9 +106,12 @@ export default {
       filterable: this.filterableColumns
     }
 
-    this.fetchAll()
+    await this.fetchAll()
   },
   methods: {
+    ...mapActions({
+      autologin: 'daemonAuth/autologin'
+    }),
     selectGroup (group) {
       this.$set(this.options.texts, 'count', 'Showing {from} to {to} of {count} nodes|{count} nodes|One node')
       this.$set(this.options, 'pagination', true)
@@ -115,17 +123,19 @@ export default {
       this.$router.push({ name: 'nodesByGroup', params: { id: group.id } })
     },
     selectUncategorizedNodes () {
-      // Uncategorized nodes will use server-side pagination
-      // so we need to disable a few options
-      this.$set(this.options.texts, 'count', '')
-      this.$set(this.options, 'pagination', false)
-      this.$set(this.options, 'perPage', 10)
+      if (this.uncategorizedNodes) {
+        // Uncategorized nodes will use server-side pagination
+        // so we need to disable a few options
+        this.$set(this.options.texts, 'count', '')
+        this.$set(this.options, 'pagination', false)
+        this.$set(this.options, 'perPage', 10)
 
-      this.nodes = this.uncategorizedNodes.result
-      this.pagination = this.uncategorizedNodes.pagination
-      this.selectedGroup = 0
+        this.nodes = this.uncategorizedNodes.result
+        this.pagination = this.uncategorizedNodes.pagination
+        this.selectedGroup = 0
 
-      this.$router.push({ name: 'nodesByGroup', params: { id: 'uncategorized' } })
+        this.$router.push({ name: 'nodesByGroup', params: { id: 'uncategorized' } })
+      }
     },
     editGroup (id) {
       this.$router.push({ name: 'groupEdit', params: { id: id } })
@@ -179,14 +189,17 @@ export default {
     },
     selectDefaultGroup () {
       let found = false
-      const groups = this.groups.result
 
-      // Attempt to pick the first node group with nodes
-      for (let g = 0; g < groups.length; g++) {
-        if (groups[g].nodes && groups[g].nodes.length) {
-          found = true
-          this.selectGroup(groups[0])
-          break
+      if (this.groups && this.groups.result.length) {
+        const groups = this.groups.result
+
+        // Attempt to pick the first node group with nodes
+        for (let g = 0; g < groups.length; g++) {
+          if (groups[g].nodes && groups[g].nodes.length) {
+            found = true
+            this.selectGroup(groups[0])
+            break
+          }
         }
       }
 

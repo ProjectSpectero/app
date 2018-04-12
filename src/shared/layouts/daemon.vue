@@ -1,5 +1,5 @@
 <template>
-  <div class="spectero">
+  <div class="spectero daemon">
     <sidebar></sidebar>
     <div class="content">
       <modals-container/>
@@ -9,9 +9,18 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import sidebar from '@/shared/components/sidebar'
 
 export default {
+  created () {
+    this.checkLogin()
+  },
+  methods: {
+    ...mapActions({
+      checkLogin: 'daemonAuth/checkLogin'
+    })
+  },
   components: {
     sidebar
   }

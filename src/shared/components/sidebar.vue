@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div v-if="!loading" class="sidebar">
     <div class="menu-logo">
       <router-link :to="{ name: 'dashboard' }">
         <div class="logo logo-sm"></div>
@@ -19,12 +19,6 @@
       <section class="nav-section">
         <h5>{{ $i18n.t('misc.DAEMON') }}</h5>
         <ul>
-          <li>
-            <router-link :to="{ name: 'services' }">
-              <span class="icon-server"></span>
-              {{ $i18n.t('misc.SERVICES') }}
-            </router-link>
-          </li>
           <li>
             <router-link :to="{ name: 'nodes' }">
               <span class="icon-server"></span>
@@ -113,8 +107,13 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      loading: true,
       supportLink: null
     }
+  },
+  created () {
+    this.refreshCart()
+    this.loading = false
   },
   computed: {
     ...mapGetters({
@@ -124,11 +123,17 @@ export default {
   },
   methods: {
     ...mapActions({
-      logout: 'appAuth/logout'
+      refreshCart: 'market/refreshCart',
+      appLogout: 'appAuth/logout',
+      daemonLogout: 'daemonAuth/logout'
     }),
     logMeOut () {
-      this.logout().then(() => {
-        this.$router.push({ name: 'login' })
+      this.daemonLogout().then(() => {
+        console.log('Logged out from daemon')
+        this.appLogout().then(() => {
+          console.log('Logged out from app')
+          this.$router.push({ name: 'login' })
+        })
       })
     }
   }
