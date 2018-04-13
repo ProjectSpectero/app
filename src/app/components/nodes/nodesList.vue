@@ -29,6 +29,10 @@
           {{ $i18n.t('misc.VERIFY') }}
         </button>
 
+        <router-link class="button button-icon" :to="{ name: 'daemon', params: { nodeId: 101 } }">
+          <span class="icon-settings"></span>
+        </router-link>
+
         <router-link class="button button-icon" :to="{ name: 'node', params: { action: 'view', id: props.row.id } }">
           <span class="icon-more-horizontal"></span>
         </router-link>

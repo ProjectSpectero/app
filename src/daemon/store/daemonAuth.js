@@ -1,30 +1,44 @@
 import { setCookie, getCookie, removeCookie } from 'tiny-cookie'
 import nodeAPI from '@/app/api/node.js'
+import userAPI from '@/daemon/api/user.js'
 import router from '@/router'
 
 const state = {
+  user: null,
   accessToken: null,
   refreshToken: null,
   expiry: null
 }
 
 const getters = {
+  user: (state) => state.user,
   accessToken: (state) => state.accessToken,
   refreshToken: (state) => state.refreshToken,
   expiry: (state) => state.expiry
 }
 
 const actions = {
-  addCookie ({ commit }, payload) {
+  async syncCurrentUser ({ commit }) {
+    await userAPI.getMe({
+      success: response => {
+        console.log('syncCurrentUser response', response.data.result)
+        commit('SET_CURRENT_USER', response.data.result)
+      },
+      fail: error => {
+        console.log(error)
+      }
+    })
+  },
+  async addCookie ({ commit, dispatch }, payload) {
     const data = {
       accessToken: payload.accessToken,
       refreshToken: payload.refreshToken,
       expiry: 604800 // 7 days
     }
 
-    console.log('data', data)
-
     setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: payload.expiry + 's' })
+    commit('SET_LOGIN_INFO', data)
+
     console.log('Added cookie info for DAEMON_COOKIE', getCookie(process.env.DAEMON_COOKIE))
   },
   async autologin ({ commit, dispatch }, nodeId) {
@@ -34,14 +48,15 @@ const actions = {
       },
       success: response => {
         dispatch('addCookie', response.data.result)
-        commit('SET_LOGIN_INFO', response.data.result)
-        router.push({ name: 'daemon', params: { nodeId: nodeId } })
       },
       fail: error => {
         console.log(error)
-        router.push({ path: '/404' })
       }
     })
+  },
+  logout ({ commit }) {
+    removeCookie(process.env.DAEMON_COOKIE)
+    commit('CLEAR_LOGIN_INFO')
   },
   checkLogin ({ state, commit, dispatch }) {
     const cookie = getCookie(process.env.DAEMON_COOKIE)
@@ -60,25 +75,20 @@ const actions = {
         commit('SET_LOGIN_INFO', data)
       }
     } else {
-      if (router.params.nodeId) {
-        dispatch('autologin', router.params.nodeId)
-      } else {
-        router.push({ name: 'nodes' })
-      }
+      dispatch('autologin', router.params.nodeId)
     }
-  },
-  logout ({ commit }) {
-    removeCookie(process.env.DAEMON_COOKIE)
-    commit('CLEAR_LOGIN_INFO')
   }
 }
 
 const mutations = {
+  SET_CURRENT_USER (state, payload) {
+    state.user = payload
+    console.log('Fetched current user', state.user)
+  },
   SET_LOGIN_INFO (state, payload) {
     state.accessToken = payload.accessToken
     state.refreshToken = payload.refreshToken
-    state.expiry = 604800 // 7 days
-    console.log('Set login info for daemon in store', state.accessToken)
+    state.expiry = payload.expiry
   },
   CLEAR_LOGIN_INFO (state) {
     state.accessToken = null

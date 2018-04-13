@@ -1,11 +1,6 @@
 <template>
   <div>
     <top title="Nodes"></top>
-
-    <div @click.stop="autologin(101)">
-      Manage node 101 (accessible by dev@spectero.com only)
-    </div>
-
     <div v-if="groups && !loading">
       <div v-if="groups.result.length" class="list">
         <div class="nodes-sidebar">
@@ -47,7 +42,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import nodesList from './nodesList'
 import nodeAPI from '@/app/api/node.js'
 import top from '@/shared/components/top'
@@ -109,9 +103,6 @@ export default {
     await this.fetchAll()
   },
   methods: {
-    ...mapActions({
-      autologin: 'daemonAuth/autologin'
-    }),
     selectGroup (group) {
       this.$set(this.options.texts, 'count', 'Showing {from} to {to} of {count} nodes|{count} nodes|One node')
       this.$set(this.options, 'pagination', true)

@@ -1,10 +1,8 @@
 const state = {
-  users: [],
   pendingPayment: false
 }
 
 const getters = {
-  list: state => state.users,
   editRules: () => {
     return {
       email: {

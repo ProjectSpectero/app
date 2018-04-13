@@ -10,7 +10,7 @@ export default {
 
   /**
    * Returns one user by user id.
-   * 
+   *
    * @param {Integer} id ID pertaining to user being requested.
    */
   get (options) {
@@ -18,8 +18,15 @@ export default {
   },
 
   /**
+   * Returns the current user.
+   */
+  getMe (options) {
+    return api('GET', '/user/self', options)
+  },
+
+  /**
    * Creates user from given parameters.
-   * 
+   *
    * @param {String} authKey      Username.
    * @param {String} password     Password.
    * @param {String} emailAddress Email address.
@@ -34,9 +41,9 @@ export default {
 
   /**
    * Edit a users details.
-   * 
+   *
    * @param {Integer} id       User id to edit.
-   * 
+   *
    * @param {String} authKey      Username.
    * @param {String} password     Password.
    * @param {String} emailAddress Email address.
@@ -51,7 +58,7 @@ export default {
 
   /**
    * Delete a user at given id.
-   * 
+   *
    * @param {Integer} id User id to delete.
    */
   delete (options) {

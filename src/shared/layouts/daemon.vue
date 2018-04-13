@@ -9,16 +9,27 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import sidebar from '@/shared/components/sidebar'
 
 export default {
-  created () {
-    this.checkLogin()
+  async created () {
+    if (this.$route.params.nodeId) {
+      await this.autologin(this.$route.params.nodeId)
+      await this.syncCurrentUser()
+    } else {
+      this.$router.push({ path: '/404' })
+    }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'daemonAuth/user'
+    })
   },
   methods: {
     ...mapActions({
-      checkLogin: 'daemonAuth/checkLogin'
+      autologin: 'daemonAuth/autologin',
+      syncCurrentUser: 'daemonAuth/syncCurrentUser'
     })
   },
   components: {
