@@ -3,7 +3,7 @@
     <top title="Orders"></top>
     <div class="content-split">
       <div class="split-item split-list filters-side">
-        <router-link v-for="s in status" :key="s" :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ badge: currentStatus === s }">
+        <router-link v-for="s in status" :key="s" :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
           <span>{{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}</span>
         </router-link>
       </div>
