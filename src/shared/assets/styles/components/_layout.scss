@@ -1,0 +1,72 @@
+.container {
+  display: block;
+  margin-bottom: $pad;
+  background: $white;
+}
+
+.boxed {
+  width: 100%;
+  height: auto;
+  padding: $pad;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  &.boxed-centered {
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  .boxed-container {
+    width: 100%;
+    max-width: 350px;
+    padding: $pad;
+    color: $color-primary;
+    background: $white;
+    border: 1px solid $color-border;
+    border-radius: 4px;
+
+    &.boxed-md {
+      max-width: 500px;
+    }
+  }
+}
+
+.content-split {
+  width: 100%;
+  display: flex;
+  margin-bottom: $pad;
+
+  .split-list {
+    width: 240px;
+    padding-right: $pad;
+    border-right: 1px solid $color-border;
+  }
+  .split-details {
+    flex: 1;
+    padding-left: $pad;
+  }
+}
+
+.col-container {
+  display: flex;
+
+  &.reduce-spacing > .col {
+    padding: 0 $pad/4;
+  }
+  > .col {
+    flex: 1;
+    padding: 0 $pad/2;
+
+    &:first-child {
+      padding-left: 0;
+    }
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+  > .col-half {
+    width: 50%;
+    padding-right: $pad/2;
+  }
+}

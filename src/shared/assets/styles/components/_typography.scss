@@ -1,0 +1,41 @@
+h1, h2, h3, h4, h5 {
+  margin-bottom: $pad;
+  line-height: 100%;
+  font-weight: $font-bold;
+}
+
+p {
+  line-height: 140%;
+  
+  &.small {
+    font-size: 90%;
+    color: #999;
+  }
+  &.spaced {
+    margin-bottom: 12px;
+  }
+}
+
+a {
+  color: $color-info;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-success {
+  color: $color-success;
+}
+.text-info {
+  color: $color-info;
+}
+.text-danger {
+  color: $color-danger;
+}
+.text-warning {
+  color: $color-warning;
+}

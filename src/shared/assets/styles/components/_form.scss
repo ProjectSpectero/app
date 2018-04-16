@@ -1,0 +1,38 @@
+// Input padding
+.form-input {
+  margin-bottom: 12px;
+}
+.form-checkbox {
+  margin-bottom: 8px;
+  vertical-align: middle;
+
+  label, input {
+    cursor: pointer;
+  }
+  input {
+    margin-right: 2px;
+  }
+}
+
+// Input error messages
+.input-error-message {
+  display: block;
+  margin-top: 6px;
+  color: $color-danger;
+  font-weight: $font-bold;
+  line-height: 20px;
+}
+
+// Input labels
+.label {
+  display: block;
+  margin-bottom: 10px;
+
+  label {
+    display: inline-block;
+    color: $color-dark;
+    font-size: $font-size;
+    line-height: 100%;
+    cursor: pointer;
+  }
+}

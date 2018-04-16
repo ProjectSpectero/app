@@ -1,0 +1,31 @@
+.badge {
+  display: inline-block;
+  padding: 4px 8px 2px 8px;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: $font-bold;
+  text-transform: uppercase;
+  color: #626C84;
+  background-color: #F2F3F5;
+  border-radius: 50px;
+}
+.badge-info {
+  color: $white;
+  background-color: $color-info;
+}
+.badge-error {
+  color: $white;
+  background-color: $color-danger;
+}
+.badge-success {
+  color: $white;
+  background-color: $color-success;
+}
+.badge-warning {
+  color: rgba(0,0,0,0.7);
+  background-color: $color-warning;
+}
+.badge-dark {
+  color: $white;
+  background-color: $color-dark;
+}
