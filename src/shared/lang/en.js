@@ -186,8 +186,8 @@ module.exports = {
     MODEL: {
       UNLISTED: 'Unlisted',
       MANAGED: 'Managed',
-      LISTED_SHARED: 'Listed Shared',
-      LISTED_DEDICATED: 'Listed Dedicated'
+      LISTED_SHARED: 'Shared',
+      LISTED_DEDICATED: 'Dedicated'
     }
   },
 
@@ -195,8 +195,8 @@ module.exports = {
     MODEL_NODE: {
       UNLISTED: 'Unlisted',
       MANAGED: 'Managed',
-      LISTED_SHARED: 'Listed Shared',
-      LISTED_DEDICATED: 'Listed Dedicated'
+      LISTED_SHARED: 'Shared',
+      LISTED_DEDICATED: 'Dedicated'
     },
     ORDER_PROCESSED: 'Success! Invoice #{invoice} has been issued.',
     ADDED_TO_CART: '{name} was added to your cart.',
