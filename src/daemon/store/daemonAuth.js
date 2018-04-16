@@ -51,6 +51,7 @@ const actions = {
       },
       fail: error => {
         console.log(error)
+        router.push({ path: '/404' })
       }
     })
   },
