@@ -73,21 +73,6 @@ const actions = {
   logout ({ commit }) {
     removeCookie(process.env.DAEMON_COOKIE)
     commit('CLEAR_ENDPOINT')
-  },
-  checkLogin ({ state, commit, dispatch }) {
-    const cookie = getCookie(process.env.DAEMON_COOKIE)
-    let done = false
-
-    if (cookie) {
-      // Access token found, no need to decode cookie
-      if (state.accessToken) {
-        done = true
-      }
-    }
-
-    if (!done) {
-      dispatch('autologin', router.params.nodeId)
-    }
   }
 }
 
@@ -105,7 +90,6 @@ const mutations = {
     state.ip = payload.meta.ip
     state.port = payload.meta.port
     state.version = payload.meta.apiVersion
-    console.log('Daemon endpoint set up with ', state)
   },
   CLEAR_ENDPOINT (state) {
     state.accessToken = null

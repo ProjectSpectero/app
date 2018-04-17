@@ -7,6 +7,7 @@ module.exports = {
     ORDERS: 'Orders',
     INVOICES: 'Invoices',
     NODES: 'Nodes',
+    ROLES: 'Roles',
     DAEMON: 'Daemon',
     DOWNLOADS: 'Downloads',
     ACCOUNT: 'Account',
