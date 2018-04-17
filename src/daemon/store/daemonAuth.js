@@ -7,14 +7,24 @@ const state = {
   user: null,
   accessToken: null,
   refreshToken: null,
-  expiry: null
+  accessTokenExpires: null,
+  refreshTokenExpires: null,
+  ip: null,
+  port: null,
+  protocol: 'http',
+  version: 'v1'
 }
 
 const getters = {
   user: (state) => state.user,
   accessToken: (state) => state.accessToken,
   refreshToken: (state) => state.refreshToken,
-  expiry: (state) => state.expiry
+  accessTokenExpires: (state) => state.accessTokenExpires,
+  refreshTokenExpires: (state) => state.refreshTokenExpires,
+  ip: (state) => state.ip,
+  port: (state) => state.port,
+  protocol: (state) => state.protocol,
+  version: (state) => state.version
 }
 
 const actions = {
@@ -31,14 +41,13 @@ const actions = {
   },
   async addCookie ({ commit, dispatch }, payload) {
     const data = {
-      accessToken: payload.accessToken,
-      refreshToken: payload.refreshToken,
-      expiry: 604800 // 7 days
+      accessToken: payload.credentials.access.token,
+      refreshToken: payload.credentials.refresh.token,
+      accessTokenExpires: payload.credentials.access.expires,
+      refreshTokenExpires: payload.credentials.refresh.expires
     }
 
-    setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: payload.expiry + 's' })
-    commit('SET_LOGIN_INFO', data)
-
+    setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: parseFloat(payload.credentials.access.expires / 1000) + 's' })
     console.log('Added cookie info for DAEMON_COOKIE', getCookie(process.env.DAEMON_COOKIE))
   },
   async autologin ({ commit, dispatch }, nodeId) {
@@ -47,35 +56,36 @@ const actions = {
         id: nodeId
       },
       success: response => {
+        console.warn('autologin success')
         dispatch('addCookie', response.data.result)
+        dispatch('setupEndpoint', response.data.result)
       },
       fail: error => {
+        console.warn('autologin error')
         console.log(error)
-        router.push({ path: '/404' })
+        router.push({ name: 'nodes' })
       }
     })
   },
+  setupEndpoint ({ commit }, payload) {
+    commit('SETUP_ENDPOINT', payload)
+  },
   logout ({ commit }) {
     removeCookie(process.env.DAEMON_COOKIE)
-    commit('CLEAR_LOGIN_INFO')
+    commit('CLEAR_ENDPOINT')
   },
   checkLogin ({ state, commit, dispatch }) {
     const cookie = getCookie(process.env.DAEMON_COOKIE)
-    let data = null
+    let done = false
 
     if (cookie) {
       // Access token found, no need to decode cookie
       if (state.accessToken) {
-        return
+        done = true
       }
+    }
 
-      data = JSON.parse(cookie)
-
-      // If no data is set we're first-landing the page and we need to decode the cookie
-      if (data) {
-        commit('SET_LOGIN_INFO', data)
-      }
-    } else {
+    if (!done) {
       dispatch('autologin', router.params.nodeId)
     }
   }
@@ -86,15 +96,26 @@ const mutations = {
     state.user = payload
     console.log('Fetched current user', state.user)
   },
-  SET_LOGIN_INFO (state, payload) {
-    state.accessToken = payload.accessToken
-    state.refreshToken = payload.refreshToken
-    state.expiry = payload.expiry
+  SETUP_ENDPOINT (state, payload) {
+    state.accessToken = payload.credentials.access.token
+    state.refreshToken = payload.credentials.refresh.token
+    state.accessTokenExpires = payload.credentials.access.expires
+    state.refreshTokenExpires = payload.credentials.refresh.expires
+    state.protocol = payload.meta.protocol
+    state.ip = payload.meta.ip
+    state.port = payload.meta.port
+    state.version = payload.meta.apiVersion
+    console.log('Daemon endpoint set up with ', state)
   },
-  CLEAR_LOGIN_INFO (state) {
+  CLEAR_ENDPOINT (state) {
     state.accessToken = null
     state.refreshToken = null
-    state.expiry = null
+    state.accessTokenExpires = null
+    state.refreshTokenExpires = null
+    state.ip = null
+    state.port = null
+    state.protocol = 'http'
+    state.version = 'v1'
   }
 }
 
