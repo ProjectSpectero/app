@@ -6,7 +6,7 @@ export default {
    * Retrieves all node groups and their nodes.
    */
   groups (options) {
-    return api('GET', `/node_group/self`, options)
+    return api('GET', helpers.appendQuery(`/node_group/self`, options), options)
   },
 
   /**

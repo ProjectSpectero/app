@@ -1,5 +1,5 @@
 <template>
-  <div v-if="tableData">
+  <div v-if="tableData && !loading">
     <div class="datatable">
       <table>
         <table-header :columns="columns" :headings="headings" :sortable="sortable" @sortByColumn="sortByColumn"/>
@@ -47,8 +47,7 @@
         </tbody>
       </table>
     </div>
-
-    <!-- <paginator :pagination="pagination" @changedPage="changedPage"></paginator> -->
+    <paginator :pagination="pagination" @changedPage="changedPage"></paginator>
   </div>
 </template>
 
@@ -63,6 +62,7 @@ export default {
       type: String,
       default: null
     },
+    loading: Boolean,
     pagination: Object,
     tableData: Array
   },

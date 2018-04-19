@@ -4,9 +4,9 @@
     <div v-if="groups && !loading">
       <div v-if="groups.result.length" class="list">
         <div class="nodes-sidebar">
-          <div v-for="group in groups.result" class="node-group" :key="group.id" @click.prevent.stop="initGroup(group, 1)" :class="selectedGroup === group.id ? 'active' : ''">
+          <div v-for="group in groups.result" class="node-group" :key="group.id" @click.prevent.stop="initGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
             <div class="description">
-              <div class="group-name">Group #{{ group.id }}</div>
+              <div class="group-name">{{ group.friendly_name }}</div>
               <div class="count">{{ group.nodes.length }} Nodes</div>
             </div>
             <div class="actions">
@@ -15,7 +15,7 @@
             </div>
           </div>
 
-          <div class="node-group" v-if="uncategorizedNodes && uncategorizedNodes.result.length" @click="initUncategorizedNodes(1)" :class="selectedGroup === 0 ? 'active' : ''">
+          <div class="node-group" v-if="uncategorizedNodes && uncategorizedNodes.result.length" @click="initUncategorizedNodes" :class="selectedGroup === 0 ? 'active' : ''">
             <div class="description">
               <div class="group-name">Uncategorized</div>
               <div class="count">{{ uncategorizedNodes.pagination.total }} Nodes</div>
@@ -24,6 +24,7 @@
         </div>
         <div class="nodes-details">
           <nodes-list
+            :loading="loading"
             :searchId="searchId"
             :pagination="pagination"
             :tableData="nodes"
@@ -50,9 +51,9 @@ export default {
   data () {
     return {
       loading: true,
-      perPage: 10,
-      groups: null,
+      perPage: 2,
       selectedGroup: null,
+      groups: null,
       nodes: null,
       uncategorizedNodes: null
     }
@@ -61,40 +62,22 @@ export default {
     title: 'Nodes'
   },
   async created () {
-    await this.fetchAll()
+    await this.fetchGroups()
+    await this.fetchUncategorizedNodes(1)
+    this.handleGroupSelection()
   },
   methods: {
-    updateList (id, page) {
-      console.warn('updateList', id, page)
-      if (id === 'uncategorized') {
-        this.fetchUncategorized(page)
-      } else {
-        this.fetchNodes(page)
-      }
-    },
     changedPage (page) {
       this.$router.push({ name: 'nodesByGroup', params: { id: (this.selectedGroup === 0) ? 'uncategorized' : this.selectedGroup, page: page } })
+      this.fetch(page)
     },
-    initGroup (group, page) {
-      this.nodes = group.nodes
+    initGroup (group) {
       this.selectedGroup = group.id
-
-      this.$router.push({ name: 'nodesByGroup', params: { id: group.id, page: 1 } })
+      this.changedPage(1)
     },
-    initUncategorizedNodes (page) {
-      if (this.uncategorizedNodes) {
-        this.nodes = this.uncategorizedNodes.result
-        this.pagination = this.uncategorizedNodes.pagination
-        this.selectedGroup = 0
-
-        this.$router.push({ name: 'nodesByGroup', params: { id: 'uncategorized', page: 1 } })
-      }
-    },
-    async fetchAll () {
-      await this.fetchGroups(1)
-      await this.fetchUncategorizedNodes(1)
-
-      this.handleGroupSelection()
+    initUncategorizedNodes () {
+      this.selectedGroup = 0
+      this.changedPage(1)
     },
     fetch (page) {
       this.removeFilter('=')
@@ -112,7 +95,6 @@ export default {
       this.search(page)
     },
     async search (page) {
-      console.log('on search')
       if (this.rules.length) {
         await nodeAPI.search({
           rules: this.rules,
@@ -151,9 +133,9 @@ export default {
           page: page,
           limit: this.perPage,
           success: response => {
-            this.$set(this.groups.result[index], 'nodes', response.data.result)
             this.nodes = response.data.result
             this.pagination = response.data.pagination
+            console.log('myNodes pagination', response.data.pagination)
           },
           fail: (e) => {
             console.log(e)
@@ -180,6 +162,7 @@ export default {
     },
     async fetchGroups () {
       await nodeAPI.groups({
+        perPage: 10,
         success: response => {
           this.groups = response.data
         },
@@ -188,6 +171,27 @@ export default {
           // this.error404()
         }
       })
+    },
+    handleGroupSelection () {
+      // If coming from a route with a node group id, use that id
+      if (this.$route.params.id) {
+        if (this.$route.params.id && this.$route.params.id === 'uncategorized') {
+          this.initUncategorizedNodes()
+        } else {
+          const target = this.groups.result.find(g => g.id === parseInt(this.$route.params.id))
+
+          if (!target) {
+            this.error404()
+          } else {
+            this.initGroup(target)
+          }
+        }
+      } else {
+        // Select default group if no id exists
+        this.selectDefaultGroup()
+      }
+
+      this.loading = false
     },
     selectDefaultGroup () {
       let found = false
@@ -199,7 +203,7 @@ export default {
         for (let g = 0; g < groups.length; g++) {
           if (groups[g].nodes && groups[g].nodes.length) {
             found = true
-            this.initGroup(groups[0], 1)
+            this.initGroup(groups[0])
             break
           }
         }
@@ -207,34 +211,9 @@ export default {
 
       // No nodes found in ANY node group? Load uncategorized nodes by default
       if (!found) {
-        this.initUncategorizedNodes(1)
+        this.initUncategorizedNodes()
       }
-
-      this.loading = false
     },
-    handleGroupSelection () {
-      // If coming from a route with a node group id, use that id
-      if (this.$route.params.id) {
-        if (this.$route.params.id && this.$route.params.id === 'uncategorized') {
-          this.initUncategorizedNodes(1)
-        } else {
-          const target = this.groups.result.find(g => g.id === parseInt(this.$route.params.id))
-
-          if (!target) {
-            this.error404()
-          } else {
-            this.initGroup(target, 1)
-          }
-        }
-
-        this.loading = false
-        return
-      }
-
-      // Select default group if no id exists
-      this.selectDefaultGroup()
-    },
-
     editGroup (id) {
       this.$router.push({ name: 'groupEdit', params: { id: id } })
     },
@@ -251,15 +230,6 @@ export default {
           fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
         })
       }
-    }
-  },
-  watch: {
-    '$route': {
-      handler (n, o) {
-        // this.updateList(n.params.id, n.params.page)
-      },
-      deep: true,
-      immediate: false
     }
   },
   components: {
