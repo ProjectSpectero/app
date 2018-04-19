@@ -79,9 +79,7 @@ export default {
       this.nodes = group.nodes
       this.selectedGroup = group.id
 
-      if (this.$route.params.id !== group.id || this.$route.params.page !== page) {
-        this.$router.push({ name: 'nodesByGroup', params: { id: group.id, page: 1 } })
-      }
+      this.$router.push({ name: 'nodesByGroup', params: { id: group.id, page: 1 } })
     },
     initUncategorizedNodes (page) {
       if (this.uncategorizedNodes) {
@@ -89,9 +87,7 @@ export default {
         this.pagination = this.uncategorizedNodes.pagination
         this.selectedGroup = 0
 
-        if (this.$route.params.id !== 'uncategorized' || this.$route.params.page !== page) {
-          this.$router.push({ name: 'nodesByGroup', params: { id: 'uncategorized', page: 1 } })
-        }
+        this.$router.push({ name: 'nodesByGroup', params: { id: 'uncategorized', page: 1 } })
       }
     },
     async fetchAll () {
@@ -101,19 +97,19 @@ export default {
       this.handleGroupSelection()
     },
     fetch (page) {
-      console.log('on fetch with selectedGroup', this.selectedGroup)
+      this.removeFilter('=')
 
+      // We only need to match the group_id when querying for nodes in groups,
+      // uncategorized nodes have their own group (so to speak)
       if (this.selectedGroup !== 0) {
-        this.removeFilter('=')
-
         this.rules.push({
           field: 'group_id',
           operator: '=',
           value: parseInt(this.selectedGroup)
         })
-
-        this.search(page)
       }
+
+      this.search(page)
     },
     async search (page) {
       console.log('on search')
@@ -125,13 +121,22 @@ export default {
               this.searchId = response.data.result.searchId
             }
 
-            this.fetchNodes(page)
+            if (this.selectedGroup !== 0) {
+              this.fetchNodes(page)
+            } else {
+              this.fetchUncategorizedNodes(page)
+            }
           },
           fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
         })
       } else {
         this.searchId = null
-        this.fetchNodes(page)
+
+        if (this.selectedGroup !== 0) {
+          this.fetchNodes(page)
+        } else {
+          this.fetchUncategorizedNodes(page)
+        }
       }
     },
     async fetchNodes (page) {
@@ -147,10 +152,8 @@ export default {
           limit: this.perPage,
           success: response => {
             this.$set(this.groups.result[index], 'nodes', response.data.result)
-
             this.nodes = response.data.result
             this.pagination = response.data.pagination
-            console.log('re set this.nodes with', this.nodes)
           },
           fail: (e) => {
             console.log(e)
@@ -159,10 +162,15 @@ export default {
         })
       }
     },
-    async fetchGroups () {
-      await nodeAPI.groups({
+    async fetchUncategorizedNodes (page) {
+      await nodeAPI.uncategorizedNodes({
+        searchId: this.searchId,
+        page: page,
+        limit: this.perPage,
         success: response => {
-          this.groups = response.data
+          this.uncategorizedNodes = response.data
+          this.nodes = response.data.result
+          this.pagination = response.data.pagination
         },
         fail: (e) => {
           console.log(e)
@@ -170,14 +178,10 @@ export default {
         }
       })
     },
-    async fetchUncategorizedNodes (page) {
-      await nodeAPI.uncategorizedNodes({
-        page: page,
-        limit: 10,
+    async fetchGroups () {
+      await nodeAPI.groups({
         success: response => {
-          this.uncategorizedNodes = response.data
-          this.nodes = response.data.result
-          this.pagination = response.data.pagination
+          this.groups = response.data
         },
         fail: (e) => {
           console.log(e)
