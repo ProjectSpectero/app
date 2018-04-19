@@ -18,6 +18,13 @@ export default {
   },
 
   /**
+   * Returns my nodes.
+   */
+  myNodes (options) {
+    return api('GET', helpers.appendQuery(`/node/self`, options), options)
+  },
+
+  /**
    * Retrieves all uncategorized nodes.
    */
   uncategorizedNodes (options) {
@@ -133,5 +140,25 @@ export default {
 
   nodeLogin (options) {
     return api('GET', `/node/${options.data.id}/auth`, options)
+  },
+
+  /**
+   * Searches and filters nodes. Example rules:
+   * "rules": [
+   *     {
+   *         "field": "id",
+   *         "operator": "=",
+   *         "value": "1"
+   *     }
+   * ]
+   */
+  search (options) {
+    options.data = {
+      resource: 'node',
+      expires: 600,
+      rules: options.rules
+    }
+
+    return api('POST', `/search`, options)
   }
 }

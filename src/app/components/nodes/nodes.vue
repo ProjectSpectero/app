@@ -4,7 +4,7 @@
     <div v-if="groups && !loading">
       <div v-if="groups.result.length" class="list">
         <div class="nodes-sidebar">
-          <div v-for="group in groups.result" class="node-group" :key="group.id" @click.prevent.stop="selectGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
+          <div v-for="group in groups.result" class="node-group" :key="group.id" @click.prevent.stop="initGroup(group, 1)" :class="selectedGroup === group.id ? 'active' : ''">
             <div class="description">
               <div class="group-name">Group #{{ group.id }}</div>
               <div class="count">{{ group.nodes.length }} Nodes</div>
@@ -15,7 +15,7 @@
             </div>
           </div>
 
-          <div class="node-group" v-if="uncategorizedNodes.result && uncategorizedNodes.result.length" @click="selectUncategorizedNodes" :class="selectedGroup === 0 ? 'active' : ''">
+          <div class="node-group" v-if="uncategorizedNodes && uncategorizedNodes.result.length" @click="initUncategorizedNodes(1)" :class="selectedGroup === 0 ? 'active' : ''">
             <div class="description">
               <div class="group-name">Uncategorized</div>
               <div class="count">{{ uncategorizedNodes.pagination.total }} Nodes</div>
@@ -24,15 +24,11 @@
         </div>
         <div class="nodes-details">
           <nodes-list
-            v-if="nodes"
-            :nodes="nodes"
-            :options="options"
-            :columns="columns"
+            :searchId="searchId"
             :pagination="pagination"
-            :serverPagination="selectedGroup === 0"
-            @changedPage="fetchUncategorized"
-            @refetch="fetchAll"
-          />
+            :tableData="nodes"
+            @changedPage="changedPage"
+            @sortByColumn="sortByColumn"/>
         </div>
       </div>
       <not-found v-else type="nodes"></not-found>
@@ -47,112 +43,124 @@ import nodeAPI from '@/app/api/node.js'
 import top from '@/shared/components/top'
 import loading from '@/shared/components/loading'
 import notFound from '@/shared/components/notFound'
+import filtersMixin from '@/app/mixins/listFilters'
 
 export default {
+  mixins: [filtersMixin],
   data () {
     return {
-      pagination: null,
       loading: true,
+      perPage: 10,
       groups: null,
       selectedGroup: null,
       nodes: null,
-      uncategorizedPage: 1,
-      uncategorizedNodes: null,
-      columns: ['name', 'market_model', 'status', 'actions'],
-      sortableColumns: ['name', 'status', 'market_model'],
-      filterableColumns: ['name', 'status', 'market_model'],
-      headings: {
-        friendly_name: 'Name',
-        ip: 'IP Address',
-        status: 'Status',
-        market_model: 'Market Model',
-        updated_at: 'Creation Date',
-        actions: ''
-      },
-      options: {}
+      uncategorizedNodes: null
     }
   },
   metaInfo: {
     title: 'Nodes'
   },
   async created () {
-    this.options = {
-      skin: '',
-      texts: {
-        count: '',
-        filter: '',
-        filterPlaceholder: 'Search nodes',
-        limit: 'Nodes:',
-        page: 'Page:',
-        noresult: 'This node group has no nodes yet.',
-        filterBy: 'Filter by {column}',
-        loading: 'Loading...',
-        defaultOption: 'Select {column}',
-        columns: 'Columns'
-      },
-      columnsClasses: {
-        actions: 'table-actions'
-      },
-      perPage: 10,
-      pagination: true,
-      headings: this.headings,
-      sortable: this.sortableColumns,
-      filterable: this.filterableColumns
-    }
-
     await this.fetchAll()
   },
   methods: {
-    selectGroup (group) {
-      this.$set(this.options.texts, 'count', 'Showing {from} to {to} of {count} nodes|{count} nodes|One node')
-      this.$set(this.options, 'pagination', true)
-      this.$set(this.options, 'perPage', 10)
-
+    updateList (id, page) {
+      console.warn('updateList', id, page)
+      if (id === 'uncategorized') {
+        this.fetchUncategorized(page)
+      } else {
+        this.fetchNodes(page)
+      }
+    },
+    changedPage (page) {
+      this.$router.push({ name: 'nodesByGroup', params: { id: (this.selectedGroup === 0) ? 'uncategorized' : this.selectedGroup, page: page } })
+    },
+    initGroup (group, page) {
       this.nodes = group.nodes
       this.selectedGroup = group.id
 
-      this.$router.push({ name: 'nodesByGroup', params: { id: group.id } })
+      if (this.$route.params.id !== group.id || this.$route.params.page !== page) {
+        this.$router.push({ name: 'nodesByGroup', params: { id: group.id, page: 1 } })
+      }
     },
-    selectUncategorizedNodes () {
+    initUncategorizedNodes (page) {
       if (this.uncategorizedNodes) {
-        // Uncategorized nodes will use server-side pagination
-        // so we need to disable a few options
-        this.$set(this.options.texts, 'count', '')
-        this.$set(this.options, 'pagination', false)
-        this.$set(this.options, 'perPage', 10)
-
         this.nodes = this.uncategorizedNodes.result
         this.pagination = this.uncategorizedNodes.pagination
         this.selectedGroup = 0
 
-        this.$router.push({ name: 'nodesByGroup', params: { id: 'uncategorized' } })
-      }
-    },
-    editGroup (id) {
-      this.$router.push({ name: 'groupEdit', params: { id: id } })
-    },
-    removeGroup (id) {
-      if (confirm(this.$i18n.t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {
-        nodeAPI.deleteGroup({
-          data: {
-            id: id
-          },
-          success: response => {
-            this.fetchNodes()
-            this.$toasted.show(this.$i18n.t('nodes.GROUP_DELETE_SUCCESS'))
-          },
-          fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
-        })
+        if (this.$route.params.id !== 'uncategorized' || this.$route.params.page !== page) {
+          this.$router.push({ name: 'nodesByGroup', params: { id: 'uncategorized', page: 1 } })
+        }
       }
     },
     async fetchAll () {
-      await this.fetchNodes()
-      await this.fetchUncategorized(this.uncategorizedPage)
+      await this.fetchGroups(1)
+      await this.fetchUncategorizedNodes(1)
+
       this.handleGroupSelection()
     },
-    async fetchNodes () {
+    fetch (page) {
+      console.log('on fetch with selectedGroup', this.selectedGroup)
+
+      if (this.selectedGroup !== 0) {
+        this.removeFilter('=')
+
+        this.rules.push({
+          field: 'group_id',
+          operator: '=',
+          value: parseInt(this.selectedGroup)
+        })
+
+        this.search(page)
+      }
+    },
+    async search (page) {
+      console.log('on search')
+      if (this.rules.length) {
+        await nodeAPI.search({
+          rules: this.rules,
+          success: async response => {
+            if (response.data.result.searchId) {
+              this.searchId = response.data.result.searchId
+            }
+
+            this.fetchNodes(page)
+          },
+          fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
+        })
+      } else {
+        this.searchId = null
+        this.fetchNodes(page)
+      }
+    },
+    async fetchNodes (page) {
+      // Attempt to find and replace the list of nodes of the current group with
+      // the newly sorted one
+      const index = this.groups.result.findIndex(g => g.id === this.selectedGroup)
+
+      if (index !== -1) {
+        console.log('fetching my nodes with this.searchId', this.searchId)
+        await nodeAPI.myNodes({
+          searchId: this.searchId,
+          page: page,
+          limit: this.perPage,
+          success: response => {
+            this.$set(this.groups.result[index], 'nodes', response.data.result)
+
+            this.nodes = response.data.result
+            this.pagination = response.data.pagination
+            console.log('re set this.nodes with', this.nodes)
+          },
+          fail: (e) => {
+            console.log(e)
+            // this.error404()
+          }
+        })
+      }
+    },
+    async fetchGroups () {
       await nodeAPI.groups({
-        limit: 100,
         success: response => {
           this.groups = response.data
         },
@@ -162,12 +170,11 @@ export default {
         }
       })
     },
-    async fetchUncategorized (page) {
+    async fetchUncategorizedNodes (page) {
       await nodeAPI.uncategorizedNodes({
         page: page,
         limit: 10,
         success: response => {
-          this.uncategorizedPage = page
           this.uncategorizedNodes = response.data
           this.nodes = response.data.result
           this.pagination = response.data.pagination
@@ -188,7 +195,7 @@ export default {
         for (let g = 0; g < groups.length; g++) {
           if (groups[g].nodes && groups[g].nodes.length) {
             found = true
-            this.selectGroup(groups[0])
+            this.initGroup(groups[0], 1)
             break
           }
         }
@@ -196,7 +203,7 @@ export default {
 
       // No nodes found in ANY node group? Load uncategorized nodes by default
       if (!found) {
-        this.selectUncategorizedNodes()
+        this.initUncategorizedNodes(1)
       }
 
       this.loading = false
@@ -205,14 +212,14 @@ export default {
       // If coming from a route with a node group id, use that id
       if (this.$route.params.id) {
         if (this.$route.params.id && this.$route.params.id === 'uncategorized') {
-          this.selectUncategorizedNodes()
+          this.initUncategorizedNodes(1)
         } else {
           const target = this.groups.result.find(g => g.id === parseInt(this.$route.params.id))
 
           if (!target) {
             this.error404()
           } else {
-            this.selectGroup(target)
+            this.initGroup(target, 1)
           }
         }
 
@@ -222,6 +229,33 @@ export default {
 
       // Select default group if no id exists
       this.selectDefaultGroup()
+    },
+
+    editGroup (id) {
+      this.$router.push({ name: 'groupEdit', params: { id: id } })
+    },
+    removeGroup (id) {
+      if (confirm(this.$i18n.t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {
+        nodeAPI.deleteGroup({
+          data: {
+            id: id
+          },
+          success: response => {
+            this.fetchNodes()
+            this.$toasted.show(this.$i18n.t('nodes.GROUP_DELETE_SUCCESS'))
+          },
+          fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
+        })
+      }
+    }
+  },
+  watch: {
+    '$route': {
+      handler (n, o) {
+        // this.updateList(n.params.id, n.params.page)
+      },
+      deep: true,
+      immediate: false
     }
   },
   components: {

@@ -31,6 +31,7 @@ export default {
   mixins: [filtersMixin],
   data () {
     return {
+      perPage: 10,
       status: ['all', 'paid', 'unpaid']
     }
   },
