@@ -2,9 +2,9 @@
   <div>
     <top title="Nodes"></top>
     <div v-if="groups && !loading">
-      <div v-if="groups.result.length" class="list">
+      <div v-if="groups.length" class="list">
         <div class="nodes-sidebar">
-          <div v-for="group in groups.result" class="node-group" :key="group.id" @click.prevent.stop="initGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
+          <div v-for="group in groups" class="node-group" :key="group.id" @click.prevent.stop="initGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
             <div class="description">
               <div class="group-name">{{ group.friendly_name }}</div>
               <div class="count">{{ group.nodes.length }} Nodes</div>
@@ -54,6 +54,9 @@ export default {
       perPage: 2,
       selectedGroup: null,
       groups: null,
+      totalGroups: null,
+      processedGroups: 0,
+      groupsPage: 1,
       nodes: null,
       uncategorizedNodes: null
     }
@@ -124,7 +127,7 @@ export default {
     async fetchNodes (page) {
       // Attempt to find and replace the list of nodes of the current group with
       // the newly sorted one
-      const index = this.groups.result.findIndex(g => g.id === this.selectedGroup)
+      const index = this.groups.findIndex(g => g.id === this.selectedGroup)
 
       if (index !== -1) {
         console.log('fetching my nodes with this.searchId', this.searchId)
@@ -161,16 +164,25 @@ export default {
       })
     },
     async fetchGroups () {
-      await nodeAPI.groups({
-        perPage: 10,
-        success: response => {
-          this.groups = response.data
-        },
-        fail: (e) => {
-          console.log(e)
-          // this.error404()
-        }
-      })
+      // Group fetching is paged in chunks of 10, so we need to keep
+      // fetching until we reach the total amount (received in pagination)
+      while (this.totalGroups === null || this.totalGroups !== this.processedGroups) {
+        await nodeAPI.groups({
+          perPage: 10,
+          page: this.groupsPage,
+          success: response => {
+            const pagination = response.data.pagination
+            this.totalGroups = pagination.total
+            this.processedGroups = this.processedGroups + response.data.result.length
+            this.groupsPage++
+            this.groups = this.groups ? [...this.groups, ...response.data.result] : response.data.result
+          },
+          fail: (e) => {
+            console.log(e)
+            // this.error404()
+          }
+        })
+      }
     },
     handleGroupSelection () {
       // If coming from a route with a node group id, use that id
@@ -178,7 +190,7 @@ export default {
         if (this.$route.params.id && this.$route.params.id === 'uncategorized') {
           this.initUncategorizedNodes()
         } else {
-          const target = this.groups.result.find(g => g.id === parseInt(this.$route.params.id))
+          const target = this.groups.find(g => g.id === parseInt(this.$route.params.id))
 
           if (!target) {
             this.error404()
@@ -196,14 +208,12 @@ export default {
     selectDefaultGroup () {
       let found = false
 
-      if (this.groups && this.groups.result.length) {
-        const groups = this.groups.result
-
+      if (this.groups && this.groups.length) {
         // Attempt to pick the first node group with nodes
-        for (let g = 0; g < groups.length; g++) {
-          if (groups[g].nodes && groups[g].nodes.length) {
+        for (let g = 0; g < this.groups.length; g++) {
+          if (this.groups[g].nodes && this.groups[g].nodes.length) {
             found = true
-            this.initGroup(groups[0])
+            this.initGroup(this.groups[0])
             break
           }
         }
