@@ -1,7 +1,7 @@
 <template>
   <div>
     <top title="Nodes"></top>
-    <div v-if="groups && !loading">
+    <div v-if="groups">
       <div v-if="groups.length" class="list">
         <div class="nodes-sidebar">
           <div v-for="group in groups" class="node-group" :key="group.id" @click.prevent.stop="initGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
@@ -23,13 +23,19 @@
           </div>
         </div>
         <div class="nodes-details">
-          <nodes-list
-            :loading="loading"
-            :searchId="searchId"
-            :pagination="pagination"
-            :tableData="nodes"
-            @changedPage="changedPage"
-            @sortByColumn="sortByColumn"/>
+          <template v-if="groups && (loadingUncategorized || loadingNodes)">
+            {{ $i18n.t('nodes.LOADING_NODES') }}
+          </template>
+          <template v-else>
+            <nodes-list
+              :loadingUncategorized="loadingUncategorized"
+              :loadingNodes="loadingNodes"
+              :searchId="searchId"
+              :pagination="pagination"
+              :tableData="nodes"
+              @changedPage="changedPage"
+              @sortByColumn="sortByColumn"/>
+            </template>
         </div>
       </div>
       <not-found v-else type="nodes"></not-found>
@@ -50,7 +56,8 @@ export default {
   mixins: [filtersMixin],
   data () {
     return {
-      loading: true,
+      loadingNodes: true,
+      loadingUncategorized: true,
       perPage: 2,
       selectedGroup: null,
       groups: null,
@@ -129,6 +136,8 @@ export default {
       // the newly sorted one
       const index = this.groups.findIndex(g => g.id === this.selectedGroup)
 
+      this.loadingNodes = true
+
       if (index !== -1) {
         console.log('fetching my nodes with this.searchId', this.searchId)
         await nodeAPI.myNodes({
@@ -139,6 +148,7 @@ export default {
             this.nodes = response.data.result
             this.pagination = response.data.pagination
             console.log('myNodes pagination', response.data.pagination)
+            this.loadingNodes = false
           },
           fail: (e) => {
             console.log(e)
@@ -148,6 +158,8 @@ export default {
       }
     },
     async fetchUncategorizedNodes (page) {
+      this.loadingUncategorized = true
+
       await nodeAPI.uncategorizedNodes({
         searchId: this.searchId,
         page: page,
@@ -156,6 +168,8 @@ export default {
           this.uncategorizedNodes = response.data
           this.nodes = response.data.result
           this.pagination = response.data.pagination
+          this.loadingUncategorized = false
+          console.log('Finished fetching uncategorizedNodes')
         },
         fail: (e) => {
           console.log(e)
@@ -176,6 +190,7 @@ export default {
             this.processedGroups = this.processedGroups + response.data.result.length
             this.groupsPage++
             this.groups = this.groups ? [...this.groups, ...response.data.result] : response.data.result
+            console.log('Finished fetching groups')
           },
           fail: (e) => {
             console.log(e)
@@ -202,8 +217,6 @@ export default {
         // Select default group if no id exists
         this.selectDefaultGroup()
       }
-
-      this.loading = false
     },
     selectDefaultGroup () {
       let found = false

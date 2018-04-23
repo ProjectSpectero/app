@@ -1,5 +1,5 @@
 <template>
-  <div v-if="tableData && !loading">
+  <div v-if="tableData && !loadingUncategorized && !loadingNodes">
     <div class="datatable">
       <table>
         <table-header :columns="columns" :headings="headings" :sortable="sortable" @sortByColumn="sortByColumn"/>
@@ -62,7 +62,8 @@ export default {
       type: String,
       default: null
     },
-    loading: Boolean,
+    loadingUncategorized: Boolean,
+    loadingNodes: Boolean,
     pagination: Object,
     tableData: Array
   },
