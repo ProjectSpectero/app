@@ -1,5 +1,5 @@
 <template>
-  <div class="pad-margin">{{ $i18n.t('misc.NOT_FOUND', { type: type }) }}</div>
+  <div>{{ $i18n.t('misc.NOT_FOUND', { type: type }) }}</div>
 </template>
 
 <script>

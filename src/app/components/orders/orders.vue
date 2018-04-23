@@ -1,22 +1,28 @@
 <template>
   <div>
     <top title="Orders"></top>
-    <div class="content-split">
-      <div class="split-item split-list filters-side">
-        <router-link v-for="s in status" :key="s" :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
-          <span>{{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}</span>
-        </router-link>
+    <div v-if="tableData">
+      <div v-if="tableData.length">
+        <div class="content-split">
+          <div class="split-item split-list filters-side">
+            <router-link v-for="s in status" :key="s" :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
+              <span>{{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}</span>
+            </router-link>
+          </div>
+          <div class="split-item split-details">
+            <orders-list
+              :searchId="searchId"
+              :pagination="pagination"
+              :tableData="tableData"
+              @changedPage="changedPage"
+              @sortByColumn="sortByColumn">
+            </orders-list>
+          </div>
+        </div>
       </div>
-      <div class="split-item split-details">
-        <orders-list
-          :searchId="searchId"
-          :pagination="pagination"
-          :tableData="tableData"
-          @changedPage="changedPage"
-          @sortByColumn="sortByColumn">
-        </orders-list>
-      </div>
+      <not-found v-else type="orders"></not-found>
     </div>
+    <loading v-else></loading>
   </div>
 </template>
 
@@ -24,6 +30,8 @@
 import orderAPI from '@/app/api/order.js'
 import top from '@/shared/components/top'
 import ordersList from './list'
+import loading from '@/shared/components/loading'
+import notFound from '@/shared/components/notFound'
 import filtersMixin from '@/app/mixins/listFilters'
 
 export default {
@@ -92,7 +100,9 @@ export default {
   },
   components: {
     top,
-    ordersList
+    ordersList,
+    loading,
+    notFound
   },
   metaInfo: {
     title: 'Orders'

@@ -1,22 +1,28 @@
 <template>
-  <div v-if="tableData">
+  <div>
     <top title="Invoices"></top>
-    <div class="content-split">
-      <div class="split-item split-list filters-side">
-        <router-link v-for="s in status" :key="s" :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
-          <span>{{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}</span>
-        </router-link>
+    <div v-if="tableData">
+      <div v-if="tableData.length">
+        <div class="content-split">
+          <div class="split-item split-list filters-side">
+            <router-link v-for="s in status" :key="s" :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
+              <span>{{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}</span>
+            </router-link>
+          </div>
+          <div class="split-item split-details">
+            <invoices-list
+              :searchId="searchId"
+              :pagination="pagination"
+              :tableData="tableData"
+              @changedPage="changedPage"
+              @sortByColumn="sortByColumn">
+            </invoices-list>
+          </div>
+        </div>
       </div>
-      <div class="split-item split-details">
-        <invoices-list
-          :searchId="searchId"
-          :pagination="pagination"
-          :tableData="tableData"
-          @changedPage="changedPage"
-          @sortByColumn="sortByColumn">
-        </invoices-list>
-      </div>
+      <not-found v-else type="invoices"></not-found>
     </div>
+    <loading v-else></loading>
   </div>
 </template>
 
@@ -24,6 +30,8 @@
 import top from '@/shared/components/top'
 import paginator from '@/shared/components/paginator'
 import invoicesList from './list'
+import loading from '@/shared/components/loading'
+import notFound from '@/shared/components/notFound'
 import invoiceAPI from '@/app/api/invoice.js'
 import filtersMixin from '@/app/mixins/listFilters'
 
@@ -97,7 +105,9 @@ export default {
   components: {
     top,
     paginator,
-    invoicesList
+    invoicesList,
+    loading,
+    notFound
   },
   metaInfo: {
     title: 'Invoices'
