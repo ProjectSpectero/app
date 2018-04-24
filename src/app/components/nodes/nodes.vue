@@ -58,7 +58,7 @@ export default {
     return {
       loadingNodes: true,
       loadingUncategorized: true,
-      perPage: 2,
+      perPage: 1,
       selectedGroup: null,
       groups: null,
       totalGroups: null,
