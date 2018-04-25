@@ -151,7 +151,8 @@ module.exports = {
       ALL: 'All orders',
       ACTIVE: 'Active orders',
       CANCELLED: 'Cancelled orders'
-    }
+    },
+    VIEW_ALL_RESOURCES: 'List all resources'
   },
 
   services: {

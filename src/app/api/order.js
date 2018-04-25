@@ -39,5 +39,13 @@ export default {
     }
 
     return api('POST', `/search`, options)
+  },
+
+  /**
+   * Fetches all resources from an order
+   * @param {Integer} id Order id.
+   */
+  resources (options) {
+    return api('GET', `/order/${options.data.id}/resources`, options)
   }
 }

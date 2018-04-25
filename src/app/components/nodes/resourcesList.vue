@@ -1,40 +1,28 @@
 <template>
   <v-client-table :data="items" :columns="columns" :options="options">
-    <template slot="amount" slot-scope="props">
-      {{ props.row.amount | currency }}
-    </template>
-    <template slot="total" slot-scope="props">
-      {{ props.row.amount * props.row.quantity | currency }}
-    </template>
-
-    <template slot="actions" slot-scope="props">
-      <router-link class="button" :to="{ name: 'resources', params: { id: props.row.id } }">
-        View resources
-      </router-link>
-    </template>
   </v-client-table>
 </template>
 
 <script>
 export default {
   props: {
-    items: Array
+    items: Object
   },
   data () {
     return {
-      columns: ['description', 'type', 'resource', 'quantity', 'amount', 'total', 'actions'],
+      resources: null,
+      columns: ['accessReference', 'accessConfig', 'accessCredentials', 'type'],
       headings: {
-        description: 'Item',
-        type: 'Type',
-        amount: 'Price',
-        quantity: 'Quantity',
-        resource: 'Resource',
-        total: 'Amount'
+        accessReference: 'Access Reference',
+        accessCredentials: 'Access Credentials',
+        accessConfig: 'Access Config',
+        type: 'Type'
       },
       options: {}
     }
   },
   created () {
+    console.log(this.items)
     this.options = {
       skin: '',
       texts: {
@@ -49,7 +37,7 @@ export default {
         defaultOption: 'Select {column}',
         columns: 'Columns'
       },
-      perPage: 50,
+      perPage: 10,
       headings: this.headings,
       sortable: this.columns,
       filterable: false
@@ -57,3 +45,7 @@ export default {
   }
 }
 </script>
+
+<style>
+
+</style>

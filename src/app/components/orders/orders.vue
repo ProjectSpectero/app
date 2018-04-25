@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import orderAPI from '@/app/api/order.js'
+import orderAPI from '@/app/api/order'
 import top from '@/shared/components/top'
 import ordersList from './list'
 import loading from '@/shared/components/loading'
