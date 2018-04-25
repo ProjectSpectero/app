@@ -11,7 +11,7 @@
         </template>
 
         <li v-for="page in firstChunk" :key="page" @click="toPage(page)" :class="['page', (active === page) ? 'active' : '']">
-          FC {{ page }}
+          {{ page }}
         </li>
 
         <template v-if="showMiddleEllipsis">
@@ -20,7 +20,7 @@
 
         <template v-if="lastChunk.length">
           <li v-for="page in lastChunk" :key="page" @click="toPage(page)" :class="['page', (active === page) ? 'active' : '']">
-            LC {{ page }}
+            {{ page }}
           </li>
         </template>
       </ul>

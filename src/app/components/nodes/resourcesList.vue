@@ -6,17 +6,17 @@
 <script>
 export default {
   props: {
-    items: Object
+    type: String,
+    items: Array
   },
   data () {
     return {
       resources: null,
-      columns: ['accessReference', 'accessConfig', 'accessCredentials', 'type'],
+      columns: ['accessReference', 'accessConfig', 'accessCredentials'],
       headings: {
         accessReference: 'Access Reference',
         accessCredentials: 'Access Credentials',
-        accessConfig: 'Access Config',
-        type: 'Type'
+        accessConfig: 'Access Config'
       },
       options: {}
     }

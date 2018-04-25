@@ -7,14 +7,7 @@
       <div v-for="item in resources" :key="item.id">
         <h4>Item {{ item.id }} ({{ item.resource.type }})</h4>
 
-        <div v-if="item.resource.reference.length">
-          <div v-for="(resource, index) in item.resource.reference" :key="index">
-            <p>{{ resource.resource }}</p>
-            <p>{{ resource.type }}</p>
-
-            <!-- <resources-list :items="parseResourceFields(resource)"></resources-list> -->
-          </div>
-        </div>
+        <resources-list :items="parseReferences(item.resource.reference)"></resources-list>
       </div>
     </div>
     <loading v-else></loading>
@@ -52,11 +45,21 @@ export default {
         }
       })
     },
-    parseResourceFields (resource) {
-      let parsed = JSON.parse(resource.resource)
-      parsed.type = resource.type
+    parseReferences (reference) {
+      let data = []
+      reference.forEach(r => {
+        const parsed = JSON.parse(r.resource)
 
-      return parsed
+        data.push({
+          accessReference: parsed.accessReference ? parsed.accessReference.join(',') : '',
+          accessConfig: parsed.accessConfig,
+          accessCredentials: parsed.accessCredentials
+        })
+      })
+
+      console.log('data', data)
+
+      return data
     }
   },
   components: {
