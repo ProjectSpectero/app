@@ -6,12 +6,6 @@
     <template slot="total" slot-scope="props">
       {{ props.row.amount * props.row.quantity | currency }}
     </template>
-
-    <template slot="actions" slot-scope="props">
-      <router-link class="button" :to="{ name: 'resources', params: { id: props.row.id } }">
-        View resources
-      </router-link>
-    </template>
   </v-client-table>
 </template>
 
@@ -22,7 +16,7 @@ export default {
   },
   data () {
     return {
-      columns: ['description', 'type', 'resource', 'quantity', 'amount', 'total', 'actions'],
+      columns: ['description', 'type', 'resource', 'quantity', 'amount', 'total'],
       headings: {
         description: 'Item',
         type: 'Type',

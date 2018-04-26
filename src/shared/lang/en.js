@@ -152,7 +152,8 @@ module.exports = {
       ACTIVE: 'Active orders',
       CANCELLED: 'Cancelled orders'
     },
-    VIEW_ALL_RESOURCES: 'List all resources'
+    VIEW_ALL_RESOURCES: 'List all resources',
+    NOT_ENABLED: '{type} is not enabled for this node.'
   },
 
   services: {
