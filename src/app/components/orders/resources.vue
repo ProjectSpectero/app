@@ -20,28 +20,40 @@
           <template v-if="selectedReferences">
             <div class="details" v-for="(field, j) in selectedReferences" :key="j">
               <div>
-                <label>Access Reference</label>
-                <input type="text" class="input" v-model="field.accessReference" readonly>
+                <div class="label"><label>Accessor</label></div>
+                <div v-for="(a, x) in accessor" :key="x">
+                  <div>{{ x }}: {{ a }}</div>
+                </div>
               </div>
               <div>
-                <label>Access Config</label>
+                <div class="label">
+                  <label>Access Reference</label>
+                  <button v-clipboard:copy="field.accessReference" v-clipboard:success="copyToClipboard">
+                    {{ $i18n.t('misc.COPY_TO_CLIPBOARD') }}
+                  </button>
+                </div>
+                <div class="ips">
+                    {{ field.accessReference }}
+                </div>
+              </div>
+              <div>
+                <div class="label">
+                  <label>Access Config</label>
+                  <button v-clipboard:copy="field.accessConfig" v-clipboard:success="copyToClipboard">
+                    {{ $i18n.t('misc.COPY_TO_CLIPBOARD') }}
+                  </button>
+                </div>
                 <textarea class="input" v-model="field.accessConfig" readonly></textarea>
               </div>
               <div>
-                <label>Access Credentials</label>
-                <input type="text" class="input" v-model="field.accessCredentials" readonly>
+                <div class="label"><label>Access Credentials</label></div>
+                <div>{{ field.accessCredentials }}</div>
               </div>
             </div>
           </template>
           <template v-else>
             <p>{{ $i18n.t('orders.NOT_ENABLED', { type: selectedType }) }}</p>
           </template>
-
-      <!-- <div v-for="item in resources" :key="item.id">
-        <h4>Item {{ item.id }} ({{ item.resource.type }})</h4>
-
-        <resources-list :items="parseReferences(item.resource.reference)"></resources-list>
-      </div> -->
         </div>
       </div>
     </div>
@@ -52,12 +64,12 @@
 <script>
 import top from '@/shared/components/top'
 import loading from '@/shared/components/loading'
-import resourcesList from '@/app/components/nodes/resourcesList'
 import orderAPI from '@/app/api/order'
 
 export default {
   data () {
     return {
+      accessor: null,
       resources: null,
       selectedType: null,
       selectedResource: null,
@@ -75,6 +87,7 @@ export default {
           id: this.$route.params.id
         },
         success: response => {
+          this.accessor = response.data.result.accessor ? this.parseAccessor(response.data.result.accessor) : ''
           this.buildResourceTree(response.data.result.resources)
         },
         fail: (e) => {
@@ -82,6 +95,18 @@ export default {
           // this.error404()
         }
       })
+    },
+    parseAccessor (accessor) {
+      const data = accessor.split(':')
+
+      if (data.length === 2) {
+        return {
+          username: data[0],
+          password: data[1]
+        }
+      }
+
+      return data
     },
     buildResourceTree (data) {
       let tree = []
@@ -93,8 +118,6 @@ export default {
         })
       })
 
-      console.log(tree)
-
       this.resources = tree
       this.selectResource(tree[0])
     },
@@ -104,9 +127,9 @@ export default {
         const parsed = JSON.parse(r.resource)
         data.push({
           type: r.type,
-          accessReference: parsed.accessReference ? parsed.accessReference.join(',') : '',
+          accessReference: parsed.accessReference ? parsed.accessReference.join('\n') : '',
           accessConfig: parsed.accessConfig,
-          accessCredentials: parsed.accessCredentials
+          accessCredentials: (parsed.accessCredentials === 'SPECTERO_USERNAME_PASSWORD') ? this.$i18n.t('orders.USE_ACCESSOR') : parsed.accessCredentials
         })
       })
 
@@ -139,12 +162,14 @@ export default {
     selectReference (type) {
       this.selectedType = type
       this.selectedReferences = this.selectedResource.references[type]
+    },
+    copyToClipboard (e) {
+      this.$toasted.success(this.$i18n.t('misc.COPIED_TO_CLIPBOARD'))
     }
   },
   components: {
     top,
-    loading,
-    resourcesList
+    loading
   }
 }
 </script>
@@ -166,7 +191,11 @@ export default {
   }
 
   .details {
-    width: 60%;
+    margin-bottom: $pad;
+    padding: $pad;
+    border-radius: 4px;
+    border: 1px solid $color-border;
+    width: 80%;
 
     > div {
       margin-bottom: 1rem;

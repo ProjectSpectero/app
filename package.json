@@ -19,6 +19,7 @@
     "tiny-cookie": "^2.1.1",
     "vee-validate": "^2.0.6",
     "vue": "^2.5.16",
+    "vue-clipboard2": "^0.1.0",
     "vue-cookie": "^1.1.4",
     "vue-currency-filter": "^2.1.1",
     "vue-i18n": "^7.6.0",

@@ -45,7 +45,9 @@ module.exports = {
     CHECKOUT: 'Checkout',
     VIEW_CART: 'View Cart',
     CONTINUE_SHOPPING: 'Continue Shopping',
-    CHANGE_TERM: 'Change Term'
+    CHANGE_TERM: 'Change Term',
+    COPY_TO_CLIPBOARD: 'Copy to clipboard',
+    COPIED_TO_CLIPBOARD: 'Text copied to clipboard!'
   },
 
   errors: {
@@ -153,7 +155,8 @@ module.exports = {
       CANCELLED: 'Cancelled orders'
     },
     VIEW_ALL_RESOURCES: 'List all resources',
-    NOT_ENABLED: '{type} is not enabled for this node.'
+    NOT_ENABLED: '{type} is not enabled for this node.',
+    USE_ACCESSOR: 'Please use the login data as shown in your accessor.'
   },
 
   services: {
