@@ -17,43 +17,12 @@
             </div>
           </div>
 
-          <template v-if="selectedReferences">
-            <div class="details" v-for="(field, j) in selectedReferences" :key="j">
-              <div>
-                <div class="label"><label>Accessor</label></div>
-                <div v-for="(a, x) in accessor" :key="x">
-                  <div>{{ x }}: {{ a }}</div>
-                </div>
-              </div>
-              <div>
-                <div class="label">
-                  <label>Access Reference</label>
-                  <button v-clipboard:copy="field.accessReference" v-clipboard:success="copyToClipboard">
-                    {{ $i18n.t('misc.COPY_TO_CLIPBOARD') }}
-                  </button>
-                </div>
-                <div class="ips">
-                    {{ field.accessReference }}
-                </div>
-              </div>
-              <div>
-                <div class="label">
-                  <label>Access Config</label>
-                  <button v-clipboard:copy="field.accessConfig" v-clipboard:success="copyToClipboard">
-                    {{ $i18n.t('misc.COPY_TO_CLIPBOARD') }}
-                  </button>
-                </div>
-                <textarea class="input" v-model="field.accessConfig" readonly></textarea>
-              </div>
-              <div>
-                <div class="label"><label>Access Credentials</label></div>
-                <div>{{ field.accessCredentials }}</div>
-              </div>
-            </div>
-          </template>
-          <template v-else>
-            <p>{{ $i18n.t('orders.NOT_ENABLED', { type: selectedType }) }}</p>
-          </template>
+          <resource-details
+            :id="selectedResource.id"
+            :type="selectedResource.type"
+            :selectedReferences="selectedReferences"
+            :selectedType="selectedType"
+            :accessor="accessor"></resource-details>
         </div>
       </div>
     </div>
@@ -64,6 +33,7 @@
 <script>
 import top from '@/shared/components/top'
 import loading from '@/shared/components/loading'
+import resourceDetails from './resourceDetails'
 import orderAPI from '@/app/api/order'
 
 export default {
@@ -137,7 +107,7 @@ export default {
     },
     selectResource (item) {
       let sortedReferences = {}
-      let selectedType = null
+      let selectedType = this.types[0]
 
       this.selectedResource = item
 
@@ -162,14 +132,12 @@ export default {
     selectReference (type) {
       this.selectedType = type
       this.selectedReferences = this.selectedResource.references[type]
-    },
-    copyToClipboard (e) {
-      this.$toasted.success(this.$i18n.t('misc.COPIED_TO_CLIPBOARD'))
     }
   },
   components: {
     top,
-    loading
+    loading,
+    resourceDetails
   }
 }
 </script>
@@ -187,26 +155,6 @@ export default {
         font-weight: 600;
         cursor: default;
       }
-    }
-  }
-
-  .details {
-    margin-bottom: $pad;
-    padding: $pad;
-    border-radius: 4px;
-    border: 1px solid $color-border;
-    width: 80%;
-
-    > div {
-      margin-bottom: 1rem;
-    }
-
-    input, textarea {
-      width: 100%;
-    }
-
-    textarea {
-      height: 300px;
     }
   }
 </style>
