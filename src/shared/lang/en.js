@@ -155,6 +155,10 @@ module.exports = {
       ACTIVE: 'Active orders',
       CANCELLED: 'Cancelled orders'
     },
+    SYNC_STATUS: {
+      PENDING_SYNC: 'Pending',
+      SYNCED: 'Done'
+    },
     VIEW_ALL_RESOURCES: 'List all resources',
     NOT_ENABLED: '{type} is not enabled for this node.',
     USE_ACCESSOR: 'Please use the login data as shown in your accessor.',
