@@ -3,29 +3,37 @@
     <div class="paginator">
       <div @click="toPage(1)" :class="['page', 'first', (active === 1) ? 'disabled' : '']">«</div>
 
-      <div @click="toPage(active-1)" :class="['page', 'previous', (active === 1) ? 'disabled' : '']">🢐</div>
+      <div @click="toPage(active - 1)" :class="['page', 'previous', (active === 1) ? 'disabled' : '']">🢐</div>
 
-      <ul class="pages">
-        <template v-if="showStartEllipsis">
-          <li class="ellipsis">...</li>
-        </template>
+      <template v-if="totalPages > 5 ">
+        <ul class="pages">
+          <li @click="toPage(1)" :class="['page', (active === 1) ? 'active' : '']">1</li>
 
-        <li v-for="page in firstChunk" :key="page" @click="toPage(page)" :class="['page', (active === page) ? 'active' : '']">
-          {{ page }}
-        </li>
+          <li v-if="showFirstEllipsis" class="page">...</li>
 
-        <template v-if="showMiddleEllipsis">
-          <li class="ellipsis">...</li>
-        </template>
+          <li v-for="page in firstChunk" :key="page" @click="toPage(page)" :class="['page', (active === page) ? 'active' : '']">
+            {{ page }}
+          </li>
 
-        <template v-if="lastChunk.length">
           <li v-for="page in lastChunk" :key="page" @click="toPage(page)" :class="['page', (active === page) ? 'active' : '']">
             {{ page }}
           </li>
-        </template>
-      </ul>
 
-      <div @click="toPage(active+1)" :class="['page', 'next', (active === totalPages) ? 'disabled' : '']">🢒</div>
+          <li v-if="showLastEllipsis" class="page">...</li>
+
+          <li @click="toPage(totalPages)" :class="['page', (active === totalPages) ? 'active' : '']">{{ totalPages }}</li>
+        </ul>
+      </template>
+
+      <template v-else>
+        <ul class="pages">
+          <li v-for="page in planePages" :key="page" @click="toPage(page)" :class="['page', (active === page) ? 'active' : '']">
+            {{ page }}
+          </li>
+        </ul>
+      </template>
+
+      <div @click="toPage(active + 1)" :class="['page', 'next', (active === totalPages) ? 'disabled' : '']">🢒</div>
 
       <div @click="toPage(totalPages)" :class="['page', 'last', (active === totalPages) ? 'disabled' : '']">»</div>
     </div>
@@ -44,47 +52,57 @@ export default {
     firstChunk () {
       let chunk = []
 
-      if (this.active - 1 > 1) {
-        chunk.push(this.active - 1)
-      }
-
-      chunk.push(this.active)
-      chunk.push(this.active + 1)
-
-      if (this.active + 2 < this.totalPages) {
-        chunk.push(this.active + 2)
+      if (this.active === 1) {
+        chunk.push(2, 3)
+      } else if ((this.active - 1) <= 3) {
+        for (let i = 2; i <= this.active + 1; i++) {
+          chunk.push(i)
+        }
+      } else if ((this.totalPages - this.active) > 1) {
+        for (let i = this.active - 1; i <= this.active + 1; i++) {
+          chunk.push(i)
+        }
       }
 
       return chunk
     },
     lastChunk () {
       let chunk = []
-      let number = this.totalPages
-      const max = (this.totalPages > 3) ? 3 : this.totalPages
 
-      for (let i = 0; i < max; i++) {
-        const found = this.firstChunk.find(n => n === number)
-
-        if (!found) {
-          chunk.unshift(number)
+      if (this.totalPages === this.active) {
+        for (let i = this.active - 1; i >= this.active - 2; i--) {
+          chunk.push(i)
+          chunk.reverse()
         }
+      } else if ((this.totalPages - this.active) <= 3) {
+        for (let i = this.totalPages - 1; i >= this.active - 1; i--) {
+          const found = this.firstChunk.find(page => page === i)
 
-        number--
+          if (!found) {
+            chunk.push(i)
+            chunk.reverse()
+          }
+        }
       }
 
       return chunk
     },
-    showMiddleEllipsis () {
-      const fc = this.firstChunk.length
-      const lc = this.lastChunk.length
-      return (this.totalPages - fc - lc > 0 && (this.firstChunk[this.lastChunk.length] + 1 !== this.lastChunk[0]) && this.active !== this.totalPages)
+    showFirstEllipsis () {
+      return (this.active - 1 > 3)
     },
-    showStartEllipsis () {
-      const fc = this.firstChunk.length
-      return (this.active > fc && !this.showMiddleEllipsis)
+    showLastEllipsis () {
+      return (this.totalPages - this.active > 3)
     },
     active () {
       return this.pagination.current_page || 1
+    },
+    planePages () {
+      let pages = []
+
+      for (let i = 1; i <= this.totalPages; i++) {
+        pages.push(i)
+      }
+      return pages
     }
   },
   methods: {
