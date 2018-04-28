@@ -7,7 +7,7 @@
           <span v-if="sort.column === column" :class="['direction', sort.direction]"></span>
         </div>
         <div v-else>
-          {{ headings[column] }}
+          {{ headings[column] !== undefined ? headings[column] : column }}
         </div>
       </th>
     </tr>

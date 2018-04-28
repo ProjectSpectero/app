@@ -22,44 +22,47 @@
           </div>
         </div>
 
-        <v-client-table :data="results" :columns="columns" :options="options">
-          <template slot="market_model" slot-scope="props">
-             <div class="badge">
-               {{ $i18n.t(`market.MODEL_NODE.${props.row.market_model}`) }}
-            </div>
-          </template>
+        <div class="datatable">
+          <table>
+            <table-header :columns="columns" :headings="headings" :sortable="sortable"/>
+            <tbody>
+              <tr v-for="item in results" :key="item.id">
+                <td>
+                  {{ item.friendly_name }}
+                  <div class="badge badge-brand badge-plan" v-if="item.plan">{{ item.plan }}</div>
+                </td>
+                <td>
+                  <div class="badge">
+                    {{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}
+                  </div>
+                </td>
+                <td>
+                  <span v-if="item.ip_addresses">{{ item.ip_addresses.length }}</span>
+                  <span v-else>{{ countIpsInNodeGroup(item) }}</span>
+                </td>
+                <td>
+                  <span v-if="item.type === 'NODE_GROUP'">Node Group</span>
+                  <span v-else>Node</span>
+                </td>
+                <td>{{ item.price | currency }} USD</td>
+                <td class="table-actions">
+                  <button @click.stop="showModal(item)" class="button button-sm button-success" :class="{ 'button-bordered': existsInCart(item.id) }">
+                  <template v-if="existsInCart(item.id)">
+                    <span class="icon-check-circle"></span> {{ $i18n.t('misc.IN_CART') }}
+                  </template>
+                  <template v-else>
+                    <span class="icon-shopping-bag"></span> {{ $i18n.t('misc.PURCHASE') }}
+                  </template>
+                </button>
 
-          <template slot="ips_count" slot-scope="props">
-            <span v-if="props.row.ip_addresses">{{ props.row.ip_addresses.length }}</span>
-            <span v-else>
-              {{ countIpsInNodeGroup(props.row) }}
-            </span>
-          </template>
-
-          <template slot="type" slot-scope="props">
-            <span v-if="props.row.type === 'NODE_GROUP'">Node Group</span>
-            <span v-else>Node</span>
-          </template>
-
-          <template slot="price" slot-scope="props">
-            {{ props.row.price | currency }} USD
-          </template>
-
-          <template slot="actions" slot-scope="props">
-            <button @click.stop="showModal(props.row)" class="button button-success" :class="{ 'button-bordered': existsInCart(props.row.id) }">
-              <template v-if="existsInCart(props.row.id)">
-                <span class="icon-check-circle"></span> {{ $i18n.t('misc.IN_CART') }}
-              </template>
-              <template v-else>
-                <span class="icon-dollar-sign"></span> {{ $i18n.t('misc.PURCHASE') }}
-              </template>
-            </button>
-
-            <router-link class="button button" :to="{ name: 'marketView', params: { type: ((props.row.type.toLowerCase() === 'node') ? 'node' : 'group'), id: props.row.id } }">
-              {{ $i18n.t('misc.VIEW') }}
-            </router-link>
-          </template>
-        </v-client-table>
+                <router-link class="button button-sm" :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }">
+                  {{ $i18n.t('misc.VIEW') }}
+                </router-link>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <paginator :pagination="pagination" @changedPage="search"></paginator>
       </div>
@@ -70,6 +73,7 @@
 <script>
 import top from '@/shared/components/top'
 import paginator from '@/shared/components/paginator'
+import tableHeader from '@/shared/components/table/thead'
 import filters from './filters'
 import addToCart from './addToCart'
 import { mapActions, mapGetters } from 'vuex'
@@ -78,37 +82,39 @@ export default {
   data () {
     return {
       perPage: 10,
-      columns: ['id', 'friendly_name', 'market_model', 'ips_count', 'type', 'price', 'actions'],
-      sortableColumns: ['id', 'friendly_name', 'type'],
+      columns: ['friendly_name', 'market_model', 'ips_count', 'type', 'price', 'actions'],
       headings: {
-        id: 'ID',
         friendly_name: 'Name',
         market_model: 'Market Model',
         ips_count: 'IPs',
+        type: 'Type',
+        price: 'Price',
         actions: ''
       },
+      sortable: [],
       filters: [],
-      options: {},
       grouped: true
     }
   },
-  created () {
-    this.setup()
+  async created () {
+    await this.fetchPlans()
+    await this.refreshCart()
+
     this.search()
-    this.getPlans()
   },
   computed: {
     ...mapGetters({
-      cart: 'market/cart',
+      cart: 'cart/cart',
       results: 'market/results',
       pagination: 'market/pagination',
-      totals: 'market/totals'
+      totals: 'cart/totals'
     })
   },
   methods: {
     ...mapActions({
       fetch: 'market/fetch',
-      fetchPlans: 'market/fetchPlans'
+      fetchPlans: 'market/fetchPlans',
+      refreshCart: 'cart/refresh'
     }),
     existsInCart (id) {
       return this.cart.find(i => i.id === id)
@@ -131,36 +137,8 @@ export default {
 
       return this.$i18n.t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
     },
-    setup () {
-      this.options = {
-        skin: '',
-        texts: {
-          count: '',
-          filter: '',
-          filterPlaceholder: 'Search',
-          limit: 'Results:',
-          page: 'Page:',
-          noResults: 'No matching results',
-          filterBy: 'Filter by {column}',
-          loading: 'Loading...',
-          defaultOption: 'Select {column}',
-          columns: 'Columns'
-        },
-        columnsClasses: {
-          actions: 'table-actions'
-        },
-        perPage: 10,
-        pagination: null,
-        headings: this.headings,
-        sortable: this.sortableColumns,
-        filterable: false
-      }
-    },
     search (page) {
       this.fetch({ page: page || 1, perPage: this.perPage, grouped: this.grouped })
-    },
-    getPlans () {
-      this.fetchPlans()
     }
   },
   metaInfo: {
@@ -169,6 +147,7 @@ export default {
   components: {
     top,
     paginator,
+    tableHeader,
     filters,
     addToCart
   }
@@ -193,5 +172,8 @@ export default {
   .icon {
     margin-right: 6px;
   }
+}
+.badge-plan {
+  margin-left: 4px;
 }
 </style>

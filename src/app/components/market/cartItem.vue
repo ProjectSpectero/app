@@ -1,17 +1,17 @@
 <template>
   <div class="item">
     <div class="title">
-      <router-link :to="{ name: 'marketView', params: { type: (item.type.toLowerCase() === 'node') ? 'node' : 'group', id: item.id } }" class="name">{{ item.friendly_name }}</router-link>
+      <router-link :to="{ name: 'marketView', params: { type: (item.type === 'NODE_GROUP') ? 'group' : 'node', id: item.id } }" class="name">{{ item.data.friendly_name }}</router-link>
       <div class="type"><span v-if="item.type === 'NODE_GROUP'">Node Group</span><span v-else>Node</span></div>
     </div>
     <div class="price">
       {{ item.price | currency}}
-      <span class="renews">Renews {{ $i18n.t(`market.TERM.${item.term.toUpperCase()}`) }}</span>
+      <span class="renews">Renews {{ $i18n.t(`market.TERM.${item.term}`) }}</span>
     </div>
 
     <div class="savings">
       <template v-if="item.pricing.yearlyDiscount">
-        <p v-if="item.term === 'yearly'" class="text-success">
+        <p v-if="item.term === 'YEARLY'" class="text-success">
           <span class="icon-check-circle"></span> By paying yearly, you're saving <strong>{{ item.pricing.yearlySavings | currency }}</strong>
         </p>
         <p v-else class="text-warning switch-yearly">
@@ -39,19 +39,20 @@ export default {
   },
   methods: {
     ...mapActions({
-      removeFromCart: 'market/removeFromCart',
-      changeTerm: 'market/changeTerm'
+      removeFromCart: 'cart/remove',
+      changeTerm: 'cart/changeTerm'
     }),
     remove () {
-      this.removeFromCart(this.item.id)
-      this.$toasted.success(this.$i18n.t('market.REMOVED_FROM_CART', { name: this.item.friendly_name }))
+      this.removeFromCart(this.item)
+      this.$toasted.success(this.$i18n.t('market.REMOVED_FROM_CART', { name: this.item.data.friendly_name }))
     },
     swithTermYearly () {
       this.changeTerm({
-        item: this.item,
-        term: 'yearly'
+        id: this.item.id,
+        type: this.item.type,
+        term: 'YEARLY'
       })
-      this.$toasted.info(this.$i18n.t('market.TERM_MODIFIED', { term: 'yearly' }))
+      this.$toasted.success(this.$i18n.t('market.SAVINGS_APPLIED'))
     }
   }
 }

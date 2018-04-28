@@ -40,11 +40,11 @@
             <h5><span class="icon-shopping-cart"></span> {{ changeTerm ? 'Change term' : 'Purchase access' }}</h5>
             <div>
               <div class="terms">
-                <div :class="{ active: term === 'monthly' }" v-on:click="toggleTerm('monthly')">
+                <div :class="{ active: term === 'MONTHLY' }" v-on:click="toggleTerm('MONTHLY')">
                   <label>Monthly</label>
                   <span class="price">{{ item.price | currency}} per month</span>
                 </div>
-                <div :class="{ active: term === 'yearly', unavailable: !item.plan }" v-on:click="item.plan ? toggleTerm('yearly') : false">
+                <div :class="{ active: term === 'YEARLY', unavailable: !item.plan }" v-on:click="item.plan ? toggleTerm('YEARLY') : false">
                   <label>Yearly</label>
                   <span class="price">
                     <template v-if="item.plan">
@@ -75,7 +75,7 @@
                     <span class="link remove" @click="remove">Remove from cart</span>
                   </li>
                   <li>
-                    Term: <strong>{{ $i18n.t(`market.TERM.${term.toUpperCase()}`) }}</strong><br>
+                    Term: <strong>{{ $i18n.t(`market.TERM.${term}`) }}</strong><br>
                     <span class="link" @click="showTerms">Change term</span>
                   </li>
                 </ul>
@@ -88,7 +88,6 @@
           </div>
         </template>
       </div>
-
     </div>
   </div>
 </template>
@@ -99,7 +98,7 @@ import { mapActions } from 'vuex'
 export default {
   data () {
     return {
-      term: 'monthly',
+      term: 'MONTHLY',
       showChangeTerm: false
     }
   },
@@ -108,22 +107,28 @@ export default {
   },
   methods: {
     ...mapActions({
-      addToCart: 'market/addToCart',
-      removeFromCart: 'market/removeFromCart',
-      changeTerm: 'market/changeTerm'
+      addToCart: 'cart/add',
+      removeFromCart: 'cart/remove',
+      changeTerm: 'cart/changeTerm',
+      refreshCart: 'cart/refresh'
     }),
-    add () {
+    async add () {
       this.showChangeTerm = false
 
-      this.addToCart({
-        item: this.item,
-        term: this.term,
-        plan: this.plan
-      })
-      this.$toasted.success(this.$i18n.t('market.ADDED_TO_CART', { name: this.item.friendly_name }))
+      try {
+        await this.addToCart({
+          id: this.item.id,
+          type: this.item.type,
+          term: this.term,
+          plan: this.plan ? this.plan.id : null
+        })
+        this.$toasted.success(this.$i18n.t('market.ADDED_TO_CART', { name: this.item.friendly_name }))
+      } catch (e) {
+        this.$toasted.error(this.$i18n.t(`market.${e.message}`, { name: this.item.friendly_name }))
+      }
     },
     remove () {
-      this.removeFromCart(this.item.id)
+      this.removeFromCart(this.item)
       this.$toasted.error(this.$i18n.t('market.REMOVED_FROM_CART', { name: this.item.friendly_name }))
     },
     toggleTerm (term) {
@@ -136,18 +141,19 @@ export default {
       this.showChangeTerm = false
 
       this.changeTerm({
-        item: this.item,
+        id: this.item.id,
+        type: this.item.type,
         term: this.term
       })
-      this.$toasted.info(this.$i18n.t('market.TERM_MODIFIED', { term: this.term }))
+      this.$toasted.info(this.$i18n.t('market.TERM_MODIFIED'))
     }
   },
   computed: {
     inCart () {
-      return this.$store.getters['market/checkIfInCart'](this.item.id)
+      return this.$store.getters['cart/getItem'](this.item.id, this.item.type)
     },
     plan () {
-      return this.$store.getters['market/plan'](this.item.plan)
+      return this.item.plan ? this.$store.getters['market/plan'](this.item.plan) : null
     },
     yearlyPrice () {
       let price = this.item.price * 12
@@ -158,7 +164,7 @@ export default {
     }
   },
   created: function () {
-    if (this.inCart !== false) {
+    if (this.inCart) {
       this.term = this.inCart.term
     }
   }

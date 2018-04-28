@@ -112,18 +112,16 @@ export default {
     }
   },
   created () {
-    this.refreshCart()
     this.loading = false
   },
   computed: {
     ...mapGetters({
       freshdeskUrl: 'appAuth/freshdeskUrl',
-      count: 'market/cartCounter'
+      count: 'cart/itemCount'
     })
   },
   methods: {
     ...mapActions({
-      refreshCart: 'market/refreshCart',
       appLogout: 'appAuth/logout',
       daemonLogout: 'daemonAuth/logout'
     }),

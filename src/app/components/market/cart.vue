@@ -7,7 +7,6 @@
         </button>
       </div>
     </top>
-
     <div class="cart">
       <div class="cart-items">
         <div v-if="cart && cart.length" class="container-bordered">
@@ -23,13 +22,13 @@
             <section>
               <h3>Cart Summary</h3>
               <div class="line-items">
-                <div class="item" v-if="totals.nodes > 0">
+                <div class="item" v-if="totals.type.node > 0">
                   <p>Nodes</p>
-                  <div class="amount">{{ totals.nodes | currency }}</div>
+                  <div class="amount">{{ totals.type.node | currency }}</div>
                 </div>
-                <div class="item" v-if="totals.nodeGroups > 0">
+                <div class="item" v-if="totals.type.group > 0">
                   <p>Node Groups</p>
-                  <div class="amount">{{ totals.nodeGroups | currency }}</div>
+                  <div class="amount">{{ totals.type.group | currency }}</div>
                 </div>
 
                 <div class="separator"></div>
@@ -39,23 +38,23 @@
                   <div class="amount">{{ totals.total | currency }} USD</div>
                 </div>
               </div>
-              <button class="button button-success button-md max-width" @click.stop="pay">
+              <button class="button button-success button-md max-width" @click.stop="checkout">
                 {{ $i18n.t('misc.CHECKOUT') }}
               </button>
             </section>
           </div>
-          <div v-if="totals.monthly > 0 || totals.yearly > 0" class="summary-box container-bordered">
+          <div v-if="totals.cycle.monthly > 0 || totals.cycle.yearly > 0" class="summary-box container-bordered">
             <section class="recurring">
               <h3>Recurring Fees</h3>
               <p>There are recurring fees associated with items in this cart.</p>
               <div class="line-items">
-                <div class="item" v-if="totals.monthly > 0">
+                <div class="item" v-if="totals.cycle.monthly > 0">
                   <p>Monthly</p>
-                  <div class="amount">{{ totals.monthly | currency }} /month</div>
+                  <div class="amount">{{ totals.cycle.monthly | currency }} /month</div>
                 </div>
-                <div class="item" v-if="totals.yearly > 0">
+                <div class="item" v-if="totals.cycle.yearly > 0">
                   <p>Yearly</p>
-                  <div class="amount">{{ totals.yearly | currency }} /year</div>
+                  <div class="amount">{{ totals.cycle.yearly | currency }} /year</div>
                 </div>
               </div>
             </section>
@@ -73,26 +72,39 @@ import marketAPI from '@/app/api/market'
 import cartItem from './cartItem'
 
 export default {
-  created () {
-    this.refreshCart()
+  async created () {
+    await this.fetchPlans()
+    await this.refreshCart()
   },
   computed: {
     ...mapGetters({
-      cart: 'market/cart',
-      totals: 'market/totals'
+      cart: 'cart/cart',
+      totals: 'cart/totals'
     })
   },
   methods: {
     ...mapActions({
-      refreshCart: 'market/refreshCart',
-      clearCart: 'market/clearCart'
+      fetchPlans: 'market/fetchPlans',
+      refreshCart: 'cart/refresh',
+      clearCart: 'cart/clear'
     }),
-    pay () {
+    checkout () {
+      let cart = []
+      let term = null
+
+      this.cart.forEach((item) => {
+        cart.push({
+          id: item.id,
+          type: item.type
+        })
+        term = item.term === 'YEARLY' ? 365 : 30
+      })
+
       marketAPI.order({
         data: {
-          items: this.cart,
+          items: cart,
           meta: {
-            'term': 30
+            'term': term
           }
         },
         success: response => {
