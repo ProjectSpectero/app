@@ -73,3 +73,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~@styles/components/badges';
+
+.badge {
+  &.status-paid {
+    @extend .badge-success
+  }
+  &.status-unpaid {
+    @extend .badge-error
+  }
+}
+</style>
