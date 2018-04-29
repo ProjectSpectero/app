@@ -1,13 +1,14 @@
 <template>
   <div>
-    <top title="Order Resources">
-      <h4>Order #{{ $route.params.id }}</h4>
+    <top :title="'Order '+ orderId +' Resources'">
+      <router-link :to="{ name: 'order', params: { id: orderId } }" class="button">Back to Order Details</router-link>
     </top>
     <div v-if="resources">
       <div class="content-split">
-        <div class="split-item split-list filters-side">
-          <div v-for="item in resources" :key="item.id" class="filter-link" :class="{ active: selectedResource === item }" @click="selectResource(item)">
-            <span>Item {{ item.id }} ({{ item.type }})</span>
+        <div class="split-item split-list nodes-sidebar">
+          <div v-for="item in resources" :key="item.id" class="node-group" :class="{ active: selectedResource === item }" @click="selectResource(item)">
+            <div class="group-name">Item {{ item.id }}</div>
+            <div class="count">{{ item.type === 'NODE_GROUP' ? 'Group' : 'Node' }}</div>
           </div>
         </div>
         <div class="split-item split-details">
@@ -47,8 +48,15 @@ export default {
       types: ['HTTPProxy', 'OpenVPN', 'ShadowSOCKS', 'SSHTunnel']
     }
   },
-  metaInfo: {
-    title: 'Order Resources'
+  metaInfo () {
+    return {
+      title: 'Order ' + this.orderId + ' Resources'
+    }
+  },
+  computed: {
+    orderId () {
+      return this.$route.params.id
+    }
   },
   created () {
     this.fetchResources()

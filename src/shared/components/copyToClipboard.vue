@@ -1,13 +1,14 @@
 <template>
-  <button v-clipboard:copy="field" v-clipboard:success="copyToClipboard">
-    {{ $i18n.t('misc.COPY_TO_CLIPBOARD') }}
+  <button v-clipboard:copy="field" v-clipboard:success="copyToClipboard" class="button button-bordered button-info" :class="buttonClass">
+    <span class="icon-copy"></span> {{ $i18n.t('misc.COPY_TO_CLIPBOARD') }}
   </button>
 </template>
 
 <script>
 export default {
   props: {
-    field: String
+    field: String,
+    buttonClass: String
   },
   methods: {
     copyToClipboard (e) {

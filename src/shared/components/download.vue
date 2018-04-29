@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <button @click="downloadFile">
-      {{ $i18n.t('misc.DOWNLOAD_AS_FILE') }}
-    </button>
-  </div>
+  <button @click="downloadFile" class="button button-bordered button-info" :class="buttonClass">
+    <span class="icon-download"></span> {{ $i18n.t('misc.DOWNLOAD_AS_FILE') }}
+  </button>
 </template>
 
 <script>
@@ -16,7 +14,8 @@ export default {
     type: {
       type: String,
       default: 'text/plain'
-    }
+    },
+    buttonClass: String
   },
   methods: {
     downloadFile () {

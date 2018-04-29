@@ -46,9 +46,9 @@ module.exports = {
     VIEW_CART: 'View Cart',
     CONTINUE_SHOPPING: 'Continue Shopping',
     CHANGE_TERM: 'Change Term',
-    COPY_TO_CLIPBOARD: 'Copy to clipboard',
+    COPY_TO_CLIPBOARD: 'Copy',
     COPIED_TO_CLIPBOARD: 'Text copied to clipboard!',
-    DOWNLOAD_AS_FILE: 'Download as file'
+    DOWNLOAD_AS_FILE: 'Download File'
   },
 
   errors: {

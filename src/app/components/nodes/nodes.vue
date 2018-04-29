@@ -260,49 +260,4 @@ export default {
   margin-bottom: $pad;
   background: #fff;
 }
-
-.nodes-sidebar {
-  > div {
-    padding: 12px;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &.active {
-      background-color: $color-brand;
-      color: $color-dark;
-
-      .group-name {
-        font-weight: $font-semi;
-      }
-    }
-  }
-}
-
-.node-group {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  .actions {
-    a {
-      padding-left: 6px;
-
-      &:first-child {
-        margin-left: 0;
-      }
-    }
-
-    .action-remove {
-      color: $color-danger;
-    }
-  }
-  .group-name {
-    flex: 1;
-    font-size: 100%;
-  }
-  .count {
-    font-size: 12px;
-    opacity: 0.7;
-  }
-}
 </style>

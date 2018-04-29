@@ -160,14 +160,6 @@ export default {
   margin-left: $pad;
 }
 .summary-box {
-  .separator {
-    width: 100%;
-    height: 1px;
-    display: block;
-    margin: 16px 0;
-    background-color: $color-border;
-    content: '';
-  }
   section {
     display: flex;
     flex-direction: column;
