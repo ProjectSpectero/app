@@ -13,7 +13,12 @@
           <cartItem v-for="(item, index) in cart" :key="index" :item="item"></cartItem>
         </div>
         <div v-else class="cart-empty">
-          <p>{{ $i18n.t('market.CART_EMPTY') }}</p>
+          <div class="alert-msg-centered">
+            <div class="icon-shopping-cart big-icon"></div>
+            <h1>{{ $i18n.t('market.CART_EMPTY') }}</h1>
+            <p class="spaced">{{ $i18n.t('market.CART_EMPTY_MSG') }}</p>
+            <p><router-link :to="{ name: 'market' }" class="button button-info">{{ $i18n.t('market.SHOP_NOW') }}</router-link></p>
+          </div>
         </div>
       </div>
       <template v-if="cart && cart.length">
