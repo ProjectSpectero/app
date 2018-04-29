@@ -5,7 +5,7 @@
       <div class="type"><span v-if="item.type === 'NODE_GROUP'">Node Group</span><span v-else>Node</span></div>
     </div>
     <div class="price">
-      {{ item.price | currency}}
+      {{ item.pricing[item.term === 'YEARLY' ? 'yearly' : 'monthly'] | currency}}
       <span class="renews">Renews {{ $i18n.t(`market.TERM.${item.term}`) }}</span>
     </div>
 
