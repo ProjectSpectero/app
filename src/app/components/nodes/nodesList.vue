@@ -3,8 +3,8 @@
     <header>
       <h2>{{ !groupData.uncategorized ? groupData.friendly_name : 'Uncategorized' }}</h2>
       <div v-if="!groupData.uncategorized" class="actions">
-        <button class="button button-sm button-danger button-icon"><span class="icon-trash-2"></span></button>
-        <button class="button button-sm">Edit Group</button>
+        <button @click.prevent.stop="removeGroup" class="button button-sm button-danger button-icon"><span class="icon-trash-2"></span></button>
+        <button @click.prevent.stop="editGroup" class="button button-sm">Edit Group</button>
       </div>
     </header>
     <div v-if="tableData.length > 0" class="datatable">
@@ -125,6 +125,23 @@ export default {
         },
         fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
       })
+    },
+    editGroup () {
+      this.$router.push({ name: 'groupEdit', params: { id: this.groupData.id } })
+    },
+    removeGroup () {
+      if (confirm(this.$i18n.t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {
+        nodeAPI.deleteGroup({
+          data: {
+            id: this.groupData.id
+          },
+          success: response => {
+            this.fetchNodes()
+            this.$toasted.show(this.$i18n.t('nodes.GROUP_DELETE_SUCCESS'))
+          },
+          fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
+        })
+      }
     }
   },
   components: {

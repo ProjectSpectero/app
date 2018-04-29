@@ -231,23 +231,6 @@ export default {
         this.initUncategorizedNodes()
       }
     },
-    editGroup (id) {
-      this.$router.push({ name: 'groupEdit', params: { id: id } })
-    },
-    removeGroup (id) {
-      if (confirm(this.$i18n.t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {
-        nodeAPI.deleteGroup({
-          data: {
-            id: id
-          },
-          success: response => {
-            this.fetchNodes()
-            this.$toasted.show(this.$i18n.t('nodes.GROUP_DELETE_SUCCESS'))
-          },
-          fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
-        })
-      }
-    },
     getGroupData (id) {
       // If uncategorized (id = 0), return dummy data
       if (id === 0) {
