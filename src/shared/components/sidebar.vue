@@ -173,6 +173,9 @@ h5 {
     &:hover {
       color: $white;
     }
+    &.router-link-exact-active {
+      color: $color-brand;
+    }
   }
   &::-webkit-scrollbar-track {
     background: transparent;
