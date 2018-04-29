@@ -7,7 +7,7 @@
         <button class="button button-sm">Edit Group</button>
       </div>
     </header>
-    <div class="datatable">
+    <div v-if="tableData.length > 0" class="datatable">
       <table>
         <table-header :columns="columns" :headings="headings" :sortable="sortable" @sortByColumn="sortByColumn"/>
         <tbody>
@@ -53,6 +53,11 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    <div v-else class="alert-msg-centered">
+      <div class="icon-alert-circle big-icon"></div>
+      <h1>No Nodes</h1>
+      <p>There are no nodes to display in this node group.</p>
     </div>
     <paginator :pagination="pagination" @changedPage="changedPage"></paginator>
   </div>

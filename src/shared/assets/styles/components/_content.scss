@@ -29,3 +29,18 @@
     font-weight: $font-semi;
   }
 }
+
+.alert-msg-centered {
+  padding: 50px 0;
+  text-align: center;
+
+  h1 {
+    margin-bottom: 12px;
+    font-weight: $font-semi;
+  }
+  .big-icon {
+    margin-bottom: 24px;
+    opacity: 0.1;
+    font-size: 100px;
+  }
+}
