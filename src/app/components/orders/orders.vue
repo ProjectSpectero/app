@@ -2,14 +2,14 @@
   <div>
     <top title="Orders"></top>
     <div v-if="tableData">
-      <div v-if="tableData.length">
-        <div class="content-split">
-          <div class="split-item split-list filters-side">
-            <router-link v-for="s in status" :key="s" :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
-              <span>{{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}</span>
-            </router-link>
-          </div>
-          <div class="split-item split-details">
+      <div class="content-split">
+        <div class="split-item split-list filters-side">
+          <router-link v-for="s in status" :key="s" :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
+            <span>{{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}</span>
+          </router-link>
+        </div>
+        <div class="split-item split-details">
+          <template v-if="tableData.length">
             <orders-list
               :searchId="searchId"
               :pagination="pagination"
@@ -17,10 +17,10 @@
               @changedPage="changedPage"
               @sortByColumn="sortByColumn">
             </orders-list>
-          </div>
+          </template>
+          <not-found v-else type="orders"></not-found>
         </div>
       </div>
-      <not-found v-else type="orders"></not-found>
     </div>
     <loading v-else></loading>
   </div>

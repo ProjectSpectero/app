@@ -2,14 +2,14 @@
   <div>
     <top title="Invoices"></top>
     <div v-if="tableData">
-      <div v-if="tableData.length">
-        <div class="content-split">
-          <div class="split-item split-list filters-side">
-            <router-link v-for="s in status" :key="s" :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
-              <span>{{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}</span>
-            </router-link>
-          </div>
-          <div class="split-item split-details">
+      <div class="content-split">
+        <div class="split-item split-list filters-side">
+          <router-link v-for="s in status" :key="s" :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
+            <span>{{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}</span>
+          </router-link>
+        </div>
+        <div class="split-item split-details">
+          <template v-if="tableData.length">
             <invoices-list
               :searchId="searchId"
               :pagination="pagination"
@@ -17,10 +17,10 @@
               @changedPage="changedPage"
               @sortByColumn="sortByColumn">
             </invoices-list>
-          </div>
+          </template>
+          <not-found v-else type="invoices"></not-found>
         </div>
       </div>
-      <not-found v-else type="invoices"></not-found>
     </div>
     <loading v-else></loading>
   </div>
