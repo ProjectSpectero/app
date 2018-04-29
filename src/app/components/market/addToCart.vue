@@ -71,7 +71,7 @@
               <div class="details">
                 <ul>
                   <li>
-                    Price: <strong>{{ (term === 'yearly') ? yearlyPrice : item.price | currency }}</strong><br>
+                    Price: <strong>{{ (term === 'YEARLY') ? yearlyPrice : item.price | currency }}</strong><br>
                     <span class="link remove" @click="remove">Remove from cart</span>
                   </li>
                   <li>

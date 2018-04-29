@@ -45,7 +45,7 @@ const getters = {
     }
 
     state.cart.forEach((item) => {
-      const price = item.pricing[(item.term === 'YEARLY') ? 'yearly' : 'monthly']
+      const price = (item.pricing !== undefined) ? item.pricing[(item.term === 'YEARLY') ? 'yearly' : 'monthly'] : {}
 
       totals.total += price
       totals.type[item.type === 'NODE_GROUP' ? 'group' : 'node'] += price
