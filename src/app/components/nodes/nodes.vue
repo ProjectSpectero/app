@@ -3,39 +3,33 @@
     <top title="Nodes"></top>
     <div v-if="groups">
       <div v-if="groups.length" class="list">
-        <div class="nodes-sidebar">
-          <div v-for="group in groups" class="node-group" :key="group.id" @click.prevent.stop="initGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
-            <div class="description">
+        <div class="content-split">
+          <div class="split-item split-list nodes-sidebar">
+            <div v-for="group in groups" class="node-group" :key="group.id" @click.prevent.stop="initGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
               <div class="group-name">{{ group.friendly_name }}</div>
-              <div class="count">{{ group.nodes.length }} Nodes</div>
+              <div class="count">{{ group.nodes.length }}</div>
             </div>
-            <div class="actions">
-              <a href="#edit" class="action-edit" @click.prevent.stop="editGroup(group.id)">Edit</a>
-              <a href="#delete" class="action-remove" @click.prevent.stop="removeGroup(group.id)">Delete</a>
-            </div>
-          </div>
-
-          <div class="node-group" v-if="uncategorizedNodes && uncategorizedNodes.result.length" @click="initUncategorizedNodes" :class="selectedGroup === 0 ? 'active' : ''">
-            <div class="description">
+            <div class="node-group" v-if="uncategorizedNodes && uncategorizedNodes.result.length" @click="initUncategorizedNodes" :class="selectedGroup === 0 ? 'active' : ''">
               <div class="group-name">Uncategorized</div>
-              <div class="count">{{ uncategorizedNodes.pagination.total }} Nodes</div>
+              <div class="count">{{ uncategorizedNodes.pagination.total }}</div>
             </div>
           </div>
-        </div>
-        <div class="nodes-details">
-          <template v-if="groups && (loadingUncategorized || loadingNodes)">
-            {{ $i18n.t('nodes.LOADING_NODES') }}
-          </template>
-          <template v-else>
-            <nodes-list
-              :loadingUncategorized="loadingUncategorized"
-              :loadingNodes="loadingNodes"
-              :searchId="searchId"
-              :pagination="pagination"
-              :tableData="nodes"
-              @changedPage="changedPage"
-              @sortByColumn="sortByColumn"/>
+          <div class="split-item split-details">
+            <template v-if="groups && (loadingUncategorized || loadingNodes)">
+              {{ $i18n.t('nodes.LOADING_NODES') }}
             </template>
+            <template v-else>
+              <nodes-list
+                :groupData="getGroupData(selectedGroup)"
+                :loadingUncategorized="loadingUncategorized"
+                :loadingNodes="loadingNodes"
+                :searchId="searchId"
+                :pagination="pagination"
+                :tableData="nodes"
+                @changedPage="changedPage"
+                @sortByColumn="sortByColumn"/>
+            </template>
+          </div>
         </div>
       </div>
       <not-found v-else type="nodes"></not-found>
@@ -58,7 +52,7 @@ export default {
     return {
       loadingNodes: true,
       loadingUncategorized: true,
-      perPage: 1,
+      perPage: 10,
       selectedGroup: null,
       groups: null,
       totalGroups: null,
@@ -253,6 +247,10 @@ export default {
           fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
         })
       }
+    },
+    getGroupData (id) {
+      const found = this.groups.find(u => u.id === id)
+      return found || {}
     }
   },
   components: {
@@ -272,24 +270,20 @@ export default {
 }
 
 .nodes-sidebar {
-  width: 300px;
-  margin-right: $pad;
-  border-bottom: 0;
-
   > div {
-    height: 60px;
-    padding: 1rem;
+    padding: 12px;
     border-radius: 4px;
     cursor: pointer;
 
     &.active {
-      background-color: rgba(9, 30, 66, 0.04);
+      background-color: $color-brand;
+      color: $color-dark;
+
+      .group-name {
+        font-weight: $font-semi;
+      }
     }
   }
-}
-
-.nodes-details {
-  flex: 1;
 }
 
 .node-group {
@@ -297,9 +291,6 @@ export default {
   align-items: center;
   justify-content: space-between;
 
-  .description {
-    flex: 1;
-  }
   .actions {
     a {
       padding-left: 6px;
@@ -314,13 +305,12 @@ export default {
     }
   }
   .group-name {
-    font-size: 16px;
-    font-weight: $font-semi;
+    flex: 1;
+    font-size: 100%;
   }
   .count {
-    margin-top: 4px;
     font-size: 12px;
-    color: $color-light;
+    opacity: 0.7;
   }
 }
 </style>

@@ -14,6 +14,7 @@ import VueModal from 'vue-js-modal'
 import { ClientTable } from 'vue-tables-2'
 import VueCurrencyFilter from 'vue-currency-filter'
 import VueClipboard from 'vue-clipboard2'
+import Vue2Filters from 'vue2-filters'
 
 import globalMixin from '@/shared/mixins/global'
 
@@ -27,6 +28,7 @@ Vue.use(VeeValidate)
 Vue.use(ClientTable)
 Vue.use(VueMoment)
 Vue.use(VueClipboard)
+Vue.use(Vue2Filters)
 
 Vue.use(VueModal, {
   dynamic: true

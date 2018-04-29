@@ -1,5 +1,12 @@
 <template>
   <div v-if="tableData && !loadingUncategorized && !loadingNodes">
+    <header>
+      <h2>{{ groupData.friendly_name }}</h2>
+      <div class="actions">
+        <button class="button button-sm button-danger button-icon"><span class="icon-trash-2"></span></button>
+        <button class="button button-sm">Edit Group</button>
+      </div>
+    </header>
     <div class="datatable">
       <table>
         <table-header :columns="columns" :headings="headings" :sortable="sortable" @sortByColumn="sortByColumn"/>
@@ -27,21 +34,21 @@
                 {{ $i18n.t('misc.VERIFY') }}
               </button>
 
-              <router-link class="button button-icon" :to="{ name: 'daemon', params: { nodeId: 101 } }">
+              <router-link class="button button-info button-icon" :to="{ name: 'daemon', params: { nodeId: 101 } }">
                 <span class="icon-settings"></span>
+              </router-link>
+
+              <button class="button button-danger button-icon" @click.stop="removeNode(row.id)">
+                <span class="icon-trash-2"></span>
+              </button>
+
+              <router-link class="button button-dark button-icon" :to="{ name: 'node', params: { action: 'edit', id: row.id } }">
+                <span class="icon-edit-2"></span>
               </router-link>
 
               <router-link class="button button-icon" :to="{ name: 'node', params: { action: 'view', id: row.id } }">
                 <span class="icon-more-horizontal"></span>
               </router-link>
-
-              <router-link class="button button-icon" :to="{ name: 'node', params: { action: 'edit', id: row.id } }">
-                <span class="icon-edit-2"></span>
-              </router-link>
-
-              <button class="button button-icon" @click.stop="removeNode(row.id)">
-                <span class="icon-trash-2"></span>
-              </button>
             </td>
           </tr>
         </tbody>
@@ -65,7 +72,8 @@ export default {
     loadingUncategorized: Boolean,
     loadingNodes: Boolean,
     pagination: Object,
-    tableData: Array
+    tableData: Array,
+    groupData: Object
   },
   data () {
     return {
@@ -123,6 +131,20 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@styles/components/badges';
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $pad;
+  padding-bottom: $pad;
+  border-bottom: 1px solid $color-border;
+
+  h2 {
+    margin-bottom: 0;
+    font-weight: $font-semi;
+  }
+}
 
 .nodes {
   > div {
