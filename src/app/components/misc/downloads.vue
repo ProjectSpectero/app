@@ -17,7 +17,7 @@
       <template v-if="loaded">
         <a v-if="latest" class="button button-info" :href="latest" target="_blank">Download Now</a>
         <a v-if="alt" class="button" :href="alt" target="_blank">Alternate Download</a>
-        <div class="details">{{ version }} - <a v-if="changelog" :href="changelog">Changelog</a></div>
+        <div class="details">{{ version }} - <a v-if="changelog" :href="changelog" target="_blank">Changelog</a></div>
       </template>
       <template v-else>
         <button class="button button-loading" disabled>{{ $i18n.t('misc.LOADING') }}</button>
