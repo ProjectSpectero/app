@@ -11,11 +11,11 @@
           </div>
         </div>
         <div class="split-item split-details">
-          <div class="references">
-            <div v-for="t in types" :key="t" @click="selectReference(t)" class="reference" :class="{ active: selectedType === t }">
+          <ul class="references tabs">
+            <li v-for="t in types" :key="t" @click="selectReference(t)" class="reference" :class="{ active: selectedType === t }">
               <span>{{ t }}</span>
-            </div>
-          </div>
+            </li>
+          </ul>
 
           <resource-details
             :id="selectedResource.id"
@@ -46,6 +46,9 @@ export default {
       selectedReferences: [],
       types: ['HTTPProxy', 'OpenVPN', 'ShadowSOCKS', 'SSHTunnel']
     }
+  },
+  metaInfo: {
+    title: 'Order Resources'
   },
   created () {
     this.fetchResources()
@@ -143,18 +146,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .references {
-    display: flex;
-    margin: 0 0 1rem;
 
-    .reference {
-      margin-right: 1rem;
-      cursor: pointer;
-
-      &.active {
-        font-weight: 600;
-        cursor: default;
-      }
-    }
-  }
 </style>

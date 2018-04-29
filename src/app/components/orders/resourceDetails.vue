@@ -16,7 +16,7 @@
             <copy-to-clipboard :field="field.accessReference"></copy-to-clipboard>
           </div>
           <div class="ips">
-              {{ field.accessReference }}
+            {{ field.accessReference }}
           </div>
         </div>
         <div v-if="field.accessConfig">

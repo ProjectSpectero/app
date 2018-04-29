@@ -21,15 +21,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .tabs {
-    > li {
-      display: inline-block;
-      margin-right: 1rem;
-      cursor: pointer;
 
-      &.active {
-        border-bottom: 1px solid blue;
-      }
-    }
-  }
 </style>
