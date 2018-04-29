@@ -1,75 +1,89 @@
 <template>
-  <div class="datatable">
-    <v-client-table :data="nodes" :columns="columns" :options="options">
-      <template slot="name" slot-scope="props">
-        <div>{{ props.row.friendly_name }}</div>
-        <div class="ip">{{ props.row.ip }}</div>
-      </template>
+  <div v-if="tableData && !loadingUncategorized && !loadingNodes">
+    <div class="datatable">
+      <table>
+        <table-header :columns="columns" :headings="headings" :sortable="sortable" @sortByColumn="sortByColumn"/>
+        <tbody>
+          <tr v-for="row in tableData" :key="row.id">
+            <td>
+              <div>{{ row.friendly_name }}</div>
+              <div class="ip">{{ row.ip }}</div>
+            </td>
+            <td>
+              <div class="service-badges">
+                <div v-for="service in row.services" :key="service.id">
+                  {{ service.type }}
+                </div>
+              </div>
+            </td>
+            <td>{{ $i18n.t(`nodes.MODEL.${row.market_model}`) }}</td>
+            <td>
+              <div :class="'badge status-' + row.status">
+                {{ $i18n.t(`nodes.STATUS.${row.status}`) }}
+              </div>
+            </td>
+            <td>
+              <button v-if="row.status === 'unconfirmed'" class="button button-sm" @click.stop="verifyNode(row)">
+                {{ $i18n.t('misc.VERIFY') }}
+              </button>
 
-      <template slot="services" slot-scope="props">
-        <div class="service-badges">
-          <div v-for="service in props.row.services" :key="service.id">
-            {{ service.type }}
-          </div>
-        </div>
-      </template>
+              <router-link class="button button-icon" :to="{ name: 'daemon', params: { nodeId: 101 } }">
+                <span class="icon-settings"></span>
+              </router-link>
 
-      <template slot="market_model" slot-scope="props">
-        {{ $i18n.t(`nodes.MODEL.${props.row.market_model}`) }}
-      </template>
+              <router-link class="button button-icon" :to="{ name: 'node', params: { action: 'view', id: row.id } }">
+                <span class="icon-more-horizontal"></span>
+              </router-link>
 
-      <template slot="status" slot-scope="props">
-        <div :class="'badge status-' + props.row.status">
-          {{ $i18n.t(`nodes.STATUS.${props.row.status}`) }}
-        </div>
-      </template>
+              <router-link class="button button-icon" :to="{ name: 'node', params: { action: 'edit', id: row.id } }">
+                <span class="icon-edit-2"></span>
+              </router-link>
 
-      <template slot="actions" slot-scope="props">
-        <button v-if="props.row.status === 'unconfirmed'" class="button button-sm" @click.stop="verifyNode(props.row)">
-          {{ $i18n.t('misc.VERIFY') }}
-        </button>
-
-        <router-link class="button button-icon" :to="{ name: 'daemon', params: { nodeId: 101 } }">
-          <span class="icon-settings"></span>
-        </router-link>
-
-        <router-link class="button button-icon" :to="{ name: 'node', params: { action: 'view', id: props.row.id } }">
-          <span class="icon-more-horizontal"></span>
-        </router-link>
-
-        <router-link class="button button-icon" :to="{ name: 'node', params: { action: 'edit', id: props.row.id } }">
-          <span class="icon-edit-2"></span>
-        </router-link>
-
-        <button class="button button-icon" @click.stop="removeNode(props.row.id)">
-          <span class="icon-trash-2"></span>
-        </button>
-      </template>
-    </v-client-table>
-
-    <paginator v-if="serverPagination" :pagination="pagination" @changedPage="changedPage"></paginator>
+              <button class="button button-icon" @click.stop="removeNode(row.id)">
+                <span class="icon-trash-2"></span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <paginator :pagination="pagination" @changedPage="changedPage"></paginator>
   </div>
 </template>
 
 <script>
 import nodeAPI from '@/app/api/node.js'
 import paginator from '@/shared/components/paginator'
+import tableHeader from '@/shared/components/table/thead'
 
 export default {
   props: {
-    pagination: {
-      type: Object,
-      required: false
+    searchId: {
+      type: String,
+      default: null
     },
-    serverPagination: {
-      type: Boolean,
-      default: false
-    },
-    nodes: Array,
-    columns: Array,
-    options: Object
+    loadingUncategorized: Boolean,
+    loadingNodes: Boolean,
+    pagination: Object,
+    tableData: Array
+  },
+  data () {
+    return {
+      columns: ['friendly_name', 'services', 'market_model', 'status', 'actions'],
+      sortable: ['friendly_name', 'market_model', 'status'],
+      headings: {
+        friendly_name: 'Name',
+        services: 'Services',
+        status: 'Status',
+        market_model: 'Market Model',
+        actions: ''
+      }
+    }
   },
   methods: {
+    sortByColumn (data) {
+      this.$emit('sortByColumn', data)
+    },
     changedPage (page) {
       this.$emit('changedPage', page)
     },
@@ -101,7 +115,8 @@ export default {
     }
   },
   components: {
-    paginator
+    paginator,
+    tableHeader
   }
 }
 </script>

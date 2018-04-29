@@ -31,6 +31,12 @@
             <p>{{ order.due_next | moment('MMM D, YYYY') }}</p>
             <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">View Latest Invoice</router-link>
           </div>
+          <div class="info-box">
+            <h5>Resources</h5>
+            <router-link class="button" :to="{ name: 'resources', params: { id: order.id } }">
+              {{ $i18n.t('orders.VIEW_ALL_RESOURCES') }}
+            </router-link>
+          </div>
         </div>
       </div>
 
@@ -42,7 +48,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import top from '@/shared/components/top'
-import orderAPI from '@/app/api/order.js'
+import orderAPI from '@/app/api/order'
 import items from './items'
 
 export default {

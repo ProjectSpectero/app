@@ -1,14 +1,17 @@
 <template>
-  <div class="datatable">
-    <v-client-table :data="items" :columns="columns" :options="options">
-      <template slot="amount" slot-scope="props">
-        {{ props.row.amount | currency }}
-      </template>
-      <template slot="total" slot-scope="props">
-        {{ props.row.amount * props.row.quantity | currency }}
-      </template>
-    </v-client-table>
-  </div>
+  <v-client-table :data="items" :columns="columns" :options="options">
+    <template slot="amount" slot-scope="props">
+      {{ props.row.amount | currency }}
+    </template>
+
+    <template slot="sync_status" slot-scope="props">
+      {{ $i18n.t('orders.SYNC_STATUS.' + props.row.sync_status) }}
+    </template>
+
+    <template slot="total" slot-scope="props">
+      {{ props.row.amount * props.row.quantity | currency }}
+    </template>
+  </v-client-table>
 </template>
 
 <script>
@@ -18,13 +21,14 @@ export default {
   },
   data () {
     return {
-      columns: ['description', 'type', 'resource', 'quantity', 'amount', 'total'],
+      columns: ['description', 'type', 'resource', 'sync_status', 'quantity', 'amount', 'total'],
       headings: {
         description: 'Item',
         type: 'Type',
         amount: 'Price',
         quantity: 'Quantity',
         resource: 'Resource',
+        sync_status: 'Sync Status',
         total: 'Amount'
       },
       options: {}

@@ -6,7 +6,7 @@ export default {
    * Retrieves all node groups and their nodes.
    */
   groups (options) {
-    return api('GET', `/node_group/self`, options)
+    return api('GET', helpers.appendQuery(`/node_group/self`, options), options)
   },
 
   /**
@@ -15,6 +15,13 @@ export default {
    */
   node (options) {
     return api('GET', `/node/${options.data.id}`, options)
+  },
+
+  /**
+   * Returns my nodes.
+   */
+  myNodes (options) {
+    return api('GET', helpers.appendQuery(`/node/self`, options), options)
   },
 
   /**
@@ -133,5 +140,25 @@ export default {
 
   nodeLogin (options) {
     return api('GET', `/node/${options.data.id}/auth`, options)
+  },
+
+  /**
+   * Searches and filters nodes. Example rules:
+   * "rules": [
+   *     {
+   *         "field": "id",
+   *         "operator": "=",
+   *         "value": "1"
+   *     }
+   * ]
+   */
+  search (options) {
+    options.data = {
+      resource: 'node',
+      expires: 600,
+      rules: options.rules
+    }
+
+    return api('POST', `/search`, options)
   }
 }

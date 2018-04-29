@@ -7,6 +7,7 @@ module.exports = {
     ORDERS: 'Orders',
     INVOICES: 'Invoices',
     NODES: 'Nodes',
+    ROLES: 'Roles',
     DAEMON: 'Daemon',
     DOWNLOADS: 'Downloads',
     ACCOUNT: 'Account',
@@ -44,7 +45,10 @@ module.exports = {
     CHECKOUT: 'Checkout',
     VIEW_CART: 'View Cart',
     CONTINUE_SHOPPING: 'Continue Shopping',
-    CHANGE_TERM: 'Change Term'
+    CHANGE_TERM: 'Change Term',
+    COPY_TO_CLIPBOARD: 'Copy to clipboard',
+    COPIED_TO_CLIPBOARD: 'Text copied to clipboard!',
+    DOWNLOAD_AS_FILE: 'Download as file'
   },
 
   errors: {
@@ -152,7 +156,18 @@ module.exports = {
       ALL: 'All orders',
       ACTIVE: 'Active orders',
       CANCELLED: 'Cancelled orders'
-    }
+    },
+    SYNC_STATUS: {
+      PENDING_SYNC: 'Pending',
+      SYNCED: 'Done'
+    },
+    VIEW_ALL_RESOURCES: 'List all resources',
+    NOT_ENABLED: '{type} is not enabled for this node.',
+    USE_ACCESSOR: 'Please use the login data as shown in your accessor.',
+    ACCESS_CREDENTIALS: 'Access Credentials',
+    ACCESS_CONFIG: 'Access Config',
+    ACCESS_REFERENCE: 'Access Reference',
+    ACCESSOR: 'Accessor'
   },
 
   services: {
@@ -178,6 +193,7 @@ module.exports = {
     DELETE_ENGAGEMENT_CONFIRM_DIALOG: 'Are you sure you want to cancel this engagement?',
     ENGAGEMENT_DELETE_SUCCESS: 'Engagement canceled!',
     ORDER_NOT_ACTIVE_YET: 'Unable to cancel engagement: This order isn\'t active yet!',
+    LOADING_NODES: 'Loading nodes, please wait ...',
     STATUS: {
       UNCONFIRMED: 'Unconfirmed',
       CONFIRMED: 'Confirmed',

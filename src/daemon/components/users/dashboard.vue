@@ -4,7 +4,7 @@
       <div class="avatar">{{ initials }}</div>
       <div class="name">{{ displayName }}</div>
 
-      <h3>{{ $i18n.t('user.ROLES') }}</h3>
+      <h3>{{ $i18n.t('misc.ROLES') }}</h3>
       <div>{{ roles }}</div>
     </div>
 
