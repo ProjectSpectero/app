@@ -17,7 +17,7 @@ module.exports = {
     SETTINGS: 'Settings',
     LOGOUT: 'Logout',
     NOT_FOUND: 'We were unable to find any {type}.',
-    LOADING: 'Loading...',
+    LOADING: 'Loading',
     CONTINUE: 'Continue',
     CANCEL: 'Cancel',
     VIEW: 'View',

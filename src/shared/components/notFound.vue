@@ -1,5 +1,9 @@
 <template>
-  <div>{{ $i18n.t('misc.NOT_FOUND', { type: type }) }}</div>
+  <div class="alert-msg-centered">
+    <div class="icon-alert-circle big-icon"></div>
+    <h1>Not Found</h1>
+    <p>The resource you requested could not be found.</p>
+  </div>
 </template>
 
 <script>
