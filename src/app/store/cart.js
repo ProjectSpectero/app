@@ -78,7 +78,7 @@ const actions = {
     })
 
     if (found && found.loaded) {
-      console.warn(`Cart item ${found.id} (${found.type}) has already been loaded from API.`)
+      // console.warn(`Cart item ${found.id} (${found.type}) has already been loaded from API.`)
       return false
     }
 
