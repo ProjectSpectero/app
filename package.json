@@ -34,6 +34,7 @@
     "vue-tables-2": "^1.4.1",
     "vue-toasted": "^1.1.24",
     "vue-ua": "^1.5.0",
+    "vue2-filters": "^0.3.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
