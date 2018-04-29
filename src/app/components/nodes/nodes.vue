@@ -16,7 +16,7 @@
           </div>
           <div class="split-item split-details">
             <template v-if="groups && (loadingUncategorized || loadingNodes)">
-              {{ $i18n.t('nodes.LOADING_NODES') }}
+              <loading></loading>
             </template>
             <template v-else>
               <nodes-list

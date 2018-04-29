@@ -193,7 +193,6 @@ module.exports = {
     DELETE_ENGAGEMENT_CONFIRM_DIALOG: 'Are you sure you want to cancel this engagement?',
     ENGAGEMENT_DELETE_SUCCESS: 'Engagement canceled!',
     ORDER_NOT_ACTIVE_YET: 'Unable to cancel engagement: This order isn\'t active yet!',
-    LOADING_NODES: 'Loading nodes, please wait ...',
     STATUS: {
       UNCONFIRMED: 'Unconfirmed',
       CONFIRMED: 'Confirmed',
