@@ -1,9 +1,9 @@
 <template>
   <div v-if="pagination && pagination.total" class="pagination">
     <div class="paginator">
-      <div @click="toPage(1)" :class="['page', 'first', (active === 1) ? 'disabled' : '']">«</div>
+      <div @click="toPage(1)" :class="['page', 'page-arrow', 'first', (active === 1) ? 'disabled' : '']"><span class="icon-chevrons-left"></span></div>
 
-      <div @click="toPage(active - 1)" :class="['page', 'previous', (active === 1) ? 'disabled' : '']">🢐</div>
+      <div @click="toPage(active - 1)" :class="['page', 'page-arrow', 'previous', (active === 1) ? 'disabled' : '']"><span class="icon-chevron-left"></span></div>
 
       <template v-if="totalPages > 5 ">
         <ul class="pages">
@@ -33,9 +33,9 @@
         </ul>
       </template>
 
-      <div @click="toPage(active + 1)" :class="['page', 'next', (active === totalPages) ? 'disabled' : '']">🢒</div>
+      <div @click="toPage(active + 1)" :class="['page', 'page-arrow', 'next', (active === totalPages) ? 'disabled' : '']"><span class="icon-chevron-right"></span></div>
 
-      <div @click="toPage(totalPages)" :class="['page', 'last', (active === totalPages) ? 'disabled' : '']">»</div>
+      <div @click="toPage(totalPages)" :class="['page', 'page-arrow', 'last', (active === totalPages) ? 'disabled' : '']"><span class="icon-chevrons-right"></span></div>
     </div>
   </div>
 </template>
@@ -139,7 +139,7 @@ export default {
   border: 1px solid $color-border;
 
   .pages {
-    display: inline-block;
+    float: left;
     list-style: none;
   }
 
@@ -153,6 +153,7 @@ export default {
   }
 
   .page {
+    float: left;
     cursor: pointer;
     background-color: $white;
     border-radius: 4px;
@@ -172,9 +173,13 @@ export default {
       cursor: disabled;
     }
   }
-
-  .previous, .next {
-    font-size: 20px;
+  [class^="icon-"] {
+    position: relative;
+    top: 2px;
+    font-size: 110%;
+  }
+  .page-arrow {
+    padding: 0 10px;
   }
 }
 </style>
