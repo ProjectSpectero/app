@@ -425,4 +425,9 @@ export default {
     padding: 14px;
   }
 }
+@media print {
+  .outstanding {
+    display: none !important;
+  }
+}
 </style>

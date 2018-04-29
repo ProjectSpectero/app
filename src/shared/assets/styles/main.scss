@@ -26,6 +26,9 @@
 @import "pages/auth";
 @import "pages/orders";
 
+// Print styles
+@import "pages/print";
+
 // Dependencies
 @import "dependencies/stripe";
 @import "dependencies/vue-tables";
