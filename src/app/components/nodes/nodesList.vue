@@ -1,8 +1,8 @@
 <template>
   <div v-if="tableData && !loadingUncategorized && !loadingNodes">
     <header>
-      <h2>{{ groupData.friendly_name }}</h2>
-      <div class="actions">
+      <h2>{{ !groupData.uncategorized ? groupData.friendly_name : 'Uncategorized' }}</h2>
+      <div v-if="!groupData.uncategorized" class="actions">
         <button class="button button-sm button-danger button-icon"><span class="icon-trash-2"></span></button>
         <button class="button button-sm">Edit Group</button>
       </div>

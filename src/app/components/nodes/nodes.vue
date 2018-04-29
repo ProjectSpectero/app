@@ -249,7 +249,16 @@ export default {
       }
     },
     getGroupData (id) {
+      // If uncategorized (id = 0), return dummy data
+      if (id === 0) {
+        return {
+          uncategorized: true
+        }
+      }
+
       const found = this.groups.find(u => u.id === id)
+
+      found.uncategorized = false
       return found || {}
     }
   },
