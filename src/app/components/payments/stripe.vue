@@ -31,6 +31,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import invoiceAPI from '@/app/api/invoice.js'
 import paymentAPI from '@/app/api/payment.js'
 import creditCard from './creditCard'
 
@@ -62,7 +63,7 @@ export default {
       setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus'
     }),
     fetchDue () {
-      paymentAPI.due({
+      invoiceAPI.due({
         data: {
           id: this.invoiceId
         },
