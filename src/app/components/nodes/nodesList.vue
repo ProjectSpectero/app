@@ -45,10 +45,6 @@
               <router-link class="button button-dark button-icon" :to="{ name: 'node', params: { action: 'edit', id: row.id } }">
                 <span class="icon-edit-2"></span>
               </router-link>
-
-              <router-link class="button button-icon" :to="{ name: 'node', params: { action: 'view', id: row.id } }">
-                <span class="icon-more-horizontal"></span>
-              </router-link>
             </td>
           </tr>
         </tbody>

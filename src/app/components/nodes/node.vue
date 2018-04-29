@@ -20,7 +20,6 @@
 import nodeAPI from '@/app/api/node.js'
 import loading from '@/shared/components/loading'
 import nodeEdit from './nodeEdit'
-import nodeView from './nodeView'
 
 export default {
   metaInfo: {
@@ -52,7 +51,7 @@ export default {
   },
   methods: {
     setType () {
-      this.component = (this.$route.params.action === 'edit') ? 'nodeEdit' : 'nodeView'
+      this.component = 'nodeEdit'
     },
     async fetchGroup (groupId) {
       await nodeAPI.group({
@@ -122,7 +121,6 @@ export default {
   },
   components: {
     nodeEdit,
-    nodeView,
     loading
   }
 }
