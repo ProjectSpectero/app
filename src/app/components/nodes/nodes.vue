@@ -32,7 +32,7 @@
           </div>
         </div>
       </div>
-      <not-found v-else type="nodes"></not-found>
+      <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'nodes' })"></not-found>
     </div>
     <loading v-else></loading>
   </div>

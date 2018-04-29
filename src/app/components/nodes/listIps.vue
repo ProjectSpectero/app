@@ -13,7 +13,7 @@
           </template>
         </v-client-table>
       </div>
-      <not-found v-else type="ips"></not-found>
+      <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'IPs' })"></not-found>
   </div>
 </template>
 

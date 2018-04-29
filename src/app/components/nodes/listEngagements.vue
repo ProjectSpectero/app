@@ -1,34 +1,34 @@
 <template>
   <div>
-      <div v-if="engagements && engagements.length" class="list pad-margin">
-        <v-client-table :data="engagements" :columns="columns" :options="options">
-          <template slot="type" slot-scope="props">
-            <template v-if="props.row.type === 'NODE'">
-              <div>Node #{{ props.row.resource }}</div>
-              <small>
-                <router-link :to="{ name: 'node', params: { id: props.row.resource, type: 'view' }, hash: '#details' }">
-                  Go to Node
-                </router-link>
-              </small>
-            </template>
-            <template v-else-if="props.row.type === 'NODE_GROUP'">
-              <div>Node Group #{{ props.row.resource }}</div>
-              <small>
-                <router-link :to="{ name: 'groupEdit', params: { id: props.row.resource, type: 'view' }, hash: '#details' }">
-                  Go to Node Group
-                </router-link>
-              </small>
-            </template>
+    <div v-if="engagements && engagements.length" class="list pad-margin">
+      <v-client-table :data="engagements" :columns="columns" :options="options">
+        <template slot="type" slot-scope="props">
+          <template v-if="props.row.type === 'NODE'">
+            <div>Node #{{ props.row.resource }}</div>
+            <small>
+              <router-link :to="{ name: 'node', params: { id: props.row.resource, type: 'view' }, hash: '#details' }">
+                Go to Node
+              </router-link>
+            </small>
           </template>
+          <template v-else-if="props.row.type === 'NODE_GROUP'">
+            <div>Node Group #{{ props.row.resource }}</div>
+            <small>
+              <router-link :to="{ name: 'groupEdit', params: { id: props.row.resource, type: 'view' }, hash: '#details' }">
+                Go to Node Group
+              </router-link>
+            </small>
+          </template>
+        </template>
 
-          <template slot="actions" slot-scope="props">
-            <button class="button" @click.stop="removeEngagement(props.row.id)">
-              {{ $i18n.t('misc.CANCEL') }}
-            </button>
-          </template>
-        </v-client-table>
-      </div>
-      <not-found v-else type="engagements"></not-found>
+        <template slot="actions" slot-scope="props">
+          <button class="button" @click.stop="removeEngagement(props.row.id)">
+            {{ $i18n.t('misc.CANCEL') }}
+          </button>
+        </template>
+      </v-client-table>
+    </div>
+    <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'engagements' })"></not-found>
   </div>
 </template>
 
