@@ -1,7 +1,8 @@
 <template>
   <div v-if="invoice">
     <top title="View Invoice">
-      <payment-buttons :invoice="invoice"></payment-buttons>
+      <router-link :to="{ name: 'invoices' }" class="button">Back to Invoices</router-link>
+      <button v-if="invoice.status === 'UNPAID' && canShowDueAmount" @click.stop="showPaymentModal" class="button button-success">{{ $i18n.t('misc.PAY_NOW') }}</button>
     </top>
     <div v-if="!loading" class="invoice">
       <div class="header">
@@ -118,12 +119,10 @@
           </div>
         </div>
         <div v-if="canShowDueAmount" class="totals-line total-outstanding">
-          <div class="label"><strong>Amount Due (USD):</strong></div>
+          <div class="label"><strong>Amount Due:</strong></div>
           <div class="amount"><strong>{{ due.amount | currency }} {{ due.currency }}</strong></div>
         </div>
       </div>
-
-      <payment-buttons :invoice="invoice"></payment-buttons>
     </div>
   </div>
 </template>
@@ -133,7 +132,7 @@ import top from '@/shared/components/top'
 import { mapGetters, mapActions } from 'vuex'
 import orderAPI from '@/app/api/order.js'
 import invoiceAPI from '@/app/api/invoice.js'
-import paymentButtons from '../payments/buttons'
+import paymentModal from '../payments/paymentModal'
 
 export default {
   metaInfo: {
@@ -261,11 +260,19 @@ export default {
         },
         fail: () => this.error404()
       })
+    },
+    showPaymentModal () {
+      this.$modal.show(paymentModal, {
+        invoice: this.invoice,
+        due: this.due
+      }, {
+        height: 'auto'
+      })
     }
   },
   components: {
     top,
-    paymentButtons
+    paymentModal
   }
 }
 </script>
