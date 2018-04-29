@@ -1,9 +1,12 @@
 <template>
   <div>
-      <div v-if="ips && ips.length" class="list pad-margin">
+      <div v-if="ips && ips.length" class="list">
         <v-client-table :data="ips" :columns="columns" :options="options">
           <template v-if="props.row.ip" slot="ip" slot-scope="props">
             {{ props.row.ip }}
+          </template>
+          <template slot="cc" slot-scope="props">
+            {{ getCountryById(props.row.cc).name }}
           </template>
           <template slot="created_at" slot-scope="props">
             {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
@@ -16,6 +19,7 @@
 
 <script>
 import notFound from '@/shared/components/notFound'
+import { mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -33,7 +37,7 @@ export default {
       headings: {
         ip: 'IP Address',
         asn: 'ASN',
-        cc: 'Country Code',
+        cc: 'Country',
         city: 'City',
         created_at: 'Creation Date'
       },
@@ -66,12 +70,22 @@ export default {
       filterable: this.filterableColumns
     }
   },
+  computed: {
+    ...mapGetters({
+      countries: 'settings/countries'
+    })
+  },
   methods: {
     setColumns () {
       const columns = this.showAddresses ? ['ip', 'asn', 'cc', 'city', 'created_at'] : ['asn', 'cc', 'city', 'created_at']
       this.columns = columns
       this.sortableColumns = columns
       this.filterableColumns = columns
+    },
+    getCountryById (id) {
+      return this.countries.filter((obj) => {
+        return obj.code === id
+      })[0]
     }
   },
   components: {

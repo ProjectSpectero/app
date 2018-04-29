@@ -29,12 +29,10 @@
               <tr v-for="item in results" :key="item.id">
                 <td>
                   {{ item.friendly_name }}
-                  <div class="badge badge-brand badge-plan" v-if="item.plan">{{ item.plan }}</div>
+                  <div v-if="item.plan" class="badge badge-brand badge-plan">{{ item.plan }}</div>
                 </td>
                 <td>
-                  <div class="badge">
-                    {{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}
-                  </div>
+                  <div class="badge">{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</div>
                 </td>
                 <td>
                   <span v-if="item.ip_addresses">{{ item.ip_addresses.length }}</span>
@@ -47,17 +45,17 @@
                 <td>{{ item.price | currency }} USD</td>
                 <td class="table-actions">
                   <button @click.stop="showModal(item)" class="button button-sm button-success" :class="{ 'button-bordered': existsInCart(item.id) }">
-                  <template v-if="existsInCart(item.id)">
-                    <span class="icon-check-circle"></span> {{ $i18n.t('misc.IN_CART') }}
-                  </template>
-                  <template v-else>
-                    <span class="icon-shopping-bag"></span> {{ $i18n.t('misc.PURCHASE') }}
-                  </template>
-                </button>
+                    <template v-if="existsInCart(item.id)">
+                      <span class="icon-check-circle"></span> {{ $i18n.t('misc.IN_CART') }}
+                    </template>
+                    <template v-else>
+                      <span class="icon-shopping-bag"></span> {{ $i18n.t('misc.PURCHASE') }}
+                    </template>
+                  </button>
 
-                <router-link class="button button-sm" :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }">
-                  {{ $i18n.t('misc.VIEW') }}
-                </router-link>
+                  <router-link class="button button-sm" :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }">
+                    {{ $i18n.t('misc.VIEW') }}
+                  </router-link>
                 </td>
               </tr>
             </tbody>
@@ -86,7 +84,7 @@ export default {
       headings: {
         friendly_name: 'Name',
         market_model: 'Market Model',
-        ips_count: 'IPs',
+        ips_count: 'IP Count',
         type: 'Type',
         price: 'Price',
         actions: ''

@@ -1,7 +1,7 @@
 <template>
     <v-client-table :data="nodes" :columns="columns" :options="options">
       <template slot="name" slot-scope="props">
-        <div>{{ props.row.friendly_name }}</div>
+        {{ props.row.friendly_name }}
       </template>
 
       <template slot="services" slot-scope="props">
@@ -19,6 +19,10 @@
           </li>
         </ul>
       </template>
+
+      <template slot="status" slot-scope="props">
+        <div :class="'badge status-' + props.row.status">{{ $i18n.t(`nodes.STATUS.${props.row.status}`) }}</div>
+      </template>
     </v-client-table>
 </template>
 
@@ -32,7 +36,13 @@ export default {
       columns: ['friendly_name', 'services', 'ips', 'status'],
       sortableColumns: ['friendly_name', 'services', 'ips', 'status'],
       filterableColumns: ['friendly_name', 'services', 'ips', 'status'],
-      options: {}
+      options: {},
+      headings: {
+        friendly_name: 'Friendly Name',
+        services: 'Services',
+        ips: 'IPs',
+        status: 'Status'
+      }
     }
   },
   created () {
@@ -64,5 +74,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@styles/components/badges';
 
+.badge {
+  &.status-CONFIRMED {
+    @extend .badge-success;
+  }
+
+  &.status-UNCONFIRMED {
+    @extend .badge-error;
+  }
+}
 </style>

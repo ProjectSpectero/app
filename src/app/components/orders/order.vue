@@ -13,7 +13,7 @@
     </top>
     <div v-if="!loading" class="order">
       <div class="container">
-        <div class="order-info">
+        <div class="col-info">
           <div class="info-box">
             <h5>Reference Number</h5>
             <p>{{ order.id }}</p>
@@ -90,35 +90,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.order-info {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
 
-  .info-box {
-    flex: 1;
-    margin-right: $pad;
-    border-right: 1px solid $color-border;
-
-    &:last-child {
-      margin-right: 0;
-      border-right: none;
-    }
-  }
-  h5 {
-    display: block;
-    margin-bottom: 4px;
-    font-size: 13px;
-    line-height: 100%;
-    font-weight: $font-semi;
-    text-transform: uppercase;
-    color: $color-light;
-  }
-  p {
-    display: block;
-    font-size: 16px;
-    line-height: 22px;
-    font-weight: $font-semi;
-  }
-}
 </style>

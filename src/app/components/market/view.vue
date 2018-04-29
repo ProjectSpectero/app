@@ -28,7 +28,8 @@ export default {
           type: this.$route.params.type
         },
         success: response => {
-          console.log(response.data.result)
+          response.data.result.type = this.$route.params.type === 'group' ? 'NODE_GROUP' : 'NODE'
+
           this.loading = false
           this.item = response.data.result
         },
