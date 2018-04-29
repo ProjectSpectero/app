@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      setPendingInvoiceStatus: 'users/setPendingInvoiceStatus'
+      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus'
     }),
     processPayment () {
       if (this.$route.params.invoiceId) {

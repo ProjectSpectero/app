@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      setPendingInvoiceStatus: 'users/setPendingInvoiceStatus'
+      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus'
     }),
     pay () {
       // Stripe token issued

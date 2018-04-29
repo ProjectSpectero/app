@@ -167,7 +167,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      rules: 'users/editRules'
+      rules: 'appUsers/editRules'
     })
   },
   methods: {
