@@ -14,10 +14,14 @@
     <section>
       <h5>Step 2</h5>
       <p>Please download the latest release of the Spectero Daemon and its CLI.</p>
-      <p>
-        <a class="button button-info" href="https://spectero.com/latest.zip" target="_blank">Download Now</a>
-        <a class="button" href="https://puu.sh/zQxAt/34a573891d.zip" target="_blank">Alternate Download Link</a>
-      </p>
+      <template v-if="loaded">
+        <a v-if="latest" class="button button-info" :href="latest" target="_blank">Download Now</a>
+        <a v-if="alt" class="button" :href="alt" target="_blank">Alternate Download</a>
+        <div class="details">{{ version }} - <a v-if="changelog" :href="changelog">Changelog</a></div>
+      </template>
+      <template v-else>
+        <button class="button button-loading" disabled>{{ $i18n.t('misc.LOADING') }}</button>
+      </template>
     </section>
     <section>
       <h5>Step 3</h5>
@@ -48,21 +52,39 @@ export default {
   metaInfo: {
     title: 'Downloads'
   },
+  data () {
+    return {
+      loaded: false,
+      latest: null,
+      alt: null,
+      version: null
+    }
+  },
   methods: {
     async fetchDownloadInfo () {
       try {
-        const response = axios({
+        const response = await axios({
           method: 'GET',
-          timeout: 10000,
-          url: 'https://spectero.com/releases.json'
+          url: 'https://spectero.com/releases.json',
+          timeout: 10000
         })
 
         if (response) {
-          console.log(response)
+          let data = response.data
+          let channel = data.channels.stable
+          let release = data.versions[channel]
+
+          this.version = channel
+          this.latest = release.download
+          this.alt = release.altDownload
+          this.changelog = release.changelog
+
+          this.loaded = true
         }
       } catch (e) {
         let error = e.response
-        console.error(error)
+        this.$toasted.error(this.$i18n.t(`errors.RELEASES_FETCH_FAILED`))
+        console.error('Failed to fetch release data:', error)
       }
     }
   },
@@ -114,5 +136,9 @@ li > ol {
   li {
     margin-bottom: 6px;
   }
+}
+.details {
+  display: block;
+  margin-top: $pad;
 }
 </style>

@@ -83,7 +83,9 @@ module.exports = {
     STORED_CONFIG_WAS_NULL: 'Unable to store service configuration.',
     CANNOT_DELETE_SELF: 'You can\'t delete yourself.',
     ROLE_ESCALATION_FAILED: 'You don\'t have permission to add users of this role level.',
-    CLOUD_USER_ALTER_NOT_ALLOWED: 'You can\'t alter this cloud user.'
+    CLOUD_USER_ALTER_NOT_ALLOWED: 'You can\'t alter this cloud user.',
+
+    RELEASES_FETCH_FAILED: 'Unable to load release data, please try again later.'
   },
 
   payments: {
