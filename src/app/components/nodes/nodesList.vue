@@ -34,15 +34,15 @@
                 {{ $i18n.t('misc.VERIFY') }}
               </button>
 
-              <router-link class="button button-info button-icon" :to="{ name: 'daemon', params: { nodeId: 101 } }">
+              <router-link class="button button-icon" :to="{ name: 'daemon', params: { nodeId: 101 } }">
                 <span class="icon-settings"></span>
               </router-link>
 
-              <button class="button button-danger button-icon" @click.stop="removeNode(row.id)">
+              <button class="button button-icon" @click.stop="removeNode(row.id)">
                 <span class="icon-trash-2"></span>
               </button>
 
-              <router-link class="button button-dark button-icon" :to="{ name: 'node', params: { action: 'edit', id: row.id } }">
+              <router-link class="button button-icon" :to="{ name: 'node', params: { action: 'edit', id: row.id } }">
                 <span class="icon-edit-2"></span>
               </router-link>
             </td>
