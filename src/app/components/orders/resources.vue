@@ -73,7 +73,7 @@ export default {
         },
         fail: (e) => {
           console.log(e)
-          // this.error404()
+          this.error404()
         }
       })
     },
