@@ -7,14 +7,13 @@
   }
 }
 
-@keyframes load-spin {
-  0% {
-    transform: rotate(0deg);
+@keyframes bouncing-loader {
+  from {
+    opacity: 1;
+    transform: translateY(0);
   }
-  100% {
-    transform: rotate(360deg);
+  to {
+    opacity: 0.1;
+    transform: translateY(-1rem);
   }
-}
-.load-spin {
-  animation: load-spin 2.3s linear infinite;
 }
