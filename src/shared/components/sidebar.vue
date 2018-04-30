@@ -61,12 +61,6 @@
         <h5>{{ $i18n.t('misc.ACCOUNT') }}</h5>
         <ul>
           <li>
-            <a :href="freshdeskUrl ? freshdeskUrl : '#'" target="_blank">
-              <span class="icon-life-buoy"></span>
-              {{ $i18n.t('misc.SUPPORT') }}
-            </a>
-          </li>
-          <li>
             <router-link :to="{ name: 'settings' }">
               <span class="icon-sliders"></span>
               {{ $i18n.t('misc.SETTINGS') }}
