@@ -156,9 +156,9 @@ export default {
       return this.item.plan ? this.$store.getters['market/plan'](this.item.plan) : null
     },
     yearlyPrice () {
-      let price = this.item.price * 12
+      let price = (this.item.price / 30) * 365
       if (this.plan && this.plan['yearly_discount_pct']) {
-        price -= this.item.price * 12 * this.plan['yearly_discount_pct']
+        price -= price * this.plan['yearly_discount_pct']
       }
       return price
     }
