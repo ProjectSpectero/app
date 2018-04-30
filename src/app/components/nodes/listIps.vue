@@ -6,7 +6,9 @@
             {{ props.row.ip }}
           </template>
           <template slot="cc" slot-scope="props">
-            {{ getCountryById(props.row.cc).name }}
+            <template v-if="props.row.cc">
+              {{ getCountryById(props.row.cc).name }}
+            </template>
           </template>
           <template slot="created_at" slot-scope="props">
             {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
@@ -81,11 +83,6 @@ export default {
       this.columns = columns
       this.sortableColumns = columns
       this.filterableColumns = columns
-    },
-    getCountryById (id) {
-      return this.countries.filter((obj) => {
-        return obj.code === id
-      })[0]
     }
   },
   components: {

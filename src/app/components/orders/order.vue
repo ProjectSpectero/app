@@ -33,7 +33,7 @@
               {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
             </router-link>
           </div>
-          <div class="info-box">
+          <div v-if="order.status === 'ACTIVE'" class="info-box">
             <h5>{{ $i18n.t('misc.RESOURCES') }}</h5>
             <router-link class="button" :to="{ name: 'resources', params: { id: order.id } }">
               {{ $i18n.t('orders.VIEW_ALL_RESOURCES') }}
