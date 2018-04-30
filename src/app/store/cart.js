@@ -100,7 +100,7 @@ const actions = {
         // Calculate monthly/yearly pricing
         let pricing = {
           monthly: item.data.price,
-          yearly: item.plan ? item.data.price * 12 : null
+          yearly: item.plan ? (item.data.price / 30) * 365 : null
         }
 
         // Yearly discount pricing
