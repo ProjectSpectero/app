@@ -117,11 +117,6 @@ export default {
       })
 
       return this.$i18n.t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
-    },
-    getCountryById (id) {
-      return this.countries.filter((obj) => {
-        return obj.code === id
-      })[0]
     }
   },
   created () {

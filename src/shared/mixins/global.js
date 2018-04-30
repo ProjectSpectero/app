@@ -11,6 +11,13 @@ function globalMixin (i18n) {
       confirmedFieldRule: (inputName, rules) => {
         rules.confirmed = inputName + 'Confirm'
         return rules
+      },
+      getCountryById (id) {
+        const found = this.countries.filter((obj) => {
+          return obj.code === id
+        })
+
+        return (found && found.length) ? found[0] : { code: 0, name: 'N/A' }
       }
     }
   }

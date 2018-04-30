@@ -99,11 +99,6 @@ export default {
     switchTab (tab) {
       this.activeTab = tab.id
       this.$router.push({ name: 'node', params: { action: this.action, id: this.node.id }, hash: tab.hash })
-    },
-    getCountryById (id) {
-      return this.countries.filter((obj) => {
-        return obj.code === id
-      })[0]
     }
   },
   watch: {
