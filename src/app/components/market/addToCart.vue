@@ -160,7 +160,7 @@ export default {
       if (this.plan && this.plan['yearly_discount_pct']) {
         price -= price * this.plan['yearly_discount_pct']
       }
-      return price
+      return Math.floor(price) // floor the price for marketing purposes
     }
   },
   created: function () {
