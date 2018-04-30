@@ -107,7 +107,7 @@ const actions = {
         if (item.plan && plan.yearly_discount_pct) {
           pricing.yearlyDiscount = plan.yearly_discount_pct
           pricing.yearlySavings = pricing.yearly * plan.yearly_discount_pct
-          pricing.yearly -= pricing.yearlySavings
+          pricing.yearly -= Math.floor(pricing.yearlySavings) // floor the price for marketing purposes
         }
 
         item.pricing = pricing
