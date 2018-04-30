@@ -100,7 +100,7 @@ export default {
       })
 
       this.resources = tree
-      this.selectResource(tree[0])
+      this.buildResource(tree[0])
     },
     parseReferences (reference) {
       let data = []
@@ -116,7 +116,7 @@ export default {
 
       return data
     },
-    selectResource (item) {
+    buildResource (item) {
       let sortedReferences = {}
       let selectedType = this.types[0]
 
@@ -139,6 +139,10 @@ export default {
 
       // Select first reference type by default
       this.selectReference(selectedType)
+    },
+    selectResource (item) {
+      this.selectedResource = item
+      this.selectReference(this.types[0])
     },
     selectReference (type) {
       this.selectedType = type
