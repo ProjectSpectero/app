@@ -107,14 +107,14 @@ export default {
     await this.fetchGroups()
 
     this.formFields = [
-      { name: 'friendly_name', label: this.$i18n.t('misc.LABEL_FRIENDLY_NAME'), placeholder: this.$i18n.t('misc.LABEL_FRIENDLY_NAME'), type: 'text' },
-      { name: 'ip', label: this.$i18n.t('misc.LABEL_IP'), placeholder: this.$i18n.t('misc.LABEL_IP'), type: 'text' },
-      { name: 'city', label: this.$i18n.t('misc.LABEL_CITY'), placeholder: this.$i18n.t('misc.LABEL_CITY'), type: 'text' },
-      { name: 'access_token', label: this.$i18n.t('misc.LABEL_ACCESS_TOKEN'), placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'), type: 'text' },
-      { name: 'protocol', label: this.$i18n.t('misc.LABEL_PROTOCOL'), placeholder: this.$i18n.t('misc.LABEL_PROTOCOL'), type: 'select', object: this.protocols, objectKey: null },
-      { name: 'market_model', label: this.$i18n.t('misc.LABEL_MARKET_MODEL'), placeholder: this.$i18n.t('misc.LABEL_MARKET_MODEL'), type: 'select', object: this.marketModels, objectKey: null },
-      { name: 'price', label: this.$i18n.t('misc.LABEL_PRICE'), placeholder: this.$i18n.t('misc.LABEL_PRICE'), type: 'number' },
-      { name: 'group_id', label: this.$i18n.t('misc.LABEL_NODE_GROUP'), type: 'select', object: this.groups, objectKey: 'id' }
+      { name: 'friendly_name', label: this.$i18n.t('misc.FRIENDLY_NAME'), placeholder: this.$i18n.t('misc.FRIENDLY_NAME'), type: 'text' },
+      { name: 'ip', label: this.$i18n.t('misc.IP'), placeholder: this.$i18n.t('misc.IP'), type: 'text' },
+      { name: 'city', label: this.$i18n.t('misc.CITY'), placeholder: this.$i18n.t('misc.CITY'), type: 'text' },
+      { name: 'access_token', label: this.$i18n.t('misc.ACCESS_TOKEN'), placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'), type: 'text' },
+      { name: 'protocol', label: this.$i18n.t('misc.PROTOCOL'), placeholder: this.$i18n.t('misc.PROTOCOL'), type: 'select', object: this.protocols, objectKey: null },
+      { name: 'market_model', label: this.$i18n.t('misc.MARKET_MODEL'), placeholder: this.$i18n.t('misc.MARKET_MODEL'), type: 'select', object: this.marketModels, objectKey: null },
+      { name: 'price', label: this.$i18n.t('misc.PRICE'), placeholder: this.$i18n.t('misc.PRICE'), type: 'number' },
+      { name: 'group_id', label: this.$i18n.t('misc.NODE_GROUP'), type: 'select', object: this.groups, objectKey: 'id' }
     ]
   },
   methods: {

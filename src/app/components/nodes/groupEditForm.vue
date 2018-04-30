@@ -8,7 +8,7 @@
       <div>
         <div class="form-input">
           <div class="label">
-            <label for="friendly_name">{{ $i18n.t('misc.LABEL_FRIENDLY_NAME') }}</label>
+            <label for="friendly_name">{{ $i18n.t('misc.FRIENDLY_NAME') }}</label>
           </div>
           <input
             type="text"
@@ -29,7 +29,7 @@
 
         <div class="form-input" v-if="marketModels">
           <div class="label">
-            <label for="price">{{ $i18n.t('misc.LABEL_PRICE') }}</label>
+            <label for="price">{{ $i18n.t('misc.PRICE') }}</label>
           </div>
           <input
             type="number"
@@ -50,7 +50,7 @@
         </div>
 
         <div class="form-input" v-if="marketModels">
-          <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.LABEL_MARKET_MODEL') }}</label></div>
+          <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.MARKET_MODEL') }}</label></div>
           <select v-model="form.market_model">
             <option v-for="model in marketModels" :key="model" :value="model">
               {{ model }}
