@@ -4,18 +4,18 @@
       <v-client-table :data="engagements" :columns="columns" :options="options">
         <template slot="type" slot-scope="props">
           <template v-if="props.row.type === 'NODE'">
-            <div>Node #{{ props.row.resource }}</div>
+            <div>{{ $i18n.t('misc.NODE') }} #{{ props.row.resource }}</div>
             <small>
-              <router-link :to="{ name: 'node', params: { id: props.row.resource, type: 'view' }, hash: '#details' }">
-                Go to Node
+              <router-link :to="{ name: 'node', params: { id: props.row.resource, type: 'view' } }">
+                {{ $i18n.t('nodes.GO_TO_NODE') }}
               </router-link>
             </small>
           </template>
           <template v-else-if="props.row.type === 'NODE_GROUP'">
-            <div>Node Group #{{ props.row.resource }}</div>
+            <div>{{ $i18n.t('misc.NODE_GROUP') }} #{{ props.row.resource }}</div>
             <small>
-              <router-link :to="{ name: 'groupEdit', params: { id: props.row.resource, type: 'view' }, hash: '#details' }">
-                Go to Node Group
+              <router-link :to="{ name: 'groupEdit', params: { id: props.row.resource, type: 'view' } }">
+                {{ $i18n.t('nodes.GO_TO_NODE_GROUP') }}
               </router-link>
             </small>
           </template>

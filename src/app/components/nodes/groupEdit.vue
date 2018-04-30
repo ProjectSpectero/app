@@ -26,7 +26,7 @@ export default {
   data () {
     return {
       tabs: [
-        { id: 1, label: 'General details', hash: '#details' },
+        { id: 1, label: 'General details', hash: null },
         { id: 2, label: 'Engagements', hash: '#engagements' }
       ],
       activeTab: 1,
