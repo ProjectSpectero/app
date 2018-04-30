@@ -13,9 +13,6 @@
 export default {
   props: {
     user: Object
-  },
-  metaInfo: {
-    title: 'Add Credit'
   }
 }
 </script>
