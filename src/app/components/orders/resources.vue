@@ -3,7 +3,7 @@
     <top :title="'Order '+ orderId +' Resources'">
       <router-link :to="{ name: 'order', params: { id: orderId } }" class="button">Back to Order Details</router-link>
     </top>
-    <div v-if="resources">
+    <div v-if="resources && resources.length">
       <div class="content-split">
         <div class="split-item split-list nodes-sidebar">
           <div v-for="item in resources" :key="item.id" class="node-group" :class="{ active: selectedResource === item }" @click="selectResource(item)">
@@ -12,6 +12,12 @@
           </div>
         </div>
         <div class="split-item split-details">
+          <div v-if="accessor">
+            <h2>Accessor details</h2>
+            <div>Username: {{ accessor.username }}</div>
+            <div>Password: {{ accessor.password }}</div>
+          </div>
+
           <ul class="references tabs">
             <li v-for="t in types" :key="t" @click="selectReference(t)" class="reference" :class="{ active: selectedType === t }">
               <span>{{ t }}</span>

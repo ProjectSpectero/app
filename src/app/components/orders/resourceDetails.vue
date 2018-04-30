@@ -2,16 +2,6 @@
   <div>
     <template v-if="selectedReferences">
       <div class="details" v-for="(field, j) in selectedReferences" :key="j">
-
-        <div v-if="accessor">
-          <div class="label">
-            <label>{{ $i18n.t('orders.ACCESSOR') }}</label>
-          </div>
-          <div v-for="(a, x) in accessor" :key="x">
-            <div>{{ x }}: <strong>{{ a }}</strong></div>
-          </div>
-        </div>
-
         <div v-if="field.accessReference">
           <div class="label">
             <label>{{ $i18n.t('orders.ACCESS_REFERENCE') }}</label>
