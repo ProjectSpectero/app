@@ -2,12 +2,12 @@
   <div v-if="order">
     <top title="Order Details">
       <router-link class="button" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
-        View Invoice
+        {{ $i18n.t('orders.VIEW_INVOICE') }}
       </router-link>
 
       <div class="inline" v-if="order.last_invoice && order.last_invoice.status === 'UNPAID'">
         <router-link class="button button-success" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
-          Pay Now
+          {{ $i18n.t('misc.PAY_NOW') }}
         </router-link>
       </div>
     </top>
@@ -15,24 +15,26 @@
       <div class="container">
         <div class="col-info">
           <div class="info-box">
-            <h5>Reference Number</h5>
+            <h5>{{ $i18n.t('orders.REFERENCE_NUM') }}</h5>
             <p>{{ order.id }}</p>
           </div>
           <div class="info-box">
-            <h5>Status</h5>
+            <h5>{{ $i18n.t('misc.STATUS') }}</h5>
             <p>{{ order.status }}</p>
           </div>
           <div class="info-box">
-            <h5>Total</h5>
+            <h5>{{ $i18n.t('misc.TOTAL') }}</h5>
             <p>{{ order.last_invoice.amount | currency }} {{ order.last_invoice.currency }}</p>
           </div>
           <div class="info-box">
-            <h5>Next Due Date</h5>
+            <h5>{{ $i18n.t('misc.NEXT_DUE_DATE') }}</h5>
             <p>{{ order.due_next | moment('MMM D, YYYY') }}</p>
-            <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">View Latest Invoice</router-link>
+            <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">
+              {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
+            </router-link>
           </div>
           <div class="info-box">
-            <h5>Resources</h5>
+            <h5>{{ $i18n.t('misc.RESOURCES') }}</h5>
             <router-link class="button" :to="{ name: 'resources', params: { id: order.id } }">
               {{ $i18n.t('orders.VIEW_ALL_RESOURCES') }}
             </router-link>

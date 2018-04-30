@@ -13,15 +13,17 @@
       <template slot="ips" slot-scope="props">
         <ul>
           <li v-for="ip in props.row.ip_addresses" :key="ip.asn">
-            <span>ASN: {{ ip.asn }}</span>
-            <span>City: {{ ip.city }}</span>
-            <span>Country Code: {{ ip.cc }}</span>
+            <span>{{ $i18n.t('misc.ASN') }}: {{ ip.asn }}</span>
+            <span>{{ $i18n.t('misc.CITY') }}: {{ ip.city }}</span>
+            <span>{{ $i18n.t('misc.CC') }}: {{ ip.cc }}</span>
           </li>
         </ul>
       </template>
 
       <template slot="status" slot-scope="props">
-        <div :class="'badge status-' + props.row.status">{{ $i18n.t(`nodes.STATUS.${props.row.status}`) }}</div>
+        <div :class="'badge status-' + props.row.status">
+          {{ $i18n.t(`nodes.STATUS.${props.row.status}`) }}
+        </div>
       </template>
     </v-client-table>
 </template>
