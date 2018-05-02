@@ -1,13 +1,5 @@
 <template>
   <div>
-    <div v-if="accessor" class="details">
-      <div>
-        <div class="label"><label>{{ $i18n.t('orders.ACCESSOR_DETAILS') }}</label></div>
-        <p>Username: <strong>{{ accessor.username }}</strong></p>
-        <p>Password: <strong>{{ accessor.password }}</strong></p>
-      </div>
-    </div>
-
     <template v-if="selectedReferences">
       <div class="details" v-for="(field, j) in selectedReferences" :key="j">
         <div v-if="field.accessReference">
