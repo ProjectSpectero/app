@@ -177,7 +177,8 @@ module.exports = {
     ACCESS_CREDENTIALS: 'Access Credentials',
     ACCESS_CONFIG: 'Access Config',
     ACCESS_REFERENCE: 'Access Reference',
-    ACCESSOR: 'Accessor'
+    ACCESSOR: 'Accessor',
+    ACCESSOR_DETAILS: 'Accessor Details'
   },
 
   services: {

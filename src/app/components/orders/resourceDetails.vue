@@ -1,33 +1,36 @@
 <template>
   <div>
+    <div v-if="accessor" class="details">
+      <div>
+        <div class="label"><label>{{ $i18n.t('orders.ACCESSOR_DETAILS') }}</label></div>
+        <p>Username: <strong>{{ accessor.username }}</strong></p>
+        <p>Password: <strong>{{ accessor.password }}</strong></p>
+      </div>
+    </div>
+
     <template v-if="selectedReferences">
       <div class="details" v-for="(field, j) in selectedReferences" :key="j">
         <div v-if="field.accessReference">
-          <div class="label">
-            <label>{{ $i18n.t('orders.ACCESS_REFERENCE') }}</label>
+          <div class="label"><label>{{ $i18n.t('orders.ACCESS_REFERENCE') }}</label></div>
+          <div class="reference-list">
+            <span>{{ formatAccessReferences(field.accessReference) }}</span>
           </div>
           <div class="ips items-centered">
-            <label><strong>{{ field.accessReference }}</strong></label>
             <copy-to-clipboard :field="field.accessReference" button-class="button-sm"></copy-to-clipboard>
           </div>
         </div>
 
         <div v-if="field.accessConfig">
-          <div class="label">
-            <label>{{ $i18n.t('orders.ACCESS_CONFIG') }}</label>
-            <copy-to-clipboard :field="field.accessConfig" button-class="button-sm"></copy-to-clipboard>
-            <download :content="field.accessConfig" :file="configFileName" button-class="button-sm"></download>
-          </div>
-          <textarea class="input" v-model="field.accessConfig" readonly></textarea>
+          <div class="label"><label for="accessConfig">{{ $i18n.t('orders.ACCESS_CONFIG') }}</label></div>
+          <textarea class="input" v-model="field.accessConfig" id="accessConfig" readonly></textarea>
+          <copy-to-clipboard :field="field.accessConfig" button-class="button-sm"></copy-to-clipboard>
+          <download :content="field.accessConfig" :file="configFileName" button-class="button-sm"></download>
         </div>
 
         <div v-if="field.accessCredentials">
-          <div class="label">
-            <label>{{ $i18n.t('orders.ACCESS_CREDENTIALS') }}</label>
-          </div>
+          <div class="label"><label>{{ $i18n.t('orders.ACCESS_CREDENTIALS') }}</label></div>
           <div>{{ field.accessCredentials }}</div>
         </div>
-
       </div>
     </template>
     <error v-else header="Not Enabled" :msg="$i18n.t('orders.NOT_ENABLED', { type: selectedType })"></error>
@@ -50,6 +53,15 @@ export default {
   computed: {
     configFileName () {
       return 'spectero-' + this.type.toLowerCase() + '-' + this.id + '-openvpn.ovpn'
+    }
+  },
+  methods: {
+    formatAccessReferences (ref) {
+      let output = ''
+      for (let r of ref.split(',')) {
+        output += `${r}\n`
+      }
+      return output
     }
   },
   components: {
@@ -75,7 +87,7 @@ export default {
       width: 100%;
       height: 1px;
       display: block;
-      margin: 16px 0;
+      margin: $pad 0;
       background-color: $color-border;
       content: '';
     }
@@ -97,14 +109,26 @@ export default {
   }
 }
 .label {
-  display: flex;
-  align-items: center;
+  margin-bottom: 16px;
+  color: $color-dark;
+  font-weight: $font-semi;
+}
+.reference-list {
+  padding: 12px;
+  display: block;
+  height: 140px;
+  max-height: 140px;
+  font-size: 14px;
+  line-height: 140%;
+  border: 1px solid $color-border;
+  border-radius: 4px;
+  overflow-y: auto;
 
-  label {
-    margin-right: 12px;
+  span {
+    white-space: pre-wrap;
   }
-  .button {
-    margin-right: 6px;
-  }
+}
+textarea, .reference-list {
+  margin-bottom: 12px;
 }
 </style>
