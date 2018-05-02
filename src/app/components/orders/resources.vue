@@ -12,18 +12,27 @@
           </div>
         </div>
         <div class="split-item split-details">
+          <div v-if="accessor" class="details">
+            <div>
+              <div class="label"><label>{{ $i18n.t('orders.ACCESSOR_DETAILS') }}</label></div>
+              <p>Username: <strong>{{ accessor.username }}</strong></p>
+              <p>Password: <strong>{{ accessor.password }}</strong></p>
+            </div>
+          </div>
+
           <ul class="references tabs">
             <li v-for="t in types" :key="t" @click="selectReference(t)" class="reference" :class="{ active: selectedType === t }">
               <span>{{ t }}</span>
             </li>
           </ul>
 
+          <loading></loading>
+
           <resource-details
             :id="selectedResource.id"
             :type="selectedResource.type"
             :selectedReferences="selectedReferences"
-            :selectedType="selectedType"
-            :accessor="accessor"></resource-details>
+            :selectedType="selectedType"></resource-details>
         </div>
       </div>
     </div>
@@ -158,5 +167,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.details {
+  margin-bottom: $pad;
+  padding: $pad;
+  border-radius: 4px;
+  border: 1px solid $color-border;
+}
 </style>
