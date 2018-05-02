@@ -66,9 +66,27 @@ export default {
     }
   },
   created () {
-    this.fetchResources()
+    this.fetchOrder()
   },
   methods: {
+    async fetchOrder () {
+      await orderAPI.order({
+        data: {
+          id: this.$route.params.id
+        },
+        success: async response => {
+          if (response.data.result && response.data.result.status === 'ACTIVE') {
+            await this.fetchResources()
+          } else {
+            this.error404()
+          }
+        },
+        fail: (e) => {
+          console.log(e)
+          this.error404()
+        }
+      })
+    },
     async fetchResources () {
       await orderAPI.resources({
         data: {
