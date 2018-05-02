@@ -107,7 +107,12 @@ export default {
       })
 
       this.resources = tree
-      this.buildResource(tree[0])
+
+      tree.forEach(item => {
+        this.buildResource(item)
+      })
+
+      this.selectResource(tree[0])
     },
     parseReferences (reference) {
       let data = []
@@ -127,8 +132,6 @@ export default {
       let sortedReferences = {}
       let selectedType = this.types[0]
 
-      this.selectedResource = item
-
       item.references.forEach(r => {
         if (sortedReferences[r.type] === undefined) {
           sortedReferences[r.type] = []
@@ -143,9 +146,6 @@ export default {
 
       // Update references with list sorted by type (OpenVPN, ...)
       this.$set(item, 'references', sortedReferences)
-
-      // Select first reference type by default
-      this.selectReference(selectedType)
     },
     selectResource (item) {
       this.selectedResource = item
