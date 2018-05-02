@@ -39,7 +39,7 @@ export default {
       activeTab: null,
       tabs: [
         { id: 'services', path: 'services', 'label': this.$i18n.t('daemon.SERVICES') },
-        { id: 'proxies', path: 'proxies', 'label': this.$i18n.t('daemon.PROXIES') },
+        // { id: 'proxies', path: 'proxies', 'label': this.$i18n.t('daemon.PROXIES') },
         { id: 'certificates', path: 'certificates', 'label': this.$i18n.t('daemon.CERTIFICATES') }
       ]
     }
