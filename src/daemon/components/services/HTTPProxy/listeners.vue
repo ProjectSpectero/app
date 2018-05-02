@@ -1,7 +1,7 @@
 <template>
   <div class="container container-600">
     <div class="pad">
-      <h2>Listeners</h2>
+      <h2>{{ $i18n.t('misc.LISTENERS') }}</h2>
 
       <div class="add">
         <div class="inputs">
@@ -28,7 +28,9 @@
             @keyup.enter="add">
         </div>
 
-        <button @click.prevent="add" class="button button-success right">Add Listener</button>
+        <button @click.prevent="add" class="button button-success right">
+          {{ $i18n.t('services.ADD_LISTENER') }}
+        </button>
 
         <span v-show="errors.has('ip')" class="input-error-msg">
           {{ errors.first('ip') }}
@@ -46,7 +48,7 @@
           </span>
           <div class="listener-actions">
             <button @click.prevent="remove(index)" class="button button-sm">
-              Remove
+              {{ $i18n.t('misc.REMOVE') }}
             </button>
           </div>
         </li>

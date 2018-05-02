@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     askBeforeExiting () {
-      if (confirm(this.$i18n.t('LEAVE_CONFIRM_DIALOG'))) {
+      if (confirm(this.$i18n.t('misc.LEAVE_CONFIRM_DIALOG'))) {
         this.$router.push({ name: 'users' })
       }
     },

@@ -1,13 +1,17 @@
 <template>
   <div>
     <top title="Remote Management">
-      <router-link :to="{ name: 'nodes' }" class="button">Back to Nodes List</router-link>
+      <router-link :to="{ name: 'nodes' }" class="button">
+        {{ $i18n.t('daemon.BACK_TO_NODES_LIST') }}
+      </router-link>
     </top>
 
     <template v-if="activeTab !== 'notFound'">
       <div v-if="user" class="managing-user">
         <div class="avatar"><span>{{ initials }}</span></div>
-        <p>Managing daemon as: <strong>{{ displayName }}</strong></p>
+        <p>
+          {{ $i18n.t('daemon.MANAGING_AS') }}:
+          <strong>{{ displayName }}</strong></p>
       </div>
 
       <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
@@ -34,9 +38,9 @@ export default {
     return {
       activeTab: null,
       tabs: [
-        { id: 'services', path: 'services', 'label': 'Services' },
-        { id: 'proxies', path: 'proxies', 'label': 'Proxies' },
-        { id: 'certificates', path: 'certificates', 'label': 'Certificates' }
+        { id: 'services', path: 'services', 'label': this.$i18n.t('daemon.SERVICES') },
+        { id: 'proxies', path: 'proxies', 'label': this.$i18n.t('daemon.PROXIES') },
+        { id: 'certificates', path: 'certificates', 'label': this.$i18n.t('daemon.CERTIFICATES') }
       ]
     }
   },

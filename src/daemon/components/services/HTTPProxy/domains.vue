@@ -14,7 +14,9 @@
           :class="{ 'input-error': errors.has('domain') }"
           @keyup.enter="add">
 
-        <button @click.prevent="add" class="button button-success right">Add Domain</button>
+        <button @click.prevent="add" class="button button-success right">
+          {{ $i18n.t('services.ADD_DOMAIN') }}
+        </button>
 
         <span v-show="errors.has('domain')" class="input-error-msg">
           {{ errors.first('domain') }}
@@ -28,7 +30,9 @@
         <li v-for="(item, index) in list" :key="index" class="list-item">
           <span class="title"><strong>{{ item }}</strong></span>
           <div class="listener-actions">
-            <button @click.prevent="remove" class="button button-sm" :disabled="!enabled">Remove</button>
+            <button @click.prevent="remove" class="button button-sm" :disabled="!enabled">
+              {{ $i18n.t('misc.REMOVE') }}
+            </button>
           </div>
         </li>
       </ul>

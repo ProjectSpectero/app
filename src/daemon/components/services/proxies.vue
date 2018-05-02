@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Proxies</h2>
+    <h2>{{ $i18n.t('misc.PROXIES') }}</h2>
   </div>
 </template>
 

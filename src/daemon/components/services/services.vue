@@ -4,13 +4,19 @@
     <div v-if="daemonInitialized" class="service" v-for="(status, service) in services" :key="service">
       <h3>{{ service }}</h3>
       <p class="status">
-        Status: <span class="badge badge-dark">{{ status }}</span>
+        {{ $i18n.t('misc.STATUS') }}: <span class="badge badge-dark">{{ status }}</span>
       </p>
       <div class="buttonActions">
-        <button class="button button-sm" :class="{ 'button-success': status !== 'Running' }" @click="start(service)" :disabled="status === 'Running'">Start</button>
-        <button class="button button-sm" :class="{ 'button-danger': status === 'Running' }" @click="stop(service)" :disabled="status !== 'Running'">Stop</button>
+        <button class="button button-sm" :class="{ 'button-success': status !== 'Running' }" @click="start(service)" :disabled="status === 'Running'">
+          {{ $i18n.t('misc.START') }}
+        </button>
+        <button class="button button-sm" :class="{ 'button-danger': status === 'Running' }" @click="stop(service)" :disabled="status !== 'Running'">
+          {{ $i18n.t('misc.STOP') }}
+        </button>
 
-        <router-link :to="{ name: service }" class="button right">Configure</router-link>
+        <router-link :to="{ name: 'service.' + service }" class="button right">
+          {{ $i18n.t('misc.CONFIGURE') }}
+        </router-link>
       </div>
     </div>
   </div>

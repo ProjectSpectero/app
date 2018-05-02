@@ -31,7 +31,11 @@ module.exports = {
     VIEW_FULL_DETAILS: 'View Full Details',
     RESET: 'Reset',
     EDIT: 'Edit',
+    START: 'Start',
+    STOP: 'Stop',
+    CONFIGURE: 'Configure',
     VERIFY: 'Verify',
+    LISTENERS: 'Listeners',
     PURCHASE: 'Purchase',
     PAY_NOW: 'Pay Now',
     SAVE: 'Save',
@@ -41,6 +45,7 @@ module.exports = {
     FRIENDLY_NAME: 'Friendly name',
     MARKET_MODEL: 'Market Model',
     ASN: 'ASN',
+    AVAILABLE_SOON: 'Available soon.',
     CC: 'Country code',
     CITY: 'City',
     IP: 'IP Address',
@@ -55,7 +60,9 @@ module.exports = {
     CHANGE_TERM: 'Change Term',
     COPY_TO_CLIPBOARD: 'Copy',
     COPIED_TO_CLIPBOARD: 'Text copied to clipboard!',
-    DOWNLOAD_AS_FILE: 'Download File'
+    DOWNLOAD_AS_FILE: 'Download File',
+    DELETE_CONFIRM_DIALOG: 'Are you sure you want to remove this {object}?',
+    LEAVE_CONFIRM_DIALOG: 'Are you sure you want to leave? Any unsaved changes will be lost.'
   },
 
   errors: {
@@ -185,12 +192,16 @@ module.exports = {
     UPDATE_SUCCESS: 'Service updated!',
     UPDATE_ERROR: 'Something went wrong. Please try again!',
     RESTART_SUCCESS: 'Server restarted successfully!',
-    RESTART_ERROR: 'There was an error while trying to restart your server. Please try again later.'
+    RESTART_ERROR: 'There was an error while trying to restart your server. Please try again later.',
+    UNABLE_TO_DISPLAY_ALLOWED_DOMAINS: 'Unable to display allowed domains.',
+    UNABLE_TO_DISPLAY_BANNED_DOMAINS: 'Unable to display banned domains.',
+    ADD_DOMAIN: 'Add domain',
+    ADD_LISTENER: 'Add listener',
+    PROXY_MODE: 'Proxy mode'
   },
 
   nodes: {
     DELETE_GROUP_CONFIRM_DIALOG: "Are you sure you want to remove this node group? All your nodes will be set as 'Uncategorized'",
-    DELETE_CONFIRM_DIALOG: 'Are you sure you want to remove this node?',
     DELETE_SUCCESS: 'Node removed successfully!',
     GROUP_DELETE_SUCCESS: 'Group removed successfully!',
     DELETE_ERROR: 'An error ocurred while trying to delete your node. Please try again later.',
@@ -219,6 +230,14 @@ module.exports = {
       LISTED_SHARED: 'Shared',
       LISTED_DEDICATED: 'Dedicated'
     }
+  },
+
+  daemon: {
+    BACK_TO_NODES_LIST: 'Back to nodes list',
+    MANAGING_AS: 'Managing daemon as',
+    SERVICES: 'Services',
+    PROXIES: 'Proxies',
+    CERTIFICATES: 'Certificates'
   },
 
   market: {
@@ -257,8 +276,7 @@ module.exports = {
     USER_DELETE_SUCCESS: 'User deleted!',
     USER_DELETE_ERROR: 'There was a problem while deleting this user. Please try again later.',
     UNABLE_TO_DISPLAY_BANNED_DOMAINS: 'Proxy Mode must be set to Normal to edit banned domains.',
-    UNABLE_TO_DISPLAY_ALLOWED_DOMAINS: 'Proxy Mode must be set to ExclusiveAllow to edit allowed domains.',
-    LEAVE_CONFIRM_DIALOG: 'Are you sure you want to leave? Any unsaved changes will be lost.'
+    UNABLE_TO_DISPLAY_ALLOWED_DOMAINS: 'Proxy Mode must be set to ExclusiveAllow to edit allowed domains.'
   },
 
   settings: {

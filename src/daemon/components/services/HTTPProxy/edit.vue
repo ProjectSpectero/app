@@ -1,13 +1,15 @@
 <template>
   <div>
     <top title="Edit Service">
-      <button @click="askBeforeExiting" class="button">Cancel</button>
+      <button @click="askBeforeExiting" class="button">
+        {{ $i18n.t('misc.CANCEL') }}
+      </button>
     </top>
 
     <form v-if="config" @submit.prevent.stop="update">
       <div class="container container-600">
         <div class="pad">
-          <h2>Proxy Mode</h2>
+          <h2>{{ $i18n.t('services.PROXY_MODE') }}</h2>
           <select v-model="proxy" @change="proxyChanged" required>
             <option v-for="option in proxyTypes" :value="option" :key="option">
               {{ option }}
@@ -21,7 +23,7 @@
       <domains
         :proxy="proxy"
         title="Allowed domains"
-        forbiddenMessageKey="UNABLE_TO_DISPLAY_ALLOWED_DOMAINS"
+        forbiddenMessageKey="services.UNABLE_TO_DISPLAY_ALLOWED_DOMAINS"
         :enabled="proxy === 'ExclusiveAllow'"
         :domains="config.allowedDomains"
         @update="updateAllowedDomains">
@@ -30,7 +32,7 @@
       <domains
         :proxy="proxy"
         title="Banned domains"
-        forbiddenMessageKey="UNABLE_TO_DISPLAY_BANNED_DOMAINS"
+        forbiddenMessageKey="services.UNABLE_TO_DISPLAY_BANNED_DOMAINS"
         :enabled="proxy === 'Normal'"
         :domains="config.bannedDomains"
         @update="updateBannedDomains">
@@ -53,7 +55,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import serviceAPI from '../../../api/service.js'
+import serviceAPI from '../../../api/service'
 import top from '@/shared/components/top'
 import listeners from './listeners'
 import domains from './domains'
@@ -93,8 +95,8 @@ export default {
       })
     },
     askBeforeExiting () {
-      if (confirm(this.$i18n.t('LEAVE_CONFIRM_DIALOG'))) {
-        this.$router.push({ name: 'services' })
+      if (confirm(this.$i18n.t('misc.LEAVE_CONFIRM_DIALOG'))) {
+        this.$router.push({ name: 'manage', params: { nodeId: this.$route.params.nodeId, action: 'services' } })
       }
     },
     updateListeners (listeners) {
