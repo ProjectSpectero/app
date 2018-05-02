@@ -4,6 +4,7 @@ import userAPI from '@/daemon/api/user.js'
 import router from '@/router'
 
 const state = {
+  initialized: false,
   user: null,
   accessToken: null,
   refreshToken: null,
@@ -16,6 +17,7 @@ const state = {
 }
 
 const getters = {
+  initialized: (state) => state.initialized,
   user: (state) => state.user,
   accessToken: (state) => state.accessToken,
   refreshToken: (state) => state.refreshToken,
@@ -61,8 +63,7 @@ const actions = {
         dispatch('setupEndpoint', response.data.result)
       },
       fail: error => {
-        console.warn('autologin error')
-        console.log(error)
+        console.error('autologin error', error)
         router.push({ name: 'nodes' })
       }
     })
@@ -82,6 +83,7 @@ const mutations = {
     console.log('Fetched current user', state.user)
   },
   SETUP_ENDPOINT (state, payload) {
+    state.initialized = true
     state.accessToken = payload.credentials.access.token
     state.refreshToken = payload.credentials.refresh.token
     state.accessTokenExpires = payload.credentials.access.expires

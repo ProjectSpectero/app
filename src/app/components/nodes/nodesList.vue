@@ -34,7 +34,7 @@
                 {{ $i18n.t('misc.VERIFY') }}
               </button>
 
-              <router-link class="button button-icon" :to="{ name: 'daemon', params: { nodeId: 101 } }">
+              <router-link class="button button-icon" :to="{ name: 'manage', params: { nodeId: 101 } }">
                 <span class="icon-settings"></span>
               </router-link>
 

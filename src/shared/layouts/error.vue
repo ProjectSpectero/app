@@ -4,7 +4,15 @@
       <router-view></router-view>
     </div>
     <div class="actions">
-      <router-link :to="{ name: 'dashboard' }" class="button">Back home</router-link>
+      <router-link :to="{ name: 'dashboard' }" class="button">Go Back Home</router-link>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  metaInfo: {
+    title: 'Error'
+  }
+}
+</script>

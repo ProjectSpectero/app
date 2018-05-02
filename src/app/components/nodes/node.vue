@@ -34,7 +34,7 @@ export default {
       engagements: null,
       ips: null,
       tabs: [
-        { id: 1, label: 'General details', hash: null },
+        { id: 1, label: 'General Details', hash: null },
         { id: 2, label: 'Engagements', hash: '#engagements' },
         { id: 3, label: 'IP Addresses', hash: '#ips' }
       ]
