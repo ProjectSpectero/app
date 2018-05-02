@@ -26,8 +26,6 @@
             </li>
           </ul>
 
-          <loading></loading>
-
           <resource-details
             :id="selectedResource.id"
             :type="selectedResource.type"
