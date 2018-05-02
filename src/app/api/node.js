@@ -139,7 +139,7 @@ export default {
    */
 
   nodeLogin (options) {
-    return api('GET', `/node/${options.data.id}/auth`, options)
+    return api('GET', `/node/${options.data.id}/auth?direct`, options)
   },
 
   /**
