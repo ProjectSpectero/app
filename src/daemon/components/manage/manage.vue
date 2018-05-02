@@ -35,7 +35,7 @@ export default {
       activeTab: null,
       tabs: [
         { id: 'services', path: 'services', 'label': 'Services' },
-        { id: 'proxies', path: 'proxies', 'label': 'Proxies' },
+        // { id: 'proxies', path: 'proxies', 'label': 'Proxies' },
         { id: 'certificates', path: 'certificates', 'label': 'Certificates' }
       ]
     }
