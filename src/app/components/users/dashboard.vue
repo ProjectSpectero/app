@@ -1,8 +1,8 @@
 <template>
   <div>
-    <top title="Dashboard"></top>
+    <top :title="$i18n.t('misc.DASHBOARD')"></top>
     <div class="orders">
-      <h2>Orders</h2>
+      <h2>{{ $i18n.t('misc.ORDERS') }}</h2>
       <orders-list :pagination="pagination" :tableData="tableData"></orders-list>
     </div>
   </div>
