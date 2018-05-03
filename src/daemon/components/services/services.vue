@@ -62,6 +62,7 @@ export default {
 
 <style lang="scss" scoped>
 .service {
+  max-width: 800px;
   margin-bottom: $pad;
   padding: $pad;
   border: 1px solid $color-border;
