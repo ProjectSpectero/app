@@ -90,6 +90,7 @@ const actions = {
 const mutations = {
   SET_CURRENT_USER (state, payload) {
     state.user = payload
+    console.log('stored user!', payload)
   },
   SET_FRESHDESK_URL (state, payload) {
     state.freshdeskUrl = payload

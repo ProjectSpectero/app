@@ -193,8 +193,8 @@ module.exports = {
     UPDATE_ERROR: 'Something went wrong. Please try again!',
     RESTART_SUCCESS: 'Server restarted successfully!',
     RESTART_ERROR: 'There was an error while trying to restart your server. Please try again later.',
-    UNABLE_TO_DISPLAY_ALLOWED_DOMAINS: 'Unable to display allowed domains.',
-    UNABLE_TO_DISPLAY_BANNED_DOMAINS: 'Unable to display banned domains.',
+    UNABLE_TO_DISPLAY_ALLOWED_DOMAINS: 'Proxy Mode must be set to ExclusiveAllow to edit allowed domains.',
+    UNABLE_TO_DISPLAY_BANNED_DOMAINS: 'Proxy Mode must be set to Normal to edit banned domains.',
     ADD_DOMAIN: 'Add domain',
     ADD_LISTENER: 'Add listener',
     PROXY_MODE: 'Proxy Mode'
@@ -268,15 +268,18 @@ module.exports = {
   },
 
   users: {
+    PLACEHOLDER_EMAIL: 'Email address',
+    PLACEHOLDER_PASSWORD: 'Password',
+    PLEASE_LOGIN: 'Please login to continue',
+    NO_ACCOUNT: 'Don\'t have an account?',
+    CREATE_ACCOUNT_NOW: 'Create one now',
     LOGIN_BUTTON: 'Log In',
     REGISTER_BUTTON: 'Register',
     USER_CREATE_SUCCESS: 'User created!',
     USER_UPDATE_SUCCESS: 'User saved!',
     USER_UPDATE_ERROR: 'Something went wrong. Please try again!',
     USER_DELETE_SUCCESS: 'User deleted!',
-    USER_DELETE_ERROR: 'There was a problem while deleting this user. Please try again later.',
-    UNABLE_TO_DISPLAY_BANNED_DOMAINS: 'Proxy Mode must be set to Normal to edit banned domains.',
-    UNABLE_TO_DISPLAY_ALLOWED_DOMAINS: 'Proxy Mode must be set to ExclusiveAllow to edit allowed domains.'
+    USER_DELETE_ERROR: 'There was a problem while deleting this user. Please try again later.'
   },
 
   settings: {
