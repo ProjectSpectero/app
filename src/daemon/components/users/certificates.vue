@@ -14,7 +14,7 @@
         <download :content="user.cert" :file="'spectero-user-certificate.pfx'" button-class="button-sm"></download>
       </div>
       <div class="item">
-        <div class="label"><label for="key">Key</label></div>
+        <div class="label"><label for="key">Certificate Key</label></div>
         <textarea class="input font-mono" id="key" v-model="user.certKey" readonly></textarea>
         <copy-to-clipboard :field="user.certKey" button-class="button-sm"></copy-to-clipboard>
       </div>
