@@ -42,6 +42,7 @@ router.beforeEach((to, from, next) => {
 })
 
 function processRoute (loggedIn, to, from, next) {
+  console.log('processRoute kicked in')
   if (to.matched.some(record => record.meta.auth)) {
     if (loggedIn) {
       next()
