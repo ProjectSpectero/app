@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top title="Edit Node"></top>
+    <top :title="$i18n.t('nodes.EDIT_NODE')"></top>
 
     <div class="container">
       <div class="col-info">

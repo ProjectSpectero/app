@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top title="Nodes"></top>
+    <top :title="$i18n.t('misc.NODES')"></top>
     <div v-if="groups">
       <div v-if="groups.length" class="list">
         <div class="content-split">

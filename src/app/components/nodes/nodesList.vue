@@ -3,8 +3,13 @@
     <header>
       <h2>{{ !groupData.uncategorized ? groupData.friendly_name : 'Uncategorized' }}</h2>
       <div v-if="!groupData.uncategorized" class="actions">
-        <button @click.prevent.stop="removeGroup" class="button button-sm button-danger button-icon"><span class="icon-trash-2"></span></button>
-        <button @click.prevent.stop="editGroup" class="button button-sm">Edit Group</button>
+        <button @click.prevent.stop="removeGroup" class="button button-sm button-danger button-icon">
+          <span class="icon-trash-2"></span>
+        </button>
+
+        <button @click.prevent.stop="editGroup" class="button button-sm">
+          {{ $i18n.t('nodes.EDIT_GROUP') }}
+        </button>
       </div>
     </header>
     <div v-if="tableData.length > 0" class="datatable">
@@ -52,8 +57,8 @@
     </div>
     <div v-else class="alert-msg-centered">
       <div class="icon-alert-circle big-icon"></div>
-      <h1>No Nodes</h1>
-      <p>There are no nodes to display in this node group.</p>
+      <h1>{{ $i18n.t('nodes.NO_NODES_TITLE') }}</h1>
+      <p>{{ $i18n.t('nodes.NO_NODES_TEXT') }}</p>
     </div>
     <paginator :pagination="pagination" @changedPage="changedPage"></paginator>
   </div>

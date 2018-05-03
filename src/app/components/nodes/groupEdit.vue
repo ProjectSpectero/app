@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top title="Edit Group"></top>
+    <top :title="$i18n.t('nodes.EDIT_GROUP')"></top>
     <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
 
     <div v-if="!loading">

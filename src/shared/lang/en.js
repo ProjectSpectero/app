@@ -1,6 +1,5 @@
 module.exports = {
   lang: 'en',
-
   misc: {
     DASHBOARD: 'Dashboard',
     MARKET: 'Marketplace',
@@ -102,7 +101,7 @@ module.exports = {
     CANNOT_DELETE_SELF: 'You can\'t delete yourself.',
     ROLE_ESCALATION_FAILED: 'You don\'t have permission to add users of this role level.',
     CLOUD_USER_ALTER_NOT_ALLOWED: 'You can\'t alter this cloud user.',
-
+    ENDPOINT_NOT_FOUND: 'Endpoint not found or unreachable',
     RELEASES_FETCH_FAILED: 'Unable to load release data, please try again later.'
   },
 
@@ -201,6 +200,10 @@ module.exports = {
   },
 
   nodes: {
+    NO_NODES_TITLE: 'No nodes',
+    NO_NODES_TEXT: 'There are no nodes to display in this node group.',
+    EDIT_GROUP: 'Edit group',
+    EDIT_NODE: 'Edit node',
     DELETE_GROUP_CONFIRM_DIALOG: "Are you sure you want to remove this node group? All your nodes will be set as 'Uncategorized'",
     DELETE_SUCCESS: 'Node removed successfully!',
     GROUP_DELETE_SUCCESS: 'Group removed successfully!',
