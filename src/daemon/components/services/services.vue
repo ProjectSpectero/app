@@ -19,10 +19,12 @@
         </router-link>
       </div>
     </div>
+    <loading v-else></loading>
   </div>
 </template>
 
 <script>
+import loading from '@/shared/components/loading'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -56,6 +58,9 @@ export default {
   },
   metaInfo: {
     title: 'Services'
+  },
+  components: {
+    loading
   }
 }
 </script>
