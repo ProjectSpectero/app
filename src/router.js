@@ -49,7 +49,7 @@ function processRoute (loggedIn, to, from, next) {
       // Force the same behavior as logging out (remove cookie + clean store)
       // for scenarios where our cookie has expired
       store.dispatch('appAuth/logout').then(loggedIn => {
-        next({ name: 'login', query: { redirect: to.name } })
+        next({ name: 'login', query: { redirect: to.fullPath } })
       })
     }
   } else if (to.matched.some(record => record.meta.antiAuth)) {
