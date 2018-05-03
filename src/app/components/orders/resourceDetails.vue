@@ -14,7 +14,7 @@
 
         <div v-if="field.accessConfig">
           <div class="label"><label for="accessConfig">{{ $i18n.t('orders.ACCESS_CONFIG') }}</label></div>
-          <textarea class="input" v-model="field.accessConfig" id="accessConfig" readonly></textarea>
+          <textarea class="input font-mono" v-model="field.accessConfig" id="accessConfig" readonly></textarea>
           <copy-to-clipboard :field="field.accessConfig" button-class="button-sm"></copy-to-clipboard>
           <download :content="field.accessConfig" :file="configFileName" button-class="button-sm"></download>
         </div>
@@ -97,7 +97,7 @@ export default {
   }
 
   textarea {
-    height: 300px;
+    min-height: 140px;
   }
 }
 .label {
