@@ -19,6 +19,10 @@
                 {{ $i18n.t('misc.VIEW') }}
               </router-link>
 
+              <button @click.stop="cancel(row.id)" class="button">
+                {{ $i18n.t('misc.CANCEL') }}
+              </button>
+
               <div class="inline" v-if="row.last_invoice && row.last_invoice.status === 'UNPAID'">
                 <router-link class="button button-success" :to="{ name: 'invoice', params: { id: row.last_invoice.id } }">
                   {{ $i18n.t('misc.PAY_NOW') }}
@@ -35,6 +39,7 @@
 </template>
 
 <script>
+import orderAPI from '@/app/api/order'
 import paginator from '@/shared/components/paginator'
 import tableHeader from '@/shared/components/table/thead'
 
@@ -68,6 +73,19 @@ export default {
     },
     changedPage (page) {
       this.$emit('changedPage', page)
+    },
+    async cancel (id) {
+      await orderAPI.delete({
+        data: {
+          id: id
+        },
+        success: response => {
+          this.$emit('refresh')
+        },
+        fail: () => {
+          this.$toasted.error(this.$18n.t('orders.ERROR_DELETING'))
+        }
+      })
     }
   },
   components: {

@@ -11,6 +11,15 @@ export default {
   },
 
   /**
+   * Deletes an order.
+   *
+   * @param {Integer} id Node id to delete.
+   */
+  delete (options) {
+    return api('DELETE', `/order/${options.data.id}`, options)
+  },
+
+  /**
    * Returns orders list for the logged in user.
    *
    * @param {String} mode Payment mode.

@@ -123,12 +123,12 @@ export default {
   },
 
   /**
-   * Delete engagement at given id.
+   * Deletes an engagement.
    *
    * @param {Integer} id Engagement id to delete.
    */
   deleteEngagement (options) {
-    return api('DELETE', `/engagement/${options.data.id}`, options)
+    return api('DELETE', `/engagements/${options.data.id}`, options)
   },
 
   /**
