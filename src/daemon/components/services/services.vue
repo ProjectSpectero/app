@@ -7,14 +7,14 @@
         {{ $i18n.t('misc.STATUS') }}: <span class="badge badge-dark">{{ status }}</span>
       </p>
       <div class="buttonActions">
-        <button class="button button-sm" :class="{ 'button-success': status !== 'Running' }" @click="start(service)" :disabled="status === 'Running'">
+        <button class="button" :class="{ 'button-success': status !== 'Running' }" @click="start(service)" :disabled="status === 'Running'">
           {{ $i18n.t('misc.START') }}
         </button>
-        <button class="button button-sm" :class="{ 'button-danger': status === 'Running' }" @click="stop(service)" :disabled="status !== 'Running'">
+        <button class="button" :class="{ 'button-danger': status === 'Running' }" @click="stop(service)" :disabled="status !== 'Running'">
           {{ $i18n.t('misc.STOP') }}
         </button>
 
-        <router-link :to="{ name: 'service.' + service }" class="button right">
+        <router-link :to="{ name: 'service.' + service }" class="button button-info right">
           {{ $i18n.t('misc.CONFIGURE') }}
         </router-link>
       </div>

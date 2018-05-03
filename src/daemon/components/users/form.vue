@@ -21,9 +21,9 @@
             :data-vv-as="field.label.toLowerCase()"
             :class="{'input-error': errors.has(field.model)}">
 
-          <span v-show="errors.has(field.model)" class="input-error-msg">
+          <div v-show="errors.has(field.model)" class="input-error-msg">
             {{ errors.first(field.model) }}
-          </span>
+          </div>
         </div>
       </div>
     </div>

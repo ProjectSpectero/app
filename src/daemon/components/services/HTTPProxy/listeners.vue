@@ -1,59 +1,56 @@
 <template>
-  <div class="container container-600">
-    <div class="pad">
-      <h2>{{ $i18n.t('misc.LISTENERS') }}</h2>
+  <div class="section">
+    <h2>{{ $i18n.t('misc.LISTENERS') }}</h2>
 
-      <div class="add">
-        <div class="inputs">
-          <input
-            id="ip"
-            name="ip"
-            type="text"
-            class="input"
-            placeholder="IP address"
-            v-model="ip"
-            v-validate="rules.ip"
-            :class="{ 'input-error': errors.has('ip') }"
-            @keyup.enter="add">
-
-          <input
-            id="port"
-            name="port"
-            type="number"
-            class="input"
-            placeholder="Port"
-            v-model="port"
-            v-validate="rules.port"
-            :class="{ 'input-error': errors.has('port') }"
-            @keyup.enter="add">
-        </div>
-
-        <button @click.prevent="add" class="button button-success right">
-          {{ $i18n.t('services.ADD_LISTENER') }}
-        </button>
-
-        <span v-show="errors.has('ip')" class="input-error-msg">
+    <div class="add">
+      <div class="input-float">
+        <input
+          id="ip"
+          name="ip"
+          type="text"
+          class="input"
+          placeholder="IP Address"
+          v-model="ip"
+          v-validate="rules.ip"
+          :class="{ 'input-error': errors.has('ip') }"
+          @keyup.enter="add">
+        <div v-show="errors.has('ip')" class="input-error-msg">
           {{ errors.first('ip') }}
-        </span>
-
-        <span v-show="errors.has('port')" class="input-error-msg">
-          {{ errors.first('port') }}
-        </span>
+        </div>
       </div>
 
-      <ul>
-        <li v-for="(listener, index) in list" :key="index" class="list-item">
-          <span class="title">
-            <strong>{{ listener.item1 }}</strong>:{{ listener.item2 }}
-          </span>
-          <div class="listener-actions">
-            <button @click.prevent="remove(index)" class="button button-sm">
-              {{ $i18n.t('misc.REMOVE') }}
-            </button>
-          </div>
-        </li>
-      </ul>
+      <div class="input-float">
+        <input
+          id="port"
+          name="port"
+          type="number"
+          class="input"
+          placeholder="Port"
+          v-model="port"
+          v-validate="rules.port"
+          :class="{ 'input-error': errors.has('port') }"
+          @keyup.enter="add">
+        <div v-show="errors.has('port')" class="input-error-msg">
+          {{ errors.first('port') }}
+        </div>
+      </div>
+
+      <button @click.prevent="add" class="button button-md button-success">
+        {{ $i18n.t('services.ADD_LISTENER') }}
+      </button>
     </div>
+
+    <ul v-if="list.length > 0" class="ip-list">
+      <li v-for="(listener, index) in list" :key="index" class="list-item">
+        <div class="ip-label">
+          <strong>{{ listener.item1 }}</strong>:{{ listener.item2 }}
+        </div>
+        <button @click.prevent="remove(index)" class="button button-sm button-bordered button-danger">
+          {{ $i18n.t('misc.REMOVE') }}
+        </button>
+      </li>
+    </ul>
+    <span v-else>No listeners added yet.</span>
   </div>
 </template>
 
@@ -109,14 +106,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .add {
-    .inputs {
-      display: flex;
-      justify-content: space-between;
+.add {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $pad;
+  padding-bottom: $pad;
+  border-bottom: 1px solid $color-border;
+}
+.input-float {
+  flex: 1;
+  margin-right: 12px;
+}
+.ip-list {
+  list-style: none;
 
-      > input {
-        width: calc(1/2 * 100% - (1 - 1/2) * 20px)
-      }
+  li {
+    padding: 8px 8px 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &:nth-child(2n+1) {
+      background: $color-smoke;
     }
   }
+}
 </style>

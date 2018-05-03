@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top title="Edit Service">
+    <top title="OpenVPN Configuration">
       <button @click="askBeforeExiting" class="button">
         {{ $i18n.t('misc.CANCEL') }}
       </button>
@@ -22,6 +22,9 @@ export default {
   },
   components: {
     top
+  },
+  metaInfo: {
+    title: 'OpenVPN Configuration'
   }
 }
 </script>

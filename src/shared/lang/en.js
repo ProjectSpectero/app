@@ -189,7 +189,7 @@ module.exports = {
   },
 
   services: {
-    UPDATE_SUCCESS: 'Service updated!',
+    UPDATE_SUCCESS: 'Service configuration has been updated.',
     UPDATE_ERROR: 'Something went wrong. Please try again!',
     RESTART_SUCCESS: 'Server restarted successfully!',
     RESTART_ERROR: 'There was an error while trying to restart your server. Please try again later.',
@@ -197,7 +197,7 @@ module.exports = {
     UNABLE_TO_DISPLAY_BANNED_DOMAINS: 'Unable to display banned domains.',
     ADD_DOMAIN: 'Add domain',
     ADD_LISTENER: 'Add listener',
-    PROXY_MODE: 'Proxy mode'
+    PROXY_MODE: 'Proxy Mode'
   },
 
   nodes: {
@@ -233,7 +233,7 @@ module.exports = {
   },
 
   daemon: {
-    BACK_TO_NODES_LIST: 'Back to nodes list',
+    BACK_TO_NODES: 'Back To Nodes',
     MANAGING_AS: 'Managing daemon as',
     SERVICES: 'Services',
     PROXIES: 'Proxies',

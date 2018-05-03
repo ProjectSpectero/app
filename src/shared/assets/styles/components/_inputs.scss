@@ -72,3 +72,10 @@ select {
     cursor: not-allowed;
   }
 }
+
+.input-error-msg {
+  margin-top: 6px;
+  color: $color-danger;
+  line-height: 120%;
+  font-weight: $font-bold;
+}

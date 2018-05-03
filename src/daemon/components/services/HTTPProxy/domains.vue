@@ -1,42 +1,41 @@
 <template>
-  <div class="container container-600">
-    <div class="pad">
-      <h2>{{ title }}</h2>
-      <div class="list-add-item" v-if="enabled">
+  <div class="section">
+    <h2>{{ title }}</h2>
+    <div class="add" v-if="enabled">
+      <div class="input-float">
         <input
           id="domain"
           name="domain"
           type="text"
           class="input"
-          placeholder="Enter new domain"
+          placeholder="Enter new domain to add"
           v-model="domain"
           v-validate="'url'"
           :class="{ 'input-error': errors.has('domain') }"
           @keyup.enter="add">
-
-        <button @click.prevent="add" class="button button-success right">
-          {{ $i18n.t('services.ADD_DOMAIN') }}
-        </button>
-
-        <span v-show="errors.has('domain')" class="input-error-msg">
+        <div v-show="errors.has('domain')" class="input-error-msg">
           {{ errors.first('domain') }}
-        </span>
-      </div>
-      <div v-else class="cannot-edit-message">
-        {{ forbiddenMessage }}
+        </div>
       </div>
 
-      <ul>
-        <li v-for="(item, index) in list" :key="index" class="list-item">
-          <span class="title"><strong>{{ item }}</strong></span>
-          <div class="listener-actions">
-            <button @click.prevent="remove" class="button button-sm" :disabled="!enabled">
-              {{ $i18n.t('misc.REMOVE') }}
-            </button>
-          </div>
-        </li>
-      </ul>
+      <button @click.prevent="add" class="button button-md button-success">
+        {{ $i18n.t('services.ADD_DOMAIN') }}
+      </button>
     </div>
+    <div v-else class="cannot-edit-message">
+      {{ forbiddenMessage }}
+    </div>
+
+    <ul class="ip-list">
+      <li v-for="(item, index) in list" :key="index" class="list-item">
+        <div class="ip-label">
+          <strong>{{ item }}</strong>
+        </div>
+        <button @click.prevent="remove" class="button button-sm button-bordered button-danger" :disabled="!enabled">
+          {{ $i18n.t('misc.REMOVE') }}
+        </button>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -84,3 +83,32 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.add {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $pad;
+  padding-bottom: $pad;
+  border-bottom: 1px solid $color-border;
+}
+.input-float {
+  flex: 1;
+  margin-right: 12px;
+}
+.ip-list {
+  list-style: none;
+
+  li {
+    padding: 8px 8px 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &:nth-child(2n+1) {
+      background: $color-smoke;
+    }
+  }
+}
+</style>

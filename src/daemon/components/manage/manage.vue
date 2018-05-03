@@ -2,16 +2,14 @@
   <div>
     <top title="Remote Management">
       <router-link :to="{ name: 'nodes' }" class="button">
-        {{ $i18n.t('daemon.BACK_TO_NODES_LIST') }}
+        {{ $i18n.t('daemon.BACK_TO_NODES') }}
       </router-link>
     </top>
 
     <template v-if="activeTab !== 'notFound'">
       <div v-if="user" class="managing-user">
         <div class="avatar"><span>{{ initials }}</span></div>
-        <p>
-          {{ $i18n.t('daemon.MANAGING_AS') }}:
-          <strong>{{ displayName }}</strong></p>
+        <p>{{ $i18n.t('daemon.MANAGING_AS') }}: <strong>{{ displayName }}</strong></p>
       </div>
 
       <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>

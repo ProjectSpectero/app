@@ -1,28 +1,26 @@
 <template>
   <div>
-    <top title="Edit Service">
+    <top title="HTTPProxy Configuration">
       <button @click="askBeforeExiting" class="button">
         {{ $i18n.t('misc.CANCEL') }}
       </button>
     </top>
 
     <form v-if="config" @submit.prevent.stop="update">
-      <div class="container container-600">
-        <div class="pad">
-          <h2>{{ $i18n.t('services.PROXY_MODE') }}</h2>
-          <select v-model="proxy" @change="proxyChanged" required>
-            <option v-for="option in proxyTypes" :value="option" :key="option">
-              {{ option }}
-            </option>
-          </select>
-        </div>
+      <div class="section">
+        <h2>{{ $i18n.t('services.PROXY_MODE') }}</h2>
+        <select v-model="proxy" @change="proxyChanged" required>
+          <option v-for="option in proxyTypes" :value="option" :key="option">
+            {{ option }}
+          </option>
+        </select>
       </div>
 
       <listeners :listeners="config.listeners" @update="updateListeners"></listeners>
 
       <domains
         :proxy="proxy"
-        title="Allowed domains"
+        title="Allowed Domains"
         forbiddenMessageKey="services.UNABLE_TO_DISPLAY_ALLOWED_DOMAINS"
         :enabled="proxy === 'ExclusiveAllow'"
         :domains="config.allowedDomains"
@@ -31,7 +29,7 @@
 
       <domains
         :proxy="proxy"
-        title="Banned domains"
+        title="Banned Domains"
         forbiddenMessageKey="services.UNABLE_TO_DISPLAY_BANNED_DOMAINS"
         :enabled="proxy === 'Normal'"
         :domains="config.bannedDomains"
@@ -39,26 +37,25 @@
       </domains>
 
       <div class="container container-600">
-        <div class="pad">
+        <restart v-if="restartNeeded" :service="name"></restart>
+        <template v-else>
           <button type="submit" class="button button-info" :disabled="formDisable">
             {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
           </button>
-
-          <restart v-if="restartNeeded" :service="name"></restart>
-
           <button class="button button-light right" @click.prevent="askBeforeExiting">Cancel</button>
-        </div>
+        </template>
       </div>
     </form>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import serviceAPI from '../../../api/service'
+import { mapGetters, mapActions } from 'vuex'
+import serviceAPI from '@/daemon/api/service'
 import top from '@/shared/components/top'
 import listeners from './listeners'
 import domains from './domains'
+import restart from './restart'
 
 export default {
   data () {
@@ -71,8 +68,15 @@ export default {
       restartNeeded: false
     }
   },
-  async created () {
-    await this.setup()
+  created () {
+    if (this.daemonInitialized) {
+      this.setup()
+    }
+  },
+  computed: {
+    ...mapGetters({
+      daemonInitialized: 'daemonAuth/initialized'
+    })
   },
   methods: {
     ...mapActions({
@@ -116,11 +120,13 @@ export default {
         name: this.name,
         data: this.config,
         success: response => {
-          this.$toasted.show(this.$i18n.t('services.UPDATE_SUCCESS'))
+          this.$toasted.success(this.$i18n.t('services.UPDATE_SUCCESS'))
 
           // Append the restart server button if needed
           if (response.data.message && response.data.message === 'SERVICE_RESTART_NEEDED') {
             this.switchBarComponent('restartHTTPProxy')
+          } else {
+            this.$router.push({ name: 'manage', params: { nodeId: this.$route.params.nodeId, action: 'services' } })
           }
         },
         fail: error => {
@@ -130,42 +136,29 @@ export default {
       })
     }
   },
+  watch: {
+    daemonInitialized: function () {
+      this.setup()
+    }
+  },
   components: {
     top,
     listeners,
-    domains
+    domains,
+    restart
   },
   metaInfo: {
-    title: 'Edit Service'
+    title: 'HTTPProxy Configuration'
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  // @import '../../../assets/styles/_vars.scss';
-
-  // .list-item {
-  //   display: flex;
-  //   justify-content: space-between;
-  //   align-items: center;
-  //   padding: 8px;
-
-  //   &:nth-child(2n-1) {
-  //     background: #F7F7F7;
-  //   }
-  // }
-  // .list-add-item {
-  //   display: flex;
-  //   margin-bottom: $pad;
-
-  //   .input {
-  //     width: auto;
-  //     flex: 1;
-  //     margin-right: 12px;
-  //   }
-  // }
-  // .cannot-edit-message {
-  //   margin-bottom: $pad;
-  //   color: $color-dark;
-  // }
+.section {
+  max-width: 600px;
+  padding: $pad;
+  margin-bottom: $pad;
+  border: 1px solid $color-border;
+  border-radius: 4px;
+}
 </style>
