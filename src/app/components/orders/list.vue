@@ -19,7 +19,7 @@
                 {{ $i18n.t('misc.VIEW') }}
               </router-link>
 
-              <button @click.stop="cancel(row.id)" class="button">
+              <button v-if="row.status !== 'CANCELLED'" @click.stop="cancel(row.id)" class="button">
                 {{ $i18n.t('misc.CANCEL') }}
               </button>
 
