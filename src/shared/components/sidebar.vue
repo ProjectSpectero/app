@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!loading" class="sidebar">
+  <div class="sidebar">
     <div class="menu-logo">
       <router-link :to="{ name: 'dashboard' }">
         <div class="logo logo-sm"></div>
@@ -84,7 +84,7 @@
         <h5>{{ $i18n.t('misc.HELP') }}</h5>
         <ul>
           <li>
-            <a :href="freshdeskUrl ? freshdeskUrl : '#'" target="_blank">
+            <a :href="supportLink ? supportLink : '#'" target="_blank">
               <span class="icon-life-buoy"></span>
               {{ $i18n.t('misc.SUPPORT') }}
             </a>
@@ -96,22 +96,22 @@
 </template>
 
 <script>
+import userAPI from '@/app/api/user.js'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
     return {
-      loading: true,
       supportLink: null
     }
   },
-  created () {
-    this.loading = false
+  async created () {
+    await this.fetchFreshdesk()
   },
   computed: {
     ...mapGetters({
-      freshdeskUrl: 'appAuth/freshdeskUrl',
-      count: 'cart/itemCount'
+      count: 'cart/itemCount',
+      user: 'appAuth/user'
     })
   },
   methods: {
@@ -119,6 +119,21 @@ export default {
       appLogout: 'appAuth/logout',
       daemonLogout: 'daemonAuth/logout'
     }),
+    async fetchFreshdesk () {
+      if (this.user) {
+        console.log(this.user)
+        await userAPI.getSupportLink({
+          success: response => {
+            if (response.data.result.redirect_uri !== undefined) {
+              this.supportLink = response.data.result.redirect_uri
+            }
+          },
+          fail: error => {
+            console.log(error)
+          }
+        })
+      }
+    },
     logMeOut () {
       this.daemonLogout().then(() => {
         console.log('Logged out from daemon')

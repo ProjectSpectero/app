@@ -5,13 +5,11 @@ const state = {
   user: null,
   accessToken: null,
   refreshToken: null,
-  expiry: null,
-  freshdeskUrl: null
+  expiry: null
 }
 
 const getters = {
   user: (state) => state.user,
-  freshdeskUrl: (state) => state.freshdeskUrl,
   accessToken: (state) => state.accessToken,
   refreshToken: (state) => state.refreshToken,
   expiry: (state) => state.expiry,
@@ -25,18 +23,6 @@ const actions = {
     await userAPI.getMe({
       success: response => {
         commit('SET_CURRENT_USER', response.data.result)
-      },
-      fail: error => {
-        console.log(error)
-      }
-    })
-  },
-  async fetchFreshdeskURL ({ commit }) {
-    await userAPI.getSupportLink({
-      success: response => {
-        if (response.data.result.redirect_uri !== undefined) {
-          commit('SET_FRESHDESK_URL', response.data.result.redirect_uri)
-        }
       },
       fail: error => {
         console.log(error)
@@ -90,9 +76,6 @@ const actions = {
 const mutations = {
   SET_CURRENT_USER (state, payload) {
     state.user = payload
-  },
-  SET_FRESHDESK_URL (state, payload) {
-    state.freshdeskUrl = payload
   },
   SET_LOGIN_INFO (state, payload) {
     state.accessToken = payload.accessToken
