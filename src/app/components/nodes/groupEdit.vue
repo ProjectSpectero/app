@@ -4,8 +4,9 @@
     <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
 
     <div v-if="!loading">
-      <edit-form v-if="activeTab === 1" :group="group"></edit-form>
-      <list-engagements v-else :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
+      <edit-form v-if="activeTab === 'general'" :group="group"></edit-form>
+      <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
+      <not-found v-else></not-found>
     </div>
     <loading v-else></loading>
   </div>
@@ -14,6 +15,7 @@
 <script>
 import nodeAPI from '@/app/api/node.js'
 import top from '@/shared/components/top'
+import notFound from '@/shared/components/404'
 import loading from '@/shared/components/loading'
 import tabs from './tabs'
 import editForm from './groupEditForm'
@@ -26,10 +28,10 @@ export default {
   data () {
     return {
       tabs: [
-        { id: 1, label: 'General details', hash: null },
-        { id: 2, label: 'Engagements', hash: '#engagements' }
+        { id: 'general', path: 'general', 'label': 'General Details' },
+        { id: 'engagements', path: 'engagements', 'label': 'Engagements' }
       ],
-      activeTab: 1,
+      activeTab: null,
       group: null,
       engagements: [],
       loading: true
@@ -66,22 +68,6 @@ export default {
     updateEngagements () {
       this.$emit('updateEngagements')
     },
-    parseTab () {
-      if (window.location.hash) {
-        const hash = window.location.hash.toString()
-        const tab = this.tabs.find(t => t.hash === hash)
-
-        if (tab) {
-          this.switchTab(tab)
-        }
-      } else {
-        this.switchTab(this.tabs[0])
-      }
-    },
-    switchTab (data) {
-      this.activeTab = data.id
-      this.$router.push({ name: 'groupEdit', params: { id: this.group.id }, hash: data.hash })
-    },
     fetchEngagements (id) {
       nodeAPI.groupEngagements({
         data: {
@@ -97,6 +83,21 @@ export default {
           console.log(e)
         }
       })
+    },
+    parseTab () {
+      let tabId = this.$route.params.tabAction
+      let find = this.tabs.find(i => i.id === tabId)
+
+      // Handles defaulting to first tab if no tab defined in route
+      if (tabId === undefined) {
+        this.switchTab(this.tabs[0])
+      } else {
+        this.activeTab = (find !== undefined) ? tabId : 'notFound'
+      }
+    },
+    switchTab (tab) {
+      this.activeTab = tab.id
+      this.$router.push({ name: 'groupEdit', params: { id: this.group.id, tabAction: tab.path } })
     }
   },
   watch: {
@@ -107,7 +108,8 @@ export default {
     loading,
     tabs,
     editForm,
-    listEngagements
+    listEngagements,
+    notFound
   }
 }
 </script>

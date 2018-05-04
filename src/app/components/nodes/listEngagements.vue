@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="engagements && engagements.length" class="list pad-margin">
+    <div v-if="engagements && engagements.length" class="list">
       <v-client-table :data="engagements" :columns="columns" :options="options">
         <template slot="type" slot-scope="props">
           <template v-if="props.row.type === 'NODE'">
