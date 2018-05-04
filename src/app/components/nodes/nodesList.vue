@@ -95,8 +95,8 @@ export default {
     }
   },
   methods: {
-    sortByColumn (data) {
-      this.$emit('sortByColumn', data)
+    sortByColumn () {
+      this.$emit('sortByColumn')
     },
     changedPage (page) {
       this.$emit('changedPage', page)

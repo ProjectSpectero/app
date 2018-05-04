@@ -27,7 +27,7 @@
                 :pagination="pagination"
                 :tableData="nodes"
                 @changedPage="changedPage"
-                @sortByColumn="sortByColumn"/>
+                @sortByColumn="sortByColumn" />
             </template>
           </div>
         </div>
@@ -40,7 +40,7 @@
 
 <script>
 import nodesList from './nodesList'
-import nodeAPI from '@/app/api/node.js'
+import nodeAPI from '@/app/api/node'
 import top from '@/shared/components/top'
 import loading from '@/shared/components/loading'
 import notFound from '@/shared/components/notFound'
@@ -141,7 +141,6 @@ export default {
           success: response => {
             this.nodes = response.data.result
             this.pagination = response.data.pagination
-            console.log('myNodes pagination', response.data.pagination)
             this.loadingNodes = false
           },
           fail: (e) => {
