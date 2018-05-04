@@ -6,23 +6,30 @@
         <div class="content-split">
           <div class="split-item split-list nodes-sidebar">
             <div v-for="group in groups" class="node-group" :key="group.id" @click.prevent.stop="initGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
-              <div class="group-name">{{ group.friendly_name }}</div>
-              <div class="count">{{ group.nodes.length }}</div>
+              <div class="group-name">
+                {{ group.friendly_name }}
+              </div>
+              <div class="count">
+                {{ group.nodes.length }}
+              </div>
             </div>
             <div class="node-group" v-if="uncategorizedNodes && uncategorizedNodes.result.length" @click="initUncategorizedNodes" :class="selectedGroup === 0 ? 'active' : ''">
-              <div class="group-name">Uncategorized</div>
-              <div class="count">{{ uncategorizedNodes.pagination.total }}</div>
+              <div class="group-name">
+                {{ $i18n.t('nodes.UNCATEGORIZED') }}
+              </div>
+              <div class="count">
+                {{ uncategorizedNodes.pagination.total }}
+              </div>
             </div>
           </div>
           <div class="split-item split-details">
-            <template v-if="groups && (loadingUncategorized || loadingNodes)">
+            <template v-if="groups && loading">
               <loading></loading>
             </template>
             <template v-else>
               <nodes-list
-                :groupData="getGroupData(selectedGroup)"
-                :loadingUncategorized="loadingUncategorized"
-                :loadingNodes="loadingNodes"
+                :selectedGroupInformation="selectedGroupInformation"
+                :loading="loading"
                 :searchId="searchId"
                 :pagination="pagination"
                 :tableData="nodes"
@@ -50,8 +57,7 @@ export default {
   mixins: [filtersMixin],
   data () {
     return {
-      loadingNodes: true,
-      loadingUncategorized: true,
+      loading: true,
       perPage: 10,
       selectedGroup: null,
       groups: null,
@@ -69,6 +75,16 @@ export default {
     await this.fetchGroups()
     await this.fetchUncategorizedNodes(1)
     this.handleGroupSelection()
+  },
+  computed: {
+    selectedGroupInformation () {
+      const found = this.groups.find(u => u.id === this.selectedGroup)
+
+      return {
+        id: found ? found.id : 0,
+        friendly_name: found ? found.friendly_name : this.$i18n.t('nodes.UNCATEGORIZED')
+      }
+    }
   },
   methods: {
     changedPage (page) {
@@ -130,7 +146,7 @@ export default {
       // the newly sorted one
       const index = this.groups.findIndex(g => g.id === this.selectedGroup)
 
-      this.loadingNodes = true
+      this.loading = true
 
       if (index !== -1) {
         console.log('fetching my nodes with this.searchId', this.searchId)
@@ -141,7 +157,7 @@ export default {
           success: response => {
             this.nodes = response.data.result
             this.pagination = response.data.pagination
-            this.loadingNodes = false
+            this.loading = false
           },
           fail: (e) => {
             console.log(e)
@@ -151,7 +167,7 @@ export default {
       }
     },
     async fetchUncategorizedNodes (page) {
-      this.loadingUncategorized = true
+      this.loading = true
 
       await nodeAPI.uncategorizedNodes({
         searchId: this.searchId,
@@ -161,7 +177,7 @@ export default {
           this.uncategorizedNodes = response.data
           this.nodes = response.data.result
           this.pagination = response.data.pagination
-          this.loadingUncategorized = false
+          this.loading = false
           console.log('Finished fetching uncategorizedNodes')
         },
         fail: (e) => {
@@ -229,19 +245,6 @@ export default {
       if (!found) {
         this.initUncategorizedNodes()
       }
-    },
-    getGroupData (id) {
-      // If uncategorized (id = 0), return dummy data
-      if (id === 0) {
-        return {
-          uncategorized: true
-        }
-      }
-
-      const found = this.groups.find(u => u.id === id)
-
-      found.uncategorized = false
-      return found || {}
     }
   },
   components: {
