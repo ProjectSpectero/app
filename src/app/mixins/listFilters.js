@@ -1,3 +1,5 @@
+import { mapGetters } from 'vuex'
+
 export default {
   data () {
     return {
@@ -8,6 +10,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      sortColumn: 'table/sortColumn',
+      sortDirection: 'table/sortDirection'
+    }),
     currentPage () {
       return (this.$route.params.page !== undefined) ? this.$route.params.page : 1
     }
@@ -24,16 +30,14 @@ export default {
 
       this.fetch(page)
     },
-    sortByColumn (data) {
+    sortByColumn () {
       this.removeFilter('SORT')
 
       this.rules.push({
-        field: data.column,
         operator: 'SORT',
-        value: data.direction.toUpperCase()
+        field: this.sortColumn,
+        value: this.sortDirection.toUpperCase()
       })
-
-      console.log('Sorting by column with', this.rules)
 
       this.fetch(1)
     },
@@ -50,8 +54,8 @@ export default {
         this.removeFilter('LIKE')
 
         this.rules.push({
-          field: 'due_next',
           operator: 'LIKE',
+          field: 'due_next',
           value: '%' + value + '%'
         })
       } else if (value.length === 0) {
