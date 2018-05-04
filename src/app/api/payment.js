@@ -67,5 +67,12 @@ export default {
    */
   clearStripeData (options) {
     return api('DELETE', `/payment/stripe/clear`, options)
+  },
+
+  /**
+   * Applies promo code to account.
+   */
+  applyPromoCode (options) {
+    return api('POST', `/promo/code/apply`, options)
   }
 }
