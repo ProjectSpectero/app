@@ -7,7 +7,8 @@ const state = {
   filters: [],
   grouped: true,
   buttonEnabled: false,
-  plans: null
+  plans: null,
+  loading: true
 }
 
 const getters = {
@@ -24,11 +25,13 @@ const getters = {
       plan.id = planId
       return plan
     }
-  }
+  },
+  loading: (state) => state.loading
 }
 
 const actions = {
   async fetch ({ getters, commit }, data) {
+    commit('SET_LOADING', true)
     await marketAPI.search({
       page: data.page,
       limit: data.perPage,
@@ -38,8 +41,10 @@ const actions = {
       },
       success: response => {
         commit('UPDATE_RESULTS', { results: response.data.result, pagination: response.data.pagination })
+        commit('SET_LOADING', false)
       },
       fail: (e) => {
+        commit('SET_LOADING', false)
         console.error('Error market api search:', e)
       }
     })
@@ -106,6 +111,9 @@ const mutations = {
       }
     }
     state.plans = plans
+  },
+  SET_LOADING: (state, status) => {
+    state.loading = status
   }
 }
 

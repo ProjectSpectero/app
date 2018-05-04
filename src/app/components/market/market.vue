@@ -10,7 +10,11 @@
       <div class="split-item split-list filters-side">
         <filters @changedFilters="search"></filters>
       </div>
-      <div class="split-item split-details">
+      <div class="market-listings split-item split-details">
+        <div v-if="loading" class="loading-overlay">
+          <loading></loading>
+        </div>
+
         <div class="cart" v-if="totals.total > 0">
           <div class="info">
             <h4><span class="icon icon-shopping-cart"></span> {{ $i18n.t('misc.CART') }}: {{ totals.total | currency }} USD</h4>
@@ -26,7 +30,7 @@
           <table>
             <table-header :columns="columns" :headings="headings" :sortable="sortable"/>
             <tbody>
-              <tr v-for="item in results" :key="item.id">
+              <tr v-for="(item, index) in results" :key="index">
                 <td>
                   {{ item.friendly_name }}
                   <div v-if="item.plan" class="badge badge-brand badge-plan">{{ item.plan }}</div>
@@ -71,6 +75,7 @@
 <script>
 import top from '@/shared/components/top'
 import paginator from '@/shared/components/paginator'
+import loading from '@/shared/components/loading'
 import tableHeader from '@/shared/components/table/thead'
 import filters from './filters'
 import addToCart from './addToCart'
@@ -105,6 +110,7 @@ export default {
       cart: 'cart/cart',
       results: 'market/results',
       pagination: 'market/pagination',
+      loading: 'market/loading',
       totals: 'cart/totals'
     })
   },
@@ -147,12 +153,29 @@ export default {
     paginator,
     tableHeader,
     filters,
-    addToCart
+    addToCart,
+    loading
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.market-listings {
+  position: relative;
+
+  .loading-overlay {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background: rgba(255,255,255,0.75);
+  }
+}
 .cart {
   display: flex;
   align-items: center;

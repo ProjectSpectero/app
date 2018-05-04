@@ -10,9 +10,10 @@
           class="input"
           placeholder="Enter new domain to add"
           v-model="domain"
-          v-validate="'url'"
+          v-validate="'required|url'"
           :class="{ 'input-error': errors.has('domain') }"
-          @keyup.enter="add">
+          @keyup.enter="add"
+          data-vv-as="domain">
         <div v-show="errors.has('domain')" class="input-error-msg">
           {{ errors.first('domain') }}
         </div>
@@ -68,11 +69,13 @@ export default {
       this.update()
     },
     add () {
-      if (this.domain) {
-        this.list.push(this.domain)
-        this.reset()
-        this.update()
-      }
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          this.list.push(this.domain)
+          this.reset()
+          this.update()
+        }
+      })
     },
     update () {
       this.$emit('update', this.list)

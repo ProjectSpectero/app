@@ -13,7 +13,8 @@
           v-model="ip"
           v-validate="rules.ip"
           :class="{ 'input-error': errors.has('ip') }"
-          @keyup.enter="add">
+          @keyup.enter="add"
+          data-vv-as="IP address">
         <div v-show="errors.has('ip')" class="input-error-msg">
           {{ errors.first('ip') }}
         </div>
@@ -29,7 +30,8 @@
           v-model="port"
           v-validate="rules.port"
           :class="{ 'input-error': errors.has('port') }"
-          @keyup.enter="add">
+          @keyup.enter="add"
+          data-vv-as="port">
         <div v-show="errors.has('port')" class="input-error-msg">
           {{ errors.first('port') }}
         </div>
@@ -66,10 +68,12 @@ export default {
       port: null,
       rules: {
         port: {
+          required: true,
           min_value: 1024,
           max_value: 65535
         },
         ip: {
+          required: true,
           regex: /^(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/
         }
       }
@@ -84,15 +88,17 @@ export default {
       this.update()
     },
     add () {
-      if (this.ip && this.port) {
-        this.list.push({
-          item1: this.ip,
-          item2: this.port
-        })
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          this.list.push({
+            item1: this.ip,
+            item2: this.port
+          })
 
-        this.reset()
-        this.update()
-      }
+          this.reset()
+          this.update()
+        }
+      })
     },
     update () {
       this.$emit('update', this.list)
