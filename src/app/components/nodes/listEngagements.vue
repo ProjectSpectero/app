@@ -22,7 +22,7 @@
         </template>
 
         <template slot="actions" slot-scope="props">
-          <button class="button" @click.stop="removeEngagement(props.row.id)">
+          <button v-if="props.row.status === 'ACTIVE'" class="button" @click.stop="removeEngagement(props.row.id)">
             {{ $i18n.t('misc.CANCEL') }}
           </button>
         </template>
@@ -45,15 +45,19 @@ export default {
       columns: ['type', 'amount', 'quantity', 'status', 'sync_status', 'actions'],
       sortableColumns: ['type', 'amount', 'quantity', 'status', 'sync_status'],
       filterableColumns: ['type', 'amount', 'quantity', 'status', 'sync_status'],
-      headings: {
-        type: 'Type',
-        status: 'Status',
-        quantity: 'Quantity',
-        amount: 'Amount',
-        sync_status: 'Sync Status',
-        actions: 'Actions'
-      },
       options: {}
+    }
+  },
+  created () {
+    this.options = {
+      skin: '',
+      columnsClasses: {
+        actions: 'table-actions'
+      },
+      perPage: 10,
+      pagination: true,
+      sortable: this.sortableColumns,
+      filterable: this.filterableColumns
     }
   },
   methods: {

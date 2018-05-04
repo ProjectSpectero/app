@@ -51,7 +51,7 @@ async function API (project, method, path, data, success, failed) {
     // Remove authorization cookie if 401 returned by any API call.
     if (error.status === 401 && getCookie(project.cookieName) !== null) {
       removeCookie(project.cookieName)
-      router.push(location.pathname + location.search)
+      router.push({ name: 'login', query: { redirect: location.pathname + location.search } })
     }
 
     let err = new Err(error.data.errors)

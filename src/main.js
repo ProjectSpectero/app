@@ -68,8 +68,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 // i18n data
-const messages = { en: require('./shared/lang/en.js') }
-const i18n = new VueI18n({ locale: 'en', messages })
+const i18n = new VueI18n({ locale: 'en', messages: { en: require('./shared/lang/en.js') } })
 const globalMethods = globalMixin(i18n)
 
 // Load global mixin

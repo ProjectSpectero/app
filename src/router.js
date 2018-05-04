@@ -30,19 +30,11 @@ router.beforeEach((to, from, next) => {
     // Handle routes requiring authentication
     // or handle routes that arent view-able by already logged in users (default to /dashboard)
     // else handles regular routes
-    if (loggedIn) {
-      // Fetch freshdesk url if not found
-      store.dispatch('appAuth/fetchFreshdeskURL').then(() => {
-        processRoute(loggedIn, to, from, next)
-      })
-    } else {
-      processRoute(loggedIn, to, from, next)
-    }
+    processRoute(loggedIn, to, from, next)
   })
 })
 
 function processRoute (loggedIn, to, from, next) {
-  console.log('processRoute kicked in')
   if (to.matched.some(record => record.meta.auth)) {
     if (loggedIn) {
       next()
