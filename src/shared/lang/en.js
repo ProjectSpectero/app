@@ -237,7 +237,8 @@ module.exports = {
     MANAGING_AS: 'Managing daemon as',
     SERVICES: 'Services',
     PROXIES: 'Proxies',
-    CERTIFICATES: 'Certificates'
+    CERTIFICATES: 'Certificates',
+    AUTOLOGIN_FAIL: 'Unable to authenticate to daemon. Please try again later or contact us if the problem persists.'
   },
 
   market: {
