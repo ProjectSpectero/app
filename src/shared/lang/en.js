@@ -211,6 +211,7 @@ module.exports = {
   },
 
   nodes: {
+    UNCATEGORIZED: 'Uncategorized',
     NO_NODES_TITLE: 'No nodes',
     NO_NODES_TEXT: 'There are no nodes to display in this node group.',
     EDIT_GROUP: 'Edit group',

@@ -1,8 +1,8 @@
 <template>
-  <div v-if="tableData && !loadingUncategorized && !loadingNodes">
+  <div v-if="tableData && !loading">
     <header>
-      <h2>{{ !groupData.uncategorized ? groupData.friendly_name : 'Uncategorized' }}</h2>
-      <div v-if="!groupData.uncategorized" class="actions">
+      <h2>{{ selectedGroupInformation.friendly_name }}</h2>
+      <div v-if="selectedGroupInformation.id !== 0" class="actions">
         <button @click.prevent.stop="removeGroup" class="button button-sm button-danger button-icon">
           <span class="icon-trash-2"></span>
         </button>
@@ -75,11 +75,10 @@ export default {
       type: String,
       default: null
     },
-    loadingUncategorized: Boolean,
-    loadingNodes: Boolean,
+    loading: Boolean,
     pagination: Object,
     tableData: Array,
-    groupData: Object
+    selectedGroupInformation: Object
   },
   data () {
     return {
@@ -128,13 +127,13 @@ export default {
       })
     },
     editGroup () {
-      this.$router.push({ name: 'groupEdit', params: { id: this.groupData.id } })
+      this.$router.push({ name: 'groupEdit', params: { id: this.selectedGroup } })
     },
     removeGroup () {
       if (confirm(this.$i18n.t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {
         nodeAPI.deleteGroup({
           data: {
-            id: this.groupData.id
+            id: this.selectedGroup
           },
           success: response => {
             this.fetchNodes()
