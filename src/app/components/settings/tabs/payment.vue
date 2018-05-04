@@ -190,6 +190,7 @@
         <h3>Payment Methods</h3>
         <saved-cards :user="user"></saved-cards>
         <credits :user="user"></credits>
+        <promo-codes :user="user"></promo-codes>
       </div>
     </div>
   </div>
@@ -199,6 +200,7 @@
 import { mapGetters } from 'vuex'
 import savedCards from '../components/savedCards'
 import credits from '../components/credits'
+import promoCodes from '../components/promoCodes'
 
 export default {
   props: {
@@ -242,7 +244,8 @@ export default {
   },
   components: {
     savedCards,
-    credits
+    credits,
+    promoCodes
   }
 }
 </script>

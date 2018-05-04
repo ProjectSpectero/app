@@ -1,7 +1,6 @@
 import { setCookie, getCookie, removeCookie } from 'tiny-cookie'
 import nodeAPI from '@/app/api/node.js'
 import userAPI from '@/daemon/api/user.js'
-import router from '@/router'
 
 const state = {
   initialized: false,
@@ -58,13 +57,13 @@ const actions = {
         id: nodeId
       },
       success: response => {
-        console.warn('autologin success')
+        console.log('autologin success')
         dispatch('addCookie', response.data.result)
         dispatch('setupEndpoint', response.data.result)
       },
       fail: error => {
         console.error('autologin error', error)
-        router.push({ name: 'nodes' })
+        throw new Error('AUTOLOGIN_FAIL')
       }
     })
   },

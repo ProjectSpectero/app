@@ -14,23 +14,26 @@
         </router-link>
       </div>
       <div class="split-item split-details">
-        <div v-if="currentTab === 'profile'"><tab-profile
+        <tab-profile
+          v-if="currentTab === 'profile'"
           :user="user"
           :formError="formError"
           :formLoading="formLoading"
           @processForm="processForm">
-        </tab-profile></div>
+        </tab-profile>
 
-        <div v-if="currentTab === 'payment'"><tab-payment
+        <tab-payment
+          v-if="currentTab === 'payment'"
           :user="user"
           :formError="formError"
           :formLoading="formLoading"
           @processForm="processForm">
-        </tab-payment></div>
+        </tab-payment>
 
-        <div v-if="currentTab === 'keys'"><tab-keys
+        <tab-keys
+          v-if="currentTab === 'keys'"
           :user="user">
-        </tab-keys></div>
+        </tab-keys>
       </div>
     </div>
   </div>

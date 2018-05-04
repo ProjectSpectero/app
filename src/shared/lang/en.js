@@ -139,7 +139,18 @@ module.exports = {
     NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.',
     NO_ACCOUNT_CREDIT: 'You don\'t have any credit in your account.',
     COUNT_ACCOUNT_CREDIT: 'You currently have <strong><span>$</span>{credit} USD</strong> of credit in your account.',
-    ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!'
+    ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!',
+    PROMO: {
+      APPLY_MSG: 'Have a promo code? Apply it to your account here.',
+      ENTER_PROMO_CODE_HERE: 'Enter promo code here',
+      APPLY_PROMO_CODE_BUTTON: 'Apply',
+      STATUS: {
+        PROMO_APPLIED: 'Promo code has been applied!',
+        RESOURCE_NOT_FOUND: 'This promo code is invalid.',
+        PROMO_CODE_ALREADY_USED: 'This promo code has already been used.',
+        REQUEST_FAILED: 'Something went wrong. Please try again later or contact us if this issue persists.'
+      }
+    }
   },
 
   invoices: {
@@ -240,7 +251,8 @@ module.exports = {
     MANAGING_AS: 'Managing daemon as',
     SERVICES: 'Services',
     PROXIES: 'Proxies',
-    CERTIFICATES: 'Certificates'
+    CERTIFICATES: 'Certificates',
+    AUTOLOGIN_FAIL: 'Unable to authenticate to daemon. Please try again later or contact us if the problem persists.'
   },
 
   market: {

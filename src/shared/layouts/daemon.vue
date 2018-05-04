@@ -15,8 +15,15 @@ import sidebar from '@/shared/components/sidebar'
 export default {
   async created () {
     if (this.$route.params.nodeId) {
-      await this.autologin(this.$route.params.nodeId)
-      await this.syncCurrentUser()
+      try {
+        await this.autologin(this.$route.params.nodeId)
+        console.log(`autologin success (frontend)`)
+        await this.syncCurrentUser()
+      } catch (e) {
+        console.error(`autologin failed (frontend)`, e)
+        this.$toasted.error(this.$i18n.t(`daemon.${e.message}`))
+        this.$router.push({ name: 'nodes' })
+      }
     } else {
       this.$router.push({ path: '/404' })
     }

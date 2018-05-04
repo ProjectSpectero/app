@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="daemonInitialized">
     <top title="Remote Management">
       <router-link :to="{ name: 'nodes' }" class="button">
         {{ $i18n.t('daemon.BACK_TO_NODES') }}
@@ -20,10 +20,12 @@
     <certificates v-else-if="activeTab === 'certificates'"></certificates>
     <not-found v-else></not-found>
   </div>
+  <loading v-else></loading>
 </template>
 
 <script>
 import top from '@/shared/components/top'
+import loading from '@/shared/components/loading'
 import notFound from '@/shared/components/404'
 import services from '@/daemon/components/services/services'
 import proxies from '@/daemon/components/services/proxies'
@@ -47,7 +49,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'daemonAuth/user'
+      user: 'daemonAuth/user',
+      daemonInitialized: 'daemonAuth/initialized'
     }),
     displayName () {
       return this.user.fullName ? this.user.fullName : this.user.authKey
@@ -86,7 +89,8 @@ export default {
     tabs,
     services,
     proxies,
-    certificates
+    certificates,
+    loading
   }
 }
 </script>
