@@ -5,7 +5,7 @@
       <div v-if="groups.length" class="list">
         <div class="content-split">
           <div class="split-item split-list nodes-sidebar">
-            <div v-for="group in groups" class="node-group" :key="group.id" @click.prevent.stop="initGroup(group)" :class="selectedGroup === group.id ? 'active' : ''">
+            <div v-for="group in groups" class="node-group" :key="group.id" @click.prevent.stop="initGroup(group, true)" :class="selectedGroup === group.id ? 'active' : ''">
               <div class="group-name">
                 {{ group.friendly_name }}
               </div>
@@ -73,7 +73,8 @@ export default {
   },
   async created () {
     await this.fetchGroups()
-    await this.fetchUncategorizedNodes(1)
+    await this.fetchUncategorizedNodes(this.currentPage)
+    this.handleGroupSelection()
   },
   computed: {
     selectedGroupInformation () {
@@ -89,14 +90,24 @@ export default {
     changedPage (page) {
       this.$router.push({ name: 'nodesByGroup', params: { id: (this.selectedGroup === 0) ? 'uncategorized' : this.selectedGroup, page: page } })
       this.fetch(page)
+
+      if (this.selectedGroup === 0) {
+        this.nodes = this.uncategorizedNodes.result
+        this.pagination = this.uncategorizedNodes.pagination
+      }
     },
-    initGroup (group) {
+    initGroup (group, reset) {
       this.selectedGroup = group.id
-      this.changedPage(1)
+      this.fetch(reset ? 1 : this.currentPage)
+      this.$router.push({ name: 'nodesByGroup', params: { id: group.id, page: 1 } })
     },
     initUncategorizedNodes () {
       this.selectedGroup = 0
-      this.changedPage(1)
+      this.fetch(this.currentPage)
+      this.nodes = this.uncategorizedNodes.result
+      this.pagination = this.uncategorizedNodes.pagination
+      this.loading = false
+      this.$router.push({ name: 'nodesByGroup', params: { id: 'uncategorized', page: this.currentPage } })
     },
     fetch (page) {
       this.removeFilter('=')
@@ -152,7 +163,7 @@ export default {
         await nodeAPI.myNodes({
           searchId: this.searchId,
           page: page,
-          limit: this.perPage,
+          limit: 2, // this.perPage,
           success: response => {
             this.nodes = response.data.result
             this.pagination = response.data.pagination
@@ -166,17 +177,12 @@ export default {
       }
     },
     async fetchUncategorizedNodes (page) {
-      this.loading = true
-
       await nodeAPI.uncategorizedNodes({
         searchId: this.searchId,
         page: page,
-        limit: this.perPage,
+        limit: 2, // this.perPage,
         success: response => {
           this.uncategorizedNodes = response.data
-          this.nodes = response.data.result
-          this.pagination = response.data.pagination
-          this.loading = false
           console.log('Finished fetching uncategorizedNodes')
         },
         fail: (e) => {
@@ -191,7 +197,7 @@ export default {
       while (this.totalGroups === null || this.totalGroups !== this.processedGroups) {
         await nodeAPI.groups({
           perPage: 10,
-          page: this.groupsPage,
+          groupsPage: this.groupsPage,
           success: response => {
             const pagination = response.data.pagination
             this.totalGroups = pagination.total
@@ -208,18 +214,28 @@ export default {
       }
     },
     handleGroupSelection () {
-      // If coming from a route with a node group id, use that id
-      if (this.$route.params.id) {
-        if (this.$route.params.id && this.$route.params.id === 'uncategorized') {
-          this.initUncategorizedNodes()
+      const id = this.$route.params.id
+
+      // If coming from a route with a node group id, use that id.
+      // Otherwise, select the first group.
+      if (id) {
+        if (id === 'uncategorized') {
+          this.selectedGroup = 0
+          this.nodes = this.uncategorizedNodes.result
+          this.pagination = this.uncategorizedNodes.pagination
+          this.loading = false
         } else {
-          const target = this.groups.find(g => g.id === parseInt(this.$route.params.id))
+          const target = this.groups.find(g => g.id === parseInt(id))
 
           if (!target) {
             this.error404()
           } else {
-            this.initGroup(target)
+            this.initGroup(target, false)
           }
+        }
+      } else {
+        if (this.groups[0] !== undefined) {
+          this.initGroup(this.groups[0], false)
         }
       }
     }
