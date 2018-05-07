@@ -40,14 +40,16 @@
 
     <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
 
-    <edit-form v-if="activeTab === 1" :node="node"></edit-form>
-    <list-engagements v-else-if="activeTab === 2" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
-    <list-ips v-else :ips="ips"></list-ips>
+    <edit-form v-if="activeTab === 'general'" :node="node"></edit-form>
+    <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
+    <list-ips v-else-if="activeTab === 'ips'" :ips="ips"></list-ips>
+    <not-found v-else></not-found>
   </div>
 </template>
 
 <script>
 import top from '@/shared/components/top'
+import notFound from '@/shared/components/404'
 import tabs from './tabs'
 import editForm from './nodeEditForm'
 import listEngagements from './listEngagements'
@@ -66,7 +68,7 @@ export default {
   data () {
     return {
       loading: true,
-      activeTab: 1
+      activeTab: null
     }
   },
   computed: {
@@ -81,24 +83,23 @@ export default {
     this.parseTab()
   },
   methods: {
-    parseTab () {
-      if (window.location.hash) {
-        const hash = window.location.hash.toString()
-        const tab = this.tabs.find(t => t.hash === hash)
-
-        if (tab) {
-          this.switchTab(tab)
-        }
-      } else {
-        this.switchTab(this.tabs[0])
-      }
-    },
     updateEngagements () {
       this.$emit('updateEngagements')
     },
+    parseTab () {
+      let tabId = this.$route.params.tabAction
+      let find = this.tabs.find(i => i.id === tabId)
+
+      // Handles defaulting to first tab if no tab defined in route
+      if (tabId === undefined) {
+        this.switchTab(this.tabs[0])
+      } else {
+        this.activeTab = (find !== undefined) ? tabId : 'notFound'
+      }
+    },
     switchTab (tab) {
       this.activeTab = tab.id
-      this.$router.push({ name: 'node', params: { action: this.action, id: this.node.id }, hash: tab.hash })
+      this.$router.push({ name: 'node', params: { id: this.node.id, tabAction: tab.path }, action: tab.path })
     }
   },
   watch: {
@@ -109,7 +110,8 @@ export default {
     tabs,
     editForm,
     listEngagements,
-    listIps
+    listIps,
+    notFound
   }
 }
 </script>

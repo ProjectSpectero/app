@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     parseTab () {
-      let tabId = this.$route.params.action
+      let tabId = this.$route.params.tabAction
       let find = this.tabs.find(i => i.id === tabId)
 
       // Handles defaulting to first tab if no tab defined in route
@@ -77,7 +77,7 @@ export default {
     },
     switchTab (tab) {
       this.activeTab = tab.id
-      this.$router.push({ name: 'manage', params: { nodeId: this.$route.params.nodeId, action: tab.path } })
+      this.$router.push({ name: 'manage', params: { nodeId: this.$route.params.nodeId, tabAction: tab.path } })
     }
   },
   watch: {
