@@ -74,7 +74,6 @@ export default {
   async created () {
     await this.fetchGroups()
     await this.fetchUncategorizedNodes(1)
-    this.handleGroupSelection()
   },
   computed: {
     selectedGroupInformation () {
@@ -222,28 +221,6 @@ export default {
             this.initGroup(target)
           }
         }
-      } else {
-        // Select default group if no id exists
-        this.selectDefaultGroup()
-      }
-    },
-    selectDefaultGroup () {
-      let found = false
-
-      if (this.groups && this.groups.length) {
-        // Attempt to pick the first node group with nodes
-        for (let g = 0; g < this.groups.length; g++) {
-          if (this.groups[g].nodes && this.groups[g].nodes.length) {
-            found = true
-            this.initGroup(this.groups[0])
-            break
-          }
-        }
-      }
-
-      // No nodes found in ANY node group? Load uncategorized nodes by default
-      if (!found) {
-        this.initUncategorizedNodes()
       }
     }
   },
