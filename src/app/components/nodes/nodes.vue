@@ -5,7 +5,7 @@
       <div v-if="groups.length" class="list">
         <div class="content-split">
           <div class="split-item split-list nodes-sidebar">
-            <div v-for="group in groups" class="node-group" :key="group.id" @click.prevent.stop="initGroup(group, true)" :class="selectedGroup === group.id ? 'active' : ''">
+            <div v-for="group in groups" class="node-group" :key="group.id" @click.stop="selectGroup(group, true)" :class="selectedGroup === group.id ? 'active' : ''">
               <div class="group-name">
                 {{ group.friendly_name }}
               </div>
@@ -13,12 +13,12 @@
                 {{ group.nodes.length }}
               </div>
             </div>
-            <div class="node-group" v-if="uncategorizedNodes && uncategorizedNodes.result.length" @click="initUncategorizedNodes" :class="selectedGroup === 0 ? 'active' : ''">
+            <div class="node-group" v-if="uncategorized && uncategorized.result.length" @click.stop="selectUncategorized" :class="selectedGroup === 0 ? 'active' : ''">
               <div class="group-name">
                 {{ $i18n.t('nodes.UNCATEGORIZED') }}
               </div>
               <div class="count">
-                {{ uncategorizedNodes.pagination.total }}
+                {{ uncategorized.pagination.total }}
               </div>
             </div>
           </div>
@@ -31,8 +31,8 @@
                 :selectedGroupInformation="selectedGroupInformation"
                 :loading="loading"
                 :searchId="searchId"
-                :pagination="pagination"
-                :tableData="nodes"
+                :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
+                :tableData="(selectedGroup === 0) ? uncategorized.result : nodes"
                 @changedPage="changedPage"
                 @sortByColumn="sortByColumn" />
             </template>
@@ -55,6 +55,9 @@ import filtersMixin from '@/app/mixins/listFilters'
 
 export default {
   mixins: [filtersMixin],
+  metaInfo: {
+    title: 'Nodes'
+  },
   data () {
     return {
       loading: true,
@@ -65,16 +68,13 @@ export default {
       processedGroups: 0,
       groupsPage: 1,
       nodes: null,
-      uncategorizedNodes: null
+      uncategorized: null
     }
-  },
-  metaInfo: {
-    title: 'Nodes'
   },
   async created () {
     await this.fetchGroups()
-    await this.fetchUncategorizedNodes(this.currentPage)
-    this.handleGroupSelection()
+    await this.fetchUncategorized(this.currentPage)
+    this.handleSelection()
   },
   computed: {
     selectedGroupInformation () {
@@ -87,27 +87,53 @@ export default {
     }
   },
   methods: {
-    changedPage (page) {
-      this.$router.push({ name: 'nodesByGroup', params: { id: (this.selectedGroup === 0) ? 'uncategorized' : this.selectedGroup, page: page } })
-      this.fetch(page)
+    handleSelection () {
+      const id = this.$route.params.id
 
-      if (this.selectedGroup === 0) {
-        this.nodes = this.uncategorizedNodes.result
-        this.pagination = this.uncategorizedNodes.pagination
+      // If coming from a route with a node group id, use that id.
+      // Otherwise, select the first group.
+      if (id) {
+        if (id === 'uncategorized') {
+          this.selectUncategorized()
+        } else {
+          const target = this.groups.find(g => g.id === parseInt(id))
+
+          if (!target) {
+            this.error404()
+          } else {
+            this.selectGroup(target, false)
+          }
+        }
+      } else {
+        let found = false
+
+        // Select the first group with nodes, if any.
+        // Otherwise, just pick the first empty group.
+        this.groups.forEach(g => {
+          if (!found && g.nodes.length > 0) {
+            this.selectGroup(g, false)
+            found = true
+          }
+        })
+
+        if (!found) {
+          this.selectGroup(this.groups[0], false)
+        }
       }
     },
-    initGroup (group, reset) {
-      this.selectedGroup = group.id
-      this.fetch(reset ? 1 : this.currentPage)
-      this.$router.push({ name: 'nodesByGroup', params: { id: group.id, page: 1 } })
+    changedPage (page) {
+      this.fetch(page)
+      this.$router.push({ name: 'nodesByGroup', params: { id: (this.selectedGroup === 0) ? 'uncategorized' : this.selectedGroup, page: page } })
     },
-    initUncategorizedNodes () {
+    selectGroup (group, reset) {
+      this.loading = true
+      this.selectedGroup = group.id
+      this.changedPage(reset ? 1 : this.currentPage)
+    },
+    selectUncategorized () {
+      this.loading = true
       this.selectedGroup = 0
-      this.fetch(this.currentPage)
-      this.nodes = this.uncategorizedNodes.result
-      this.pagination = this.uncategorizedNodes.pagination
-      this.loading = false
-      this.$router.push({ name: 'nodesByGroup', params: { id: 'uncategorized', page: this.currentPage } })
+      this.changedPage(this.currentPage)
     },
     fetch (page) {
       this.removeFilter('=')
@@ -136,7 +162,7 @@ export default {
             if (this.selectedGroup !== 0) {
               this.fetchNodes(page)
             } else {
-              this.fetchUncategorizedNodes(page)
+              this.fetchUncategorized(page)
             }
           },
           fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
@@ -147,7 +173,7 @@ export default {
         if (this.selectedGroup !== 0) {
           this.fetchNodes(page)
         } else {
-          this.fetchUncategorizedNodes(page)
+          this.fetchUncategorized(page)
         }
       }
     },
@@ -156,38 +182,35 @@ export default {
       // the newly sorted one
       const index = this.groups.findIndex(g => g.id === this.selectedGroup)
 
-      this.loading = true
-
       if (index !== -1) {
-        console.log('fetching my nodes with this.searchId', this.searchId)
         await nodeAPI.myNodes({
           searchId: this.searchId,
           page: page,
-          limit: 2, // this.perPage,
+          limit: this.perPage,
           success: response => {
             this.nodes = response.data.result
             this.pagination = response.data.pagination
             this.loading = false
           },
-          fail: (e) => {
+          fail: e => {
             console.log(e)
-            // this.error404()
+            this.error404()
           }
         })
       }
     },
-    async fetchUncategorizedNodes (page) {
+    async fetchUncategorized (page) {
       await nodeAPI.uncategorizedNodes({
         searchId: this.searchId,
         page: page,
-        limit: 2, // this.perPage,
+        limit: this.perPage,
         success: response => {
-          this.uncategorizedNodes = response.data
-          console.log('Finished fetching uncategorizedNodes')
+          this.uncategorized = response.data
+          this.loading = false
         },
-        fail: (e) => {
+        fail: e => {
           console.log(e)
-          // this.error404()
+          this.error404()
         }
       })
     },
@@ -204,39 +227,12 @@ export default {
             this.processedGroups = this.processedGroups + response.data.result.length
             this.groupsPage++
             this.groups = this.groups ? [...this.groups, ...response.data.result] : response.data.result
-            console.log('Finished fetching groups')
           },
-          fail: (e) => {
+          fail: e => {
             console.log(e)
-            // this.error404()
+            this.error404()
           }
         })
-      }
-    },
-    handleGroupSelection () {
-      const id = this.$route.params.id
-
-      // If coming from a route with a node group id, use that id.
-      // Otherwise, select the first group.
-      if (id) {
-        if (id === 'uncategorized') {
-          this.selectedGroup = 0
-          this.nodes = this.uncategorizedNodes.result
-          this.pagination = this.uncategorizedNodes.pagination
-          this.loading = false
-        } else {
-          const target = this.groups.find(g => g.id === parseInt(id))
-
-          if (!target) {
-            this.error404()
-          } else {
-            this.initGroup(target, false)
-          }
-        }
-      } else {
-        if (this.groups[0] !== undefined) {
-          this.initGroup(this.groups[0], false)
-        }
       }
     }
   },
@@ -250,9 +246,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.list {
-  display: flex;
-  margin-bottom: $pad;
-  background: #fff;
-}
+  .list {
+    display: flex;
+    margin-bottom: $pad;
+    background: $white;
+  }
 </style>
