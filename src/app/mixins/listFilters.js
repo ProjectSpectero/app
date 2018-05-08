@@ -21,8 +21,20 @@ export default {
   methods: {
     sidebarSort (field, current, page) {
       if (this.status.find(s => s === current)) {
+        // The list comes sorted by id desc by default
+        this.rules = [{
+          operator: 'SORT',
+          field: 'id',
+          value: 'DESC'
+        }]
+
+        // Append status filter
         if (current !== 'all') {
-          this.rules = [{ field: field, operator: '=', value: current.toUpperCase() }]
+          this.rules.push({
+            field: field,
+            operator: '=',
+            value: current.toUpperCase()
+          })
         } else {
           this.removeFilter('=')
         }

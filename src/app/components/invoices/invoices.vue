@@ -68,15 +68,12 @@ export default {
               this.searchId = response.data.result.searchId
             }
 
-            console.log('Fetching with searchId', this.searchId)
-
             this.fetchInvoices(page)
           },
           fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
         })
       } else {
         this.searchId = null
-        console.log('Fetching with searchId', this.searchId)
         this.fetchInvoices(page)
       }
     },
