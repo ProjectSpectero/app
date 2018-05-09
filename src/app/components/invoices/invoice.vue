@@ -158,7 +158,8 @@ export default {
       engagement: null,
       due: 0,
       transactions: null,
-      errorItem: 'invoice'
+      errorItem: 'invoice',
+      errorCode: 404
     }
   },
   created () {
