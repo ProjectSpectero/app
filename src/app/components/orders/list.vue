@@ -19,15 +19,17 @@
                 {{ $i18n.t('misc.VIEW') }}
               </router-link>
 
-              <button v-if="row.status !== 'CANCELLED'" @click.stop="cancel(row.id)" class="button">
-                {{ $i18n.t('misc.CANCEL') }}
-              </button>
+              <template v-if="row.status !== 'CANCELLED'">
+                <button v-if="row.status !== 'CANCELLED'" @click.stop="cancel(row.id)" class="button">
+                  {{ $i18n.t('misc.CANCEL') }}
+                </button>
 
-              <div class="inline" v-if="row.last_invoice && row.last_invoice.status === 'UNPAID'">
-                <router-link class="button button-success" :to="{ name: 'invoice', params: { id: row.last_invoice.id } }">
-                  {{ $i18n.t('misc.PAY_NOW') }}
-                </router-link>
-              </div>
+                <div class="inline" v-if="row.status !== 'CANCELLED' && row.last_invoice && row.last_invoice.status === 'UNPAID'">
+                  <router-link class="button button-success" :to="{ name: 'invoice', params: { id: row.last_invoice.id } }">
+                    {{ $i18n.t('misc.PAY_NOW') }}
+                  </router-link>
+                </div>
+              </template>
             </td>
           </tr>
         </tbody>

@@ -18,8 +18,8 @@
                 {{ $i18n.t('misc.VIEW') }}
               </router-link>
 
-              <div class="inline" v-if="row.last_invoice && row.last_invoice.status === 'UNPAID'">
-                <router-link class="button button-success" :to="{ name: 'invoice', params: { id: row.last_invoice.id } }">
+              <div class="inline" v-if="row.status === 'UNPAID'">
+                <router-link class="button button-success" :to="{ name: 'invoice', params: { id: row.id } }">
                   {{ $i18n.t('misc.PAY_NOW') }}
                 </router-link>
               </div>

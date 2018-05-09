@@ -28,34 +28,38 @@
               <p v-html="$i18n.t('settings.EMAIL_CHANGE_NOTICE', { email: this.currentEmail })" class="spaced"></p>
 
               <div class="form-input">
-                <input
-                  type="email"
-                  v-model="form.email"
-                  name="email"
-                  id="email"
-                  placeholder="New Email Address"
-                  class="input max-width"
-                  :class="{'input-error': errors.has('email')}"
-                  :disabled="formLoading"
-                  v-validate="this.confirmedFieldRule('email', rules['email'])"
-                  data-vv-as="new email">
+                <float-label>
+                  <input
+                    type="email"
+                    v-model="form.email"
+                    name="email"
+                    id="email"
+                    placeholder="New Email Address"
+                    class="input max-width"
+                    :class="{'input-error': errors.has('email')}"
+                    :disabled="formLoading"
+                    v-validate="this.confirmedFieldRule('email', rules['email'])"
+                    data-vv-as="new email">
+                </float-label>
 
                 <span v-show="errors.has('email')" class="input-error-message">
                   {{ errors.first('email') }}
                 </span>
               </div>
               <div class="form-input">
-                <input
-                  type="email"
-                  v-model="form.emailConfirm"
-                  name="emailConfirm"
-                  id="emailConfirm"
-                  placeholder="Confirm Email Address"
-                  class="input max-width"
-                  :class="{'input-error': errors.has('emailConfirm')}"
-                  :disabled="formLoading"
-                  v-validate="rules['email']"
-                  data-vv-as="new email confirmation">
+                <float-label>
+                  <input
+                    type="email"
+                    v-model="form.emailConfirm"
+                    name="emailConfirm"
+                    id="emailConfirm"
+                    placeholder="Confirm Email Address"
+                    class="input max-width"
+                    :class="{'input-error': errors.has('emailConfirm')}"
+                    :disabled="formLoading"
+                    v-validate="rules['email']"
+                    data-vv-as="new email confirmation">
+                </float-label>
 
                 <span v-show="errors.has('emailConfirm')" class="input-error-message">
                   {{ errors.first('emailConfirm') }}
@@ -82,29 +86,33 @@
             </div>
             <div v-if="showPasswordForm" class="change-password-form">
               <div class="form-input">
-                <input
-                  type="password"
-                  v-model="form.current_password"
-                  name="passwordCurrent"
-                  id="passwordCurrent"
-                  placeholder="Current Password"
-                  class="input max-width"
-                  :disabled="formLoading"
-                  data-vv-as="current password">
+                <float-label>
+                  <input
+                    type="password"
+                    v-model="form.current_password"
+                    name="passwordCurrent"
+                    id="passwordCurrent"
+                    placeholder="Current Password"
+                    class="input max-width"
+                    :disabled="formLoading"
+                    data-vv-as="current password">
+                </float-label>
               </div>
 
               <div class="form-input">
-                <input
-                  type="password"
-                  v-model="form.password"
-                  name="password"
-                  id="password"
-                  placeholder="New Password"
-                  class="input max-width"
-                  :class="{'input-error': errors.has('password')}"
-                  :disabled="formLoading"
-                  v-validate="this.confirmedFieldRule('password', rules['password'])"
-                  data-vv-as="new password">
+                <float-label>
+                  <input
+                    type="password"
+                    v-model="form.password"
+                    name="password"
+                    id="password"
+                    placeholder="New Password"
+                    class="input max-width"
+                    :class="{'input-error': errors.has('password')}"
+                    :disabled="formLoading"
+                    v-validate="this.confirmedFieldRule('password', rules['password'])"
+                    data-vv-as="new password">
+                </float-label>
 
                 <span v-show="errors.has('password')" class="input-error-message">
                   {{ errors.first('password') }}
@@ -112,17 +120,19 @@
               </div>
 
               <div class="form-input">
-                <input
-                  type="password"
-                  v-model="form.passwordConfirm"
-                  name="passwordConfirm"
-                  id="passwordConfirm"
-                  placeholder="Confirm New Password"
-                  class="input max-width"
-                  :class="{'input-error': errors.has('passwordConfirm')}"
-                  :disabled="formLoading"
-                  v-validate="rules['password']"
-                  data-vv-as="new password confirmation">
+                <float-label>
+                  <input
+                    type="password"
+                    v-model="form.passwordConfirm"
+                    name="passwordConfirm"
+                    id="passwordConfirm"
+                    placeholder="Confirm New Password"
+                    class="input max-width"
+                    :class="{'input-error': errors.has('passwordConfirm')}"
+                    :disabled="formLoading"
+                    v-validate="rules['password']"
+                    data-vv-as="new password confirmation">
+                </float-label>
 
                 <span v-show="errors.has('passwordConfirm')" class="input-error-message">
                   {{ errors.first('passwordConfirm') }}
