@@ -80,10 +80,13 @@ export default {
             this.order = response.data.result
             this.loading = false
           } else {
-            this.error404()
+            this.setError(404, 'order')
           }
         },
-        fail: () => this.error404()
+        fail: e => {
+          console.log(e)
+          this.setError(404, 'order')
+        }
       })
     }
   },

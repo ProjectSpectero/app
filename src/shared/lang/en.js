@@ -68,6 +68,8 @@ module.exports = {
     ERROR_404_TITLE: '404',
     ERROR_404_META_TITLE: 'Page not found!',
     ERROR_404_TEXT: 'Oops! The page or resource you were looking for doesn\'t exist.',
+    ERROR_404_ITEM_TITLE: '{item} not found!',
+    ERROR_404_ITEM_TEXT: 'We were unable to find that {item}.',
     REQUESTED_PAGE_DOES_NOT_EXIST: 'Invalid page!',
     VALIDATION_FAILED: 'Please correct any errors and try again.',
     OBJECT_PERSIST_FAILED: 'Something went wrong, please try again later.',

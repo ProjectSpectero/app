@@ -99,7 +99,7 @@ export default {
           const target = this.groups.find(g => g.id === parseInt(id))
 
           if (!target) {
-            this.error404()
+            this.error404 = true
           } else {
             this.selectGroup(target, false)
           }
@@ -194,7 +194,7 @@ export default {
           },
           fail: e => {
             console.log(e)
-            this.error404()
+            this.error404 = true
           }
         })
       }
@@ -210,7 +210,7 @@ export default {
         },
         fail: e => {
           console.log(e)
-          this.error404()
+          this.error404 = true
         }
       })
     },
@@ -230,7 +230,7 @@ export default {
           },
           fail: e => {
             console.log(e)
-            this.error404()
+            this.error404 = true
           }
         })
       }

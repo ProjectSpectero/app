@@ -93,7 +93,7 @@ export default {
 
       // 404 redirect if tab key is invalid
       if ((allowed.indexOf(this.currentTab) > -1) === false) {
-        this.error404()
+        this.error404 = true
       }
     },
     processForm (data) {

@@ -56,12 +56,12 @@ export default {
             await this.parseTab()
           } else {
             console.log('wrong info')
-            // this.error404()
+            // this.error404 = true
           }
         },
         fail: (e) => {
           console.log(e)
-          // this.error404()
+          // this.error404 = true
         }
       })
     },

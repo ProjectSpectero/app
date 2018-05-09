@@ -117,7 +117,7 @@ export default {
             this.formLoading = false
             this.$toasted.success(this.$i18n.t('nodes.GROUP_UPDATE_SUCCESS'))
           } else {
-            this.error404()
+            this.error404 = true
           }
         },
         fail: error => {

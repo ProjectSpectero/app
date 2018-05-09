@@ -49,7 +49,7 @@ export default {
           }
         })
       } else {
-        this.error404()
+        this.error404 = true
       }
     }
   },
