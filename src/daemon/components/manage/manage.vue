@@ -1,37 +1,43 @@
 <template>
-  <div v-if="daemonInitialized">
-    <top title="Remote Management">
-      <router-link :to="{ name: 'nodes' }" class="button">
-        {{ $i18n.t('daemon.BACK_TO_NODES') }}
-      </router-link>
-    </top>
+  <div>
+    <template v-if="!error">
+      <div v-if="daemonInitialized">
+        <top title="Remote Management">
+          <router-link :to="{ name: 'nodes' }" class="button">
+            {{ $i18n.t('daemon.BACK_TO_NODES') }}
+          </router-link>
+        </top>
 
-    <template v-if="activeTab !== 'notFound'">
-      <div v-if="user" class="managing-user">
-        <div class="avatar"><span>{{ initials }}</span></div>
-        <p>{{ $i18n.t('daemon.MANAGING_AS') }}: <strong>{{ displayName }}</strong></p>
+        <template v-if="activeTab !== 'notFound'">
+          <div v-if="user" class="managing-user">
+            <div class="avatar"><span>{{ initials }}</span></div>
+            <p>{{ $i18n.t('daemon.MANAGING_AS') }}: <strong>{{ displayName }}</strong></p>
+          </div>
+
+          <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
+        </template>
+
+        <services v-if="activeTab === 'services'"></services>
+        <proxies v-else-if="activeTab === 'proxies'"></proxies>
+        <certificates v-else-if="activeTab === 'certificates'"></certificates>
+        <not-found v-else></not-found>
       </div>
-
-      <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
+      <loading v-else></loading>
     </template>
-
-    <services v-if="activeTab === 'services'"></services>
-    <proxies v-else-if="activeTab === 'proxies'"></proxies>
-    <certificates v-else-if="activeTab === 'certificates'"></certificates>
-    <not-found v-else></not-found>
+    <error v-else :item="errorItem" :code="errorCode"/>
   </div>
-  <loading v-else></loading>
 </template>
 
 <script>
-import top from '@/shared/components/top'
-import loading from '@/shared/components/loading'
-import notFound from '@/shared/components/404'
+import { mapGetters } from 'vuex'
 import services from '@/daemon/components/services/services'
 import proxies from '@/daemon/components/services/proxies'
 import certificates from '@/daemon/components/users/certificates'
 import tabs from './tabs'
-import { mapGetters } from 'vuex'
+import top from '@/shared/components/top'
+import loading from '@/shared/components/loading'
+import notFound from '@/shared/components/404'
+import error from '@/shared/components/errors/error'
 
 export default {
   data () {
@@ -39,8 +45,8 @@ export default {
       activeTab: null,
       tabs: [
         { id: 'services', path: 'services', 'label': this.$i18n.t('daemon.SERVICES') },
-        // { id: 'proxies', path: 'proxies', 'label': this.$i18n.t('daemon.PROXIES') },
         { id: 'certificates', path: 'certificates', 'label': this.$i18n.t('daemon.CERTIFICATES') }
+        // { id: 'proxies', path: 'proxies', 'label': this.$i18n.t('daemon.PROXIES') }
       ]
     }
   },
@@ -85,6 +91,7 @@ export default {
   },
   components: {
     top,
+    error,
     notFound,
     tabs,
     services,

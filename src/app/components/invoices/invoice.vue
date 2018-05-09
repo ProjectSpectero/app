@@ -8,7 +8,7 @@
         </top>
         <div v-if="!loading">
           <div v-if="invoice.status === 'UNPAID' && canShowDueAmount">
-            <outstanding :due="due"></outstanding>
+            <outstanding :due="due" :invoice="invoice"></outstanding>
           </div>
 
           <div class="invoice">
