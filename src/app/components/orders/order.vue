@@ -5,11 +5,17 @@
         {{ $i18n.t('orders.VIEW_INVOICE') }}
       </router-link>
 
-      <div class="inline" v-if="order.last_invoice && order.last_invoice.status === 'UNPAID'">
-        <router-link class="button button-success" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
-          {{ $i18n.t('misc.PAY_NOW') }}
-        </router-link>
-      </div>
+      <template v-if="order.status !== 'CANCELLED'">
+        <button @click.stop="cancel(order.id)" class="button">
+          {{ $i18n.t('misc.CANCEL') }}
+        </button>
+
+        <div class="inline" v-if="order.last_invoice && order.last_invoice.status === 'UNPAID'">
+          <router-link class="button button-success" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
+            {{ $i18n.t('misc.PAY_NOW') }}
+          </router-link>
+        </div>
+      </template>
     </top>
     <div v-if="!loading" class="order">
       <div class="container">
@@ -84,6 +90,19 @@ export default {
           }
         },
         fail: () => this.error404()
+      })
+    },
+    async cancel (id) {
+      await orderAPI.delete({
+        data: {
+          id: id
+        },
+        success: response => {
+          this.$emit('refresh')
+        },
+        fail: () => {
+          this.$toasted.error(this.$18n.t('orders.ERROR_DELETING'))
+        }
       })
     }
   },
