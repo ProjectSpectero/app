@@ -72,7 +72,10 @@ export default {
             this.due = response.data.result
           }
         },
-        fail: () => this.error404()
+        fail: e => {
+          console.log(e)
+          this.error404 = true
+        }
       })
     },
     canUseCard (value) {

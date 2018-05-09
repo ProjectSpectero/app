@@ -78,12 +78,12 @@ export default {
           if (response.data.result && response.data.result.status === 'ACTIVE') {
             await this.fetchResources()
           } else {
-            this.error404()
+            this.error404 = true
           }
         },
         fail: (e) => {
           console.log(e)
-          this.error404()
+          this.error404 = true
         }
       })
     },
@@ -98,7 +98,7 @@ export default {
         },
         fail: (e) => {
           console.log(e)
-          this.error404()
+          this.error404 = true
         }
       })
     },

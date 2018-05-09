@@ -1,25 +1,31 @@
 <template>
   <div>
-    <top :title="$i18n.t('nodes.EDIT_GROUP')"></top>
-    <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
+    <template v-if="!error">
+      <div>
+        <top :title="$i18n.t('nodes.EDIT_GROUP')"></top>
+        <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
 
-    <div v-if="!loading">
-      <edit-form v-if="activeTab === 'general'" :group="group"></edit-form>
-      <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
-      <not-found v-else></not-found>
-    </div>
-    <loading v-else></loading>
+        <div v-if="!loading">
+          <edit-form v-if="activeTab === 'general'" :group="group"></edit-form>
+          <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
+          <not-found v-else></not-found>
+        </div>
+        <loading v-else></loading>
+      </div>
+    </template>
+    <error v-else :item="errorItem" :code="errorCode"/>
   </div>
 </template>
 
 <script>
-import nodeAPI from '@/app/api/node.js'
-import top from '@/shared/components/top'
-import notFound from '@/shared/components/404'
-import loading from '@/shared/components/loading'
+import nodeAPI from '@/app/api/node'
 import tabs from './tabs'
 import editForm from './groupEditForm'
 import listEngagements from './listEngagements'
+import top from '@/shared/components/top'
+import error from '@/shared/components/errors/error'
+import notFound from '@/shared/components/404'
+import loading from '@/shared/components/loading'
 
 export default {
   metaInfo: {
@@ -34,7 +40,7 @@ export default {
       activeTab: null,
       group: null,
       engagements: [],
-      loading: true
+      errorItem: 'group'
     }
   },
   created () {
@@ -49,19 +55,19 @@ export default {
         success: async response => {
           if (response.data.result) {
             this.group = response.data.result
+            this.error = false
 
             await this.fetchEngagements(this.group.id)
 
             // Chech if the url has any anchors and load it immediately
             await this.parseTab()
           } else {
-            console.log('wrong info')
-            // this.error404()
+            this.error = true
           }
         },
         fail: (e) => {
           console.log(e)
-          // this.error404()
+          this.error = true
         }
       })
     },
@@ -105,6 +111,7 @@ export default {
   },
   components: {
     top,
+    error,
     loading,
     tabs,
     editForm,

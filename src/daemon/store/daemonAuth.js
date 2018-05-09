@@ -32,7 +32,6 @@ const actions = {
   async syncCurrentUser ({ commit }) {
     await userAPI.getMe({
       success: response => {
-        console.log('syncCurrentUser response', response.data.result)
         commit('SET_CURRENT_USER', response.data.result)
       },
       fail: error => {

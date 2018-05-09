@@ -18,7 +18,6 @@ import loading from '@/shared/components/loading'
 export default {
   data () {
     return {
-      loading: true,
       success: false
     }
   },
@@ -49,7 +48,7 @@ export default {
           }
         })
       } else {
-        this.error404()
+        this.error404 = true
       }
     }
   },

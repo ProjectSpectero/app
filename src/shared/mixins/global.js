@@ -1,9 +1,14 @@
 function globalMixin (i18n) {
   return {
+    data () {
+      return {
+        loading: true,
+        error: false,
+        errorItem: '',
+        errorCode: 404
+      }
+    },
     methods: {
-      error404: () => {
-        window.location.href = '/404'
-      },
       errorAPI: (error, module) => {
         const keys = Object.keys(error.errors)
         return i18n.t(`${module}.${keys[0]}`)

@@ -11,7 +11,7 @@
         <filters @changedFilters="search"></filters>
       </div>
       <div class="market-listings split-item split-details">
-        <div v-if="loading" class="loading-overlay">
+        <div v-if="storeLoading" class="loading-overlay">
           <loading></loading>
         </div>
 
@@ -73,13 +73,13 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+import filters from './filters'
+import addToCart from './addToCart'
 import top from '@/shared/components/top'
 import paginator from '@/shared/components/paginator'
 import loading from '@/shared/components/loading'
 import tableHeader from '@/shared/components/table/thead'
-import filters from './filters'
-import addToCart from './addToCart'
-import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -110,7 +110,7 @@ export default {
       cart: 'cart/cart',
       results: 'market/results',
       pagination: 'market/pagination',
-      loading: 'market/loading',
+      storeLoading: 'market/loading',
       totals: 'cart/totals'
     })
   },

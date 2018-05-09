@@ -27,7 +27,6 @@ export default {
   },
   data () {
     return {
-      loading: true,
       component: null,
       node: null,
       group: null,
@@ -66,7 +65,7 @@ export default {
         },
         fail: (e) => {
           console.log(e)
-          // this.error404()
+          // this.error404 = true
         }
       })
     },
@@ -92,7 +91,7 @@ export default {
           }
         },
         fail: (e) => {
-          this.error404()
+          this.error404 = true
         }
       })
     },

@@ -1,57 +1,61 @@
 <template>
   <div>
-    <top :title="$i18n.t('misc.NODES')"></top>
-    <div v-if="groups">
-      <div v-if="groups.length" class="list">
-        <div class="content-split">
-          <div class="split-item split-list nodes-sidebar">
-            <div v-for="group in groups" class="node-group" :key="group.id" @click.stop="selectGroup(group, true)" :class="selectedGroup === group.id ? 'active' : ''">
-              <div class="group-name">
-                {{ group.friendly_name }}
+    <template v-if="!error">
+      <top :title="$i18n.t('misc.NODES')"></top>
+      <div v-if="groups">
+        <div v-if="groups.length" class="list">
+          <div class="content-split">
+            <div class="split-item split-list nodes-sidebar">
+              <div v-for="group in groups" class="node-group" :key="group.id" @click.stop="selectGroup(group, true)" :class="selectedGroup === group.id ? 'active' : ''">
+                <div class="group-name">
+                  {{ group.friendly_name }}
+                </div>
+                <div class="count">
+                  {{ group.nodes.length }}
+                </div>
               </div>
-              <div class="count">
-                {{ group.nodes.length }}
+              <div class="node-group" v-if="uncategorized && uncategorized.result.length" @click.stop="selectUncategorized" :class="selectedGroup === 0 ? 'active' : ''">
+                <div class="group-name">
+                  {{ $i18n.t('nodes.UNCATEGORIZED') }}
+                </div>
+                <div class="count">
+                  {{ uncategorized.pagination.total }}
+                </div>
               </div>
             </div>
-            <div class="node-group" v-if="uncategorized && uncategorized.result.length" @click.stop="selectUncategorized" :class="selectedGroup === 0 ? 'active' : ''">
-              <div class="group-name">
-                {{ $i18n.t('nodes.UNCATEGORIZED') }}
-              </div>
-              <div class="count">
-                {{ uncategorized.pagination.total }}
-              </div>
+            <div class="split-item split-details">
+              <template v-if="groups && loading">
+                <loading></loading>
+              </template>
+              <template v-else>
+                <nodes-list
+                  :selectedGroupInformation="selectedGroupInformation"
+                  :dataLoading="loading"
+                  :searchId="searchId"
+                  :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
+                  :tableData="(selectedGroup === 0) ? uncategorized.result : nodes"
+                  @changedPage="changedPage"
+                  @sortByColumn="sortByColumn" />
+              </template>
             </div>
-          </div>
-          <div class="split-item split-details">
-            <template v-if="groups && loading">
-              <loading></loading>
-            </template>
-            <template v-else>
-              <nodes-list
-                :selectedGroupInformation="selectedGroupInformation"
-                :loading="loading"
-                :searchId="searchId"
-                :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
-                :tableData="(selectedGroup === 0) ? uncategorized.result : nodes"
-                @changedPage="changedPage"
-                @sortByColumn="sortByColumn" />
-            </template>
           </div>
         </div>
+        <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'nodes' })"></not-found>
       </div>
-      <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'nodes' })"></not-found>
-    </div>
-    <loading v-else></loading>
+      <loading v-else></loading>
+    </template>
+    <error v-else :item="errorItem" :code="errorCode"/>
   </div>
 </template>
 
 <script>
-import nodesList from './nodesList'
+import filtersMixin from '@/app/mixins/listFilters'
 import nodeAPI from '@/app/api/node'
+import nodesList from './nodesList'
 import top from '@/shared/components/top'
+import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
 import notFound from '@/shared/components/notFound'
-import filtersMixin from '@/app/mixins/listFilters'
 
 export default {
   mixins: [filtersMixin],
@@ -60,7 +64,6 @@ export default {
   },
   data () {
     return {
-      loading: true,
       perPage: 10,
       selectedGroup: null,
       groups: null,
@@ -68,7 +71,8 @@ export default {
       processedGroups: 0,
       groupsPage: 1,
       nodes: null,
-      uncategorized: null
+      uncategorized: null,
+      errorItem: 'nodes'
     }
   },
   async created () {
@@ -99,7 +103,7 @@ export default {
           const target = this.groups.find(g => g.id === parseInt(id))
 
           if (!target) {
-            this.error404()
+            this.error404 = true
           } else {
             this.selectGroup(target, false)
           }
@@ -157,6 +161,7 @@ export default {
           success: async response => {
             if (response.data.result.searchId) {
               this.searchId = response.data.result.searchId
+              this.error = false
             }
 
             if (this.selectedGroup !== 0) {
@@ -165,7 +170,10 @@ export default {
               this.fetchUncategorized(page)
             }
           },
-          fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
+          fail: e => {
+            console.log(e)
+            this.error = true
+          }
         })
       } else {
         this.searchId = null
@@ -191,10 +199,12 @@ export default {
             this.nodes = response.data.result
             this.pagination = response.data.pagination
             this.loading = false
+            this.error = false
           },
           fail: e => {
             console.log(e)
-            this.error404()
+            this.error = true
+            this.errorCode = 400
           }
         })
       }
@@ -210,7 +220,6 @@ export default {
         },
         fail: e => {
           console.log(e)
-          this.error404()
         }
       })
     },
@@ -227,10 +236,10 @@ export default {
             this.processedGroups = this.processedGroups + response.data.result.length
             this.groupsPage++
             this.groups = this.groups ? [...this.groups, ...response.data.result] : response.data.result
+            this.error = false
           },
           fail: e => {
             console.log(e)
-            this.error404()
           }
         })
       }
@@ -238,6 +247,7 @@ export default {
   },
   components: {
     top,
+    error,
     loading,
     notFound,
     nodesList

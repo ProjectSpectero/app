@@ -128,7 +128,7 @@ export default {
     },
     remove () {
       this.removeFromCart(this.item)
-      this.$toasted.error(this.$i18n.t('market.REMOVED_FROM_CART', { name: this.item.friendly_name }))
+      this.$toasted.show(this.$i18n.t('market.REMOVED_FROM_CART', { name: this.item.friendly_name }))
     },
     toggleTerm (term) {
       this.term = term

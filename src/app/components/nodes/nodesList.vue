@@ -1,5 +1,5 @@
 <template>
-  <div v-if="tableData && !loading">
+  <div v-if="tableData && !dataLoading">
     <header>
       <h2>{{ selectedGroupInformation.friendly_name }}</h2>
       <div v-if="selectedGroupInformation.id !== 0" class="actions">
@@ -75,7 +75,7 @@ export default {
       type: String,
       default: null
     },
-    loading: Boolean,
+    dataLoading: Boolean,
     pagination: Object,
     tableData: Array,
     selectedGroupInformation: Object
