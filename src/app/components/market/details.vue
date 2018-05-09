@@ -21,10 +21,6 @@
           </div>
         </div>
         <div class="info-box">
-          <h5>Status</h5>
-          <div :class="'badge status-' + item.status">{{ $i18n.t(`nodes.STATUS.${item.status}`) }}</div>
-        </div>
-        <div class="info-box">
           <h5>IP Count</h5>
           <p v-if="item.ip_addresses">{{ item.ip_addresses.length }}</p>
           <p v-else>{{ countIpsInNodeGroup(item) }}</p>
@@ -160,15 +156,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@styles/components/badges';
 
-.badge {
-  &.status-CONFIRMED, &.status-ENABLED {
-    @extend .badge-success;
-  }
-
-  &.status-UNCONFIRMED, &.status-DISABLED {
-    @extend .badge-error;
-  }
-}
 </style>

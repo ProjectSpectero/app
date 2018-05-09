@@ -25,7 +25,6 @@
         <li v-if="item.city">City: <strong>{{ item.city }}</strong></li>
         <li v-if="item.cc">Country Code: <strong>{{ item.cc }}</strong></li>
         <li>Market Model: <strong>{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</strong></li>
-        <li>Status: <strong>{{ $i18n.t(`nodes.STATUS.${item.status}`) }}</strong></li>
       </ul>
 
       <div class="actions">
