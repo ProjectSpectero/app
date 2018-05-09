@@ -100,7 +100,7 @@
 
         <div class="divider"></div>
 
-        <table v-if="order && order.line_items" class="table-styled">
+        <table v-if="lineItems" class="table-styled">
           <thead>
             <tr>
               <th>Item</th>
@@ -110,7 +110,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in order.line_items" :key="item.id">
+            <tr v-for="item in lineItems" :key="item.id">
               <td>{{ item.description }}</td>
               <td class="text-center">{{ item.quantity }}</td>
               <td>{{ item.amount | currency }}</td>
@@ -187,6 +187,26 @@ export default {
     },
     canShowDueAmount () {
       return this.due && this.invoice.status !== 'REFUNDED'
+    },
+    lineItems () {
+      let lineItems = []
+
+      // Line items from order
+      if (this.order && this.order.line_items.length > 0) {
+        lineItems = lineItems.concat(this.order.line_items)
+      }
+
+      // Line items from credit
+      if (this.invoice.type === 'CREDIT') {
+        lineItems.push({
+          id: 0,
+          description: 'Add account credit',
+          quantity: 1,
+          amount: this.invoice.amount
+        })
+      }
+
+      return lineItems
     }
   },
   methods: {
@@ -218,6 +238,10 @@ export default {
             } else {
               this.loading = false
             }
+
+            // Fetch extra info: total due amount and list of transactions
+            this.fetchDue()
+            this.fetchTransactions()
           }
         },
         fail: (e) => {
@@ -236,10 +260,6 @@ export default {
             this.valid = true
             this.loading = false
             this.order = response.data.result
-
-            // Fetch extra info: total due amount and list of transactions
-            await this.fetchDue()
-            await this.fetchTransactions()
           }
         },
         fail: (e) => {
