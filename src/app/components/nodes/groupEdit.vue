@@ -33,8 +33,7 @@ export default {
       ],
       activeTab: null,
       group: null,
-      engagements: [],
-      loading: true
+      engagements: []
     }
   },
   created () {

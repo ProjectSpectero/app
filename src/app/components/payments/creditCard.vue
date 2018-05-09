@@ -39,7 +39,6 @@ export default {
       error: null,
       paid: false,
       processed: false,
-      loading: true,
       saveCard: false,
       stripeOptions: {
         // https://stripe.com/docs/stripe.js#element-options

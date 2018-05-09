@@ -64,7 +64,6 @@ export default {
       formError: null,
       formLoading: false,
       form: null,
-      loading: true,
       protocols: [
         'http',
         'https'

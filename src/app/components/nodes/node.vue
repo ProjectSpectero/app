@@ -27,7 +27,6 @@ export default {
   },
   data () {
     return {
-      loading: true,
       component: null,
       node: null,
       group: null,

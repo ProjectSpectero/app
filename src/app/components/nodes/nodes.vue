@@ -60,7 +60,6 @@ export default {
   },
   data () {
     return {
-      loading: true,
       perPage: 10,
       selectedGroup: null,
       groups: null,

@@ -18,7 +18,6 @@ import loading from '@/shared/components/loading'
 export default {
   data () {
     return {
-      loading: true,
       success: false
     }
   },
