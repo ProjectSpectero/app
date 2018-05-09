@@ -67,6 +67,7 @@ export default {
         },
         success: response => {
           this.$toasted.success(this.$i18n.t('payments.CREDIT_INVOICED', { amount: this.amount, currency: this.currency }))
+          this.$router.push({ name: 'invoice', params: { id: response.data.result.id } })
         },
         fail: error => this.$toasted.error(this.errorAPI(error, 'payments'))
       })
