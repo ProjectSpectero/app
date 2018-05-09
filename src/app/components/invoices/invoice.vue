@@ -200,6 +200,7 @@ export default {
         },
         success: response => {
           if (response.data.result) {
+            this.error = false
             this.invoice = response.data.result
 
             // Set a temporary pending status for newly created invoices
@@ -234,6 +235,7 @@ export default {
           if (response.data.result) {
             this.valid = true
             this.loading = false
+            this.error = false
             this.order = response.data.result
 
             // Fetch extra info: total due amount and list of transactions
@@ -254,6 +256,7 @@ export default {
         },
         success: response => {
           if (response.data.result) {
+            this.error = false
             this.due = response.data.result
           }
         },
@@ -270,6 +273,7 @@ export default {
         },
         success: response => {
           if (response.data.result) {
+            this.error = false
             this.transactions = response.data.result
           }
         },

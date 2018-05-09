@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import error400 from './error400'
 import error404 from './error404'
 
 export default {
@@ -11,6 +12,7 @@ export default {
     item: String
   },
   components: {
+    error400,
     error404
   }
 }
