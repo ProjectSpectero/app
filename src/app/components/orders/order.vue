@@ -26,7 +26,9 @@
           </div>
           <div class="info-box">
             <h5>{{ $i18n.t('misc.STATUS') }}</h5>
-            <p>{{ order.status }}</p>
+            <div :class="'badge status-' + order.status.toLowerCase()">
+              {{ $i18n.t('orders.ORDER_STATUS.' + order.status) }}
+            </div>
           </div>
           <div class="info-box">
             <h5>{{ $i18n.t('misc.TOTAL') }}</h5>
