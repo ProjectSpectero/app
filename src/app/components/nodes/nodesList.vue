@@ -3,11 +3,11 @@
     <header>
       <h2>{{ selectedGroupInformation.friendly_name }}</h2>
       <div v-if="selectedGroupInformation.id !== 0" class="actions">
-        <button @click.prevent.stop="removeGroup" class="button button-sm button-danger button-icon">
+        <button @click.stop="removeGroup" class="button button-sm button-danger button-icon">
           <span class="icon-trash-2"></span>
         </button>
 
-        <button @click.prevent.stop="editGroup" class="button button-sm">
+        <button @click.stop="editGroup" class="button button-sm">
           {{ $i18n.t('nodes.EDIT_GROUP') }}
         </button>
       </div>
@@ -127,7 +127,7 @@ export default {
       })
     },
     editGroup () {
-      this.$router.push({ name: 'groupEdit', params: { id: this.selectedGroup } })
+      this.$router.push({ name: 'groupEdit', params: { id: this.selectedGroupInformation.id } })
     },
     removeGroup () {
       if (confirm(this.$i18n.t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {
