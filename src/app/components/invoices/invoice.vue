@@ -5,7 +5,6 @@
       <button v-if="invoice.status === 'UNPAID' && canShowDueAmount" @click.stop="showPaymentModal" class="button button-success">{{ $i18n.t('misc.PAY_NOW') }}</button>
     </top>
     <div v-if="!loading">
-
       <div v-if="invoice.status === 'UNPAID' && canShowDueAmount" class="outstanding">
         <div class="header">
           <p>You have an outstanding balance due on this invoice.</p>
