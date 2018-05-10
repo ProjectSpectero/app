@@ -8,14 +8,14 @@
       </p>
       <div class="buttonActions">
         <button class="button" :class="{ 'button-success': status !== 'Running' }" @click="start(service)" :disabled="status === 'Running'">
-          {{ $i18n.t('misc.START') }}
+          <span class="icon-play-circle"></span> {{ $i18n.t('misc.START') }}
         </button>
         <button class="button" :class="{ 'button-danger': status === 'Running' }" @click="stop(service)" :disabled="status !== 'Running'">
-          {{ $i18n.t('misc.STOP') }}
+          <span class="icon-stop-circle"></span> {{ $i18n.t('misc.STOP') }}
         </button>
 
-        <router-link :to="{ name: 'service.' + service }" class="button button-info right">
-          {{ $i18n.t('misc.CONFIGURE') }}
+        <router-link :to="{ name: 'service.' + service }" class="button button-dark right">
+          <span class="icon-sliders"></span> {{ $i18n.t('misc.CONFIGURE') }}
         </router-link>
       </div>
     </div>
