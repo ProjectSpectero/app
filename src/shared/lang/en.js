@@ -62,7 +62,8 @@ module.exports = {
     COPIED_TO_CLIPBOARD: 'Text copied to clipboard!',
     DOWNLOAD_AS_FILE: 'Download File',
     DELETE_CONFIRM_DIALOG: 'Are you sure you want to remove this {object}?',
-    LEAVE_CONFIRM_DIALOG: 'Are you sure you want to leave? Any unsaved changes will be lost.'
+    LEAVE_CONFIRM_DIALOG: 'Are you sure you want to leave? Any unsaved changes will be lost.',
+    PLEASE_WAIT: 'Please Wait'
   },
 
   errors: {
