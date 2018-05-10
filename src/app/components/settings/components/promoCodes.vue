@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import paymentAPI from '@/app/api/payment.js'
 
 export default {
@@ -34,9 +35,12 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      updateUser: 'appAuth/syncCurrentUser'
+    }),
     add () {
       this.pending = true
- 
+
       paymentAPI.applyPromoCode({
         data: {
           code: this.promoCode
@@ -45,6 +49,9 @@ export default {
           this.pending = false
           this.result.status = 'success'
           this.result.msg = 'PROMO_APPLIED'
+
+          // Sync current user to update credit balance
+          this.updateUser()
         },
         fail: error => {
           this.pending = false
