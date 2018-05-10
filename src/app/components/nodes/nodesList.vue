@@ -39,8 +39,8 @@
                 {{ $i18n.t('misc.VERIFY') }}
               </button>
 
-              <router-link class="button button-icon" :to="{ name: 'manage', params: { nodeId: 101 } }">
-                <span class="icon-settings"></span>
+              <router-link class="button button-sm button-info" :to="{ name: 'manage', params: { nodeId: 101 } }">
+                <span class="icon-sliders"></span> Manage
               </router-link>
 
               <button class="button button-icon" @click.stop="removeNode(row.id)">
