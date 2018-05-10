@@ -4,13 +4,20 @@
     <p class="headline-msg">{{ $i18n.t('payments.PROMO.APPLY_MSG') }}</p>
     <form @submit.prevent.stop="add">
       <input type="text" v-model="promoCode" class="input" :placeholder="$i18n.t('payments.PROMO.ENTER_PROMO_CODE_HERE')">
-      <button type="submit" :disabled="promoCode === null || promoCode === ''" class="button button-md button-info">{{ $i18n.t('payments.PROMO.APPLY_PROMO_CODE_BUTTON') }}</button>
+      <button
+        type="submit"
+        class="button button-md"
+        :class="{ 'button-success': promoCode !== '', 'button-loading': pending }"
+        :disabled="promoCode === '' || pending">
+          {{ (pending) ? $i18n.t('misc.PLEASE_WAIT') : $i18n.t('payments.PROMO.APPLY_PROMO_CODE_BUTTON') }}
+        </button>
     </form>
     <p v-if="result.msg" class="promo-status" :class="result.status">{{ $i18n.t('payments.PROMO.STATUS.' + result.msg) }}</p>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import paymentAPI from '@/app/api/payment.js'
 
 export default {
@@ -19,24 +26,35 @@ export default {
   },
   data () {
     return {
-      promoCode: null,
+      promoCode: '',
       result: {
         status: null,
         msg: null
-      }
+      },
+      pending: false
     }
   },
   methods: {
+    ...mapActions({
+      updateUser: 'appAuth/syncCurrentUser'
+    }),
     add () {
+      this.pending = true
+
       paymentAPI.applyPromoCode({
         data: {
           code: this.promoCode
         },
         success: response => {
+          this.pending = false
           this.result.status = 'success'
           this.result.msg = 'PROMO_APPLIED'
+
+          // Sync current user to update credit balance
+          this.updateUser()
         },
         fail: error => {
+          this.pending = false
           this.result.status = 'error'
           this.result.msg = Object.keys(error.errors)[0]
         }
@@ -65,6 +83,9 @@ export default {
     align-items: center;
     justify-content: space-between;
 
+    input {
+      flex: 1;
+    }
     button {
       margin-left: 8px;
     }

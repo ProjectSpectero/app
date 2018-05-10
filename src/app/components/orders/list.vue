@@ -82,10 +82,16 @@ export default {
           id: id
         },
         success: response => {
-          this.$emit('refresh')
+          // Update order status to 'cancelled' in table instead of redirect to first page
+          let itemIndex = this.tableData.findIndex(i => i.id === id)
+          if (itemIndex) {
+            this.tableData[itemIndex].status = 'CANCELLED'
+          }
+
+          this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
         },
-        fail: () => {
-          this.$toasted.error(this.$18n.t('orders.ERROR_DELETING'))
+        fail: e => {
+          this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
         }
       })
     }

@@ -62,7 +62,9 @@ module.exports = {
     COPIED_TO_CLIPBOARD: 'Text copied to clipboard!',
     DOWNLOAD_AS_FILE: 'Download File',
     DELETE_CONFIRM_DIALOG: 'Are you sure you want to remove this {object}?',
-    LEAVE_CONFIRM_DIALOG: 'Are you sure you want to leave? Any unsaved changes will be lost.'
+    LEAVE_CONFIRM_DIALOG: 'Are you sure you want to leave? Any unsaved changes will be lost.',
+    PLEASE_WAIT: 'Please Wait',
+    GO_TO_DASHBOARD: 'Go to Dashboard'
   },
 
   errors: {
@@ -201,7 +203,9 @@ module.exports = {
     ACCESS_CONFIG: 'Access Config',
     ACCESS_REFERENCE: 'Access Reference',
     ACCESSOR: 'Accessor',
-    ACCESSOR_DETAILS: 'Accessor Details'
+    ACCESSOR_DETAILS: 'Accessor Details',
+    CANCEL_ERROR: 'There was a problem cancelling your order. Please try again or contact us if this issue persists.',
+    CANCEL_SUCCESS: 'Your order has been cancelled.'
   },
 
   services: {
