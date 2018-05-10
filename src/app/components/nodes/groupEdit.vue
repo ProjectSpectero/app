@@ -1,17 +1,16 @@
 <template>
   <div>
     <template v-if="!error">
-      <div>
-        <top :title="$i18n.t('nodes.EDIT_GROUP')"></top>
+      <top :title="$i18n.t('nodes.EDIT_GROUP')"></top>
+      <div v-if="!loading">
         <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
 
-        <div v-if="!loading">
+        <div>
           <edit-form v-if="activeTab === 'general'" :group="group"></edit-form>
           <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
-          <not-found v-else></not-found>
         </div>
-        <loading v-else></loading>
       </div>
+      <loading v-else></loading>
     </template>
     <error v-else :item="errorItem" :code="errorCode"/>
   </div>
@@ -24,7 +23,6 @@ import editForm from './groupEditForm'
 import listEngagements from './listEngagements'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
-import notFound from '@/shared/components/404'
 import loading from '@/shared/components/loading'
 
 export default {
@@ -40,7 +38,8 @@ export default {
       activeTab: null,
       group: null,
       engagements: [],
-      errorItem: 'group'
+      errorItem: 'group',
+      errorCode: 404
     }
   },
   created () {
@@ -56,6 +55,7 @@ export default {
           if (response.data.result) {
             this.group = response.data.result
             this.error = false
+            this.loading = false
 
             await this.fetchEngagements(this.group.id)
 
@@ -68,6 +68,7 @@ export default {
         fail: (e) => {
           console.log(e)
           this.error = true
+          this.loading = false
         }
       })
     },
@@ -76,17 +77,17 @@ export default {
     },
     fetchEngagements (id) {
       nodeAPI.groupEngagements({
-        data: {
-          id: id
-        },
+        data: { id: id },
         success: response => {
-          if (response.data.result) {
-            this.engagements = response.data.result
-            this.loading = false
-          }
+          this.engagements = response.data.result
+          this.loading = false
+          this.error = false
         },
         fail: (e) => {
           console.log(e)
+          this.errorItem = 'engagements'
+          this.errorCode = 400
+          this.error = true
         }
       })
     },
@@ -115,8 +116,7 @@ export default {
     loading,
     tabs,
     editForm,
-    listEngagements,
-    notFound
+    listEngagements
   }
 }
 </script>

@@ -47,6 +47,7 @@ module.exports = {
     AVAILABLE_SOON: 'Available soon.',
     CC: 'Country code',
     CITY: 'City',
+    PORT_NUMBER: 'Port No.',
     IP: 'IP Address',
     ACCESS_TOKEN: 'Access Token',
     PLACEHOLDER_ACCESS_TOKEN: 'Add a new access token in the format username:password to update',
@@ -70,7 +71,7 @@ module.exports = {
     ERROR_404_TEXT: 'Oops! The page or resource you were looking for doesn\'t exist.',
     ERROR_404_ITEM_TITLE: '{item} not found!',
     ERROR_404_ITEM_TEXT: 'We were unable to find that {item}.',
-    ERROR_400_ITEM_TITLE: '{item} not found!',
+    ERROR_400_ITEM_TITLE: 'Something went wrong.',
     ERROR_400_ITEM_TEXT: 'We were unable to retrieve the list of {item} you requested.',
     REQUESTED_PAGE_DOES_NOT_EXIST: 'Invalid page!',
     VALIDATION_FAILED: 'Please correct any errors and try again.',
@@ -110,6 +111,7 @@ module.exports = {
   },
 
   payments: {
+    VALIDATION_FAILED: 'The minimum amount you can purchase is of 5 credits (in $USD).',
     INVOICE_ALREADY_PAID: 'This invoice was already paid!',
     NO_STORED_CARD: 'Unable to find a card connected to this account.',
     USE_SAVED_CARD: 'You previously saved a credit card ({card}) on our system. Do you want to pay with it?',

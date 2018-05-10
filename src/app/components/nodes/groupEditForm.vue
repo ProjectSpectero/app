@@ -19,7 +19,7 @@
                 placeholder="Please add a name for this node group"
                 class="input max-width"
                 :class="{'input-error': errors.has('friendly_name')}"
-                :disabled="loading"
+                :disabled="formLoading"
                 v-validate="rules['friendly_name']"
                 data-vv-as="friendly_name">
 
@@ -40,7 +40,7 @@
                 placeholder="Price"
                 class="input max-width"
                 :class="{'input-error': errors.has('price')}"
-                :disabled="loading"
+                :disabled="formLoading"
                 v-validate="rules['price']"
                 data-vv-as="price">
                 <p v-html="$i18n.t('nodes.GROUP_PRICE_AVAILABILITY', { model1: marketModels[1], model2: marketModels[2] })"></p>
@@ -59,8 +59,8 @@
               </select>
             </div>
           </div>
-          <button v-if="formFields" type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': loading }" :disabled="loading">
-            {{ loading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
+          <button v-if="formFields" type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+            {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
           </button>
         </div>
         <div class="col"></div>
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import nodeAPI from '@/app/api/node.js'
+import nodeAPI from '@/app/api/node'
 
 export default {
   props: {
@@ -80,6 +80,7 @@ export default {
     return {
       formError: null,
       formFields: null,
+      formLoading: false,
       form: null,
       marketModels: [
         'UNLISTED',
@@ -107,14 +108,16 @@ export default {
   },
   methods: {
     async submit () {
+      this.formLoading = true
+
       await nodeAPI.editGroup({
         data: this.form,
         success: response => {
-          this.loading = false
+          this.formLoading = false
           this.$toasted.success(this.$i18n.t('nodes.GROUP_UPDATE_SUCCESS'))
         },
         fail: error => {
-          this.loading = false
+          this.formLoading = false
           this.$toasted.error(this.errorAPI(error, 'nodes'))
         }
       })

@@ -6,7 +6,7 @@
       <p class="credit-current">Balance: {{ user.credit | currency }} {{ this.currency }}</p>
 
       <div class="message" v-html="$i18n.t('payments.ADD_CREDIT_MAX_WARNING', { remaining: this.remaining, max: this.max, currency: this.currency })"></div>
-      <br>
+
       <div class="form-input">
         <div class="label">
           <label for="creditAddAmount">{{ $i18n.t('payments.ADD_CREDIT_FORM_LABEL') }}</label>
@@ -48,6 +48,8 @@ export default {
     watchMaxValue () {
       if (this.amount > this.max) {
         this.amount = this.max
+      } else if (this.amount === '' || parseInt(this.amount) < 5) {
+        this.amount = 5
       }
     },
     fetchMax () {
@@ -67,8 +69,12 @@ export default {
         },
         success: response => {
           this.$toasted.success(this.$i18n.t('payments.CREDIT_INVOICED', { amount: this.amount, currency: this.currency }))
+          this.$router.push({ name: 'invoice', params: { id: response.data.result.id } })
         },
-        fail: error => this.$toasted.error(this.errorAPI(error, 'payments'))
+        fail: error => {
+          this.$toasted.error(this.errorAPI(error, 'payments'))
+          this.amount = 5
+        }
       })
     }
   }
