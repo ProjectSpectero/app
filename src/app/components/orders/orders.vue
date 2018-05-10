@@ -16,8 +16,7 @@
                 :pagination="pagination"
                 :tableData="tableData"
                 @changedPage="changedPage"
-                @sortByColumn="sortByColumn"
-                @refresh="fetchOrders(1)">
+                @sortByColumn="sortByColumn">
               </orders-list>
             </template>
             <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'orders' })"></not-found>

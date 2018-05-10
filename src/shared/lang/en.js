@@ -199,7 +199,9 @@ module.exports = {
     ACCESS_CONFIG: 'Access Config',
     ACCESS_REFERENCE: 'Access Reference',
     ACCESSOR: 'Accessor',
-    ACCESSOR_DETAILS: 'Accessor Details'
+    ACCESSOR_DETAILS: 'Accessor Details',
+    CANCEL_ERROR: 'There was a problem cancelling your order. Please try again or contact us if this issue persists.',
+    CANCEL_SUCCESS: 'Your order has been cancelled.'
   },
 
   services: {

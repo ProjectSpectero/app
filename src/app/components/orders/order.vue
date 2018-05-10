@@ -100,10 +100,11 @@ export default {
           id: id
         },
         success: response => {
-          this.$emit('refresh')
+          this.order.status = 'CANCELLED'
+          this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
         },
         fail: () => {
-          this.$toasted.error(this.$18n.t('orders.ERROR_DELETING'))
+          this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
         }
       })
     }
@@ -119,5 +120,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@styles/components/badges';
 
+.badge {
+  &.status-active {
+    @extend .badge-success;
+  }
+  &.status-automated_fraud_check, &.status-manual_fraud_check {
+    @extend .badge-warning;
+  }
+}
 </style>
