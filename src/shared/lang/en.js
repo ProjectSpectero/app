@@ -63,7 +63,8 @@ module.exports = {
     DOWNLOAD_AS_FILE: 'Download File',
     DELETE_CONFIRM_DIALOG: 'Are you sure you want to remove this {object}?',
     LEAVE_CONFIRM_DIALOG: 'Are you sure you want to leave? Any unsaved changes will be lost.',
-    PLEASE_WAIT: 'Please Wait'
+    PLEASE_WAIT: 'Please Wait',
+    GO_TO_DASHBOARD: 'Go to Dashboard'
   },
 
   errors: {
