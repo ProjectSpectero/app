@@ -47,6 +47,7 @@ module.exports = {
     AVAILABLE_SOON: 'Available soon.',
     CC: 'Country code',
     CITY: 'City',
+    PORT_NUMBER: 'Port No.',
     IP: 'IP Address',
     ACCESS_TOKEN: 'Access Token',
     PLACEHOLDER_ACCESS_TOKEN: 'Add a new access token in the format username:password to update',

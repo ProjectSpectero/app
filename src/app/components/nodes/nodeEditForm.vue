@@ -118,6 +118,7 @@ export default {
     this.formFields = [
       { name: 'friendly_name', label: this.$i18n.t('misc.FRIENDLY_NAME'), placeholder: this.$i18n.t('misc.FRIENDLY_NAME'), type: 'text' },
       { name: 'ip', label: this.$i18n.t('misc.IP'), placeholder: this.$i18n.t('misc.IP'), type: 'text' },
+      { name: 'port', label: this.$i18n.t('misc.PORT_NUMBER'), placeholder: this.$i18n.t('misc.PORT_NUMBER'), type: 'number' },
       { name: 'city', label: this.$i18n.t('misc.CITY'), placeholder: this.$i18n.t('misc.CITY'), type: 'text' },
       { name: 'access_token', label: this.$i18n.t('misc.ACCESS_TOKEN'), placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'), type: 'text' },
       { name: 'protocol', label: this.$i18n.t('misc.PROTOCOL'), placeholder: this.$i18n.t('misc.PROTOCOL'), type: 'select', object: this.protocols, objectKey: null },
