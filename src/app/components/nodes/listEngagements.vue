@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import nodeAPI from '@/app/api/node.js'
+import nodeAPI from '@/app/api/node'
 import notFound from '@/shared/components/notFound'
 
 export default {
@@ -51,6 +51,18 @@ export default {
   created () {
     this.options = {
       skin: '',
+      texts: {
+        count: 'Showing {from} to {to} of {count} engagements|{count} engagements|One engagement',
+        filter: '',
+        filterPlaceholder: 'Search engagements',
+        limit: 'Items:',
+        page: 'Page:',
+        noResults: 'No matching engagements',
+        filterBy: 'Filter by {column}',
+        loading: 'Loading...',
+        defaultOption: 'Select {column}',
+        columns: 'Columns'
+      },
       columnsClasses: {
         actions: 'table-actions'
       },

@@ -85,15 +85,8 @@ export default {
     checkRouteTab () {
       let allowed = ['profile', 'payment', 'keys']
 
-      // Redirect `/settings` to `/settings/profile`
-      if (this.currentTab === undefined) {
+      if (this.currentTab === undefined || (allowed.indexOf(this.currentTab) > -1) === false) {
         this.$router.push({ name: 'settings', params: { tab: 'profile' } })
-        return
-      }
-
-      // 404 redirect if tab key is invalid
-      if ((allowed.indexOf(this.currentTab) > -1) === false) {
-        this.error404 = true
       }
     },
     processForm (data) {

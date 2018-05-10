@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import paymentAPI from '@/app/api/payment.js'
+import paymentAPI from '@/app/api/payment'
 
 export default {
   data () {

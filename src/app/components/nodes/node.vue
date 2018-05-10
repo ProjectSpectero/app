@@ -1,24 +1,28 @@
 <template>
   <div>
-    <div v-if="!loading">
-      <component
-        :is="component"
-        :node="node"
-        :group="group"
-        :tabs="tabs"
-        :engagements="engagements"
-        :ips="ips"
-        :action="$route.params.action"
-        @updateEngagements="updateEngagements"
-      />
-    </div>
-    <loading v-else></loading>
+    <template v-if="!error">
+      <div v-if="!loading">
+        <component
+          :is="component"
+          :node="node"
+          :group="group"
+          :tabs="tabs"
+          :engagements="engagements"
+          :ips="ips"
+          :action="$route.params.action"
+          @updateEngagements="updateEngagements"
+        />
+      </div>
+      <loading v-else></loading>
+    </template>
+    <error v-else :item="errorItem" :code="errorCode"/>
   </div>
 </template>
 
 <script>
-import nodeAPI from '@/app/api/node.js'
+import nodeAPI from '@/app/api/node'
 import loading from '@/shared/components/loading'
+import error from '@/shared/components/errors/error'
 import nodeEdit from './nodeEdit'
 
 export default {
@@ -36,7 +40,8 @@ export default {
         { id: 'general', path: 'general', 'label': 'General Details' },
         { id: 'engagements', path: 'engagements', 'label': 'Engagements' },
         { id: 'ips', path: 'ips', 'label': 'IP Addresses' }
-      ]
+      ],
+      errorItem: 'node'
     }
   },
   created () {
@@ -61,11 +66,13 @@ export default {
           if (response.data.result) {
             this.group = response.data.result
             this.loading = false
+            this.error = false
           }
         },
         fail: (e) => {
           console.log(e)
-          // this.error404 = true
+          this.errorItem = 'group'
+          this.error = true
         }
       })
     },
@@ -91,7 +98,9 @@ export default {
           }
         },
         fail: (e) => {
-          this.error404 = true
+          console.log(e)
+          this.errorItem = 'node'
+          this.error = true
         }
       })
     },
@@ -103,27 +112,26 @@ export default {
       const varName = type.toLowerCase()
 
       method({
-        data: {
-          id: id
-        },
+        data: { id: id },
         success: response => {
           if (response.data.result) {
             this[varName] = response.data.result
+            this.error = false
           }
         },
         fail: (e) => {
           console.log(e)
+          this.errorCode = 400
+          this.errorItem = type
+          this.error = true
         }
       })
     }
   },
   components: {
     nodeEdit,
-    loading
+    loading,
+    error
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>
