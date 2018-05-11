@@ -1,51 +1,58 @@
 <template>
   <div>
-    <top :title="'Order '+ orderId +' Resources'">
-      <router-link :to="{ name: 'order', params: { id: orderId } }" class="button">Back to Order Details</router-link>
-    </top>
-    <div v-if="resources && resources.length">
-      <div class="content-split">
-        <div class="split-item split-list nodes-sidebar">
-          <div v-for="(item, index) in resources" :key="index" class="node-group" :class="{ active: selectedResource === item }" @click="selectResource(item)">
-            <div class="group-name">Item {{ item.id }}</div>
-            <div class="count">{{ item.type === 'NODE_GROUP' ? 'Group' : 'Node' }}</div>
-          </div>
-        </div>
-        <div class="split-item split-details">
-          <div v-if="accessor" class="accessor">
-            <div class="credentials">
-              <div class="label"><label>{{ $i18n.t('orders.ACCESSOR_DETAILS') }}</label></div>
-              <p>Username: <strong>{{ accessor.username }}</strong></p>
-              <p>Password: <strong>{{ accessor.password }}</strong></p>
-              <p v-if="accessorCheckPending" class="changeWarning">Your accessor details will update once they process.</p>
+    <template v-if="!error">
+      <div v-if="resources">
+        <top :title="'Order '+ orderId +' Resources'">
+          <router-link :to="{ name: 'order', params: { id: orderId } }" class="button">Back to Order Details</router-link>
+        </top>
+        <div v-if="resources && resources.length">
+          <div class="content-split">
+            <div class="split-item split-list nodes-sidebar">
+              <div v-for="(item, index) in resources" :key="index" class="node-group" :class="{ active: selectedResource === item }" @click="selectResource(item)">
+                <div class="group-name">Item {{ item.id }}</div>
+                <div class="count">{{ item.type === 'NODE_GROUP' ? 'Group' : 'Node' }}</div>
+              </div>
             </div>
-            <button @click.stop="showRegenerateAccessorModal(orderId)" class="button button-warning">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
+            <div class="split-item split-details">
+              <div v-if="accessor" class="accessor">
+                <div class="credentials">
+                  <div class="label"><label>{{ $i18n.t('orders.ACCESSOR_DETAILS') }}</label></div>
+                  <p>Username: <strong>{{ accessor.username }}</strong></p>
+                  <p>Password: <strong>{{ accessor.password }}</strong></p>
+                  <p v-if="accessorCheckPending" class="changeWarning">Your accessor details will update once they process.</p>
+                </div>
+                <button @click.stop="showRegenerateAccessorModal(orderId)" class="button button-warning">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
+              </div>
+
+              <ul class="references tabs">
+                <li v-for="t in types" :key="t" @click="selectReference(t)" class="reference" :class="{ active: selectedType === t }">
+                  <span>{{ t }}</span>
+                </li>
+              </ul>
+
+              <resource-details
+                :id="selectedResource.id"
+                :type="selectedResource.type"
+                :selectedReferences="selectedReferences"
+                :selectedType="selectedType"></resource-details>
+            </div>
           </div>
-
-          <ul class="references tabs">
-            <li v-for="t in types" :key="t" @click="selectReference(t)" class="reference" :class="{ active: selectedType === t }">
-              <span>{{ t }}</span>
-            </li>
-          </ul>
-
-          <resource-details
-            :id="selectedResource.id"
-            :type="selectedResource.type"
-            :selectedReferences="selectedReferences"
-            :selectedType="selectedType"></resource-details>
         </div>
+        <loading v-else></loading>
+        <modal name="regenerateAccessorModal" :height="'auto'">
+          <regenerateAccessor :orderId="orderId" @fetchAccessor="fetchAccessor" />
+        </modal>
       </div>
-    </div>
-    <loading v-else></loading>
-    <modal name="regenerateAccessorModal" :height="'auto'">
-      <regenerateAccessor :orderId="orderId" @fetchAccessor="fetchAccessor" />
-    </modal>
+      <loading v-else></loading>
+    </template>
+    <error v-else :item="errorItem" :code="errorCode"/>
   </div>
 </template>
 
 <script>
 import top from '@/shared/components/top'
 import loading from '@/shared/components/loading'
+import error from '@/shared/components/errors/error'
 import resourceDetails from './resourceDetails'
 import orderAPI from '@/app/api/order'
 import regenerateAccessor from './regenerateAccessor'
@@ -59,7 +66,9 @@ export default {
       selectedResource: null,
       selectedReferences: [],
       types: ['HTTPProxy', 'OpenVPN', 'ShadowSOCKS', 'SSHTunnel'],
-      accessorCheckPending: false
+      accessorCheckPending: false,
+      errorItem: 'resources',
+      errorCode: 400
     }
   },
   metaInfo () {
@@ -78,34 +87,30 @@ export default {
   methods: {
     async fetchOrder () {
       await orderAPI.order({
-        data: {
-          id: this.orderId
-        },
+        data: { id: this.orderId },
         success: async response => {
           if (response.data.result && response.data.result.status === 'ACTIVE') {
             await this.fetchResources()
           } else {
-            this.error404 = true
+            this.error = true
           }
         },
         fail: (e) => {
           console.log(e)
-          this.error404 = true
+          this.error = true
         }
       })
     },
     async fetchResources () {
       await orderAPI.resources({
-        data: {
-          id: this.orderId
-        },
+        data: { id: this.orderId },
         success: response => {
           this.accessor = response.data.result.accessor ? this.parseAccessor(response.data.result.accessor) : ''
           this.buildResourceTree(response.data.result.resources)
         },
         fail: (e) => {
           console.log(e)
-          this.error404 = true
+          this.error = true
         }
       })
     },
@@ -211,6 +216,7 @@ export default {
   components: {
     top,
     loading,
+    error,
     resourceDetails,
     regenerateAccessor
   }

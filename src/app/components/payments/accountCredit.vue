@@ -31,11 +31,10 @@ export default {
     processPayment () {
       if (this.$route.params.invoiceId) {
         paymentAPI.processAccountCredit({
-          data: {
-            invoiceId: this.$route.params.invoiceId
-          },
+          data: { invoiceId: this.$route.params.invoiceId },
           success: async processResponse => {
             this.loading = false
+            this.error = false
             this.success = true
             await this.setPendingInvoiceStatus(true)
             this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
@@ -45,10 +44,12 @@ export default {
             console.log('Error while finishing payment:', error)
             this.loading = false
             this.success = false
+            this.error = true
           }
         })
       } else {
-        this.error404 = true
+        this.error = true
+        this.loading = false
       }
     }
   },

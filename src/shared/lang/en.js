@@ -91,7 +91,6 @@ module.exports = {
     FIELD_MINLENGTH: 'Cannot be shorter than {x} characters.',
     FIELD_REGEX_MATCH: 'Invalid input format provided.',
     FIELD_EMAIL: 'Must be a valid email.',
-
     MISSING_BODY: 'Some required fields are missing or empty.',
     USER_NOT_FOUND: 'Invalid email or password.',
     EMAIL_FIELD_UNIQUE: 'This email is already taken.',
@@ -102,7 +101,7 @@ module.exports = {
     UNABLE_TO_LOGOUT: 'Unable to log the user out.',
     ROLE_VALIDATION_FAILED: 'You don\'t have access to assign this role.',
     CURRENT_PASSWORD_MISMATCH: 'Current password provided was incorrect.',
-
+    ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!',
     INVALID_SERVICE_OR_ACTION_ATTEMPT: 'Invalid action attempt on service.',
     INVALID_IP_AS_LISTENER_REQUEST: 'Unable to bind httpProxy/openVPN server to this listener.',
     INVALID_HTTP_MODE_REQUEST: 'Invalid HTTP mode change requested.',
