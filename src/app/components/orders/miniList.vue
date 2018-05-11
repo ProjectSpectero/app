@@ -21,7 +21,7 @@
           </tbody>
         </table>
       </div>
-      <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'orders' })"></not-found>
+      <div>{{ $i18n.t('misc.EMPTY_RESULTS', { type: 'orders' }) }}</div>
     </div>
     <loading v-else></loading>
   </div>

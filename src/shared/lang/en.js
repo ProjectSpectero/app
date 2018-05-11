@@ -65,7 +65,8 @@ module.exports = {
     LEAVE_CONFIRM_DIALOG: 'Are you sure you want to leave? Any unsaved changes will be lost.',
     PLEASE_WAIT: 'Please Wait',
     GO_TO_DASHBOARD: 'Go to Dashboard',
-    NO_CANCEL: 'No, Cancel'
+    NO_CANCEL: 'No, Cancel',
+    EMPTY_RESULTS: 'You don\'t have any {type} yet.'
   },
 
   errors: {
