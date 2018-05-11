@@ -17,6 +17,7 @@
               <div class="label"><label>{{ $i18n.t('orders.ACCESSOR_DETAILS') }}</label></div>
               <p>Username: <strong>{{ accessor.username }}</strong></p>
               <p>Password: <strong>{{ accessor.password }}</strong></p>
+              <p v-if="accessorCheckPending" class="changeWarning">Your accessor details will update once they process.</p>
             </div>
             <button @click.stop="showRegenerateAccessorModal(orderId)" class="button button-warning">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
           </div>
@@ -36,6 +37,9 @@
       </div>
     </div>
     <loading v-else></loading>
+    <modal name="regenerateAccessorModal" :height="'auto'">
+      <regenerateAccessor :orderId="orderId" @fetchAccessor="fetchAccessor" />
+    </modal>
   </div>
 </template>
 
@@ -54,7 +58,8 @@ export default {
       selectedType: null,
       selectedResource: null,
       selectedReferences: [],
-      types: ['HTTPProxy', 'OpenVPN', 'ShadowSOCKS', 'SSHTunnel']
+      types: ['HTTPProxy', 'OpenVPN', 'ShadowSOCKS', 'SSHTunnel'],
+      accessorCheckPending: false
     }
   },
   metaInfo () {
@@ -74,7 +79,7 @@ export default {
     async fetchOrder () {
       await orderAPI.order({
         data: {
-          id: this.$route.params.id
+          id: this.orderId
         },
         success: async response => {
           if (response.data.result && response.data.result.status === 'ACTIVE') {
@@ -92,7 +97,7 @@ export default {
     async fetchResources () {
       await orderAPI.resources({
         data: {
-          id: this.$route.params.id
+          id: this.orderId
         },
         success: response => {
           this.accessor = response.data.result.accessor ? this.parseAccessor(response.data.result.accessor) : ''
@@ -176,11 +181,31 @@ export default {
       this.selectedReferences = this.selectedResource.references[type]
     },
     showRegenerateAccessorModal (orderId) {
-      this.$modal.show(regenerateAccessor, {
+      this.$modal.show('regenerateAccessorModal', {
         orderId: orderId
       }, {
         height: 'auto'
       })
+    },
+    async fetchAccessor () {
+      this.accessorCheckPending = true
+
+      await orderAPI.resources({
+        data: {
+          id: this.orderId
+        },
+        success: response => {
+          this.accessorCheckPending = false
+          this.accessor = this.parseAccessor(response.data.result.accessor)
+        },
+        fail: (e) => {
+          this.$toasted.error('Unable to check accessor details, please manually refresh the page.')
+          console.log(e)
+        }
+      })
+    },
+    destroyed: function () {
+      console.log(`before destroy`)
     }
   },
   components: {
@@ -204,6 +229,11 @@ export default {
 
   .credentials {
     flex: 1;
+  }
+  .changeWarning {
+    margin-top: 10px;
+    color: $color-warning;
+    font-weight: $font-bold;
   }
 }
 </style>
