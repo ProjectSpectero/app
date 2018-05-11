@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <items :items="order.line_items"></items>
+          <items @updateEngagements="fetchOrder" :items="order.line_items"></items>
         </div>
       </div>
     </template>

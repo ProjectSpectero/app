@@ -5,26 +5,17 @@
         <template slot="type" slot-scope="props">
           <template v-if="props.row.type === 'NODE'">
             <div>{{ $i18n.t('misc.NODE') }} #{{ props.row.resource }}</div>
-            <small>
-              <router-link :to="{ name: 'node', params: { id: props.row.resource, type: 'view' } }">
-                {{ $i18n.t('nodes.GO_TO_NODE') }}
-              </router-link>
-            </small>
           </template>
           <template v-else-if="props.row.type === 'NODE_GROUP'">
             <div>{{ $i18n.t('misc.NODE_GROUP') }} #{{ props.row.resource }}</div>
-            <small>
-              <router-link :to="{ name: 'groupEdit', params: { id: props.row.resource, type: 'view' } }">
-                {{ $i18n.t('nodes.GO_TO_NODE_GROUP') }}
-              </router-link>
-            </small>
           </template>
         </template>
 
         <template slot="actions" slot-scope="props">
-          <button v-if="props.row.status === 'ACTIVE'" class="button" @click.stop="removeEngagement(props.row.id)">
+          <button v-if="props.row.status === 'ACTIVE'" class="button" @click.stop="deleteEngagement(props.row.id)">
             {{ $i18n.t('misc.CANCEL') }}
           </button>
+          <div v-else>-</div>
         </template>
       </v-client-table>
     </div>
@@ -73,7 +64,7 @@ export default {
     }
   },
   methods: {
-    removeEngagement (id) {
+    deleteEngagement (id) {
       if (confirm(this.$i18n.t('nodes.DELETE_ENGAGEMENT_CONFIRM_DIALOG'))) {
         nodeAPI.deleteEngagement({
           data: {

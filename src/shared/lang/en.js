@@ -84,7 +84,7 @@ module.exports = {
     REQUEST_FAILED: 'The request failed. Please contact us if the error persists.',
     UNAUTHORIZED: 'You are not authorized to do this. Please contact us if the error persists.',
     PAYMENT_FAILED: 'Payment failed',
-
+    INVOICE_ALREADY_PAID: 'This invoice has already been paid!',
     FIELD_REQUIRED: 'This field is required.',
     FIELD_MAXLENGTH: 'Cannot be longer than {x} characters.',
     FIELD_MINLENGTH: 'Cannot be shorter than {x} characters.',

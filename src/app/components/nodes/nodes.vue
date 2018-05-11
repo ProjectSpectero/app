@@ -103,7 +103,7 @@ export default {
           const target = this.groups.find(g => g.id === parseInt(id))
 
           if (!target) {
-            this.error404 = true
+            this.error = true
           } else {
             this.selectGroup(target, false)
           }
@@ -120,7 +120,7 @@ export default {
           }
         })
 
-        if (!found) {
+        if (!found && this.groups.length > 0) {
           this.selectGroup(this.groups[0], false)
         }
       }
