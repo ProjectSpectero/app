@@ -49,6 +49,7 @@ export default {
           this.pending = false
           this.result.status = 'success'
           this.result.msg = 'PROMO_APPLIED'
+          this.promoCode = ''
 
           // Sync current user to update credit balance
           this.updateUser()
