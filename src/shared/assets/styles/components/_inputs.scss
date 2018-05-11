@@ -84,8 +84,8 @@ select {
 }
 .vfl-label {
   padding: 0 4px;
-  top: -0.6em;
-  right: auto;
-  left: 8px;
+  top: -0.6em !important;
+  right: auto !important;
+  left: 8px !important;
   background: $white;
 }
