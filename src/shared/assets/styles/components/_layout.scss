@@ -94,6 +94,7 @@
 
 .col-container {
   display: flex;
+  flex-direction: row !important;
 
   &.reduce-spacing > .col {
     padding: 0 $pad/4;
