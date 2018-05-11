@@ -64,7 +64,8 @@ module.exports = {
     DELETE_CONFIRM_DIALOG: 'Are you sure you want to remove this {object}?',
     LEAVE_CONFIRM_DIALOG: 'Are you sure you want to leave? Any unsaved changes will be lost.',
     PLEASE_WAIT: 'Please Wait',
-    GO_TO_DASHBOARD: 'Go to Dashboard'
+    GO_TO_DASHBOARD: 'Go to Dashboard',
+    NO_CANCEL: 'No, Cancel'
   },
 
   errors: {
@@ -205,7 +206,11 @@ module.exports = {
     ACCESSOR: 'Accessor',
     ACCESSOR_DETAILS: 'Accessor Details',
     CANCEL_ERROR: 'There was a problem cancelling your order. Please try again or contact us if this issue persists.',
-    CANCEL_SUCCESS: 'Your order has been cancelled.'
+    CANCEL_SUCCESS: 'Your order has been cancelled.',
+    REGENERATE_ACCESSOR: 'Regenerate Accessor',
+    REGENERATE_ACCESSOR_WARNING: 'Regenerating your accessor will take up to 5 minutes to sync and your existing accessor details will become invalid. Do you wish to continue?',
+    REGENERATE_ACCESSOR_ERROR: 'There was an issue regenerating your accessor. Please try again in a few minutes and if the problem persists please contact support.',
+    REGENERATE_ACCESSOR_SUCCESS: 'Your request is processing and your accessor details will update within 5 minutes.'
   },
 
   services: {

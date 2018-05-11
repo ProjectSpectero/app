@@ -56,5 +56,13 @@ export default {
    */
   resources (options) {
     return api('GET', `/order/${options.data.id}/resources`, options)
+  },
+
+  /**
+   * Regenerates order accessor.
+   * @param {Integer} id Order id.
+   */
+  regenerateAccessor (options) {
+    return api('PUT', `/order/${options.data.id}/accessor`, options)
   }
 }

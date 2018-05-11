@@ -12,12 +12,13 @@
           </div>
         </div>
         <div class="split-item split-details">
-          <div v-if="accessor" class="details">
-            <div>
+          <div v-if="accessor" class="accessor">
+            <div class="credentials">
               <div class="label"><label>{{ $i18n.t('orders.ACCESSOR_DETAILS') }}</label></div>
               <p>Username: <strong>{{ accessor.username }}</strong></p>
               <p>Password: <strong>{{ accessor.password }}</strong></p>
             </div>
+            <button @click.stop="showRegenerateAccessorModal(orderId)" class="button button-warning">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
           </div>
 
           <ul class="references tabs">
@@ -43,6 +44,7 @@ import top from '@/shared/components/top'
 import loading from '@/shared/components/loading'
 import resourceDetails from './resourceDetails'
 import orderAPI from '@/app/api/order'
+import regenerateAccessor from './regenerateAccessor'
 
 export default {
   data () {
@@ -62,7 +64,7 @@ export default {
   },
   computed: {
     orderId () {
-      return this.$route.params.id
+      return parseInt(this.$route.params.id)
     }
   },
   created () {
@@ -172,21 +174,36 @@ export default {
     selectReference (type) {
       this.selectedType = type
       this.selectedReferences = this.selectedResource.references[type]
+    },
+    showRegenerateAccessorModal (orderId) {
+      this.$modal.show(regenerateAccessor, {
+        orderId: orderId
+      }, {
+        height: 'auto'
+      })
     }
   },
   components: {
     top,
     loading,
-    resourceDetails
+    resourceDetails,
+    regenerateAccessor
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.details {
+.accessor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: $pad;
   padding: $pad;
   border-radius: 4px;
   border: 1px solid $color-border;
+
+  .credentials {
+    flex: 1;
+  }
 }
 </style>
