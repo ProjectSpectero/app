@@ -6,7 +6,8 @@
     <div class="body">
       <p class="spaced">
         There is currently an outstanding balance of <strong>{{ due.amount | currency }} {{ due.currency }}</strong> on this invoice.
-        Please pay before the due date to avoid any late penalties, thank you.</p>
+        Please pay before the due date to avoid any late penalties, thank you.
+      </p>
 
       <button @click.stop="showPaymentModal" class="button button-success">
         {{ $i18n.t('misc.PAY_NOW') }}

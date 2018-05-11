@@ -145,6 +145,7 @@ import invoiceAPI from '@/app/api/invoice'
 import outstanding from './outstanding'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
+import paymentModal from '../payments/paymentModal'
 
 export default {
   metaInfo: {
@@ -303,12 +304,21 @@ export default {
           this.error = true
         }
       })
+    },
+    showPaymentModal () {
+      this.$modal.show(paymentModal, {
+        invoice: this.invoice,
+        due: this.due
+      }, {
+        height: 'auto'
+      })
     }
   },
   components: {
     top,
     error,
-    outstanding
+    outstanding,
+    paymentModal
   }
 }
 </script>
