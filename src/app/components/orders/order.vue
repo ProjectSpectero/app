@@ -7,11 +7,17 @@
             {{ $i18n.t('orders.VIEW_INVOICE') }}
           </router-link>
 
-          <div class="inline" v-if="order.last_invoice && order.last_invoice.status === 'UNPAID'">
-            <router-link class="button button-success" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
-              {{ $i18n.t('misc.PAY_NOW') }}
-            </router-link>
-          </div>
+          <template v-if="order.status !== 'CANCELLED'">
+            <button @click.stop="cancel(order.id)" class="button">
+              {{ $i18n.t('misc.CANCEL') }}
+            </button>
+
+            <div class="inline" v-if="order.last_invoice && order.last_invoice.status === 'UNPAID'">
+              <router-link class="button button-success" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
+                {{ $i18n.t('misc.PAY_NOW') }}
+              </router-link>
+            </div>
+          </template>
         </top>
         <div v-if="!loading" class="order">
           <div class="container">
@@ -22,7 +28,9 @@
               </div>
               <div class="info-box">
                 <h5>{{ $i18n.t('misc.STATUS') }}</h5>
-                <p>{{ order.status }}</p>
+                <div :class="'badge status-' + order.status.toLowerCase()">
+                  {{ $i18n.t('orders.ORDER_STATUS.' + order.status) }}
+                </div>
               </div>
               <div class="info-box">
                 <h5>{{ $i18n.t('misc.TOTAL') }}</h5>
@@ -95,6 +103,20 @@ export default {
           this.error = true
         }
       })
+    },
+    async cancel (id) {
+      await orderAPI.delete({
+        data: {
+          id: id
+        },
+        success: response => {
+          this.order.status = 'CANCELLED'
+          this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
+        },
+        fail: e => {
+          this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
+        }
+      })
     }
   },
   components: {
@@ -107,3 +129,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~@styles/components/badges';
+
+.badge {
+  &.status-active {
+    @extend .badge-success;
+  }
+  &.status-automated_fraud_check, &.status-manual_fraud_check {
+    @extend .badge-warning;
+  }
+}
+</style>
