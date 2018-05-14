@@ -133,10 +133,35 @@ export default {
 
       await nodeAPI.edit({
         data: this.form,
-        success: response => {
+        success: async response => {
           if (response.data.result) {
             this.formLoading = false
             this.$toasted.success(this.$i18n.t('nodes.UPDATE_SUCCESS'))
+
+            // Updating the group requires a different API call
+            if (this.node.group_id !== this.form.group_id) {
+              await this.updateGroup(this.form.group_id)
+            }
+          }
+        },
+        fail: error => {
+          this.$toasted.error(this.errorAPI(error, 'nodes'))
+          this.formLoading = false
+        }
+      })
+    },
+    async updateGroup (id) {
+      this.formLoading = true
+
+      await nodeAPI.updateGroupFromNode({
+        data: {
+          node_id: this.form.id,
+          group_id: id
+        },
+        success: response => {
+          if (response.data.result) {
+            this.formLoading = false
+            this.$toasted.success(this.$i18n.t('nodes.GROUP_FROM_NODE_UPDATE_SUCCESS'))
           }
         },
         fail: error => {

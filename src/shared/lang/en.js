@@ -228,6 +228,7 @@ module.exports = {
   nodes: {
     UNCATEGORIZED: 'Uncategorized',
     NO_NODES_TITLE: 'No nodes',
+    RESOURCE_NOT_FOUND: 'We were unable to find the resource you submitted!',
     NO_NODES_TEXT: 'There are no nodes to display in this node group.',
     EDIT_GROUP: 'Edit group',
     EDIT_NODE: 'Edit node',
@@ -238,7 +239,8 @@ module.exports = {
     REQUEST_FAILED: 'The request failed. Please contact us if the error persists.',
     NODE_VERIFY_SUCCESS: 'Your node {node} is now queued for verification. We\'ll send you an email as soon as this is finished.',
     GROUP_UPDATE_SUCCESS: 'Node group updated successfully!',
-    UPDATE_SUCCESS: 'Node updated successfully!',
+    UPDATE_SUCCESS: 'Node information updated successfully!',
+    GROUP_FROM_NODE_UPDATE_SUCCESS: 'Group changed successfully!',
     HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!',
     ORDERS_EXIST: 'Unable to remove: this node has active orders!',
     GROUP_PRICE_AVAILABILITY: 'Note: Price will only be used for <strong>{model1}</strong> and <strong>{model2}</strong> market models.',
