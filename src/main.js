@@ -15,6 +15,7 @@ import { ClientTable } from 'vue-tables-2'
 import VueCurrencyFilter from 'vue-currency-filter'
 import VueClipboard from 'vue-clipboard2'
 import VueFloatLabel from 'vue-float-label'
+import VueTooltip from 'vue-directive-tooltip'
 
 import globalMixin from '@/shared/mixins/global'
 
@@ -29,6 +30,15 @@ Vue.use(ClientTable)
 Vue.use(VueMoment)
 Vue.use(VueClipboard)
 Vue.use(VueFloatLabel)
+Vue.use(VueTooltip)
+
+Vue.use(VueTooltip, {
+  delay: 500,
+  placement: 'right',
+  class: 'tooltip-red',
+  triggers: ['hover'],
+  offset: 0
+})
 
 Vue.use(VueModal, {
   dynamic: true

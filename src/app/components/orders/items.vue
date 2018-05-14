@@ -1,5 +1,10 @@
 <template>
   <v-client-table :data="items" :columns="columns" :options="options">
+    <template slot="h__sync_status">
+      {{ $i18n.t('misc.SYNC_STATUS') }}
+      <span class="icon-help-circle" v-tooltip="$i18n.t('orders.SYNC_STATUS_TOOLTIP')"></span>
+    </template>
+
     <template slot="description" slot-scope="props">
       <template v-if="props.row.type === 'NODE'">
         <div>{{ $i18n.t('misc.NODE') }} #{{ props.row.resource }}</div>
