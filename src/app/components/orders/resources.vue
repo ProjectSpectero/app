@@ -216,13 +216,10 @@ export default {
           this.accessor = this.parseAccessor(response.data.result.accessor)
         },
         fail: (e) => {
-          this.$toasted.error('Unable to check accessor details, please manually refresh the page.')
+          this.$toasted.error(this.$i18n.t('orders.UNABLE_TO_CHECK_ACCESSOR'))
           console.log(e)
         }
       })
-    },
-    destroyed: function () {
-      console.log(`before destroy`)
     }
   },
   components: {
