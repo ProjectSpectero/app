@@ -5,6 +5,7 @@ module.exports = {
     MARKET: 'Marketplace',
     ORDERS: 'Orders',
     INVOICES: 'Invoices',
+    ITEM: 'Item',
     NODE: 'Node',
     NODE_GROUP: 'Node group',
     NODES: 'Nodes',
@@ -198,6 +199,7 @@ module.exports = {
     },
     REFERENCE_NUM: 'Reference Number',
     VIEW_INVOICE: 'View invoice',
+    BACK_TO_ORDER: 'Back to Order Details',
     VIEW_ALL_RESOURCES: 'List all resources',
     VIEW_LATEST_INVOICE: 'View Latest Invoice',
     NOT_ENABLED: '{type} is not enabled for this node.',
@@ -207,6 +209,7 @@ module.exports = {
     ACCESS_REFERENCE: 'Access Reference',
     ACCESSOR: 'Accessor',
     ACCESSOR_DETAILS: 'Accessor Details',
+    ACCESSOR_DETAILS_TEXT: 'Your accessor details will update once they process.',
     CANCEL_ERROR: 'There was a problem cancelling your order. Please try again or contact us if this issue persists.',
     CANCEL_SUCCESS: 'Your order has been cancelled.',
     REGENERATE_ACCESSOR: 'Regenerate Accessor',
@@ -252,6 +255,7 @@ module.exports = {
     ORDER_NOT_ACTIVE_YET: 'Unable to cancel engagement: This order isn\'t active yet!',
     GO_TO_NODE: 'Go to node',
     GO_TO_NODE_GROUP: 'Go to node group',
+    MARKET_MODEL_TOOLTIP: 'There are three types of market model:',
     STATUS: {
       UNCONFIRMED: 'Unconfirmed',
       CONFIRMED: 'Confirmed',
@@ -264,6 +268,12 @@ module.exports = {
       MANAGED: 'Managed',
       LISTED_SHARED: 'Shared',
       LISTED_DEDICATED: 'Dedicated'
+    },
+    MODEL_DESCRIPTION: {
+      UNLISTED: 'A node or group that is NOT listed in the Spectero Marketplace.',
+      MANAGED: 'A managed node or group.',
+      LISTED_SHARED: 'A node or group that allows more than one customer to purchase access to it. All customers share their resources.',
+      LISTED_DEDICATED: 'A node or group that only allows one dedicated customer to purchase access to it. No resources are shared; it is dedicated to one user only.'
     }
   },
 

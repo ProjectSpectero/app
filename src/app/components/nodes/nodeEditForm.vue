@@ -21,6 +21,19 @@
                       </select>
                     </div>
                   </template>
+                  <template v-else-if="field.type === 'model'">
+                    <div class="form-input" v-if="marketModels">
+                      <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.MARKET_MODEL') }}</label></div>
+                      <div class="side-by-side">
+                        <select v-model="form.market_model">
+                          <option v-for="model in marketModels" :key="model" :value="model">
+                            {{ $i18n.t(`nodes.MODEL.${model}`) }}
+                          </option>
+                        </select>
+                        <market-model-tooltip :models="marketModels"></market-model-tooltip>
+                      </div>
+                    </div>
+                  </template>
                   <template v-else>
                     <div class="form-input">
                       <div class="label"><label :for="field.name">{{ field.label }}</label></div>
@@ -61,6 +74,7 @@
 import nodeAPI from '@/app/api/node'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
+import marketModelTooltip from './marketModelTooltip'
 
 export default {
   props: {
@@ -122,7 +136,7 @@ export default {
       { name: 'city', label: this.$i18n.t('misc.CITY'), placeholder: this.$i18n.t('misc.CITY'), type: 'text' },
       { name: 'access_token', label: this.$i18n.t('misc.ACCESS_TOKEN'), placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'), type: 'text' },
       { name: 'protocol', label: this.$i18n.t('misc.PROTOCOL'), placeholder: this.$i18n.t('misc.PROTOCOL'), type: 'select', object: this.protocols, objectKey: null },
-      { name: 'market_model', label: this.$i18n.t('misc.MARKET_MODEL'), placeholder: this.$i18n.t('misc.MARKET_MODEL'), type: 'select', object: this.marketModels, objectKey: null },
+      { name: 'market_model', label: this.$i18n.t('misc.MARKET_MODEL'), placeholder: this.$i18n.t('misc.MARKET_MODEL'), type: 'model', object: this.marketModels, objectKey: null },
       { name: 'price', label: this.$i18n.t('misc.PRICE'), placeholder: this.$i18n.t('misc.PRICE'), type: 'number' },
       { name: 'group_id', label: this.$i18n.t('misc.NODE_GROUP'), type: 'select', object: this.groups, objectKey: 'id' }
     ]
@@ -199,7 +213,8 @@ export default {
   },
   components: {
     loading,
-    error
+    error,
+    marketModelTooltip
   }
 }
 </script>

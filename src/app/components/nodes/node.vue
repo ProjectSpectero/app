@@ -2,16 +2,14 @@
   <div>
     <template v-if="!error">
       <div v-if="!loading">
-        <component
-          :is="component"
+        <node-edit
           :node="node"
           :group="group"
           :tabs="tabs"
           :engagements="engagements"
           :ips="ips"
           :action="$route.params.action"
-          @updateEngagements="updateEngagements"
-        />
+          @updateEngagements="updateEngagements"></node-edit>
       </div>
       <loading v-else></loading>
     </template>
@@ -37,15 +35,15 @@ export default {
       engagements: null,
       ips: null,
       tabs: [
-        { id: 'general', path: 'general', 'label': 'General Details' },
-        { id: 'engagements', path: 'engagements', 'label': 'Engagements' },
-        { id: 'ips', path: 'ips', 'label': 'IP Addresses' }
+        { id: 'general', path: 'general', label: 'General Details' },
+        { id: 'engagements', path: 'engagements', label: 'Engagements' },
+        { id: 'ips', path: 'ips', label: 'IP Addresses' },
+        { id: 'system', path: 'system', label: 'System' }
       ],
       errorItem: 'node'
     }
   },
   created () {
-    this.setType()
     this.fetchNode()
   },
   computed: {
@@ -54,9 +52,6 @@ export default {
     }
   },
   methods: {
-    setType () {
-      this.component = 'nodeEdit'
-    },
     async fetchGroup (groupId) {
       await nodeAPI.group({
         data: {
