@@ -54,9 +54,10 @@
               <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.MARKET_MODEL') }}</label></div>
               <select v-model="form.market_model">
                 <option v-for="model in marketModels" :key="model" :value="model">
-                  {{ model }}
+                  {{ $i18n.t(`nodes.MODEL.${model}`) }}
                 </option>
               </select>
+              <market-model-tooltip :models="marketModels"></market-model-tooltip>
             </div>
           </div>
           <button v-if="formFields" type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
@@ -71,6 +72,7 @@
 
 <script>
 import nodeAPI from '@/app/api/node'
+import marketModelTooltip from './marketModelTooltip'
 
 export default {
   props: {
@@ -122,6 +124,9 @@ export default {
         }
       })
     }
+  },
+  components: {
+    marketModelTooltip
   }
 }
 </script>

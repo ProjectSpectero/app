@@ -96,6 +96,13 @@ export default {
   },
 
   /**
+   * Updates the group_id of a given node.
+   */
+  updateGroupFromNode (options) {
+    return api('POST', `/node_group/assign`, options)
+  },
+
+  /**
    * Edit node group details.
 
    * @param {Integer} id Group id to edit.

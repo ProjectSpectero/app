@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import notFound from '@/shared/components/notFound'
 import { mapGetters } from 'vuex'
+import notFound from '@/shared/components/notFound'
 
 export default {
   props: {

@@ -13,19 +13,24 @@
         </div>
 
         <div v-if="field.accessConfig">
-          <div class="label"><label for="accessConfig">{{ $i18n.t('orders.ACCESS_CONFIG') }}</label></div>
+          <div class="label">
+            <label for="accessConfig">{{ $i18n.t('orders.ACCESS_CONFIG') }}</label>
+          </div>
+
           <textarea class="input font-mono" v-model="field.accessConfig" id="accessConfig" readonly></textarea>
           <copy-to-clipboard :field="field.accessConfig" button-class="button-sm"></copy-to-clipboard>
           <download :content="field.accessConfig" :file="configFileName" button-class="button-sm"></download>
         </div>
 
         <div v-if="field.accessCredentials">
-          <div class="label"><label>{{ $i18n.t('orders.ACCESS_CREDENTIALS') }}</label></div>
+          <div class="label">
+            <label>{{ $i18n.t('orders.ACCESS_CREDENTIALS') }}</label>
+          </div>
           <div>{{ field.accessCredentials }}</div>
         </div>
       </div>
     </template>
-    <error v-else header="Not Enabled" :msg="$i18n.t('orders.NOT_ENABLED', { type: selectedType })"></error>
+    <error v-else :header="$i18n.t('orders.NOT_ENABLED_TITLE')" :msg="$i18n.t('orders.NOT_ENABLED', { type: selectedType })"></error>
   </div>
 </template>
 

@@ -5,15 +5,18 @@ module.exports = {
     MARKET: 'Marketplace',
     ORDERS: 'Orders',
     INVOICES: 'Invoices',
+    ITEM: 'Item',
     NODE: 'Node',
     NODE_GROUP: 'Node group',
     NODES: 'Nodes',
     STATUS: 'Status',
     ORDER: 'Order',
+    AMOUNT: 'Amount',
     ROLES: 'Roles',
     DAEMON: 'Daemon',
     DOWNLOADS: 'Downloads',
     ACCOUNT: 'Account',
+    SYNC_STATUS: 'Sync Status',
     SUPPORT: 'Support',
     TOTAL: 'Total',
     HELP: 'Help',
@@ -69,8 +72,7 @@ module.exports = {
     NO_CANCEL: 'No, Cancel',
     EMPTY_RESULTS: 'You don\'t have any {type} yet.',
     ORDER_DATE: 'Order Date',
-    TERM: 'Term',
-    ITEM: 'Item'
+    TERM: 'Term'
   },
 
   errors: {
@@ -200,20 +202,26 @@ module.exports = {
     },
     VIEW_INVOICE: 'View invoice',
     VIEW_RESOURCES: 'View Resources',
+    BACK_TO_ORDER: 'Back to Order Details',
+    VIEW_ALL_RESOURCES: 'List all resources',
     VIEW_LATEST_INVOICE: 'View Latest Invoice',
+    NOT_ENABLED_TITLE: 'Not enabled',
     NOT_ENABLED: '{type} is not enabled for this node.',
     USE_ACCESSOR: 'Please use the login data as shown in your accessor.',
     ACCESS_CREDENTIALS: 'Access Credentials',
     ACCESS_CONFIG: 'Access Config',
     ACCESS_REFERENCE: 'Access Reference',
     ACCESSOR: 'Accessor',
+    UNABLE_TO_CHECK_ACCESSOR: 'Unable to check accessor details, please manually refresh the page.',
     ACCESSOR_DETAILS: 'Accessor Details',
+    ACCESSOR_DETAILS_TEXT: 'Your accessor details will update once they process.',
     CANCEL_ERROR: 'There was a problem cancelling your order. Please try again or contact us if this issue persists.',
     CANCEL_SUCCESS: 'Your order has been cancelled.',
     REGENERATE_ACCESSOR: 'Regenerate Accessor',
     REGENERATE_ACCESSOR_WARNING: 'Regenerating your accessor will take up to 5 minutes to sync and your existing accessor details will become invalid. Do you wish to continue?',
     REGENERATE_ACCESSOR_ERROR: 'There was an issue regenerating your accessor. Please try again in a few minutes and if the problem persists please contact support.',
-    REGENERATE_ACCESSOR_SUCCESS: 'Your request is processing and your accessor details will update within 5 minutes.'
+    REGENERATE_ACCESSOR_SUCCESS: 'Your request is processing and your accessor details will update within 5 minutes.',
+    SYNC_STATUS_TOOLTIP: 'The synchronization status of this node / node group.'
   },
 
   services: {
@@ -231,6 +239,7 @@ module.exports = {
   nodes: {
     UNCATEGORIZED: 'Uncategorized',
     NO_NODES_TITLE: 'No nodes',
+    RESOURCE_NOT_FOUND: 'We were unable to find that resource.',
     NO_NODES_TEXT: 'There are no nodes to display in this node group.',
     EDIT_GROUP: 'Edit group',
     EDIT_NODE: 'Edit node',
@@ -241,7 +250,8 @@ module.exports = {
     REQUEST_FAILED: 'The request failed. Please contact us if the error persists.',
     NODE_VERIFY_SUCCESS: 'Your node {node} is now queued for verification. We\'ll send you an email as soon as this is finished.',
     GROUP_UPDATE_SUCCESS: 'Node group updated successfully!',
-    UPDATE_SUCCESS: 'Node updated successfully!',
+    UPDATE_SUCCESS: 'Node information updated successfully!',
+    GROUP_FROM_NODE_UPDATE_SUCCESS: 'Group changed successfully!',
     HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!',
     ORDERS_EXIST: 'Unable to remove: this node has active orders!',
     GROUP_PRICE_AVAILABILITY: 'Note: Price will only be used for <strong>{model1}</strong> and <strong>{model2}</strong> market models.',
@@ -250,7 +260,7 @@ module.exports = {
     ORDER_NOT_ACTIVE_YET: 'Unable to cancel engagement: This order isn\'t active yet!',
     GO_TO_NODE: 'Go to node',
     GO_TO_NODE_GROUP: 'Go to node group',
-    RESOURCE_NOT_FOUND: 'Cannot find associated node.',
+    MARKET_MODEL_TOOLTIP: 'There are three types of market model:',
     STATUS: {
       UNCONFIRMED: 'Unconfirmed',
       CONFIRMED: 'Confirmed',
@@ -263,6 +273,12 @@ module.exports = {
       MANAGED: 'Managed',
       LISTED_SHARED: 'Shared',
       LISTED_DEDICATED: 'Dedicated'
+    },
+    MODEL_DESCRIPTION: {
+      UNLISTED: 'A node or group that is NOT listed in the Spectero Marketplace.',
+      MANAGED: 'A managed node or group.',
+      LISTED_SHARED: 'A node or group that allows more than one customer to purchase access to it. All customers share their resources.',
+      LISTED_DEDICATED: 'A node or group that only allows one dedicated customer to purchase access to it. No resources are shared; it is dedicated to one user only.'
     }
   },
 

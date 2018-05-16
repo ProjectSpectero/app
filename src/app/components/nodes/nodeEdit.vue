@@ -43,20 +43,25 @@
     <edit-form v-if="activeTab === 'general'" :node="node"></edit-form>
     <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
     <list-ips v-else-if="activeTab === 'ips'" :ips="ips"></list-ips>
+    <list-system v-else-if="activeTab === 'system'" :node="node"></list-system>
     <not-found v-else></not-found>
   </div>
 </template>
 
 <script>
-import top from '@/shared/components/top'
-import notFound from '@/shared/components/404'
+import { mapGetters } from 'vuex'
 import tabs from './tabs'
 import editForm from './nodeEditForm'
 import listEngagements from './listEngagements'
 import listIps from './listIps'
-import { mapGetters } from 'vuex'
+import listSystem from './listSystem'
+import top from '@/shared/components/top'
+import notFound from '@/shared/components/404'
 
 export default {
+  metaInfo: {
+    title: 'Edit Node'
+  },
   props: {
     action: String,
     node: Object,
@@ -74,9 +79,6 @@ export default {
     ...mapGetters({
       countries: 'settings/countries'
     })
-  },
-  metaInfo: {
-    title: 'Edit Node'
   },
   created () {
     this.parseTab()
@@ -110,6 +112,7 @@ export default {
     editForm,
     listEngagements,
     listIps,
+    listSystem,
     notFound
   }
 }
