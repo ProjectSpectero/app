@@ -146,6 +146,7 @@ import outstanding from './outstanding'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import paymentModal from '../payments/paymentModal'
+import processingErrorsModal from './processingErrorsModal'
 
 export default {
   metaInfo: {
@@ -217,9 +218,7 @@ export default {
     }),
     async fetchInvoice () {
       await invoiceAPI.invoice({
-        data: {
-          id: this.$route.params.id
-        },
+        data: { id: this.$route.params.id },
         success: response => {
           if (response.data.result) {
             this.error = false
@@ -305,12 +304,32 @@ export default {
         }
       })
     },
-    showPaymentModal () {
-      this.$modal.show(paymentModal, {
-        invoice: this.invoice,
-        due: this.due
-      }, {
-        height: 'auto'
+    async showPaymentModal () {
+      await orderAPI.verify({
+        data: { id: this.invoice.order_id },
+        success: response => {
+          console.log(response)
+
+          this.$modal.show(paymentModal, {
+            invoice: this.invoice,
+            due: this.due
+          }, {
+            height: 'auto'
+          })
+        },
+        fail: error => {
+          console.log(error)
+          if (typeof error.errors === 'object') {
+            this.$modal.show(processingErrorsModal, {
+              invoice: this.invoice,
+              errorBag: error.errors
+            }, {
+              height: 'auto'
+            })
+          } else {
+            this.$toasted.error(this.errorAPI(error, 'orders'))
+          }
+        }
       })
     }
   },
@@ -318,7 +337,8 @@ export default {
     top,
     error,
     outstanding,
-    paymentModal
+    paymentModal,
+    processingErrorsModal
   }
 }
 </script>

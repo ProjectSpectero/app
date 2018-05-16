@@ -169,6 +169,8 @@ module.exports = {
   },
 
   invoices: {
+    PAY_INVOICE: 'Pay Invoice',
+    PAY_TEXT2: 'Please pay the amount due using the options available below.',
     INVOICE_STATUS: {
       PAID: 'Paid',
       UNPAID: 'Unpaid',
@@ -180,10 +182,16 @@ module.exports = {
       ALL: 'All invoices',
       PAID: 'Paid invoices',
       UNPAID: 'Unpaid invoices'
+    },
+    UNABLE_TO_PROCESS: 'We were unable to process some of the resources of your order.',
+    RESOURCE_ERROR: {
+      RESOURCE_NOT_FOUND: 'Resource not found',
+      RESOURCE_SOLD_OUT: 'Resource sold out'
     }
   },
 
   orders: {
+    RESOURCE_NOT_FOUND: 'We were unable to find that order resource.',
     ORDER_STATUS: {
       PENDING: 'Pending',
       AUTOMATED_FRAUD_CHECK: 'Pending Fraud Check',

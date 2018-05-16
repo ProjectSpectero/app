@@ -1,14 +1,16 @@
 <template>
   <div class="modal">
     <div class="modal-header">
-      <h2>Pay Invoice</h2>
+      <h2>{{ $i18n.t('invoices.PAY_INVOICE') }}</h2>
       <button @click="$emit('close')" class="modal-close"></button>
     </div>
     <div class="modal-content">
       <p class="spaced">Your invoice <strong>{{ invoice.id }}</strong> currently has an outstanding balance of <strong>{{ due.amount | currency }} {{ due.currency }}</strong>.</p>
-      <p class="spaced">Please pay the amount due using the options available below.</p>
+      <p class="spaced">
+        {{ $i18n.t('invoices.PAY_TEXT2') }}
+      </p>
       <div>
-        <button @click="payClick(type); $emit('close')" v-if="canUse(type)" v-for="type in buttons" :key="type.route" class="button button-info">
+        <button @click="pay(type)" v-if="canUse(type)" v-for="type in buttons" :key="type.route" class="button button-info">
           {{ $i18n.t('payments.' + type.label) }}
         </button>
       </div>
@@ -36,13 +38,15 @@ export default {
       const found = type.usage.find(u => u === this.invoice.type)
       return found || false
     },
-    payClick (method) {
+    pay (method) {
       this.$router.push({
         name: method.route,
         params: {
           invoiceId: this.invoice.id
         }
       })
+
+      this.$emit('close')
     }
   }
 }

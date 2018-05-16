@@ -54,7 +54,7 @@ async function API (project, method, path, data, success, failed) {
       router.push({ name: 'login', query: { redirect: location.pathname + location.search } })
     }
 
-    let err = new Err(error.data.errors)
+    let err = new Err(error.data.errors, error.status)
 
     // Main api callback
     if (typeof failed === 'function') {
@@ -66,7 +66,7 @@ async function API (project, method, path, data, success, failed) {
       data.fail(err)
     }
 
-    return { error: true, data: err }
+    return { error: true, data: err, status: error.status }
   }
 }
 

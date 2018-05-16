@@ -11,6 +11,16 @@ export default {
   },
 
   /**
+   * Verifies an order for purchaseability.
+   * Orders may fail the verification if their resources are unavailable or expired.
+   *
+   * @param {Integer} id Order id.
+   */
+  verify (options) {
+    return api('GET', `/order/${options.data.id}/verify`, options)
+  },
+
+  /**
    * Deletes an order.
    *
    * @param {Integer} id Node id to delete.

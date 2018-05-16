@@ -1,6 +1,6 @@
 class Err {
-  constructor (data) {
-    this.parse(data)
+  constructor (data, status) {
+    this.parse(data, status)
   }
 
   /**
@@ -14,16 +14,21 @@ class Err {
    *
    * @param {String} data Data string from error passed from API.
    */
-  parse (data) {
+  parse (data, status) {
     let errors = {}
     let fields = {}
 
     // Data is Array[] of error keys (keys w/ no additional data)
     if (Array.isArray(data)) {
       for (let i = 0; i < data.length; i++) {
-        errors[data[i]] = {}
+        if (typeof data[i] === 'object') {
+          errors[i] = data[i]
+        } else {
+          errors[data[i]] = {}
+        }
       }
-    } else { // Data is Object{} with keys as error keys, values as additional info to those error keys
+    } else {
+      // Data is Object{} with keys as error keys, values as additional info to those error keys
       for (var key in data) {
         if (data.hasOwnProperty(key)) {
           let err = []
@@ -50,12 +55,14 @@ class Err {
     }
     this.errors = errors
     this.fields = fields
+    this.status = status
   }
 
   data () {
     return {
       errors: this.errors,
-      fields: this.fields
+      fields: this.fields,
+      status: this.status
     }
   }
 }
