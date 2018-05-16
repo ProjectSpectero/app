@@ -21,6 +21,15 @@ export default {
   },
 
   /**
+   * "Fixes" an order for purchaseability.
+   *
+   * @param {Integer} id Order id.
+   */
+  fix (options) {
+    return api('GET', `/order/${options.data.id}/fix`, options)
+  },
+
+  /**
    * Deletes an order.
    *
    * @param {Integer} id Node id to delete.

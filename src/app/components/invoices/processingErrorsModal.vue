@@ -9,18 +9,50 @@
 
       <ul>
         <li v-for="(error, i) in errorBag" :key="i">
-          Resource #{{ error.id }}: {{ $i18n.t(`invoices.RESOURCE_ERROR.${error.reason}`) }}
+          {{ $i18n.t('misc.RESOURCE')}} #{{ error.id }}: {{ $i18n.t(`invoices.RESOURCE_ERROR.${error.reason}`) }}
         </li>
       </ul>
+
+      <button @click="fix">{{ $i18n.t('orders.FIX')}}</button>
+      <button @click="cancel">{{ $i18n.t('orders.CANCEL')}}</button>
     </div>
   </div>
 </template>
 
 <script>
+import orderAPI from '@/app/api/order'
+
 export default {
   props: {
     invoice: Object,
     errorBag: Object
+  },
+  methods: {
+    async cancel () {
+      await orderAPI.delete({
+        data: { id: this.invoice.order_id },
+        success: response => {
+          this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
+          this.$emit('close')
+          this.$router.push({ name: 'orders' })
+        },
+        fail: e => {
+          console.log(e)
+          this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
+        }
+      })
+    },
+    async fix () {
+      await orderAPI.fix({
+        data: { id: this.invoice.order_id },
+        success: response => {
+          console.log(response)
+          this.$emit('close')
+          this.$toasted.success(this.$i18n.t('orders.FIX_SUCCESS'))
+        },
+        fail: e => this.$toasted.error(this.$i18n.t('orders.FIX_ERROR'))
+      })
+    }
   }
 }
 </script>

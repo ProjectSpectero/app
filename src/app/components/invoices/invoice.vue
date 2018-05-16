@@ -3,12 +3,14 @@
     <template v-if="!error">
       <div v-if="invoice">
         <top title="View Invoice">
-          <router-link :to="{ name: 'invoices' }" class="button">Back to Invoices</router-link>
-          <button v-if="invoice.status === 'UNPAID' && canShowDueAmount" @click.stop="showPaymentModal" class="button button-success">{{ $i18n.t('misc.PAY_NOW') }}</button>
+          <router-link :to="{ name: 'invoices' }" class="button">
+            Back to Invoices
+          </router-link>
+          <button v-if="invoice.status === 'UNPAID' && canShowDueAmount" @click.stop="verify" class="button button-success">{{ $i18n.t('misc.PAY_NOW') }}</button>
         </top>
         <div v-if="!loading">
           <div v-if="invoice.status === 'UNPAID' && canShowDueAmount">
-            <outstanding :due="due" :invoice="invoice"></outstanding>
+            <outstanding :due="due" :invoice="invoice" @pay="verify"></outstanding>
           </div>
 
           <div class="invoice">
@@ -305,21 +307,22 @@ export default {
       })
     },
     async showPaymentModal () {
+      this.$modal.show(paymentModal, {
+        invoice: this.invoice,
+        due: this.due
+      }, {
+        height: 'auto'
+      })
+    },
+    async verify () {
       await orderAPI.verify({
         data: { id: this.invoice.order_id },
         success: response => {
-          console.log(response)
-
-          this.$modal.show(paymentModal, {
-            invoice: this.invoice,
-            due: this.due
-          }, {
-            height: 'auto'
-          })
+          this.showPaymentModal()
         },
-        fail: error => {
-          console.log(error)
+        fail: async error => {
           if (typeof error.errors === 'object') {
+            // Open error modal
             this.$modal.show(processingErrorsModal, {
               invoice: this.invoice,
               errorBag: error.errors

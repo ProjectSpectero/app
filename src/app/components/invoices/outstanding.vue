@@ -9,7 +9,7 @@
         Please pay before the due date to avoid any late penalties.
       </p>
 
-      <button @click.stop="showPaymentModal" class="button button-info">
+      <button @click.stop="pay" class="button button-info">
         {{ $i18n.t('misc.PAY_NOW') }}
       </button>
     </div>
@@ -25,13 +25,8 @@ export default {
     due: Object
   },
   methods: {
-    showPaymentModal () {
-      this.$modal.show(paymentModal, {
-        invoice: this.invoice,
-        due: this.due
-      }, {
-        height: 'auto'
-      })
+    pay () {
+      this.$emit('pay')
     }
   },
   components: {
