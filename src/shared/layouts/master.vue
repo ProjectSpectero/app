@@ -25,7 +25,6 @@ export default {
 }
 .content {
   height: 100vh;
-  padding: $pad;
   overflow: auto;
   flex: 1;
   padding-bottom: 0;

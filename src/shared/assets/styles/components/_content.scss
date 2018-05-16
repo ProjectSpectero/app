@@ -6,7 +6,6 @@
   .info-box {
     flex: 1;
     margin-right: $pad;
-    border-right: 1px solid $color-border;
 
     &:last-child {
       margin-right: 0;
@@ -18,7 +17,6 @@
     margin-bottom: 4px;
     font-size: 13px;
     line-height: 100%;
-    font-weight: $font-semi;
     text-transform: uppercase;
     color: $color-light;
   }
@@ -36,7 +34,6 @@
 
   h1 {
     margin-bottom: 12px;
-    font-weight: $font-semi;
   }
   .big-icon {
     margin-bottom: 24px;

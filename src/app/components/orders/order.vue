@@ -2,29 +2,43 @@
   <div>
     <template v-if="!error">
       <div v-if="order">
-        <top title="Order Details">
-          <router-link class="button" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
-            {{ $i18n.t('orders.VIEW_INVOICE') }}
+        <top title="Order Details" :subtitle="'Order Number: ' + order.id.toString().padStart(5, '0')">
+          <router-link v-if="!loading && order.status === 'ACTIVE'" class="button button-info" :to="{ name: 'resources', params: { id: order.id } }">
+            <span class="icon-package"></span> {{ $i18n.t('orders.VIEW_RESOURCES') }}
           </router-link>
 
-          <template v-if="order.status !== 'CANCELLED'">
-            <button @click.stop="cancel(order.id)" class="button">
-              {{ $i18n.t('misc.CANCEL') }}
-            </button>
-
-            <div class="inline" v-if="order.last_invoice && order.last_invoice.status === 'UNPAID'">
-              <router-link class="button button-success" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
-                {{ $i18n.t('misc.PAY_NOW') }}
+          <dropdown>
+            <template slot="btn">
+              <button class="button">Actions</button>
+            </template>
+            <template slot="body">
+              <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">
+                <span class="icon-tag"></span> {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
               </router-link>
-            </div>
-          </template>
-        </top>
-        <div v-if="!loading" class="order">
-          <div class="container">
+
+              <template v-if="order.status !== 'CANCELLED'">
+                <router-link v-if="order.last_invoice && order.last_invoice.status === 'UNPAID'" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
+                  <span class="icon-dollar-sign"></span> {{ $i18n.t('misc.PAY_NOW') }}
+                </router-link>
+                <router-link v-if="!loading && order.status === 'ACTIVE'" :to="{ name: 'resources', params: { id: order.id } }">
+                  <span class="icon-package"></span> {{ $i18n.t('orders.VIEW_RESOURCES') }}
+                </router-link>
+                <a @click.stop="cancel(order.id)" class="danger">
+                  <span class="icon-x-circle"></span> {{ $i18n.t('misc.CANCEL') }} {{ $i18n.t('misc.ORDER') }}
+                </a>
+              </template>
+            </template>
+          </dropdown>
+
+          <div v-if="!loading" slot="sub" class="sub">
             <div class="col-info">
               <div class="info-box">
-                <h5>{{ $i18n.t('orders.REFERENCE_NUM') }}</h5>
-                <p>{{ order.id }}</p>
+                <h5>{{ $i18n.t('misc.ORDER_DATE') }}</h5>
+                <p>{{ order.created_at | moment('MMM D, YYYY') }}</p>
+              </div>
+              <div class="info-box">
+                <h5>{{ $i18n.t('misc.TERM') }}</h5>
+                <p>{{ $i18n.t('market.TERM.' + ((order.term === 365) ? 'YEARLY' : 'MONTHLY')) }}</p>
               </div>
               <div class="info-box">
                 <h5>{{ $i18n.t('misc.STATUS') }}</h5>
@@ -33,8 +47,8 @@
                 </div>
               </div>
               <div class="info-box">
-                <h5>{{ $i18n.t('misc.TOTAL') }}</h5>
-                <p>{{ order.last_invoice.amount | currency }} {{ order.last_invoice.currency }}</p>
+                <h5>{{ $i18n.t('misc.ORDER') }} {{ $i18n.t('misc.TOTAL') }}</h5>
+                <p>{{ order.last_invoice.amount | currency }}</p>
               </div>
               <div class="info-box">
                 <h5>{{ $i18n.t('misc.NEXT_DUE_DATE') }}</h5>
@@ -43,16 +57,27 @@
                   {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
                 </router-link>
               </div>
-              <div v-if="order.status === 'ACTIVE'" class="info-box">
-                <h5>{{ $i18n.t('misc.RESOURCES') }}</h5>
-                <router-link class="button" :to="{ name: 'resources', params: { id: order.id } }">
-                  {{ $i18n.t('orders.VIEW_ALL_RESOURCES') }}
-                </router-link>
-              </div>
             </div>
           </div>
+        </top>
+        <div v-if="!loading">
 
-          <items @updateEngagements="fetchOrder" :items="order.line_items"></items>
+          <outstanding :due="{ amount: 432, currency: 'USD' }" :invoice="{ id: 123 }"></outstanding>
+
+          <div class="container">
+            <section class="col-7">
+              <h3>Items in this order</h3>
+              <div class="filter-bar">
+                <sort-dropdown :buttonText="'Sort Items By'" :sortFields="sort.fields" @sortUpdate="sortUpdate"></sort-dropdown>
+              </div>
+              <order-item v-for="(item, index) in order.line_items" :key="index" :item="item" @sortItems="sortItems" />
+            </section>
+            <section class="section col-3">
+
+              <h3>Billing details</h3>
+
+            </section>
+          </div>
         </div>
       </div>
     </template>
@@ -63,16 +88,27 @@
 <script>
 import orderAPI from '@/app/api/order'
 import { mapGetters } from 'vuex'
-import items from './items'
+import Dropdown from 'bp-vuejs-dropdown'
+import orderItem from './orderItem'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
+import sortDropdown from '@/shared/components/sortDropdown'
+import outstanding from '../invoices/outstanding'
 
 export default {
   data () {
     return {
       order: null,
       errorItem: 'order',
-      errorCode: 404
+      errorCode: 404,
+      sort: {
+        fields: {
+          'id': 'ID',
+          'status': 'Status',
+          'type': 'Type',
+          'sync_status': 'Sync Status'
+        }
+      }
     }
   },
   created () {
@@ -92,6 +128,9 @@ export default {
         success: response => {
           if (response.data.result) {
             this.order = response.data.result
+
+            this.sortItems()
+
             this.loading = false
             this.error = false
           } else {
@@ -117,12 +156,31 @@ export default {
           this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
         }
       })
+    },
+    sortUpdate (data) {
+      this.sort.col = data.col
+      this.sort.order = data.order
+
+      this.sortItems()
+    },
+    sortItems () {
+      // this.order.line_items.sort((a, b) => {
+      //   if (this.sort.order === 'asc') {
+      //     return b[this.sort.col] - a[this.sort.col]
+      //   } else {
+      //     return a[this.sort.col] - b[this.sort.col]
+      //   }
+      // })
+      this.order.line_items = _.orderBy(this.order.line_items, this.sort.col, this.sort.order)
     }
   },
   components: {
     top,
     error,
-    items
+    Dropdown,
+    sortDropdown,
+    orderItem,
+    outstanding
   },
   metaInfo: {
     title: 'Order Details'

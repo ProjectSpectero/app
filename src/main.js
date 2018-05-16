@@ -15,6 +15,7 @@ import { ClientTable } from 'vue-tables-2'
 import VueCurrencyFilter from 'vue-currency-filter'
 import VueClipboard from 'vue-clipboard2'
 import VueFloatLabel from 'vue-float-label'
+import VueLodash from 'vue-lodash'
 
 import globalMixin from '@/shared/mixins/global'
 
@@ -29,6 +30,7 @@ Vue.use(ClientTable)
 Vue.use(VueMoment)
 Vue.use(VueClipboard)
 Vue.use(VueFloatLabel)
+Vue.use(VueLodash)
 
 Vue.use(VueModal, {
   dynamic: true

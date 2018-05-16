@@ -1,9 +1,12 @@
 <template>
   <div>
-    <top :title="$i18n.t('misc.DASHBOARD')"></top>
-    <div class="orders">
-      <h2>{{ $i18n.t('misc.ORDERS') }}</h2>
-      <orders-list :pagination="pagination" :tableData="tableData"></orders-list>
+    <top :title="$i18n.t('misc.DASHBOARD')">
+    </top>
+    <div class="dashboard">
+      <div class="dashboard-component">
+        <h2>{{ $i18n.t('misc.ORDERS') }}</h2>
+        <orders-list :pagination="pagination" :tableData="tableData"></orders-list>
+      </div>
     </div>
   </div>
 </template>
@@ -49,7 +52,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.orders {
-  width: 50%;
+.dashboard {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+.dashboard-component {
+  flex-grow: 1;
+  flex-basis: 0;
+  margin: 10px;
+
+  padding: $pad;
+  background: $white;
+  border-radius: 4px;
+  border: 1px solid $color-border;
+
+  h2 {
+    font-size: 20px;
+  }
 }
 </style>

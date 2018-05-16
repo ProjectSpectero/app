@@ -74,7 +74,6 @@ export default {
 
   h3 {
     margin-bottom: 12px;
-    font-weight: $font-semi;
   }
   .headline-msg {
     margin-bottom: 12px;

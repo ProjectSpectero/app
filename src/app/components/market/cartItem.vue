@@ -86,7 +86,6 @@ export default {
     font-weight: $font-semi;
   }
   .type {
-    margin-bottom: 0;
     font-size: 100%;
     font-weight: $font-regular;
   }

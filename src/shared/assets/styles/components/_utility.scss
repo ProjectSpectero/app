@@ -86,3 +86,23 @@ $container-sizes-fixed: (600, 800, 1000);
     max-width: #{$size}px;
   }
 }
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+$neat-grid: (
+  columns: 10,
+  gutter: $pad
+);
+
+// Bourbon columns
+@for $i from 1 through 10 {
+  .col-#{$i} {
+    @include grid-column($i);
+  }
+}

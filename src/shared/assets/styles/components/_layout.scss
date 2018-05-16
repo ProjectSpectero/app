@@ -1,7 +1,12 @@
 .container {
+  @include grid-container;
   display: block;
-  margin-bottom: $pad;
-  background: $white;
+  margin: $pad 0;
+
+  .section {
+    padding: $pad;
+    background: $white;
+  }
 }
 
 .boxed {

@@ -73,9 +73,6 @@ export default {
   border: 1px solid $color-border;
   border-radius: 4px;
 
-  h3 {
-    font-weight: $font-semi;
-  }
   p.status {
     margin-bottom: 12px;
   }

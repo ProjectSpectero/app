@@ -113,7 +113,6 @@ h5 {
   margin-bottom: 12px;
   color: $color-light;
   font-size: 14px;
-  font-weight: $font-bold;
   text-transform: uppercase;
 }
 ol {

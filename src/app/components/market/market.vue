@@ -17,7 +17,7 @@
 
         <div class="cart" v-if="totals.total > 0">
           <div class="info">
-            <h4><span class="icon icon-shopping-cart"></span> {{ $i18n.t('misc.CART') }}: {{ totals.total | currency }} USD</h4>
+            <h4 class="mb-0"><span class="icon icon-shopping-cart"></span> {{ $i18n.t('misc.CART') }}: {{ totals.total | currency }} USD</h4>
           </div>
           <div class="actions">
             <router-link :to="{ name: 'cart' }" class="button button-info">
@@ -187,8 +187,6 @@ export default {
 
   h4 {
     font-size: 120%;
-    font-weight: $font-semi;
-    margin-bottom: 0;
   }
   .icon {
     margin-right: 6px;

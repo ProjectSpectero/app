@@ -17,7 +17,7 @@
         </ul>
       </section>
       <section class="nav-section">
-        <h5>{{ $i18n.t('misc.DAEMON') }}</h5>
+        <h5 class="mb-0">{{ $i18n.t('misc.DAEMON') }}</h5>
         <ul>
           <li>
             <router-link :to="{ name: 'nodes' }">
@@ -34,7 +34,7 @@
         </ul>
       </section>
       <section class="nav-section">
-        <h5>{{ $i18n.t('misc.MARKET') }}</h5>
+        <h5 class="mb-0">{{ $i18n.t('misc.MARKET') }}</h5>
         <ul>
           <li>
             <router-link :to="{ name: 'market' }">
@@ -58,7 +58,7 @@
         </ul>
       </section>
       <section class="nav-section">
-        <h5>{{ $i18n.t('misc.ACCOUNT') }}</h5>
+        <h5 class="mb-0">{{ $i18n.t('misc.ACCOUNT') }}</h5>
         <ul>
           <li>
             <router-link :to="{ name: 'settings' }">
@@ -81,7 +81,7 @@
         </ul>
       </section>
       <section class="nav-section">
-        <h5>{{ $i18n.t('misc.HELP') }}</h5>
+        <h5 class="mb-0">{{ $i18n.t('misc.HELP') }}</h5>
         <ul>
           <li>
             <a :href="supportLink ? supportLink : '#'" target="_blank">
@@ -160,7 +160,6 @@ export default {
 h5 {
   padding-left: $pad;
   padding-bottom: 8px;
-  margin-bottom: 0;
   text-transform: uppercase;
 }
 .menu-logo {

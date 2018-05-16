@@ -62,7 +62,16 @@
       <div class="message message-success">Success message.</div>
       <div class="message message-warning">Warning message.</div>
       <div class="message message-error">Error message.</div>
-      <div class="message message-brand no-bottom-margin">Brand message.</div>
+      <div class="message message-brand mb-0">Brand message.</div>
+    </section>
+    <section>
+      <h2>Headers</h2>
+      <h1>H1 Title</h1>
+      <h2>H2 Title</h2>
+      <h3>H3 Title</h3>
+      <h4>H4 Title</h4>
+      <h5>H5 Title</h5>
+      <h6>H6 Title</h6>
     </section>
     <section>
       <h2>Inputs</h2>
@@ -101,10 +110,5 @@ section {
   background: $white;
   border-radius: 4px;
   border: 1px solid $color-border;
-
-  h2 {
-    display: block;
-    margin-bottom: 20px;
-  }
 }
 </style>

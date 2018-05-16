@@ -1,7 +1,7 @@
 <template>
   <div v-if="tableData && !dataLoading">
     <header>
-      <h2>{{ selectedGroupInformation.friendly_name }}</h2>
+      <h2 class="mb-0">{{ selectedGroupInformation.friendly_name }}</h2>
       <div v-if="selectedGroupInformation.id !== 0" class="actions">
         <button @click.stop="removeGroup" class="button button-sm button-danger button-icon">
           <span class="icon-trash-2"></span>
@@ -161,11 +161,6 @@ header {
   margin-bottom: $pad;
   padding-bottom: $pad;
   border-bottom: 1px solid $color-border;
-
-  h2 {
-    margin-bottom: 0;
-    font-weight: $font-semi;
-  }
 }
 
 .nodes {

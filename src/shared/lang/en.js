@@ -9,6 +9,7 @@ module.exports = {
     NODE_GROUP: 'Node group',
     NODES: 'Nodes',
     STATUS: 'Status',
+    ORDER: 'Order',
     ROLES: 'Roles',
     DAEMON: 'Daemon',
     DOWNLOADS: 'Downloads',
@@ -66,7 +67,10 @@ module.exports = {
     PLEASE_WAIT: 'Please Wait',
     GO_TO_DASHBOARD: 'Go to Dashboard',
     NO_CANCEL: 'No, Cancel',
-    EMPTY_RESULTS: 'You don\'t have any {type} yet.'
+    EMPTY_RESULTS: 'You don\'t have any {type} yet.',
+    ORDER_DATE: 'Order Date',
+    TERM: 'Term',
+    ITEM: 'Item'
   },
 
   errors: {
@@ -194,9 +198,8 @@ module.exports = {
       PENDING_SYNC: 'Pending',
       SYNCED: 'Done'
     },
-    REFERENCE_NUM: 'Reference Number',
     VIEW_INVOICE: 'View invoice',
-    VIEW_ALL_RESOURCES: 'List all resources',
+    VIEW_RESOURCES: 'View Resources',
     VIEW_LATEST_INVOICE: 'View Latest Invoice',
     NOT_ENABLED: '{type} is not enabled for this node.',
     USE_ACCESSOR: 'Please use the login data as shown in your accessor.',
@@ -243,10 +246,11 @@ module.exports = {
     ORDERS_EXIST: 'Unable to remove: this node has active orders!',
     GROUP_PRICE_AVAILABILITY: 'Note: Price will only be used for <strong>{model1}</strong> and <strong>{model2}</strong> market models.',
     DELETE_ENGAGEMENT_CONFIRM_DIALOG: 'Are you sure you want to cancel this engagement?',
-    ENGAGEMENT_DELETE_SUCCESS: 'Engagement canceled!',
+    ENGAGEMENT_DELETE_SUCCESS: 'Engagement cancelled.',
     ORDER_NOT_ACTIVE_YET: 'Unable to cancel engagement: This order isn\'t active yet!',
     GO_TO_NODE: 'Go to node',
     GO_TO_NODE_GROUP: 'Go to node group',
+    RESOURCE_NOT_FOUND: 'Cannot find associated node.',
     STATUS: {
       UNCONFIRMED: 'Unconfirmed',
       CONFIRMED: 'Confirmed',

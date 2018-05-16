@@ -188,8 +188,6 @@ export default {
     showRegenerateAccessorModal (orderId) {
       this.$modal.show('regenerateAccessorModal', {
         orderId: orderId
-      }, {
-        height: 'auto'
       })
     },
     async fetchAccessor () {

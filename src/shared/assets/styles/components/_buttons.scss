@@ -124,4 +124,11 @@
       cursor: progress;
     }
   }
+
+  // Sort buttons
+  &.button-sort {
+    color: $color-primary;
+    background: #fff;
+    border: 1px solid $color-border;
+  }
 }

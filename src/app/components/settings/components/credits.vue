@@ -26,7 +26,6 @@ export default {
 
   h3 {
     margin-bottom: 12px;
-    font-weight: $font-semi;
   }
   .button {
     margin-top: 12px;

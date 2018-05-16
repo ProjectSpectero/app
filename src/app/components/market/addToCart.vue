@@ -171,9 +171,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h3 {
-  font-weight: $font-semi;
-}
 .actions {
   margin-top: $pad;
 }
@@ -195,7 +192,6 @@ h3 {
   h5 {
     font-size: 120%;
     line-height: 100%;
-    font-weight: $font-semi;
     margin-bottom: 16px;
 
     [class^="icon-"] {

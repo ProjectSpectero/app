@@ -16,14 +16,11 @@
 .pad {
   padding: $pad;
 }
-.max-width {
+.full-width, .max-width {
   width: 100%;
 }
 .pad-margin {
   margin: $pad;
-}
-.no-bottom-margin {
-  margin-bottom: 0 !important;
 }
 .text-left {
   text-align: left;
