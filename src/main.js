@@ -15,7 +15,6 @@ import { ClientTable } from 'vue-tables-2'
 import VueCurrencyFilter from 'vue-currency-filter'
 import VueClipboard from 'vue-clipboard2'
 import VueFloatLabel from 'vue-float-label'
-import VueLodash from 'vue-lodash'
 import VueTooltip from 'vue-directive-tooltip'
 
 import globalMixin from '@/shared/mixins/global'
@@ -32,8 +31,6 @@ Vue.use(VueMoment)
 Vue.use(VueClipboard)
 Vue.use(VueFloatLabel)
 Vue.use(VueTooltip)
-
-Vue.use(VueLodash)
 
 Vue.use(VueTooltip, {
   delay: 500,

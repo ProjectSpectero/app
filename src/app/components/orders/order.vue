@@ -107,7 +107,9 @@ export default {
           'status': 'Status',
           'type': 'Type',
           'sync_status': 'Sync Status'
-        }
+        },
+        order: 'desc',
+        col: 'id'
       }
     }
   },
@@ -164,14 +166,11 @@ export default {
       this.sortItems()
     },
     sortItems () {
-      // this.order.line_items.sort((a, b) => {
-      //   if (this.sort.order === 'asc') {
-      //     return b[this.sort.col] - a[this.sort.col]
-      //   } else {
-      //     return a[this.sort.col] - b[this.sort.col]
-      //   }
-      // })
-      this.order.line_items = _.orderBy(this.order.line_items, this.sort.col, this.sort.order)
+      return this.order.line_items.sort((a, b) => {
+        const parsedA = a[this.sort.col].toString().toUpperCase()
+        const parsedB = b[this.sort.col].toString().toUpperCase()
+        return (this.sort.order === 'asc') ? (parsedA < parsedB) : (parsedA > parsedB)
+      })
     }
   },
   components: {
