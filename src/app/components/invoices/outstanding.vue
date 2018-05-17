@@ -9,28 +9,23 @@
         Please pay before the due date to avoid any late penalties.
       </p>
 
-      <button @click.stop="pay" class="button button-info">
-        {{ $i18n.t('misc.PAY_NOW') }}
-      </button>
+      <pay :invoice="invoice" :due="due" classes="button button-info"></pay>
     </div>
   </div>
 </template>
 
 <script>
 import paymentModal from '../payments/paymentModal'
+import pay from './pay'
 
 export default {
   props: {
     invoice: Object,
     due: Object
   },
-  methods: {
-    pay () {
-      this.$emit('pay')
-    }
-  },
   components: {
-    paymentModal
+    paymentModal,
+    pay
   }
 }
 </script>

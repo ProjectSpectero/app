@@ -186,7 +186,7 @@ module.exports = {
     },
     UNABLE_TO_PROCESS: 'We were unable to process some of the resources of your order.',
     RESOURCE_ERROR: {
-      RESOURCE_NOT_FOUND: 'Resource not found',
+      RESOURCE_NOT_FOUND: 'Resource no longer available',
       RESOURCE_SOLD_OUT: 'Resource sold out'
     }
   },

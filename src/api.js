@@ -44,17 +44,16 @@ async function API (project, method, path, data, success, failed) {
       return { error: false, data: response }
     }
   } catch (e) {
-    Vue.prototype.$Progress.finish()
-
-    let error = e.response
+    console.log(e)
+    const errors = (e.response !== undefined && e.response.data !== undefined && e.response.data.errors !== undefined) ? e.response.data.errors : null
+    const status = (e.response !== undefined && e.response.status !== undefined) ? e.response.status : null
+    const err = new Err(errors, status)
 
     // Remove authorization cookie if 401 returned by any API call.
-    if (error.status === 401 && getCookie(project.cookieName) !== null) {
+    if (status === 401 && getCookie(project.cookieName) !== null) {
       removeCookie(project.cookieName)
       router.push({ name: 'login', query: { redirect: location.pathname + location.search } })
     }
-
-    let err = new Err(error.data.errors, error.status)
 
     // Main api callback
     if (typeof failed === 'function') {
@@ -62,11 +61,13 @@ async function API (project, method, path, data, success, failed) {
     }
 
     // Sub-wrapper callback
-    if (typeof data.fail === 'function') {
+    if (data !== undefined && typeof data.fail === 'function') {
       data.fail(err)
     }
 
-    return { error: true, data: err, status: error.status }
+    Vue.prototype.$Progress.finish()
+
+    return { error: true, data: err, status: status }
   }
 }
 

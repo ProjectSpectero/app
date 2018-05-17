@@ -6,11 +6,14 @@
           <router-link :to="{ name: 'invoices' }" class="button">
             Back to Invoices
           </router-link>
-          <button v-if="invoice.status === 'UNPAID' && canShowDueAmount" @click.stop="verify" class="button button-success">{{ $i18n.t('misc.PAY_NOW') }}</button>
+
+          <template v-if="invoice.status === 'UNPAID' && canShowDueAmount">
+            <pay :invoice="invoice" :due="due" classes="button button-success"></pay>
+          </template>
         </top>
         <div v-if="!loading">
           <div v-if="invoice.status === 'UNPAID' && canShowDueAmount">
-            <outstanding :due="due" :invoice="invoice" @pay="verify"></outstanding>
+            <outstanding :due="due" :invoice="invoice"></outstanding>
           </div>
 
           <div class="invoice">
@@ -147,8 +150,7 @@ import invoiceAPI from '@/app/api/invoice'
 import outstanding from './outstanding'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
-import paymentModal from '../payments/paymentModal'
-import processingErrorsModal from './processingErrorsModal'
+import pay from './pay'
 
 export default {
   metaInfo: {
@@ -305,43 +307,13 @@ export default {
           this.error = true
         }
       })
-    },
-    async showPaymentModal () {
-      this.$modal.show(paymentModal, {
-        invoice: this.invoice,
-        due: this.due
-      }, {
-        height: 'auto'
-      })
-    },
-    async verify () {
-      await orderAPI.verify({
-        data: { id: this.invoice.order_id },
-        success: response => {
-          this.showPaymentModal()
-        },
-        fail: async error => {
-          if (typeof error.errors === 'object') {
-            // Open error modal
-            this.$modal.show(processingErrorsModal, {
-              invoice: this.invoice,
-              errorBag: error.errors
-            }, {
-              height: 'auto'
-            })
-          } else {
-            this.$toasted.error(this.errorAPI(error, 'orders'))
-          }
-        }
-      })
     }
   },
   components: {
     top,
     error,
     outstanding,
-    paymentModal,
-    processingErrorsModal
+    pay
   }
 }
 </script>

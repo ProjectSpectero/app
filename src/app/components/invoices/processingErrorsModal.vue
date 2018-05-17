@@ -46,7 +46,7 @@ export default {
       await orderAPI.fix({
         data: { id: this.invoice.order_id },
         success: response => {
-          console.log(response)
+          this.fixed()
           this.$emit('close')
           this.$toasted.success(this.$i18n.t('orders.FIX_SUCCESS'))
         },
