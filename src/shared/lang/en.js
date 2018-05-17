@@ -185,6 +185,7 @@ module.exports = {
       UNPAID: 'Unpaid invoices'
     },
     UNABLE_TO_PROCESS: 'We were unable to process some of the resources of your order.',
+    RESOURCES_MISMATCH: 'Your current order has mismatching resources. Please contact us and provide your order ID ({order}) so that we can solve the problem.',
     RESOURCE_ERROR: {
       RESOURCE_NOT_FOUND: 'Resource no longer available',
       RESOURCE_SOLD_OUT: 'Resource sold out'

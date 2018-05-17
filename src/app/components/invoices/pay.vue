@@ -17,6 +17,8 @@ export default {
   },
   methods: {
     async showPaymentModal () {
+      this.$emit('updateInvoice')
+
       this.$modal.show(paymentModal, {
         invoice: this.invoice,
         due: this.due
@@ -32,13 +34,12 @@ export default {
         },
         fail: async error => {
           if (typeof error.errors === 'object') {
-            // Open error modal
             this.$modal.show(processingErrorsModal, {
               invoice: this.invoice,
               errorBag: error.errors,
+              status: error.status,
               fixed: () => {
-                console.log('here')
-                // this.showPaymentModal()
+                this.showPaymentModal()
               }
             }, {
               height: 'auto'

@@ -5,16 +5,21 @@
       <button @click="$emit('close')" class="modal-close"></button>
     </div>
     <div class="modal-content">
-      <p>{{ $i18n.t('invoices.UNABLE_TO_PROCESS') }}</p>
+      <h4>{{ $i18n.t('invoices.UNABLE_TO_PROCESS') }}</h4>
 
-      <ul>
-        <li v-for="(error, i) in errorBag" :key="i">
-          {{ $i18n.t('misc.RESOURCE')}} #{{ error.id }}: {{ $i18n.t(`invoices.RESOURCE_ERROR.${error.reason}`) }}
-        </li>
-      </ul>
+      <template v-if="status !== 400">
+        <ul>
+          <li v-for="(error, i) in errorBag" :key="i">
+            {{ $i18n.t('misc.RESOURCE')}} #{{ error.id }}: {{ $i18n.t(`invoices.RESOURCE_ERROR.${error.reason}`) }}
+          </li>
+        </ul>
 
-      <button @click="fix">{{ $i18n.t('orders.FIX')}}</button>
-      <button @click="cancel">{{ $i18n.t('orders.CANCEL')}}</button>
+        <button @click="fix">{{ $i18n.t('orders.FIX')}}</button>
+        <button @click="cancel">{{ $i18n.t('orders.CANCEL')}}</button>
+      </template>
+      <template v-else>
+        {{ $i18n.t('invoices.RESOURCES_MISMATCH', { order: invoice.order_id }) }}
+      </template>
     </div>
   </div>
 </template>
@@ -25,7 +30,9 @@ import orderAPI from '@/app/api/order'
 export default {
   props: {
     invoice: Object,
-    errorBag: Object
+    errorBag: Object,
+    status: Number,
+    fixed: Function
   },
   methods: {
     async cancel () {
@@ -47,8 +54,8 @@ export default {
         data: { id: this.invoice.order_id },
         success: response => {
           this.fixed()
-          this.$emit('close')
           this.$toasted.success(this.$i18n.t('orders.FIX_SUCCESS'))
+          this.$emit('close')
         },
         fail: e => this.$toasted.error(this.$i18n.t('orders.FIX_ERROR'))
       })

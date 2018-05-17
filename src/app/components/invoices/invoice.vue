@@ -8,12 +8,12 @@
           </router-link>
 
           <template v-if="invoice.status === 'UNPAID' && canShowDueAmount">
-            <pay :invoice="invoice" :due="due" classes="button button-success"></pay>
+            <pay :invoice="invoice" :due="due" classes="button button-success" @updateInvoice="fetchInvoice"></pay>
           </template>
         </top>
         <div v-if="!loading">
           <div v-if="invoice.status === 'UNPAID' && canShowDueAmount">
-            <outstanding :due="due" :invoice="invoice"></outstanding>
+            <outstanding :due="due" :invoice="invoice" @updateInvoice="fetchInvoice"></outstanding>
           </div>
 
           <div class="invoice">

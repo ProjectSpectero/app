@@ -9,7 +9,7 @@
         Please pay before the due date to avoid any late penalties.
       </p>
 
-      <pay :invoice="invoice" :due="due" classes="button button-info"></pay>
+      <pay :invoice="invoice" :due="due" classes="button button-info" @updateInvoice="updateInvoice"></pay>
     </div>
   </div>
 </template>
@@ -22,6 +22,11 @@ export default {
   props: {
     invoice: Object,
     due: Object
+  },
+  methods: {
+    updateInvoice () {
+      this.$emit('updateInvoice')
+    }
   },
   components: {
     paymentModal,
