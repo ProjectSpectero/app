@@ -117,7 +117,8 @@ module.exports = {
     ROLE_ESCALATION_FAILED: 'You don\'t have permission to add users of this role level.',
     CLOUD_USER_ALTER_NOT_ALLOWED: 'You can\'t alter this cloud user.',
     ENDPOINT_NOT_FOUND: 'Endpoint not found or unreachable',
-    RELEASES_FETCH_FAILED: 'Unable to load release data, please try again later.'
+    RELEASES_FETCH_FAILED: 'Unable to load release data, please try again later.',
+    MATRICES_FETCH_FAILED: 'Unable to load compatibility matrices data, please try again later.'
   },
 
   payments: {

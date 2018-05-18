@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="tableData">
     <top :title="$i18n.t('misc.DASHBOARD')">
     </top>
     <div class="dashboard">
@@ -24,7 +24,8 @@ export default {
     }
   },
   created () {
-    this.fetchOrders()
+    this.$router.push({ name: 'nodes' })
+    // this.fetchOrders()
   },
   methods: {
     async fetchOrders () {

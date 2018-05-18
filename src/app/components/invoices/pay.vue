@@ -34,6 +34,7 @@ export default {
         },
         fail: async error => {
           if (typeof error.errors === 'object') {
+            console.log(this.invoice)
             this.$modal.show(processingErrorsModal, {
               invoice: this.invoice,
               errorBag: error.errors,

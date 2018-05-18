@@ -38,6 +38,26 @@
         </li>
       </ol>
     </section>
+    <section v-if="matrices">
+      <h5>Compatibility Matrices</h5>
+
+      <div v-for="(matrix, i) in matrices" :key="i">
+        <h4>{{ i }}</h4>
+
+        <div v-for="(os, j) in matrix" :key="j">
+          <strong>{{ j }}</strong>
+          <span v-if="os.tested !== undefined">{{ os.tested }}</span>
+          <div v-else>
+            <ul v-if="os.Distributions">
+              <li v-for="(distro, k) in os.Distributions" :key="k">
+                <strong>{{ k }}</strong>
+                <span v-if="distro.tested !== undefined">{{ distro.tested }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -46,9 +66,6 @@ import axios from 'axios'
 import top from '@/shared/components/top'
 
 export default {
-  components: {
-    top
-  },
   metaInfo: {
     title: 'Downloads'
   },
@@ -57,8 +74,13 @@ export default {
       loaded: false,
       latest: null,
       alt: null,
-      version: null
+      version: null,
+      matrices: null
     }
+  },
+  created () {
+    this.fetchDownloadInfo()
+    this.fetchMatrices()
   },
   methods: {
     async fetchDownloadInfo () {
@@ -82,14 +104,29 @@ export default {
           this.loaded = true
         }
       } catch (e) {
-        let error = e.response
+        console.error('Failed to fetch release data:', e.response)
         this.$toasted.error(this.$i18n.t(`errors.RELEASES_FETCH_FAILED`))
-        console.error('Failed to fetch release data:', error)
+      }
+    },
+    async fetchMatrices () {
+      try {
+        const response = await axios({
+          method: 'GET',
+          url: 'https://raw.githubusercontent.com/ProjectSpectero/daemon-installers/master/COMPATABILITY.json?token=AE5jEuqHUWJfiXnp0Vz1XUP9_SRY3WNXks5bCC-JwA%3D%3D',
+          timeout: 10000
+        })
+
+        if (response && response.data) {
+          this.matrices = response.data
+        }
+      } catch (e) {
+        console.error('Failed to fetch matrices data:', e.response)
+        this.$toasted.error(this.$i18n.t(`errors.MATRICES_FETCH_FAILED`))
       }
     }
   },
-  created () {
-    this.fetchDownloadInfo()
+  components: {
+    top
   }
 }
 </script>

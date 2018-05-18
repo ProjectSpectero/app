@@ -26,7 +26,7 @@ export default {
    * @param {Integer} id Order id.
    */
   fix (options) {
-    return api('GET', `/order/${options.data.id}/fix`, options)
+    return api('PUT', `/order/${options.data.id}/fix`, options)
   },
 
   /**
