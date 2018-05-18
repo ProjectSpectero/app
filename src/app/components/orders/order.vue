@@ -62,7 +62,7 @@
         </top>
         <div v-if="!loading">
 
-          <outstanding :due="{ amount: 432, currency: 'USD' }" :invoice="{ id: 123 }"></outstanding>
+          <alert-outstanding :due="{ amount: 432, currency: 'USD' }" :invoice="{ id: 123 }"></alert-outstanding>
 
           <div class="container">
             <section class="col-7">
@@ -93,7 +93,7 @@ import orderItem from './orderItem'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import sortDropdown from '@/shared/components/sortDropdown'
-import outstanding from '../invoices/outstanding'
+import alertOutstanding from '../invoices/alertOutstanding'
 
 export default {
   data () {
@@ -179,7 +179,7 @@ export default {
     Dropdown,
     sortDropdown,
     orderItem,
-    outstanding
+    alertOutstanding
   },
   metaInfo: {
     title: 'Order Details'

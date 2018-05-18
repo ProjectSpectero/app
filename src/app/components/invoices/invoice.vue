@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!loading">
     <template v-if="!error">
       <div v-if="invoice">
         <top title="View Invoice">
@@ -7,14 +7,17 @@
             Back to Invoices
           </router-link>
 
-          <template v-if="invoice.status === 'UNPAID' && canShowDueAmount">
+          <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
             <pay :invoice="invoice" :due="due" classes="button button-success" @updateInvoice="fetchInvoice"></pay>
           </template>
         </top>
-        <div v-if="!loading">
-          <div v-if="invoice.status === 'UNPAID' && canShowDueAmount">
-            <outstanding :due="due" :invoice="invoice" @updateInvoice="fetchInvoice"></outstanding>
-          </div>
+        <div>
+          <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
+            <alert-outstanding :due="due" :invoice="invoice" @updateInvoice="fetchInvoice"></alert-outstanding>
+          </template>
+          <template v-else-if="verified && verificationErrors">
+            <alert-processing :errorBag="verificationErrors" :invoice="invoice" @updateInvoice="fetchInvoice"></alert-processing>
+          </template>
 
           <div class="invoice">
             <div class="header">
@@ -147,7 +150,8 @@
 import { mapGetters, mapActions } from 'vuex'
 import orderAPI from '@/app/api/order'
 import invoiceAPI from '@/app/api/invoice'
-import outstanding from './outstanding'
+import alertProcessing from './alertProcessing'
+import alertOutstanding from './alertOutstanding'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import pay from './pay'
@@ -164,6 +168,8 @@ export default {
       engagement: null,
       due: 0,
       transactions: null,
+      verified: false,
+      verificationErrors: null,
       errorItem: 'invoice',
       errorCode: 404
     }
@@ -257,15 +263,16 @@ export default {
     },
     async fetchOrder () {
       await orderAPI.order({
-        data: {
-          id: this.invoice.order_id
-        },
+        data: { id: this.invoice.order_id },
         success: async response => {
           if (response.data.result) {
             this.valid = true
             this.loading = false
             this.error = false
             this.order = response.data.result
+
+            // Verify validity of this order (no expired / unavailable resources)
+            await this.verifyOrder()
           }
         },
         fail: (e) => {
@@ -307,12 +314,32 @@ export default {
           this.error = true
         }
       })
+    },
+    async verifyOrder () {
+      await orderAPI.verify({
+        data: { id: this.invoice.order_id },
+        success: response => {
+          this.verified = true
+          this.verificationErrors = null
+        },
+        fail: error => {
+          this.verified = true
+
+          if (typeof error.errors === 'object') {
+            this.verificationErrors = error.errors
+            console.log('changed this.verificationErrors', this.verificationErrors)
+          } else {
+            this.$toasted.error(this.errorAPI(error, 'orders'))
+          }
+        }
+      })
     }
   },
   components: {
     top,
     error,
-    outstanding,
+    alertOutstanding,
+    alertProcessing,
     pay
   }
 }
