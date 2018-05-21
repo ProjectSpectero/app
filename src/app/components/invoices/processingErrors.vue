@@ -3,7 +3,7 @@
     <h4>{{ $i18n.t('invoices.UNABLE_TO_PROCESS') }}</h4>
 
     <template v-if="status !== 400">
-      <ul>
+      <ul v-if="errorBag && errorBag[0]">
         <li v-for="(error, i) in errorBag" :key="i">
           {{ $i18n.t('misc.RESOURCE')}} #{{ error.id }}: {{ $i18n.t(`invoices.RESOURCE_ERROR.${error.reason}`) }}
         </li>
@@ -33,7 +33,6 @@ export default {
         data: { id: this.invoice.order_id },
         success: response => {
           this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
-          this.$emit('close')
           this.$router.push({ name: 'orders' })
         },
         fail: e => {

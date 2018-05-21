@@ -61,8 +61,12 @@
           </div>
         </top>
         <div v-if="!loading">
-
-          <alert-outstanding :due="{ amount: 432, currency: 'USD' }" :invoice="{ id: 123 }"></alert-outstanding>
+          <template v-if="verified && !verificationErrors && order.last_invoice.status === 'UNPAID'">
+            <alert-outstanding :due="due" :invoice="order.last_invoice" @update="fetchOrder"></alert-outstanding>
+          </template>
+          <template v-else-if="verified && verificationErrors && order.last_invoice.status !== 'PAID' && order.last_invoice.status !== 'CANCELLED'">
+            <alert-processing :errorBag="verificationErrors" :invoice="order.last_invoice" @update="fetchOrder"></alert-processing>
+          </template>
 
           <div class="container">
             <section class="col-7">
@@ -87,20 +91,25 @@
 
 <script>
 import orderAPI from '@/app/api/order'
+import invoiceAPI from '@/app/api/invoice'
 import { mapGetters } from 'vuex'
 import Dropdown from 'bp-vuejs-dropdown'
 import orderItem from './orderItem'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import sortDropdown from '@/shared/components/sortDropdown'
+import alertProcessing from '../invoices/alertProcessing'
 import alertOutstanding from '../invoices/alertOutstanding'
 
 export default {
   data () {
     return {
       order: null,
+      due: null,
       errorItem: 'order',
       errorCode: 404,
+      verified: false,
+      verificationErrors: null,
       sort: {
         fields: {
           'id': 'ID',
@@ -127,16 +136,36 @@ export default {
         data: {
           id: this.$route.params.id
         },
-        success: response => {
+        success: async response => {
           if (response.data.result) {
             this.order = response.data.result
-
             this.sortItems()
+
+            // Fetch due for last invoice (comes with the order object)
+            await this.fetchDue()
+
+            // Verifies the order for invalid resources
+            await this.verify()
 
             this.loading = false
             this.error = false
           } else {
             this.error = true
+          }
+        },
+        fail: e => {
+          console.log(e)
+          this.error = true
+        }
+      })
+    },
+    async fetchDue () {
+      await invoiceAPI.due({
+        data: { id: this.order.last_invoice_id },
+        success: response => {
+          if (response.data.result) {
+            this.error = false
+            this.due = response.data.result
           }
         },
         fail: e => {
@@ -156,6 +185,24 @@ export default {
         },
         fail: e => {
           this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
+        }
+      })
+    },
+    async verify () {
+      await orderAPI.verify({
+        data: { id: this.order.id },
+        success: response => {
+          this.verified = true
+          this.verificationErrors = null
+        },
+        fail: error => {
+          this.verified = true
+
+          if (typeof error.errors === 'object') {
+            this.verificationErrors = error.errors
+          } else {
+            this.$toasted.error(this.errorAPI(error, 'orders'))
+          }
         }
       })
     },
@@ -179,7 +226,8 @@ export default {
     Dropdown,
     sortDropdown,
     orderItem,
-    alertOutstanding
+    alertOutstanding,
+    alertProcessing
   },
   metaInfo: {
     title: 'Order Details'

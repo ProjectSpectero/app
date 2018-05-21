@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     async showPaymentModal () {
-      this.$emit('updateInvoice')
+      this.$emit('update')
 
       this.$modal.show(paymentModal, {
         invoice: this.invoice,

@@ -4,7 +4,7 @@
       <p><span class="icon-alert-circle"></span> Order</p>
     </div>
     <div class="body">
-      <processing-errors :errorBag="errorBag" :invoice="invoice" @close="updateInvoice"></processing-errors>
+      <processing-errors :errorBag="errorBag" :invoice="invoice" @close="update"></processing-errors>
     </div>
   </div>
 </template>
@@ -18,8 +18,8 @@ export default {
     errorBag: Object
   },
   methods: {
-    updateInvoice () {
-      this.$emit('updateInvoice')
+    update () {
+      this.$emit('update')
     }
   },
   components: {

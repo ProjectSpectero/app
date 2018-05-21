@@ -8,15 +8,15 @@
           </router-link>
 
           <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
-            <pay :invoice="invoice" :due="due" classes="button button-success" @updateInvoice="fetchInvoice"></pay>
+            <pay :invoice="invoice" :due="due" classes="button button-success" @update="fetchInvoice"></pay>
           </template>
         </top>
         <div>
           <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
-            <alert-outstanding :due="due" :invoice="invoice" @updateInvoice="fetchInvoice"></alert-outstanding>
+            <alert-outstanding :due="due" :invoice="invoice" @update="fetchInvoice"></alert-outstanding>
           </template>
-          <template v-else-if="verified && verificationErrors">
-            <alert-processing :errorBag="verificationErrors" :invoice="invoice" @updateInvoice="fetchInvoice"></alert-processing>
+          <template v-else-if="verified && verificationErrors && invoice.status !== 'PAID' && invoice.status !== 'CANCELLED'">
+            <alert-processing :errorBag="verificationErrors" :invoice="invoice" @update="fetchInvoice"></alert-processing>
           </template>
 
           <div class="invoice">
