@@ -350,5 +350,39 @@ module.exports = {
 
   settings: {
     EMAIL_CHANGE_NOTICE: 'Your current email is <strong>{email}</strong>. If your new email is invalid we will not be able to reach you and your account will be locked.'
+  },
+
+  help: {
+    nodes: {
+      title: 'Nodes',
+      topics: {
+        general: {
+          title: 'General help',
+          topics: {
+            what: {
+              title: 'What is a node?',
+              description: 'A node is you lorem ipsum dolor.'
+            },
+            availability: {
+              title: 'How do I know the availability of a given node?',
+              description: 'A given node is lorem.'
+            }
+          }
+        },
+        buying: {
+          title: 'Purchasing nodes',
+          description: 'Purchasing nodes is very simple! Lorem ipsum for all!'
+        }
+      }
+    },
+    groups: {
+      title: 'Groups',
+      topics: {
+        general: {
+          title: 'General help',
+          description: 'This is a general text about groups.'
+        }
+      }
+    }
   }
 }

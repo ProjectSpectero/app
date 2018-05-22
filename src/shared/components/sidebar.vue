@@ -89,6 +89,12 @@
               {{ $i18n.t('misc.SUPPORT') }}
             </a>
           </li>
+          <li>
+            <router-link :to="{ name: 'help' }">
+              <span class="icon-credit-card"></span>
+              {{ $i18n.t('misc.HELP') }}
+            </router-link>
+          </li>
         </ul>
       </section>
     </div>
