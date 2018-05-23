@@ -288,12 +288,6 @@ module.exports = {
       MANAGED: 'Managed',
       LISTED_SHARED: 'Shared',
       LISTED_DEDICATED: 'Dedicated'
-    },
-    MODEL_DESCRIPTION: {
-      UNLISTED: 'A node or group that is NOT listed in the Spectero Marketplace.',
-      MANAGED: 'A managed node or group.',
-      LISTED_SHARED: 'A node or group that allows more than one customer to purchase access to it. All customers share their resources.',
-      LISTED_DEDICATED: 'A node or group that only allows one dedicated customer to purchase access to it. No resources are shared; it is dedicated to one user only.'
     }
   },
 
@@ -372,6 +366,15 @@ module.exports = {
         buying: {
           title: 'Purchasing nodes',
           description: 'Purchasing nodes is very simple! Lorem ipsum for all!'
+        },
+        marketModels: {
+          title: 'Market models',
+          description:
+                `<p><strong>Unlisted</strong>: A node or group that is NOT listed in the Spectero Marketplace.</p>
+                  <p><strong>Shared</strong>: A node or group that allows more than one customer to purchase access to it. All customers share their resources.</p>
+                  <p><strong>Dedicated</strong>: A node or group that only allows one dedicated customer to purchase access to it. No resources are shared; it is dedicated to one user only.</p>
+                  <p><strong>Managed</strong>: A managed node or group.</p>`
+
         }
       }
     },
@@ -381,6 +384,15 @@ module.exports = {
         general: {
           title: 'General help',
           description: 'This is a general text about groups.'
+        }
+      }
+    },
+    orders: {
+      title: 'Orders',
+      topics: {
+        billing: {
+          title: 'Billing',
+          description: 'Billing works like this: ...'
         }
       }
     }

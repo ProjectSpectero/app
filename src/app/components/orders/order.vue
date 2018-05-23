@@ -78,8 +78,10 @@
             </section>
             <section class="section col-3">
 
-              <h3>Billing details</h3>
-
+              <h3>
+                Billing details
+                <tooltip id="orders.topics.billing"></tooltip>
+              </h3>
             </section>
           </div>
         </div>
@@ -97,6 +99,7 @@ import Dropdown from 'bp-vuejs-dropdown'
 import orderItem from './orderItem'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
+import tooltip from '@/shared/components/tooltip'
 import sortDropdown from '@/shared/components/sortDropdown'
 import alertProcessing from '../invoices/alertProcessing'
 import alertOutstanding from '../invoices/alertOutstanding'
@@ -227,7 +230,8 @@ export default {
     sortDropdown,
     orderItem,
     alertOutstanding,
-    alertProcessing
+    alertProcessing,
+    tooltip
   },
   metaInfo: {
     title: 'Order Details'

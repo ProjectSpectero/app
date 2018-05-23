@@ -34,9 +34,10 @@ export default {
     }
 
     .item {
+      background: $white;
       border: 1px solid $color-border;
       margin: 0 1rem 1rem 1rem;
-      padding: 1rem;
+      padding: 1.5rem;
 
       .title {
         font-size: 1.25rem;
@@ -46,7 +47,7 @@ export default {
 
       .item {
         border: 0;
-        margin: 0;
+        margin: 0 0 2rem;
         padding: 0;
 
         .title {

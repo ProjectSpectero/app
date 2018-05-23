@@ -57,7 +57,8 @@
                   {{ $i18n.t(`nodes.MODEL.${model}`) }}
                 </option>
               </select>
-              <market-model-tooltip :models="marketModels"></market-model-tooltip>
+
+              <tooltip id="nodes.topics.marketModels"></tooltip>
             </div>
           </div>
           <button v-if="formFields" type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
@@ -72,7 +73,7 @@
 
 <script>
 import nodeAPI from '@/app/api/node'
-import marketModelTooltip from './marketModelTooltip'
+import tooltip from '@/shared/components/tooltip'
 
 export default {
   props: {
@@ -126,7 +127,7 @@ export default {
     }
   },
   components: {
-    marketModelTooltip
+    tooltip
   }
 }
 </script>

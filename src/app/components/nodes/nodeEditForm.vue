@@ -30,7 +30,7 @@
                             {{ $i18n.t(`nodes.MODEL.${model}`) }}
                           </option>
                         </select>
-                        <market-model-tooltip :models="marketModels"></market-model-tooltip>
+                        <tooltip id="nodes.topics.marketModels"></tooltip>
                       </div>
                     </div>
                   </template>
@@ -74,7 +74,7 @@
 import nodeAPI from '@/app/api/node'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
-import marketModelTooltip from './marketModelTooltip'
+import tooltip from '@/shared/components/tooltip'
 
 export default {
   props: {
@@ -92,12 +92,12 @@ export default {
       formLoading: false,
       form: null,
       protocols: ['http', 'https'],
+      formFields: null,
       marketModels: [
         'UNLISTED',
         'LISTED_SHARED',
         'LISTED_DEDICATED'
       ],
-      formFields: null,
       rules: {
         friendly_name: {
           max: 50
@@ -214,7 +214,7 @@ export default {
   components: {
     loading,
     error,
-    marketModelTooltip
+    tooltip
   }
 }
 </script>
