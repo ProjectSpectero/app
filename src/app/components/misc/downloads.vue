@@ -112,7 +112,7 @@ export default {
       try {
         const response = await axios({
           method: 'GET',
-          url: 'https://raw.githubusercontent.com/ProjectSpectero/daemon-installers/master/COMPATABILITY.json?token=AE5jEuqHUWJfiXnp0Vz1XUP9_SRY3WNXks5bCC-JwA%3D%3D',
+          url: 'https://raw.githubusercontent.com/ProjectSpectero/daemon-installers/master/COMPATABILITY.json',
           timeout: 10000
         })
 
