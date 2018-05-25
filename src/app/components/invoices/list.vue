@@ -13,16 +13,14 @@
             </td>
             <td>{{ row.due_date | moment('MMM D, YYYY') }}</td>
             <td>{{ row.amount | currency }} {{ row.currency }}</td>
-            <td>
-              <router-link class="button" :to="{ name: 'invoice', params: { id: row.id } }">
-                {{ $i18n.t('misc.VIEW') }}
+            <td class="table-actions">
+              <router-link v-if="row.status === 'UNPAID'" class="button button-success" :to="{ name: 'invoice', params: { id: row.id } }">
+                {{ $i18n.t('misc.PAY_NOW') }}
               </router-link>
 
-              <div class="inline" v-if="row.status === 'UNPAID'">
-                <router-link class="button button-success" :to="{ name: 'invoice', params: { id: row.id } }">
-                  {{ $i18n.t('misc.PAY_NOW') }}
-                </router-link>
-              </div>
+              <router-link class="button button-info" :to="{ name: 'invoice', params: { id: row.id } }">
+                {{ $i18n.t('misc.VIEW') }}
+              </router-link>
             </td>
           </tr>
         </tbody>

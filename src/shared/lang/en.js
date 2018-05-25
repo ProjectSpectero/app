@@ -21,6 +21,7 @@ module.exports = {
     SUPPORT: 'Support',
     TOTAL: 'Total',
     HELP: 'Help',
+    DOCUMENTATION: 'Documentation',
     NEXT_DUE_DATE: 'Next Due Date',
     RESOURCES: 'Resources',
     CART: 'Cart',
@@ -73,7 +74,9 @@ module.exports = {
     NO_CANCEL: 'No, Cancel',
     EMPTY_RESULTS: 'You don\'t have any {type} yet.',
     ORDER_DATE: 'Order Date',
-    TERM: 'Term'
+    TERM: 'Term',
+    USERNAME: 'Username',
+    PASSWORD: 'Password'
   },
 
   errors: {
@@ -349,9 +352,11 @@ module.exports = {
   help: {
     nodes: {
       title: 'Nodes',
+      subTitle: 'Subtitle here',
       topics: {
         general: {
           title: 'General help',
+          description: 'test 123',
           topics: {
             what: {
               title: 'What is a node?',
@@ -370,16 +375,16 @@ module.exports = {
         marketModels: {
           title: 'Market models',
           description:
-                `<p><strong>Unlisted</strong>: A node or group that is NOT listed in the Spectero Marketplace.</p>
-                  <p><strong>Shared</strong>: A node or group that allows more than one customer to purchase access to it. All customers share their resources.</p>
-                  <p><strong>Dedicated</strong>: A node or group that only allows one dedicated customer to purchase access to it. No resources are shared; it is dedicated to one user only.</p>
-                  <p><strong>Managed</strong>: A managed node or group.</p>`
-
+            `<p><strong>Unlisted</strong>: A node or group that is NOT listed in the Spectero Marketplace.</p>
+              <p><strong>Shared</strong>: A node or group that allows more than one customer to purchase access to it. All customers share their resources.</p>
+              <p><strong>Dedicated</strong>: A node or group that only allows one dedicated customer to purchase access to it. No resources are shared; it is dedicated to one user only.</p>
+              <p><strong>Managed</strong>: A managed node or group.</p>`
         }
       }
     },
     groups: {
       title: 'Groups',
+      subTitle: 'Subtitle here',
       topics: {
         general: {
           title: 'General help',
@@ -389,6 +394,7 @@ module.exports = {
     },
     orders: {
       title: 'Orders',
+      subTitle: 'Subtitle here',
       topics: {
         billing: {
           title: 'Billing',

@@ -125,7 +125,7 @@ export default {
 
 <style lang="scss" scoped>
 .pagination {
-  margin-top: 10px;
+  margin-top: 16px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -135,8 +135,9 @@ export default {
 
 .paginator {
   padding: 6px;
-  border-radius: 4px;
+  background: $white;
   border: 1px solid $color-border;
+  border-radius: 4px;
 
   .pages {
     float: left;
@@ -145,21 +146,25 @@ export default {
 
   .page,
   .ellipsis {
+    width: 32px;
+    line-height: 32px;
     display: inline-block;
-    padding: 0 14px;
-    line-height: 30px;
+    margin: 0 2px;
+    color: lighten($color-primary, 30%);
     font-size: 14px;
     font-weight: $font-bold;
+    text-align: center;
+    transition: all 0.1s ease-out;
   }
 
   .page {
     float: left;
-    cursor: pointer;
-    background-color: $white;
     border-radius: 4px;
+    cursor: pointer;
 
     &:hover {
-      background: $color-border;
+      color: $color-info;
+      background: lighten($color-info, 53%);
     }
 
     &.active {
@@ -170,7 +175,7 @@ export default {
     &.disabled {
       pointer-events: none;
       color: $color-light;
-      cursor: disabled;
+      cursor: not-allowed;
     }
   }
   [class^="icon-"] {

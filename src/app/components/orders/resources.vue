@@ -8,7 +8,7 @@
           </router-link>
         </top>
         <div v-if="resources && resources.length">
-          <div class="content-split">
+          <div class="container content-split">
             <div class="split-item split-list nodes-sidebar">
               <div v-for="(item, index) in resources" :key="index" class="node-group" :class="{ active: selectedResource === item }" @click="selectResource(item)">
                 <div class="group-name">
@@ -42,11 +42,13 @@
                 </li>
               </ul>
 
-              <resource-details
-                :id="selectedResource.id"
-                :type="selectedResource.type"
-                :selectedReferences="selectedReferences"
-                :selectedType="selectedType"></resource-details>
+              <div class="section padded details">
+                <resource-details
+                  :id="selectedResource.id"
+                  :type="selectedResource.type"
+                  :selectedReferences="selectedReferences"
+                  :selectedType="selectedType"></resource-details>
+              </div>
             </div>
           </div>
         </div>
@@ -237,6 +239,7 @@ export default {
   align-items: center;
   margin-bottom: $pad;
   padding: $pad;
+  background: $white;
   border-radius: 4px;
   border: 1px solid $color-border;
 
@@ -248,5 +251,8 @@ export default {
     color: $color-warning;
     font-weight: $font-bold;
   }
+}
+.details {
+  margin-top: 20px;
 }
 </style>

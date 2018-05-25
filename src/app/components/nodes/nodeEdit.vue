@@ -1,42 +1,42 @@
 <template>
   <div>
-    <top :title="$i18n.t('nodes.EDIT_NODE')"></top>
-
-    <div class="container">
-      <div class="col-info">
-        <div class="info-box">
-          <h5>Name</h5>
-          <p>{{ node.friendly_name }}</p>
-        </div>
-        <div class="info-box">
-          <h5>Market Model</h5>
-          <div :class="'badge'">{{ $i18n.t(`nodes.MODEL.${node.market_model}`) }}</div>
-        </div>
-        <div class="info-box">
-          <h5>Status</h5>
-          <div :class="'badge status-' + node.status">{{ $i18n.t(`nodes.STATUS.${node.status}`) }}</div>
-        </div>
-        <div class="info-box">
-          <h5>IP/Port</h5>
-          <p>{{ node.ip }}:{{ node.port }}</p>
-        </div>
-        <div v-if="node.asn" class="info-box">
-          <h5>ASN</h5>
-          <p>{{ node.asn }}</p>
-        </div>
-        <div v-if="node.cc || node.city" class="info-box">
-          <h5>Location</h5>
-          <p>
-            <template v-if="node.cc">{{ getCountryById(node.cc).name }}</template>
-            <template v-if="node.city"> ({{ node.city }})</template>
-          </p>
-        </div>
-        <div class="info-box">
-          <h5>Price</h5>
-          <p>{{ node.price | currency }} USD</p>
+    <top :title="$i18n.t('nodes.EDIT_NODE')">
+      <div slot="sub" class="sub">
+        <div class="col-info">
+          <div class="info-box">
+            <h5>Name</h5>
+            <p>{{ node.friendly_name }}</p>
+          </div>
+          <div class="info-box">
+            <h5>Market Model</h5>
+            <div :class="'badge'">{{ $i18n.t(`nodes.MODEL.${node.market_model}`) }}</div>
+          </div>
+          <div class="info-box">
+            <h5>Status</h5>
+            <div :class="'badge status-' + node.status">{{ $i18n.t(`nodes.STATUS.${node.status}`) }}</div>
+          </div>
+          <div class="info-box">
+            <h5>IP/Port</h5>
+            <p>{{ node.ip }}:{{ node.port }}</p>
+          </div>
+          <div v-if="node.asn" class="info-box">
+            <h5>ASN</h5>
+            <p>{{ node.asn }}</p>
+          </div>
+          <div v-if="node.cc || node.city" class="info-box">
+            <h5>Location</h5>
+            <p>
+              <template v-if="node.cc">{{ getCountryById(node.cc).name }}</template>
+              <template v-if="node.city"> ({{ node.city }})</template>
+            </p>
+          </div>
+          <div class="info-box">
+            <h5>Price</h5>
+            <p>{{ node.price | currency }} USD</p>
+          </div>
         </div>
       </div>
-    </div>
+    </top>
 
     <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
 

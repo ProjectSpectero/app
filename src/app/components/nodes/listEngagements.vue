@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-if="engagements && engagements.length" class="list">
+  <div class="container">
+    <div v-if="engagements && engagements.length" class="list section padded">
       <v-client-table :data="engagements" :columns="columns" :options="options">
         <template slot="type" slot-scope="props">
           <template v-if="props.row.type === 'NODE'">
@@ -15,7 +15,7 @@
           <button v-if="props.row.status === 'ACTIVE'" class="button" @click.stop="deleteEngagement(props.row.id)">
             {{ $i18n.t('misc.CANCEL') }}
           </button>
-          <div v-else>-</div>
+          <div v-else>&nbsp;</div>
         </template>
       </v-client-table>
     </div>

@@ -10,53 +10,59 @@
           <span class="icon-shopping-bag"></span> {{ $i18n.t('misc.PURCHASE') }}
         </template>
       </button>
-    </top>
-    <div class="container">
-      <div class="col-info">
-        <div class="info-box">
-          <h5>Market Model</h5>
-          <div>
-            <div class="badge">{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</div>
-            <div v-if="item.plan" class="badge badge-brand badge-plan">{{ item.plan }}</div>
+
+      <div slot="sub" class="sub">
+        <div class="col-info">
+          <div class="info-box">
+            <h5>Market Model</h5>
+            <div>
+              <div class="badge">{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</div>
+              <div v-if="item.plan" class="badge badge-brand badge-plan">{{ item.plan }}</div>
+            </div>
+          </div>
+          <div class="info-box">
+            <h5>IP Count</h5>
+            <p v-if="item.ip_addresses">{{ item.ip_addresses.length }}</p>
+            <p v-else>{{ countIpsInNodeGroup(item) }}</p>
+          </div>
+          <div class="info-box">
+            <h5>Type</h5>
+            <p v-if="item.type === 'NODE_GROUP'">Node Group</p>
+            <p v-else>Node</p>
+          </div>
+          <div v-if="item.asn" class="info-box">
+            <h5>ASN</h5>
+            <p>{{ item.asn }}</p>
+          </div>
+          <div v-if="item.cc || item.city" class="info-box">
+            <h5>Location</h5>
+            <p>
+              <template v-if="item.cc">{{ getCountryById(item.cc).name }}</template>
+              <template v-if="item.city"> ({{ item.city }})</template>
+            </p>
+          </div>
+          <div class="info-box">
+            <h5>Price</h5>
+            <p>{{ item.price | currency }} USD</p>
           </div>
         </div>
-        <div class="info-box">
-          <h5>IP Count</h5>
-          <p v-if="item.ip_addresses">{{ item.ip_addresses.length }}</p>
-          <p v-else>{{ countIpsInNodeGroup(item) }}</p>
-        </div>
-        <div class="info-box">
-          <h5>Type</h5>
-          <p v-if="item.type === 'NODE_GROUP'">Node Group</p>
-          <p v-else>Node</p>
-        </div>
-        <div v-if="item.asn" class="info-box">
-          <h5>ASN</h5>
-          <p>{{ item.asn }}</p>
-        </div>
-        <div v-if="item.cc || item.city" class="info-box">
-          <h5>Location</h5>
-          <p>
-            <template v-if="item.cc">{{ getCountryById(item.cc).name }}</template>
-            <template v-if="item.city"> ({{ item.city }})</template>
-          </p>
-        </div>
-        <div class="info-box">
-          <h5>Price</h5>
-          <p>{{ item.price | currency }} USD</p>
-        </div>
       </div>
+    </top>
+    <div class="container">
+      <template v-if="item.nodes">
+        <div class="section padded">
+          <h4>Nodes</h4>
+          <nodes :nodes="item.nodes"></nodes>
+        </div>
+      </template>
+
+      <template v-if="item.ip_addresses">
+        <div class="section padded">
+          <h4>IP Addresses</h4>
+          <ips :ips="item.ip_addresses" :showAddresses="false"></ips>
+        </div>
+      </template>
     </div>
-
-    <template v-if="item.nodes">
-      <h4>Nodes</h4>
-      <nodes :nodes="item.nodes"></nodes>
-    </template>
-
-    <template v-if="item.ip_addresses">
-      <h4>IP Addresses</h4>
-      <ips :ips="item.ip_addresses" :showAddresses="false"></ips>
-    </template>
   </div>
 </template>
 

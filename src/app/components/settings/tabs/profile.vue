@@ -1,9 +1,8 @@
 <template>
   <div>
     <h2>Profile</h2>
-
-    <div class="col-container col-2">
-      <div class="col-half">
+    <div class="grid-container">
+      <div class="col-6">
         <form @submit.prevent.stop="submit">
           <h3>General Information</h3>
           <div class="message message-error" v-if="formError">{{ formError }}</div>
@@ -210,7 +209,7 @@ export default {
 }
 .profile-edit-link {
   position: absolute;
-  top: 16px;
+  top: 14px;
   right: 16px;
 }
 </style>

@@ -61,27 +61,20 @@
           </div>
         </top>
         <div v-if="!loading">
-          <template v-if="verified && !verificationErrors && order.last_invoice.status === 'UNPAID'">
-            <alert-outstanding :due="due" :invoice="order.last_invoice" @update="fetchOrder"></alert-outstanding>
-          </template>
-          <template v-else-if="verified && verificationErrors && order.last_invoice.status !== 'PAID' && order.last_invoice.status !== 'CANCELLED'">
-            <alert-processing :errorBag="verificationErrors" :invoice="order.last_invoice" @update="fetchOrder"></alert-processing>
-          </template>
-
           <div class="container">
-            <section class="col-7">
+            <template v-if="verified && !verificationErrors && order.last_invoice.status === 'UNPAID'">
+              <alert-outstanding :due="due" :invoice="order.last_invoice"></alert-outstanding>
+            </template>
+            <template v-else-if="verified && verificationErrors && order.last_invoice.status !== 'PAID' && order.last_invoice.status !== 'CANCELLED'">
+              <alert-processing :errorBag="verificationErrors" :invoice="order.last_invoice" @update="fetchOrder"></alert-processing>
+            </template>
+
+            <section class="col-12">
               <h3>Items in this order</h3>
               <div class="filter-bar">
                 <sort-dropdown :buttonText="'Sort Items By'" :sortFields="sort.fields" @sortUpdate="sortUpdate"></sort-dropdown>
               </div>
               <order-item v-for="(item, index) in order.line_items" :key="index" :item="item" @sortItems="sortItems" />
-            </section>
-            <section class="section col-3">
-
-              <h3>
-                Billing details
-                <tooltip id="orders.topics.billing"></tooltip>
-              </h3>
             </section>
           </div>
         </div>

@@ -1,26 +1,29 @@
 .tabs {
-  margin-bottom: $pad;
+  margin: $pad $pad 0 $pad;
+  padding: 6px;
+  background: $white;
+  border-radius: 4px;
+  border: 1px solid $color-border;
+  overflow: hidden;
 
   > li {
     display: inline-block;
-    margin: 0 0 -1px;
+    margin-right: 4px;
     padding: 14px 16px;
-    border: 1px solid transparent;
     cursor: pointer;
+    transition: all 0.1s ease-out;
+    border-radius: 4px;
 
+    &:hover {
+      color: $color-info;
+      background: lighten($color-info, 54%);
+    }
     &.active {
       font-weight: $font-semi;
       color: $color-info;
-      border: 1px solid $color-border;
-      border-bottom: 1px solid white;
-    }
-  }
 
-  &:after {
-    width: 100%;
-    height: 1px;
-    display: block;
-    background: $color-border;
-    content: '';
+      background: $color-info;
+      color: #fff;
+    }
   }
 }

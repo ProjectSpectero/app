@@ -6,8 +6,8 @@
       </router-link>
     </top>
 
-    <div class="content-split">
-      <div class="split-item split-list filters-side">
+    <div class="container content-split">
+      <div class="split-item split-list">
         <filters @changedFilters="search"></filters>
       </div>
       <div class="market-listings split-item split-details">
@@ -180,8 +180,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: $pad;
+  margin-bottom: 12px;
   padding: 14px;
+  background: $white;
   border: 1px solid $color-border;
   border-radius: 4px;
 

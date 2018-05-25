@@ -3,8 +3,8 @@
     <template v-if="!error">
       <top :title="$i18n.t('misc.NODES')"></top>
       <div v-if="groups">
-        <div v-if="groups.length" class="list">
-          <div class="content-split">
+        <div v-if="groups.length">
+          <div class="container content-split">
             <div class="split-item split-list nodes-sidebar">
               <div v-for="group in groups" class="node-group" :key="group.id" @click.stop="selectGroup(group, true)" :class="selectedGroup === group.id ? 'active' : ''">
                 <div class="group-name">
@@ -256,9 +256,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .list {
-    display: flex;
-    margin-bottom: $pad;
-    background: $white;
-  }
+
 </style>

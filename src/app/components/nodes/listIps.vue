@@ -1,6 +1,6 @@
 <template>
-  <div>
-      <div v-if="ips && ips.length" class="list">
+  <div class="container">
+      <div v-if="ips && ips.length" class="list section padded">
         <v-client-table :data="ips" :columns="columns" :options="options">
           <template v-if="props.row.ip" slot="ip" slot-scope="props">
             {{ props.row.ip }}

@@ -25,7 +25,6 @@ export default {
 <style lang="scss" scoped>
 .top {
   width: 100%;
-  margin-bottom: $pad;
   display: flex;
   flex-direction: column;
   background: $white;

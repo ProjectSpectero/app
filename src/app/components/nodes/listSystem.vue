@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-if="system">
+  <div class="container">
+    <div v-if="system" class="spec-list section padded">
       <div v-for="(spec, i) in system" :key="i" class="spec">
         <list-system-spec :spec="spec"></list-system-spec>
       </div>
@@ -31,3 +31,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.spec-list {
+  > .spec {
+    margin-bottom: $pad;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+</style>

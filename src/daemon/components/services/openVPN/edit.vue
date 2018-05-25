@@ -5,7 +5,11 @@
         {{ $i18n.t('misc.CANCEL') }}
       </button>
     </top>
-    <p>{{ $i18n.t('misc.AVAILABLE_SOON') }}</p>
+    <div class="container">
+      <div class="section padded">
+        <p>{{ $i18n.t('misc.AVAILABLE_SOON') }}</p>
+      </div>
+    </div>
   </div>
 </template>
 

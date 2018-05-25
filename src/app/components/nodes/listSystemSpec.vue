@@ -25,22 +25,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.title {
-  font-weight: $font-bold;
-  margin: 1rem 0;
-}
-
 .spec {
-  padding: 1rem;
-}
-
-.subspec {
+  padding: 16px;
+  margin-bottom: 0;
   border: 1px solid $color-border;
 
-  .spec {
-    .title {
-      font-weight: 400;
-    }
+  .subspec {
+    margin-bottom: 12px;
   }
+}
+
+.title {
+  font-weight: $font-bold;
+  margin-bottom: 8px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="tableData && !dataLoading">
+  <div v-if="tableData && !dataLoading" class="section padded">
     <header>
       <h2 class="mb-0">{{ selectedGroupInformation.friendly_name }}</h2>
       <div v-if="selectedGroupInformation.id !== 0" class="actions">

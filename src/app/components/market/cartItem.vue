@@ -63,9 +63,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
-  padding: 16px;
-  padding-top: 0;
+  margin: 0 20px;
+  padding: 20px 0;
   line-height: 150%;
   border-bottom: 1px solid $color-border;
 

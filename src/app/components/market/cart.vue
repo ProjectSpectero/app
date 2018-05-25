@@ -7,9 +7,9 @@
         </button>
       </div>
     </top>
-    <div class="cart">
+    <div class="cart container">
       <div class="cart-items">
-        <div v-if="cart && cart.length" class="container-bordered">
+        <div v-if="cart && cart.length" class="section">
           <cartItem v-for="(item, index) in cart" :key="index" :item="item"></cartItem>
         </div>
         <div v-else class="cart-empty">
@@ -23,7 +23,7 @@
       </div>
       <template v-if="cart && cart.length">
         <div class="summary-box-container">
-          <div class="summary-box container-bordered">
+          <div class="summary-box section">
             <section>
               <h3>Cart Summary</h3>
               <div class="line-items">
@@ -48,7 +48,7 @@
               </button>
             </section>
           </div>
-          <div v-if="totals.cycle.monthly > 0 || totals.cycle.yearly > 0" class="summary-box container-bordered">
+          <div v-if="totals.cycle.monthly > 0 || totals.cycle.yearly > 0" class="summary-box section">
             <section class="recurring">
               <h3>Recurring Fees</h3>
               <p>There are recurring fees associated with items in this cart.</p>
@@ -141,30 +141,16 @@ export default {
   flex: 1;
 
   .item:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
     border-bottom: none;
-  }
-  .container-bordered {
-    padding: 16px 0;
-  }
-}
-.container-bordered {
-  width: 100%;
-  margin-bottom: $pad;
-  padding: $pad;
-  border-radius: 4px;
-  border: 1px solid $color-border;
-
-  &:last-child {
-    margin-bottom: 0;
   }
 }
 .summary-box-container {
-  width: 320px;
+  width: 340px;
   margin-left: $pad;
 }
 .summary-box {
+  padding: $pad;
+
   section {
     display: flex;
     flex-direction: column;

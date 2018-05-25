@@ -10,7 +10,7 @@
       <div
         v-if="item.plan"
         v-html="$i18n.t(`market.PLAN_WARNING`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })"
-        class="message message-brand">
+        class="message message-info">
       </div>
 
       <div

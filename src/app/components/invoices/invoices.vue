@@ -3,10 +3,10 @@
     <template v-if="!error">
       <top title="Invoices"></top>
       <div v-if="tableData">
-        <div class="content-split">
-          <div class="split-item split-list filters-side">
+        <div class="container content-split">
+          <div class="split-item split-list">
             <router-link v-for="s in status" :key="s" :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
-              <span>{{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}</span>
+              {{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}
             </router-link>
           </div>
           <div class="split-item split-details">

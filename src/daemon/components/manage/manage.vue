@@ -17,10 +17,14 @@
           <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
         </template>
 
-        <services v-if="activeTab === 'services'"></services>
-        <proxies v-else-if="activeTab === 'proxies'"></proxies>
-        <certificates v-else-if="activeTab === 'certificates'"></certificates>
-        <not-found v-else></not-found>
+        <div class="container">
+          <div class="section padded">
+            <services v-if="activeTab === 'services'"></services>
+            <proxies v-else-if="activeTab === 'proxies'"></proxies>
+            <certificates v-else-if="activeTab === 'certificates'"></certificates>
+            <not-found v-else></not-found>
+          </div>
+        </div>
       </div>
       <loading v-else></loading>
     </template>
@@ -109,6 +113,7 @@ export default {
   justify-content: space-between;
   margin-bottom: $pad;
   padding: $pad;
+  background: $white;
   border: 1px solid $color-border;
   border-radius: 4px;
 

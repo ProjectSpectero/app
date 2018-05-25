@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top :title="$i18n.t('misc.HELP')"></top>
+    <top :title="$i18n.t('misc.DOCUMENTATION')"></top>
     <contents :items="helpContents"></contents>
   </div>
 </template>

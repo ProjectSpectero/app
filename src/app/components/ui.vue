@@ -62,7 +62,13 @@
       <div class="message message-success">Success message.</div>
       <div class="message message-warning">Warning message.</div>
       <div class="message message-error">Error message.</div>
-      <div class="message message-brand mb-0">Brand message.</div>
+    </section>
+    <section>
+      <h2>Message with title</h2>
+      <div class="message message-info">
+        <h5>Message Title</h5>
+        <p>Info message.</p>
+      </div>
     </section>
     <section>
       <h2>Headers</h2>
@@ -110,5 +116,9 @@ section {
   background: $white;
   border-radius: 4px;
   border: 1px solid $color-border;
+
+  .message:last-child {
+    margin-bottom: 0;
+  }
 }
 </style>

@@ -1,39 +1,41 @@
 <template>
   <div>
     <top title="Settings"></top>
-    <div class="content-split">
-      <div class="split-item split-list filters-side">
+    <div class="container content-split">
+      <div class="split-item split-list">
         <router-link :to="{ name: 'settings', params: { tab: 'profile' } }" class="filter-link">
-          <span>Profile</span>
+          Profile
         </router-link>
         <router-link :to="{ name: 'settings', params: { tab: 'payment' } }" class="filter-link">
-          <span>Payment Details</span>
+          Payment Details
         </router-link>
         <router-link :to="{ name: 'settings', params: { tab: 'keys' } }" class="filter-link">
-          <span>Node Key</span>
+          Node Key
         </router-link>
       </div>
       <div class="split-item split-details">
-        <tab-profile
-          v-if="currentTab === 'profile'"
-          :user="user"
-          :formError="formError"
-          :formLoading="formLoading"
-          @processForm="processForm">
-        </tab-profile>
+        <div class="section padded">
+          <tab-profile
+            v-if="currentTab === 'profile'"
+            :user="user"
+            :formError="formError"
+            :formLoading="formLoading"
+            @processForm="processForm">
+          </tab-profile>
 
-        <tab-payment
-          v-if="currentTab === 'payment'"
-          :user="user"
-          :formError="formError"
-          :formLoading="formLoading"
-          @processForm="processForm">
-        </tab-payment>
+          <tab-payment
+            v-if="currentTab === 'payment'"
+            :user="user"
+            :formError="formError"
+            :formLoading="formLoading"
+            @processForm="processForm">
+          </tab-payment>
 
-        <tab-keys
-          v-if="currentTab === 'keys'"
-          :user="user">
-        </tab-keys>
+          <tab-keys
+            v-if="currentTab === 'keys'"
+            :user="user">
+          </tab-keys>
+        </div>
       </div>
     </div>
   </div>

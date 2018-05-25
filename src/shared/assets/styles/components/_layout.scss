@@ -1,12 +1,42 @@
 .container {
-  @include grid-container;
   display: block;
-  margin: $pad 0;
+  padding: $pad;
 
   .section {
-    padding: $pad;
+    margin-bottom: $pad;
     background: $white;
+    border: 1px solid $color-border;
+    border-radius: 4px;
+
+    &.padded {
+      padding: $pad;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    > .title {
+      padding: $pad;
+      border-bottom: 1px solid $color-border;
+
+      h1, h2, h3, h4, h5, h6 {
+        margin-bottom: 0;
+      }
+      h6 {
+        margin-top: 12px;
+      }
+    }
+
+    .content {
+      padding: $pad;
+    }
   }
+
+  @include grid-container;
+}
+
+.grid-container {
+  @include grid-container;
 }
 
 .boxed {
@@ -40,12 +70,37 @@
 .content-split {
   width: 100%;
   display: flex;
-  margin-bottom: $pad;
 
   .split-list {
-    width: 240px;
-    padding-right: $pad;
-    border-right: 1px solid $color-border;
+    width: 250px;
+    padding: 12px;
+    background: $white;
+    border: 1px solid $color-border;
+    border-radius: 4px;
+
+    .filter-link {
+      display: block;
+      margin-bottom: 5px;
+      padding: 0 14px;
+      color: $color-primary;
+      line-height: 40px;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.1s ease-out;
+
+      &:hover {
+        color: $color-info;
+        background: lighten($color-info, 53%);
+      }
+      &.router-link-exact-active, &.active {
+        color: $white;
+        background-color: $color-info;
+        font-weight: $font-semi;
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
     
     .node-group {
       display: flex;
@@ -71,7 +126,8 @@
       }
       .count {
         font-size: 12px;
-        opacity: 0.7;
+        font-weight: $font-semi;
+        opacity: 0.5;
       }
     }
   }
@@ -79,14 +135,22 @@
     > div {
       padding: 12px;
       border-radius: 4px;
+      transition: all 0.1s ease-out;
       cursor: pointer;
-  
+      
+      &:hover {
+        color: $color-info;
+        background: lighten($color-info, 53%);
+      }
       &.active {
-        background-color: $color-brand;
-        color: $color-dark;
+        color: $white;
+        background-color: $color-info;
   
         .group-name {
           font-weight: $font-semi;
+        }
+        .count {
+          opacity: 1;
         }
       }
     }

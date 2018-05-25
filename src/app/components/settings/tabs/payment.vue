@@ -1,9 +1,9 @@
 <template>
   <div>
     <h2>Payment Details</h2>
+    <div class="grid-container">
 
-    <div class="col-container col-2">
-      <div class="col">
+      <div class="col-6">
         <form @submit.prevent.stop="submit">
           <h3>Billing Address</h3>
           <div class="message message-error" v-if="formError">{{ formError }}</div>
@@ -206,12 +206,13 @@
         </form>
       </div>
 
-      <div class="col">
+      <div class="col-4">
         <h3>Payment Methods</h3>
         <saved-cards :user="user"></saved-cards>
         <credits :user="user"></credits>
         <promo-codes :user="user"></promo-codes>
       </div>
+
     </div>
   </div>
 </template>

@@ -11,9 +11,14 @@
             <pay :invoice="invoice" :due="due" classes="button button-success" @update="fetchInvoice"></pay>
           </template>
         </top>
-        <div>
+        <div class="container">
+          <div v-if="invoice.status === 'PAID'" class="message-paid message message-success">
+            <h5><span class="icon-check-circle"></span> Invoice Paid</h5>
+            <p>Thank you for your payment, your invoice has been paid in full.</p>
+          </div>
+
           <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
-            <alert-outstanding :due="due" :invoice="invoice" @update="fetchInvoice"></alert-outstanding>
+            <alert-outstanding :due="due" :invoice="invoice"></alert-outstanding>
           </template>
           <template v-else-if="verified && verificationErrors && invoice.status !== 'PAID' && invoice.status !== 'CANCELLED'">
             <alert-processing :errorBag="verificationErrors" :invoice="invoice" @update="fetchInvoice"></alert-processing>
@@ -348,7 +353,7 @@ export default {
 <style lang="scss" scoped>
 .invoice {
   max-width: 1000px;
-  padding: 40px;
+  padding: 24px;
   background: $white;
   border: 1px solid $color-border;
 
@@ -461,6 +466,11 @@ export default {
     .total-outstanding {
       margin-top: 16px;
     }
+  }
+}
+@media print {
+  .message-paid {
+    display: none !important;
   }
 }
 </style>
