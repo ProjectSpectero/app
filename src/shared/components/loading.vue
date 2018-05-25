@@ -1,8 +1,7 @@
 <template>
   <div class="alert-msg-centered">
     <div class="loader">
-      <div class="bouncing-loader"><div></div><div></div><div></div></div>
-      <h1>{{ $i18n.t('misc.LOADING') }}</h1>
+      <div class="spinning-loader"><div></div><div></div><div></div></div>
     </div>
   </div>
 </template>
@@ -10,9 +9,15 @@
 <style lang="scss" scoped>
 .loader {
   display: inline-block;
-  padding: 16px 32px 20px 32px;
-  color: $white;
-  background: rgba(0,0,0,0.75);
-  border-radius: 20px;
+  padding: 30px;
+  color: $color-primary;
+  background: rgba(255,255,255,0.9);
+  border-radius: 8px;
+  border: 1px solid $color-border;
+
+  h1 {
+    margin-bottom: 0;
+    font-weight: $font-semi;
+  }
 }
 </style>
