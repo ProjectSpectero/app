@@ -27,7 +27,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .content {
-    padding: 0 1rem;
-  }
+
 </style>
