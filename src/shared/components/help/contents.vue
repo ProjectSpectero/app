@@ -9,7 +9,7 @@
       <contents v-if="page.topics" :items="page.topics"></contents>
 
       <div v-else class="description">
-        <template v-if="page.description">{{ page.description }}</template>
+        <div v-if="page.description" v-html="page.description"></div>
         <template v-else>-</template>
       </div>
     </div>
@@ -28,20 +28,20 @@ export default {
 <style lang="scss" scoped>
   .item {
     .title {
-      font-size: 1.75rem;
-      line-height: 1.75rem;
-      margin: 0 0 1rem 1rem;
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+      margin: 1rem 0;
     }
 
     .item {
       background: $white;
       border: 1px solid $color-border;
-      margin: 0 1rem 1rem 1rem;
-      padding: 1.5rem;
+      margin: 0 0 1rem 0;
+      padding: 1rem;
 
       .title {
-        font-size: 1.25rem;
-        line-height: 1.25rem;
+        font-size: 1.1rem;
+        line-height: 1.1rem;
         margin: 0 0 1rem 0;
       }
 

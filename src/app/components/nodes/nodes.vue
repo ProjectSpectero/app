@@ -1,7 +1,9 @@
 <template>
   <div>
     <template v-if="!error">
-      <top :title="$i18n.t('misc.NODES')"></top>
+      <top :title="$i18n.t('misc.NODES')">
+        <help-button obj="nodes.topics"></help-button>
+      </top>
       <div v-if="groups">
         <div v-if="groups.length" class="list">
           <div class="content-split">
@@ -56,6 +58,7 @@ import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
 import notFound from '@/shared/components/notFound'
+import helpButton from '@/shared/components/help/button'
 
 export default {
   mixins: [filtersMixin],
@@ -249,6 +252,7 @@ export default {
     top,
     error,
     loading,
+    helpButton,
     notFound,
     nodesList
   }
