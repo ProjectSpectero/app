@@ -39,7 +39,7 @@
                 {{ $i18n.t('misc.VERIFY') }}
               </button>
 
-              <router-link class="button button-sm button-info" :to="{ name: 'manage', params: { nodeId: 101 } }">
+              <router-link class="button button-sm button-info" :to="{ name: 'manage', params: { nodeId: isDevelopmentEnvironment ? row.id : 101 } }">
                 <span class="icon-sliders"></span> Manage
               </router-link>
 
@@ -91,6 +91,11 @@ export default {
         market_model: 'Market Model',
         actions: ''
       }
+    }
+  },
+  computed: {
+    isDevelopmentEnvironment () {
+      return (process.env.NODE_ENV !== 'development')
     }
   },
   methods: {
