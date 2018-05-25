@@ -5,15 +5,18 @@
       <modals-container/>
       <router-view></router-view>
     </div>
+    <help></help>
   </div>
 </template>
 
 <script>
 import sidebar from '@/shared/components/sidebar'
+import help from '@/shared/components/docs/panel'
 
 export default {
   components: {
-    sidebar
+    sidebar,
+    help
   }
 }
 </script>

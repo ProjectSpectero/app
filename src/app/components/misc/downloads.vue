@@ -38,23 +38,42 @@
         </li>
       </ol>
     </section>
-    <section v-if="matrices">
+    <section v-if="matrices" class="matrices">
       <h5>Compatibility Matrices</h5>
 
       <div v-for="(matrix, i) in matrices" :key="i">
-        <h4>{{ i }}</h4>
+        <h4 class="title">{{ i }}</h4>
 
         <div v-for="(os, j) in matrix" :key="j">
-          <strong>{{ j }}</strong>
-          <span v-if="os.tested !== undefined">{{ os.tested }}</span>
-          <div v-else>
-            <ul v-if="os.Distributions">
-              <li v-for="(distro, k) in os.Distributions" :key="k">
-                <strong>{{ k }}</strong>
-                <span v-if="distro.tested !== undefined">{{ distro.tested }}</span>
-              </li>
-            </ul>
+          <div v-if="os.Distributions">
+            <div class="subtitle">{{ j }}</div>
+            <table>
+              <tbody>
+                <tr v-for="(distro, k) in os.Distributions" :key="k">
+                  <td>{{ k }}</td>
+                  <td>
+                    <span v-if="distro.tested !== undefined">
+                      <span v-if="distro.tested" class="icon-check"></span>
+                      <span v-else class="icon-x"></span>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+          <table v-else>
+            <tbody>
+              <tr>
+                <td>{{ j }}</td>
+                <td>
+                  <span v-if="os.tested !== undefined">
+                    <span v-if="os.tested" class="icon-check"></span>
+                    <span v-else class="icon-x"></span>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
@@ -143,6 +162,43 @@ section {
 
     &:last-child {
       margin-bottom: 0;
+    }
+  }
+
+  &.matrices {
+    .title {
+      margin: 1rem 0;
+    }
+
+    .subtitle {
+      margin: 1rem 0;
+      text-decoration: underline;
+    }
+
+    table {
+      min-width: 20%;
+
+      td {
+        border: 1px solid $color-border;
+        padding: 1.5rem;
+        background: #fff;
+
+        &:first-child {
+          width: 180px;
+        }
+
+        &:last-child {
+          text-align: center;
+        }
+      }
+    }
+
+    .icon-check {
+      color: $color-success;
+    }
+
+    .icon-x {
+      color: $color-danger;
     }
   }
 }

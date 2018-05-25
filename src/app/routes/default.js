@@ -1,7 +1,7 @@
 // Default routes
 
 import downloads from '@/app/components/misc/downloads'
-import docs from '@/app/components/docs'
+import docs from '@/shared/components/docs/index'
 import ui from '@/app/components/ui'
 
 export default [

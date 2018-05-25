@@ -79,6 +79,7 @@
           </div>
         </div>
       </div>
+      <loading v-else></loading>
     </template>
     <error v-else :item="errorItem" :code="errorCode"/>
   </div>
@@ -92,6 +93,7 @@ import Dropdown from 'bp-vuejs-dropdown'
 import orderItem from './orderItem'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
+import loading from '@/shared/components/loading'
 import tooltip from '@/shared/components/tooltip'
 import sortDropdown from '@/shared/components/sortDropdown'
 import alertProcessing from '../invoices/alertProcessing'
@@ -143,7 +145,6 @@ export default {
             // Verifies the order for invalid resources
             await this.verify()
 
-            this.loading = false
             this.error = false
           } else {
             this.error = true
@@ -160,8 +161,9 @@ export default {
         data: { id: this.order.last_invoice_id },
         success: response => {
           if (response.data.result) {
-            this.error = false
             this.due = response.data.result
+            this.error = false
+            this.loading = false
           }
         },
         fail: e => {
@@ -219,6 +221,7 @@ export default {
   components: {
     top,
     error,
+    loading,
     Dropdown,
     sortDropdown,
     orderItem,
