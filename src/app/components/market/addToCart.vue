@@ -7,11 +7,11 @@
     <div class="modal-content">
       <h3>{{ item.friendly_name }}</h3>
 
-      <div
+      <!-- <div
         v-if="item.plan"
         v-html="$i18n.t(`market.PLAN_WARNING`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })"
         class="message message-info">
-      </div>
+      </div> -->
 
       <div
         v-if="item.type === 'NODE_GROUP'"
