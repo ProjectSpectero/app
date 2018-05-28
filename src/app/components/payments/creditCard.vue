@@ -39,7 +39,6 @@ export default {
       error: null,
       paid: false,
       processed: false,
-      loading: true,
       saveCard: false,
       stripeOptions: {
         // https://stripe.com/docs/stripe.js#element-options
@@ -53,7 +52,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      setPendingInvoiceStatus: 'users/setPendingInvoiceStatus'
+      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus'
     }),
     pay () {
       // Stripe token issued

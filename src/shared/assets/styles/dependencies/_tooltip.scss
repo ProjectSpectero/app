@@ -1,0 +1,87 @@
+.vue-tooltip {
+  background: #fff;
+  box-sizing: border-box;
+  color: #333;
+  max-width: 320px;
+  padding: 1rem;
+  border-radius: 12px;
+  z-index: 100;
+  border: 1px solid #E3E3E3;
+  box-shadow: 0 1px 5px rgba(0,0,0,.1);
+  margin-top: 14px;
+}
+
+.vue-tooltip .vue-tooltip-content {
+  text-align: center;
+}
+
+.vue-tooltip .tooltip-arrow {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 9px solid #E3E3E3;
+  position: absolute;
+  top: -10px;
+}
+
+.vue-tooltip[x-placement^="top"] {
+  margin-bottom: 5px
+}
+
+.vue-tooltip[x-placement^="top"] .tooltip-arrow {
+  border-width: 5px 5px 0 5px;
+  border-top-color: #000;
+  border-bottom-color: transparent !important;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  bottom: -5px;
+  margin-top: 0;
+  margin-bottom: 0
+}
+
+.vue-tooltip[x-placement^="bottom"] {
+  margin-top: 5px
+}
+
+.vue-tooltip[x-placement^="bottom"] .tooltip-arrow {
+  border-width: 0 5px 5px 5px;
+  border-bottom-color: #000;
+  border-top-color: transparent !important;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  top: -5px;
+  margin-top: 0;
+  margin-bottom: 0
+}
+
+.vue-tooltip[x-placement^="right"] {
+  margin-left: 5px
+}
+
+.vue-tooltip[x-placement^="right"] .tooltip-arrow {
+  border-width: 5px 5px 5px 0;
+  border-right-color: #000;
+  border-top-color: transparent !important;
+  border-left-color: transparent !important;
+  border-bottom-color: transparent !important;
+  left: -5px;
+  margin-left: 0;
+  margin-right: 0
+}
+
+.vue-tooltip[x-placement^="left"] {
+  margin-right: 5px
+}
+
+.vue-tooltip[x-placement^="left"] .tooltip-arrow {
+  border-width: 5px 0 5px 5px;
+  border-left-color: #000;
+  border-top-color: transparent !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+  right: -5px;
+  margin-left: 0;
+  margin-right: 0
+}

@@ -11,6 +11,34 @@ export default {
   },
 
   /**
+   * Verifies an order for purchaseability.
+   * Orders may fail the verification if their resources are unavailable or expired.
+   *
+   * @param {Integer} id Order id.
+   */
+  verify (options) {
+    return api('GET', `/order/${options.data.id}/verify`, options)
+  },
+
+  /**
+   * "Fixes" an order for purchaseability.
+   *
+   * @param {Integer} id Order id.
+   */
+  fix (options) {
+    return api('PUT', `/order/${options.data.id}/fix`, options)
+  },
+
+  /**
+   * Deletes an order.
+   *
+   * @param {Integer} id Node id to delete.
+   */
+  delete (options) {
+    return api('DELETE', `/order/${options.data.id}`, options)
+  },
+
+  /**
    * Returns orders list for the logged in user.
    *
    * @param {String} mode Payment mode.
@@ -39,5 +67,21 @@ export default {
     }
 
     return api('POST', `/search`, options)
+  },
+
+  /**
+   * Fetches all resources from an order
+   * @param {Integer} id Order id.
+   */
+  resources (options) {
+    return api('GET', `/order/${options.data.id}/resources`, options)
+  },
+
+  /**
+   * Regenerates order accessor.
+   * @param {Integer} id Order id.
+   */
+  regenerateAccessor (options) {
+    return api('PUT', `/order/${options.data.id}/accessor`, options)
   }
 }

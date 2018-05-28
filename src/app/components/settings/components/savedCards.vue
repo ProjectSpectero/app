@@ -1,5 +1,5 @@
 <template>
-  <div class="cc-details">
+  <div v-if="user" class="cc-details">
     <h3>Credit or debit cards</h3>
     <div v-if="user.card.last4 !== null" class="cc-inner">
       <div class="cc-card">
@@ -54,7 +54,6 @@ export default {
 
   h3 {
     margin-bottom: 12px;
-    font-weight: $font-semi;
   }
   .cc-inner {
     width: 100%;

@@ -1,9 +1,14 @@
 function globalMixin (i18n) {
   return {
+    data () {
+      return {
+        loading: true,
+        error: false,
+        errorItem: '',
+        errorCode: 404
+      }
+    },
     methods: {
-      error404: () => {
-        window.location.href = '/404'
-      },
       errorAPI: (error, module) => {
         const keys = Object.keys(error.errors)
         return i18n.t(`${module}.${keys[0]}`)
@@ -11,6 +16,13 @@ function globalMixin (i18n) {
       confirmedFieldRule: (inputName, rules) => {
         rules.confirmed = inputName + 'Confirm'
         return rules
+      },
+      getCountryById (id) {
+        const found = this.countries.filter((obj) => {
+          return obj.code === id
+        })
+
+        return (found && found.length) ? found[0] : { code: 0, name: 'N/A' }
       }
     }
   }

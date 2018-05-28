@@ -1,27 +1,37 @@
 import { setCookie, getCookie, removeCookie } from 'tiny-cookie'
 import nodeAPI from '@/app/api/node.js'
 import userAPI from '@/daemon/api/user.js'
-import router from '@/router'
 
 const state = {
+  initialized: false,
   user: null,
   accessToken: null,
   refreshToken: null,
-  expiry: null
+  accessTokenExpires: null,
+  refreshTokenExpires: null,
+  ip: null,
+  port: null,
+  protocol: 'http',
+  version: 'v1'
 }
 
 const getters = {
+  initialized: (state) => state.initialized,
   user: (state) => state.user,
   accessToken: (state) => state.accessToken,
   refreshToken: (state) => state.refreshToken,
-  expiry: (state) => state.expiry
+  accessTokenExpires: (state) => state.accessTokenExpires,
+  refreshTokenExpires: (state) => state.refreshTokenExpires,
+  ip: (state) => state.ip,
+  port: (state) => state.port,
+  protocol: (state) => state.protocol,
+  version: (state) => state.version
 }
 
 const actions = {
   async syncCurrentUser ({ commit }) {
     await userAPI.getMe({
       success: response => {
-        console.log('syncCurrentUser response', response.data.result)
         commit('SET_CURRENT_USER', response.data.result)
       },
       fail: error => {
@@ -31,14 +41,13 @@ const actions = {
   },
   async addCookie ({ commit, dispatch }, payload) {
     const data = {
-      accessToken: payload.accessToken,
-      refreshToken: payload.refreshToken,
-      expiry: 604800 // 7 days
+      accessToken: payload.credentials.access.token,
+      refreshToken: payload.credentials.refresh.token,
+      accessTokenExpires: payload.credentials.access.expires,
+      refreshTokenExpires: payload.credentials.refresh.expires
     }
 
-    setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: payload.expiry + 's' })
-    commit('SET_LOGIN_INFO', data)
-
+    setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: parseFloat(payload.credentials.access.expires / 1000) + 's' })
     console.log('Added cookie info for DAEMON_COOKIE', getCookie(process.env.DAEMON_COOKIE))
   },
   async autologin ({ commit, dispatch }, nodeId) {
@@ -47,36 +56,22 @@ const actions = {
         id: nodeId
       },
       success: response => {
+        console.log('autologin success')
         dispatch('addCookie', response.data.result)
+        dispatch('setupEndpoint', response.data.result)
       },
       fail: error => {
-        console.log(error)
+        console.error('autologin error', error)
+        throw new Error('AUTOLOGIN_FAIL')
       }
     })
   },
+  setupEndpoint ({ commit }, payload) {
+    commit('SETUP_ENDPOINT', payload)
+  },
   logout ({ commit }) {
     removeCookie(process.env.DAEMON_COOKIE)
-    commit('CLEAR_LOGIN_INFO')
-  },
-  checkLogin ({ state, commit, dispatch }) {
-    const cookie = getCookie(process.env.DAEMON_COOKIE)
-    let data = null
-
-    if (cookie) {
-      // Access token found, no need to decode cookie
-      if (state.accessToken) {
-        return
-      }
-
-      data = JSON.parse(cookie)
-
-      // If no data is set we're first-landing the page and we need to decode the cookie
-      if (data) {
-        commit('SET_LOGIN_INFO', data)
-      }
-    } else {
-      dispatch('autologin', router.params.nodeId)
-    }
+    commit('CLEAR_ENDPOINT')
   }
 }
 
@@ -85,15 +80,26 @@ const mutations = {
     state.user = payload
     console.log('Fetched current user', state.user)
   },
-  SET_LOGIN_INFO (state, payload) {
-    state.accessToken = payload.accessToken
-    state.refreshToken = payload.refreshToken
-    state.expiry = payload.expiry
+  SETUP_ENDPOINT (state, payload) {
+    state.initialized = true
+    state.accessToken = payload.credentials.access.token
+    state.refreshToken = payload.credentials.refresh.token
+    state.accessTokenExpires = payload.credentials.access.expires
+    state.refreshTokenExpires = payload.credentials.refresh.expires
+    state.protocol = payload.meta.protocol
+    state.ip = payload.meta.ip
+    state.port = payload.meta.port
+    state.version = payload.meta.apiVersion
   },
-  CLEAR_LOGIN_INFO (state) {
+  CLEAR_ENDPOINT (state) {
     state.accessToken = null
     state.refreshToken = null
-    state.expiry = null
+    state.accessTokenExpires = null
+    state.refreshTokenExpires = null
+    state.ip = null
+    state.port = null
+    state.protocol = 'http'
+    state.version = 'v1'
   }
 }
 

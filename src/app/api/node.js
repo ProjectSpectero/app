@@ -6,7 +6,7 @@ export default {
    * Retrieves all node groups and their nodes.
    */
   groups (options) {
-    return api('GET', `/node_group/self`, options)
+    return api('GET', `/node_group/self?page=${options.groupsPage}&perPage=${options.perPage}`, options)
   },
 
   /**
@@ -15,6 +15,13 @@ export default {
    */
   node (options) {
     return api('GET', `/node/${options.data.id}`, options)
+  },
+
+  /**
+   * Returns my nodes.
+   */
+  myNodes (options) {
+    return api('GET', helpers.appendQuery(`/node/self`, options), options)
   },
 
   /**
@@ -89,6 +96,13 @@ export default {
   },
 
   /**
+   * Updates the group_id of a given node.
+   */
+  updateGroupFromNode (options) {
+    return api('POST', `/node_group/assign`, options)
+  },
+
+  /**
    * Edit node group details.
 
    * @param {Integer} id Group id to edit.
@@ -116,7 +130,7 @@ export default {
   },
 
   /**
-   * Delete engagement at given id.
+   * Deletes an engagement.
    *
    * @param {Integer} id Engagement id to delete.
    */
@@ -133,5 +147,25 @@ export default {
 
   nodeLogin (options) {
     return api('GET', `/node/${options.data.id}/auth`, options)
+  },
+
+  /**
+   * Searches and filters nodes. Example rules:
+   * "rules": [
+   *     {
+   *         "field": "id",
+   *         "operator": "=",
+   *         "value": "1"
+   *     }
+   * ]
+   */
+  search (options) {
+    options.data = {
+      resource: 'node',
+      expires: 600,
+      rules: options.rules
+    }
+
+    return api('POST', `/search`, options)
   }
 }

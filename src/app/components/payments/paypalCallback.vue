@@ -18,7 +18,6 @@ import loading from '@/shared/components/loading'
 export default {
   data () {
     return {
-      loading: true,
       success: false
     }
   },
@@ -27,7 +26,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      setPendingInvoiceStatus: 'users/setPendingInvoiceStatus'
+      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus'
     }),
     finishPayment () {
       if (this.$route.query.mode && this.$route.query.token && this.$route.query.PayerID) {

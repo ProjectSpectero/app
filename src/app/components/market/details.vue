@@ -1,32 +1,78 @@
 <template>
-  <div class="item">
-    <h2>{{ item.friendly_name }}</h2>
-    <ul>
-      <li v-if="item.asn">ASN: {{ item.asn }}</li>
-      <li v-if="item.city">City: {{ item.city }}</li>
-      <li v-if="item.cc">Country Code: {{ item.cc }}</li>
-      <li>Market model: {{ item.market_model }}</li>
-      <li>Status: {{ item.status }}</li>
-      <li>Price: {{ item.price }}</li>
-      <li v-if="item.plan">{{ item.plan }}</li>
-    </ul>
+  <div>
+    <top :title="item.friendly_name">
+      <router-link :to="{ name: 'market' }" class="button">Back to Market</router-link>
+      <button @click.stop="showModal(item)" class="button button-success" :class="{ 'button-bordered': existsInCart(item.id) }">
+        <template v-if="existsInCart(item.id)">
+          <span class="icon-check-circle"></span> {{ $i18n.t('misc.IN_CART') }}
+        </template>
+        <template v-else>
+          <span class="icon-shopping-bag"></span> {{ $i18n.t('misc.PURCHASE') }}
+        </template>
+      </button>
 
-    <template v-if="item.nodes">
-      <h4>Nodes</h4>
-      <nodes :nodes="item.nodes"></nodes>
-    </template>
+      <div slot="sub" class="sub">
+        <div class="col-info">
+          <div class="info-box">
+            <h5>Market Model</h5>
+            <div>
+              <div class="badge">{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</div>
+              <div v-if="item.plan" class="badge badge-brand badge-plan">{{ item.plan }}</div>
+            </div>
+          </div>
+          <div class="info-box">
+            <h5>IP Count</h5>
+            <p v-if="item.ip_addresses">{{ item.ip_addresses.length }}</p>
+            <p v-else>{{ countIpsInNodeGroup(item) }}</p>
+          </div>
+          <div class="info-box">
+            <h5>Type</h5>
+            <p v-if="item.type === 'NODE_GROUP'">Node Group</p>
+            <p v-else>Node</p>
+          </div>
+          <div v-if="item.asn" class="info-box">
+            <h5>ASN</h5>
+            <p>{{ item.asn }}</p>
+          </div>
+          <div v-if="item.cc || item.city" class="info-box">
+            <h5>Location</h5>
+            <p>
+              <template v-if="item.cc">{{ getCountryById(item.cc).name }}</template>
+              <template v-if="item.city"> ({{ item.city }})</template>
+            </p>
+          </div>
+          <div class="info-box">
+            <h5>Price</h5>
+            <p>{{ item.price | currency }} USD</p>
+          </div>
+        </div>
+      </div>
+    </top>
+    <div class="container">
+      <template v-if="item.nodes">
+        <div class="section padded">
+          <h4>Nodes</h4>
+          <nodes :nodes="item.nodes"></nodes>
+        </div>
+      </template>
 
-    <template v-if="item.ip_addresses">
-      <h4>IP Addresses</h4>
-      <ips :ips="item.ip_addresses" :showAddresses="false"></ips>
-    </template>
+      <template v-if="item.ip_addresses">
+        <div class="section padded">
+          <h4>IP Addresses</h4>
+          <ips :ips="item.ip_addresses" :showAddresses="false"></ips>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
 <script>
+import top from '@/shared/components/top'
 import ips from '@/app/components/nodes/listIps'
 import nodes from './nodes'
 import notFound from '@/shared/components/notFound'
+import addToCart from './addToCart'
+import { mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -44,6 +90,35 @@ export default {
         city: 'City'
       },
       options: {}
+    }
+  },
+  computed: {
+    ...mapGetters({
+      cart: 'cart/cart',
+      countries: 'settings/countries'
+    })
+  },
+  methods: {
+    existsInCart (id) {
+      return this.cart.find(i => i.id === id)
+    },
+    showModal (item) {
+      this.$modal.show(addToCart, {
+        item: item
+      }, {
+        height: 'auto'
+      })
+    },
+    countIpsInNodeGroup (group) {
+      let ips = 0
+      let nodes = 0
+
+      group.nodes.forEach(node => {
+        nodes++
+        ips += node.ip_addresses.length
+      })
+
+      return this.$i18n.t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
     }
   },
   created () {
@@ -71,10 +146,17 @@ export default {
       filterable: this.filterableColumns
     }
   },
+  metaInfo () {
+    return {
+      title: this.item.friendly_name
+    }
+  },
   components: {
+    top,
     notFound,
     ips,
-    nodes
+    nodes,
+    addToCart
   }
 }
 </script>

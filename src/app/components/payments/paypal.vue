@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import paymentAPI from '@/app/api/payment.js'
+import paymentAPI from '@/app/api/payment'
 
 export default {
   data () {
@@ -40,7 +40,7 @@ export default {
           }
         })
       } else {
-        this.error404()
+        this.error404 = true
       }
     },
     redirect (redirectUrl) {

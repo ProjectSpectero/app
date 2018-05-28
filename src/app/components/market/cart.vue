@@ -7,29 +7,33 @@
         </button>
       </div>
     </top>
-
-    <div class="cart">
+    <div class="cart container">
       <div class="cart-items">
-        <div v-if="cart && cart.length" class="container-bordered">
+        <div v-if="cart && cart.length" class="section">
           <cartItem v-for="(item, index) in cart" :key="index" :item="item"></cartItem>
         </div>
         <div v-else class="cart-empty">
-          <p>{{ $i18n.t('market.CART_EMPTY') }}</p>
+          <div class="alert-msg-centered">
+            <div class="icon-shopping-cart big-icon"></div>
+            <h1>{{ $i18n.t('market.CART_EMPTY') }}</h1>
+            <p class="spaced">{{ $i18n.t('market.CART_EMPTY_MSG') }}</p>
+            <p><router-link :to="{ name: 'market' }" class="button button-info">{{ $i18n.t('market.SHOP_NOW') }}</router-link></p>
+          </div>
         </div>
       </div>
       <template v-if="cart && cart.length">
         <div class="summary-box-container">
-          <div class="summary-box container-bordered">
+          <div class="summary-box section">
             <section>
               <h3>Cart Summary</h3>
               <div class="line-items">
-                <div class="item" v-if="totals.nodes > 0">
+                <div class="item" v-if="totals.type.node > 0">
                   <p>Nodes</p>
-                  <div class="amount">{{ totals.nodes | currency }}</div>
+                  <div class="amount">{{ totals.type.node | currency }}</div>
                 </div>
-                <div class="item" v-if="totals.nodeGroups > 0">
+                <div class="item" v-if="totals.type.group > 0">
                   <p>Node Groups</p>
-                  <div class="amount">{{ totals.nodeGroups | currency }}</div>
+                  <div class="amount">{{ totals.type.group | currency }}</div>
                 </div>
 
                 <div class="separator"></div>
@@ -39,23 +43,23 @@
                   <div class="amount">{{ totals.total | currency }} USD</div>
                 </div>
               </div>
-              <button class="button button-success button-md max-width" @click.stop="pay">
+              <button class="button button-success button-md max-width" @click.stop="checkout">
                 {{ $i18n.t('misc.CHECKOUT') }}
               </button>
             </section>
           </div>
-          <div v-if="totals.monthly > 0 || totals.yearly > 0" class="summary-box container-bordered">
+          <div v-if="totals.cycle.monthly > 0 || totals.cycle.yearly > 0" class="summary-box section">
             <section class="recurring">
               <h3>Recurring Fees</h3>
               <p>There are recurring fees associated with items in this cart.</p>
               <div class="line-items">
-                <div class="item" v-if="totals.monthly > 0">
+                <div class="item" v-if="totals.cycle.monthly > 0">
                   <p>Monthly</p>
-                  <div class="amount">{{ totals.monthly | currency }} /month</div>
+                  <div class="amount">{{ totals.cycle.monthly | currency }} /month</div>
                 </div>
-                <div class="item" v-if="totals.yearly > 0">
+                <div class="item" v-if="totals.cycle.yearly > 0">
                   <p>Yearly</p>
-                  <div class="amount">{{ totals.yearly | currency }} /year</div>
+                  <div class="amount">{{ totals.cycle.yearly | currency }} /year</div>
                 </div>
               </div>
             </section>
@@ -73,26 +77,39 @@ import marketAPI from '@/app/api/market'
 import cartItem from './cartItem'
 
 export default {
-  created () {
-    this.refreshCart()
+  async created () {
+    await this.fetchPlans()
+    await this.refreshCart()
   },
   computed: {
     ...mapGetters({
-      cart: 'market/cart',
-      totals: 'market/totals'
+      cart: 'cart/cart',
+      totals: 'cart/totals'
     })
   },
   methods: {
     ...mapActions({
-      refreshCart: 'market/refreshCart',
-      clearCart: 'market/clearCart'
+      fetchPlans: 'market/fetchPlans',
+      refreshCart: 'cart/refresh',
+      clearCart: 'cart/clear'
     }),
-    pay () {
+    checkout () {
+      let cart = []
+      let term = null
+
+      this.cart.forEach((item) => {
+        cart.push({
+          id: item.id,
+          type: item.type
+        })
+        term = item.term === 'YEARLY' ? 365 : 30
+      })
+
       marketAPI.order({
         data: {
-          items: this.cart,
+          items: cart,
           meta: {
-            'term': 30
+            'term': term
           }
         },
         success: response => {
@@ -124,38 +141,16 @@ export default {
   flex: 1;
 
   .item:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
     border-bottom: none;
-  }
-  .container-bordered {
-    padding: 16px 0;
-  }
-}
-.container-bordered {
-  width: 100%;
-  margin-bottom: $pad;
-  padding: $pad;
-  border-radius: 4px;
-  border: 1px solid $color-border;
-
-  &:last-child {
-    margin-bottom: 0;
   }
 }
 .summary-box-container {
-  width: 320px;
+  width: 340px;
   margin-left: $pad;
 }
 .summary-box {
-  .separator {
-    width: 100%;
-    height: 1px;
-    display: block;
-    margin: 16px 0;
-    background-color: $color-border;
-    content: '';
-  }
+  padding: $pad;
+
   section {
     display: flex;
     flex-direction: column;

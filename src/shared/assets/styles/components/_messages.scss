@@ -1,39 +1,63 @@
 .message {
-  color: rgba(0,0,0,0.6);
-  background-color: #F2F3F5;
-  padding: 10px 14px;
-  border-radius: 4px;
-  font-size: 15px;
-  line-height: 140%;
-  font-weight: 600;
+  color: rgba(0,0,0,0.8);
+  background-color: $white;
+  padding: 16px;
+  font-size: 100%;
+  line-height: 130%;
+  font-weight: $font-semi;
   margin-bottom: 12px;
+  border: 1px solid darken($color-border, 15%);
+  border-radius: 4px;
 
   a {
     color: inherit;
     text-decoration: underline;
   }
+  p {
+    font-size: 100%;
+    font-weight: $font-regular;
+  }
+  h5 {
+    font-size: 105%;
+    margin-bottom: 0.9em;
+    font-weight: $font-bold;
+
+    [class^="icon-"] {
+      margin-right: 2px;
+    }
+  }
+  ul {
+    padding-left: 22px;
+    list-style: circle;
+    line-height: 150%;
+
+    li {
+      padding-left: 4px;
+    }
+  }
 }
 .message-info {
-  color: $white;
-  background-color: $color-info;
+  color: darken($color-info, 20%);
+  background: lighten($color-info, 53%);
+  border-color: $color-info;
 }
-.message-error {
-  color: $white;
-  background-color: $color-danger;
+.message-error, .message-danger {
+  color: darken($color-danger, 15%);
+  background: lighten($color-danger, 39%);
+  border-color: $color-danger;
 }
 .message-success {
-  color: $white;
-  background-color: $color-success;
+  color: darken($color-success, 20%);
+  background: lighten($color-success, 48%);
+  border-color: $color-success;
 }
 .message-warning {
-  color: rgba(0,0,0,0.7);
-  background-color: $color-warning;
+  color: darken($color-warning, 25%);
+  background: lighten($color-warning, 45%);
+  border-color: $color-warning;
 }
 .message-dark {
-  color: $white;
-  background-color: $color-dark;
-}
-.message-brand {
-  color: $color-primary;
-  background-color: $color-brand;
+  color: darken($color-dark, 25%);
+  background: lighten($color-dark, 75%);
+  border-color: $color-dark;
 }

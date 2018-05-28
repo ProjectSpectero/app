@@ -11,6 +11,24 @@
       <a href="#" class="button button-danger">Danger</a>
       <a href="#" class="button" disabled>Disabled</a>
       <br><br>
+      <h3>Medium</h3>
+      <a href="#" class="button button-md">Button</a>
+      <a href="#" class="button button-md button-dark">Dark</a>
+      <a href="#" class="button button-md button-info">Info</a>
+      <a href="#" class="button button-md button-success">Success</a>
+      <a href="#" class="button button-md button-warning">Warning</a>
+      <a href="#" class="button button-md button-danger">Danger</a>
+      <a href="#" class="button button-md" disabled>Disabled</a>
+      <br><br>
+      <h3>Small</h3>
+      <a href="#" class="button button-sm">Button</a>
+      <a href="#" class="button button-sm button-dark">Dark</a>
+      <a href="#" class="button button-sm button-info">Info</a>
+      <a href="#" class="button button-sm button-success">Success</a>
+      <a href="#" class="button button-sm button-warning">Warning</a>
+      <a href="#" class="button button-sm button-danger">Danger</a>
+      <a href="#" class="button button-sm" disabled>Disabled</a>
+      <br><br>
       <h3>Bordered</h3>
       <a href="#" class="button button-bordered">Button</a>
       <a href="#" class="button button-dark button-bordered">Dark</a>
@@ -44,12 +62,32 @@
       <div class="message message-success">Success message.</div>
       <div class="message message-warning">Warning message.</div>
       <div class="message message-error">Error message.</div>
-      <div class="message message-brand no-bottom-margin">Brand message.</div>
+    </section>
+    <section>
+      <h2>Message with title</h2>
+      <div class="message message-info">
+        <h5>Message Title</h5>
+        <p>Info message.</p>
+      </div>
+    </section>
+    <section>
+      <h2>Headers</h2>
+      <h1>H1 Title</h1>
+      <h2>H2 Title</h2>
+      <h3>H3 Title</h3>
+      <h4>H4 Title</h4>
+      <h5>H5 Title</h5>
+      <h6>H6 Title</h6>
     </section>
     <section>
       <h2>Inputs</h2>
       <div class="form-input">
         <input type="text" class="input" placeholder="Regular input">
+      </div>
+      <div class="form-input">
+        <float-label>
+          <input type="text" class="input" placeholder="Input with floating label" value="Hello world!">
+        </float-label>
       </div>
       <div class="form-input">
         <input type="password" class="input input-error" placeholder="Input with error">
@@ -63,7 +101,7 @@
       <div class="label">
         <label for="textarea-demo">Example Label</label>
       </div>
-      <textarea id="textarea-demo" class="input" style="width: 100%; max-width: 800px; height: 160px;">This is a textarea input.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra tristique ex rutrum egestas. Nunc porta ipsum vitae mi varius, ac porttitor massa placerat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia efficitur tellus, ut scelerisque lacus. Suspendisse nec ipsum et lectus aliquam consequat at a augue. Duis quis feugiat justo, in facilisis ante. Proin sed dui quis arcu semper convallis.</textarea>
+      <textarea id="textarea-demo" class="input" style="width: 100%; height: 160px;">This is a textarea input.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra tristique ex rutrum egestas. Nunc porta ipsum vitae mi varius, ac porttitor massa placerat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia efficitur tellus, ut scelerisque lacus. Suspendisse nec ipsum et lectus aliquam consequat at a augue. Duis quis feugiat justo, in facilisis ante. Proin sed dui quis arcu semper convallis.</textarea>
     </section>
   </div>
 </template>
@@ -79,9 +117,8 @@ section {
   border-radius: 4px;
   border: 1px solid $color-border;
 
-  h2 {
-    display: block;
-    margin-bottom: 20px;
+  .message:last-child {
+    margin-bottom: 0;
   }
 }
 </style>

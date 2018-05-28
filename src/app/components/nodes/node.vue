@@ -1,26 +1,27 @@
 <template>
   <div>
-    <div v-if="!loading">
-      <component
-        :is="component"
-        :node="node"
-        :group="group"
-        :tabs="tabs"
-        :engagements="engagements"
-        :ips="ips"
-        :action="$route.params.action"
-        @updateEngagements="updateEngagements"
-      />
-    </div>
-    <loading v-else></loading>
+    <template v-if="!error">
+      <div v-if="!loading">
+        <node-edit
+          :node="node"
+          :group="group"
+          :tabs="tabs"
+          :engagements="engagements"
+          :ips="ips"
+          :action="$route.params.action"
+          @updateEngagements="updateEngagements"></node-edit>
+      </div>
+      <loading v-else></loading>
+    </template>
+    <error v-else :item="errorItem" :code="errorCode"/>
   </div>
 </template>
 
 <script>
-import nodeAPI from '@/app/api/node.js'
+import nodeAPI from '@/app/api/node'
 import loading from '@/shared/components/loading'
+import error from '@/shared/components/errors/error'
 import nodeEdit from './nodeEdit'
-import nodeView from './nodeView'
 
 export default {
   metaInfo: {
@@ -28,21 +29,21 @@ export default {
   },
   data () {
     return {
-      loading: true,
       component: null,
       node: null,
       group: null,
       engagements: null,
       ips: null,
       tabs: [
-        { id: 1, label: 'General details', hash: '#details' },
-        { id: 2, label: 'Engagements', hash: '#engagements' },
-        { id: 3, label: 'IP Addresses', hash: '#ips' }
-      ]
+        { id: 'general', path: 'general', label: 'General Details' },
+        { id: 'engagements', path: 'engagements', label: 'Engagements' },
+        { id: 'ips', path: 'ips', label: 'IP Addresses' },
+        { id: 'system', path: 'system', label: 'System' }
+      ],
+      errorItem: 'node'
     }
   },
   created () {
-    this.setType()
     this.fetchNode()
   },
   computed: {
@@ -51,9 +52,6 @@ export default {
     }
   },
   methods: {
-    setType () {
-      this.component = (this.$route.params.action === 'edit') ? 'nodeEdit' : 'nodeView'
-    },
     async fetchGroup (groupId) {
       await nodeAPI.group({
         data: {
@@ -63,11 +61,13 @@ export default {
           if (response.data.result) {
             this.group = response.data.result
             this.loading = false
+            this.error = false
           }
         },
         fail: (e) => {
           console.log(e)
-          // this.error404()
+          this.errorItem = 'group'
+          this.error = true
         }
       })
     },
@@ -94,7 +94,8 @@ export default {
         },
         fail: (e) => {
           console.log(e)
-          // this.error404()
+          this.errorItem = 'node'
+          this.error = true
         }
       })
     },
@@ -106,28 +107,26 @@ export default {
       const varName = type.toLowerCase()
 
       method({
-        data: {
-          id: id
-        },
+        data: { id: id },
         success: response => {
           if (response.data.result) {
             this[varName] = response.data.result
+            this.error = false
           }
         },
         fail: (e) => {
           console.log(e)
+          this.errorCode = 400
+          this.errorItem = type
+          this.error = true
         }
       })
     }
   },
   components: {
     nodeEdit,
-    nodeView,
-    loading
+    loading,
+    error
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

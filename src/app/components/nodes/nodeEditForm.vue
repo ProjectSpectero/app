@@ -1,55 +1,77 @@
 <template>
-  <form @submit.prevent.stop="submit">
-    <div class="container">
-      <div class="message message-error" v-if="formError">{{ formError }}</div>
+  <div>
+    <template v-if="!error">
+      <div v-if="!loading">
+        <form @submit.prevent.stop="submit">
+          <div class="container">
+            <div class="section padded col-6 ml-0">
+              <h2>{{ $i18n.t('misc.GENERAL_INFO') }}</h2>
+              <div class="message message-error" v-if="formError">{{ formError }}</div>
 
-      <h2>{{ $i18n.t('misc.GENERAL_INFO') }}</h2>
+              <div v-for="field in formFields" :key="field.name">
+                <template v-if="field.type === 'select'">
+                  <div class="form-input" v-if="field.object">
+                    <div class="label"><label :for="field.name">{{ field.label }}</label></div>
+                    <select v-model="form[field.name]">
+                      <option v-for="object in field.object" :key="object.id" :value="field.objectKey ? object[field.objectKey] : object">
+                        <span v-if="field.objectKey">{{ object[field.objectKey] }}</span>
+                        <span v-else>{{ object }}</span>
+                      </option>
+                    </select>
+                  </div>
+                </template>
+                <template v-else-if="field.type === 'model'">
+                  <div class="form-input" v-if="marketModels">
+                    <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.MARKET_MODEL') }}</label></div>
+                    <div class="side-by-side">
+                      <select v-model="form.market_model">
+                        <option v-for="model in marketModels" :key="model" :value="model">
+                          {{ $i18n.t(`nodes.MODEL.${model}`) }}
+                        </option>
+                      </select>
+                      <tooltip id="nodes.topics.marketModels"></tooltip>
+                    </div>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="form-input">
+                    <div class="label"><label :for="field.name">{{ field.label }}</label></div>
+                    <input
+                      :type="field.type"
+                      v-model="form[field.name]"
+                      :name="field.name"
+                      :id="field.name"
+                      :placeholder="field.placeholder"
+                      class="input max-width"
+                      :class="{'input-error': errors.has(field.name)}"
+                      :disabled="formLoading"
+                      v-validate="rules[field.name]"
+                      :data-vv-as="field.name">
 
-      <div v-for="field in formFields" :key="field.name">
-        <template v-if="field.type === 'select'">
-          <div class="form-input" v-if="field.object">
-            <div class="label"><label :for="field.name">{{ field.label }}</label></div>
-            <select v-model="form[field.name]">
-              <option v-for="object in field.object" :key="object.id" :value="field.objectKey ? object[field.objectKey] : object">
-                <span v-if="field.objectKey">{{ object[field.objectKey] }}</span>
-                <span v-else>{{ object }}</span>
-              </option>
-            </select>
+                    <span v-show="errors.has(field.name)" class="input-error-message">
+                      {{ errors.first(field.name) }}
+                    </span>
+                  </div>
+                </template>
+              </div>
+              <button v-if="formFields" type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+                {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
+              </button>
+            </div>
           </div>
-        </template>
-        <template v-else>
-          <div class="form-input">
-            <div class="label"><label :for="field.name">{{ field.label }}</label></div>
-            <input
-              :type="field.type"
-              v-model="form[field.name]"
-              :name="field.name"
-              :id="field.name"
-              :placeholder="field.placeholder"
-              class="input max-width"
-              :class="{'input-error': errors.has(field.name)}"
-              :disabled="formLoading"
-              v-validate="rules[field.name]"
-              :data-vv-as="field.name">
-
-            <span v-show="errors.has(field.name)" class="input-error-message">
-              {{ errors.first(field.name) }}
-            </span>
-          </div>
-        </template>
+        </form>
       </div>
-    </div>
-
-    <button type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
-      {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
-    </button>
-  </form>
+      <loading v-else></loading>
+    </template>
+    <error v-else :item="errorItem" :code="errorCode"/>
+  </div>
 </template>
 
 <script>
-import nodeAPI from '@/app/api/node.js'
-
-// Node group should be sent separately (See 'Assign Node To Group')
+import nodeAPI from '@/app/api/node'
+import error from '@/shared/components/errors/error'
+import loading from '@/shared/components/loading'
+import tooltip from '@/shared/components/tooltip'
 
 export default {
   props: {
@@ -57,21 +79,22 @@ export default {
   },
   data () {
     return {
+      errorCode: 400,
+      errorItem: 'groups',
       groups: null,
+      totalGroups: null,
+      processedGroups: 0,
+      groupsPage: 1,
       formError: null,
       formLoading: false,
       form: null,
-      loading: true,
-      protocols: [
-        'http',
-        'https'
-      ],
+      protocols: ['http', 'https'],
+      formFields: null,
       marketModels: [
         'UNLISTED',
         'LISTED_SHARED',
         'LISTED_DEDICATED'
       ],
-      formFields: null,
       rules: {
         friendly_name: {
           max: 50
@@ -104,14 +127,15 @@ export default {
     await this.fetchGroups()
 
     this.formFields = [
-      { name: 'friendly_name', label: this.$i18n.t('misc.LABEL_FRIENDLY_NAME'), placeholder: this.$i18n.t('misc.LABEL_FRIENDLY_NAME'), type: 'text' },
-      { name: 'ip', label: this.$i18n.t('misc.LABEL_IP'), placeholder: this.$i18n.t('misc.LABEL_IP'), type: 'text' },
-      { name: 'city', label: this.$i18n.t('misc.LABEL_CITY'), placeholder: this.$i18n.t('misc.LABEL_CITY'), type: 'text' },
-      { name: 'access_token', label: this.$i18n.t('misc.LABEL_ACCESS_TOKEN'), placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'), type: 'text' },
-      { name: 'protocol', label: this.$i18n.t('misc.LABEL_PROTOCOL'), placeholder: this.$i18n.t('misc.LABEL_PROTOCOL'), type: 'select', object: this.protocols, objectKey: null },
-      { name: 'market_model', label: this.$i18n.t('misc.LABEL_MARKET_MODEL'), placeholder: this.$i18n.t('misc.LABEL_MARKET_MODEL'), type: 'select', object: this.marketModels, objectKey: null },
-      { name: 'price', label: this.$i18n.t('misc.LABEL_PRICE'), placeholder: this.$i18n.t('misc.LABEL_PRICE'), type: 'number' },
-      { name: 'group_id', label: this.$i18n.t('misc.LABEL_NODE_GROUP'), type: 'select', object: this.groups, objectKey: 'id' }
+      { name: 'friendly_name', label: this.$i18n.t('misc.FRIENDLY_NAME'), placeholder: this.$i18n.t('misc.FRIENDLY_NAME'), type: 'text' },
+      { name: 'ip', label: this.$i18n.t('misc.IP'), placeholder: this.$i18n.t('misc.IP'), type: 'text' },
+      { name: 'port', label: this.$i18n.t('misc.PORT_NUMBER'), placeholder: this.$i18n.t('misc.PORT_NUMBER'), type: 'number' },
+      { name: 'city', label: this.$i18n.t('misc.CITY'), placeholder: this.$i18n.t('misc.CITY'), type: 'text' },
+      { name: 'access_token', label: this.$i18n.t('misc.ACCESS_TOKEN'), placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'), type: 'text' },
+      { name: 'protocol', label: this.$i18n.t('misc.PROTOCOL'), placeholder: this.$i18n.t('misc.PROTOCOL'), type: 'select', object: this.protocols, objectKey: null },
+      { name: 'market_model', label: this.$i18n.t('misc.MARKET_MODEL'), placeholder: this.$i18n.t('misc.MARKET_MODEL'), type: 'model', object: this.marketModels, objectKey: null },
+      { name: 'price', label: this.$i18n.t('misc.PRICE'), placeholder: this.$i18n.t('misc.PRICE'), type: 'number' },
+      { name: 'group_id', label: this.$i18n.t('misc.NODE_GROUP'), type: 'select', object: this.groups, objectKey: 'id' }
     ]
   },
   methods: {
@@ -120,10 +144,35 @@ export default {
 
       await nodeAPI.edit({
         data: this.form,
-        success: response => {
+        success: async response => {
           if (response.data.result) {
             this.formLoading = false
             this.$toasted.success(this.$i18n.t('nodes.UPDATE_SUCCESS'))
+
+            // Updating the group requires a different API call
+            if (this.node.group_id !== this.form.group_id) {
+              await this.updateGroup(this.form.group_id)
+            }
+          }
+        },
+        fail: error => {
+          this.$toasted.error(this.errorAPI(error, 'nodes'))
+          this.formLoading = false
+        }
+      })
+    },
+    async updateGroup (id) {
+      this.formLoading = true
+
+      await nodeAPI.updateGroupFromNode({
+        data: {
+          node_id: this.form.id,
+          group_id: id
+        },
+        success: response => {
+          if (response.data.result) {
+            this.formLoading = false
+            this.$toasted.success(this.$i18n.t('nodes.GROUP_FROM_NODE_UPDATE_SUCCESS'))
           }
         },
         fail: error => {
@@ -133,23 +182,36 @@ export default {
       })
     },
     async fetchGroups () {
-      await nodeAPI.groups({
-        success: response => {
-          if (response.data.result) {
-            this.groups = response.data.result
+      // Group fetching is paged in chunks of 10, so we need to keep
+      // fetching until we reach the total amount (received in pagination)
+      while (this.totalGroups === null || this.totalGroups !== this.processedGroups) {
+        await nodeAPI.groups({
+          perPage: 10,
+          groupsPage: this.groupsPage,
+          success: response => {
+            const pagination = response.data.pagination
+            this.totalGroups = pagination.total
+            this.processedGroups = this.processedGroups + response.data.result.length
+            this.groupsPage++
+            this.groups = this.groups ? [...this.groups, ...response.data.result] : response.data.result
+            this.error = false
+            this.loading = false
+          },
+          fail: e => {
+            console.log(e)
+            this.loading = false
+            this.error = true
+            this.totalGroups = 0
+            this.processedGroups = 0
           }
-        },
-        fail: (e) => {
-          console.log(e)
-          // this.error404()
-        }
-      })
+        })
+      }
     }
+  },
+  components: {
+    loading,
+    error,
+    tooltip
   }
 }
-
 </script>
-
-<style lang="scss" scoped>
-
-</style>

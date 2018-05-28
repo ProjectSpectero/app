@@ -2,7 +2,7 @@
   <div>
     <form id="form-login">
       <div class="message message-info" v-if="!formError && this.$route.query.redirect">
-        Please log in to continue.
+        {{ $i18n.t('users.PLEASE_LOGIN') }}
       </div>
 
       <div class="message message-error" v-if="formError">{{ formError }}</div>
@@ -12,7 +12,7 @@
           type="text"
           v-model="username"
           name="username"
-          placeholder="Email address"
+          :placeholder="$i18n.t('users.PLACEHOLDER_EMAIL')"
           class="input max-width"
           :class="{'input-error': errors.has('username')}"
           :disabled="formLoading"
@@ -29,7 +29,7 @@
           type="password"
           v-model="password"
           name="password"
-          placeholder="Password"
+          :placeholder="$i18n.t('users.PLACEHOLDER_PASSWORD')"
           class="input max-width"
           :class="{'input-error': errors.has('password')}"
           :disabled="formLoading"
@@ -46,7 +46,10 @@
       </button>
     </form>
     <div class="bottom-link">
-      <router-link :to="{ name: 'register' }">Don't have an account? <strong>Create one now</strong></router-link>
+      <router-link :to="{ name: 'register' }">
+        {{ $i18n.t('users.NO_ACCOUNT') }}
+        <strong>{{ $i18n.t('users.CREATE_ACCOUNT_NOW') }}</strong>
+      </router-link>
     </div>
   </div>
 </template>
@@ -83,11 +86,10 @@ export default {
       }
     },
     submit () {
-      this.$validator.validateAll().then((result) => {
+      this.$validator.validateAll().then(result => {
         if (!result) {
           this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
         } else {
-          // Disable form while HTTP request being made
           this.formLoading = true
           this.processLogin()
         }
@@ -99,8 +101,8 @@ export default {
           username: this.username,
           password: this.password
         },
-        loginSuccess: response => {
-          this.fetchUser()
+        loginSuccess: async response => {
+          await this.fetchUser()
         },
         loginFailed: error => {
           this.dealWithError(error)
@@ -114,7 +116,7 @@ export default {
           this.storeUser(response.data.result)
 
           if (this.$route.query.redirect) {
-            this.$router.push({ name: this.$route.query.redirect })
+            this.$router.push({ path: this.$route.query.redirect })
           } else {
             this.$router.push({ name: 'dashboard' })
           }

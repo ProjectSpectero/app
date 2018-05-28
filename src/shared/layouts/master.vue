@@ -5,15 +5,18 @@
       <modals-container/>
       <router-view></router-view>
     </div>
+    <help></help>
   </div>
 </template>
 
 <script>
 import sidebar from '@/shared/components/sidebar'
+import help from '@/shared/components/docs/panel'
 
 export default {
   components: {
-    sidebar
+    sidebar,
+    help
   }
 }
 </script>
@@ -25,7 +28,6 @@ export default {
 }
 .content {
   height: 100vh;
-  padding: $pad;
   overflow: auto;
   flex: 1;
   padding-bottom: 0;

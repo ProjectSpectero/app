@@ -4,6 +4,8 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
+const BourbonNeat = require('bourbon-neat').includePaths[0]
+
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -39,7 +41,8 @@ module.exports = {
       '@assets': path.resolve(__dirname, '../src/shared/assets'),
       '@styles': path.resolve(__dirname, '../src/shared/assets/styles'),
       '@img': path.resolve(__dirname, '../src/shared/assets/img'),
-      '@fonts': path.resolve(__dirname, '../src/shared/assets/fonts')
+      '@fonts': path.resolve(__dirname, '../src/shared/assets/fonts'),
+      '@neat': BourbonNeat
     }
   },
   module: {

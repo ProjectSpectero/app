@@ -1,23 +1,29 @@
 <template>
   <div>
-    <top title="Edit Group"></top>
-    <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
+    <template v-if="!error">
+      <top :title="$i18n.t('nodes.EDIT_GROUP')"></top>
+      <div v-if="!loading">
+        <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
 
-    <div v-if="!loading">
-      <edit-form v-if="activeTab === 1" :group="group"></edit-form>
-      <list-engagements v-else :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
-    </div>
-    <loading v-else></loading>
+        <div>
+          <edit-form v-if="activeTab === 'general'" :group="group"></edit-form>
+          <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
+        </div>
+      </div>
+      <loading v-else></loading>
+    </template>
+    <error v-else :item="errorItem" :code="errorCode"/>
   </div>
 </template>
 
 <script>
-import nodeAPI from '@/app/api/node.js'
-import top from '@/shared/components/top'
-import loading from '@/shared/components/loading'
+import nodeAPI from '@/app/api/node'
 import tabs from './tabs'
 import editForm from './groupEditForm'
 import listEngagements from './listEngagements'
+import top from '@/shared/components/top'
+import error from '@/shared/components/errors/error'
+import loading from '@/shared/components/loading'
 
 export default {
   metaInfo: {
@@ -26,13 +32,14 @@ export default {
   data () {
     return {
       tabs: [
-        { id: 1, label: 'General details', hash: '#details' },
-        { id: 2, label: 'Engagements', hash: '#engagements' }
+        { id: 'general', path: 'general', 'label': 'General Details' },
+        { id: 'engagements', path: 'engagements', 'label': 'Engagements' }
       ],
-      activeTab: 1,
+      activeTab: null,
       group: null,
       engagements: [],
-      loading: true
+      errorItem: 'group',
+      errorCode: 404
     }
   },
   created () {
@@ -47,56 +54,57 @@ export default {
         success: async response => {
           if (response.data.result) {
             this.group = response.data.result
+            this.error = false
 
             await this.fetchEngagements(this.group.id)
 
             // Chech if the url has any anchors and load it immediately
             await this.parseTab()
           } else {
-            console.log('wrong info')
-            // this.error404()
+            this.error = true
           }
         },
         fail: (e) => {
           console.log(e)
-          // this.error404()
+          this.error = true
+          this.loading = false
         }
       })
     },
     updateEngagements () {
-      this.$emit('updateEngagements')
-    },
-    parseTab () {
-      if (window.location.hash) {
-        const hash = window.location.hash.toString()
-        const tab = this.tabs.find(t => t.hash === hash)
-
-        if (tab) {
-          this.switchTab(tab)
-        }
-      } else {
-        this.switchTab(this.tabs[0])
-      }
-    },
-    switchTab (data) {
-      this.activeTab = data.id
-      this.$router.push({ name: 'groupEdit', params: { id: this.group.id }, hash: data.hash })
+      this.loading = true
+      this.fetchGroup(this.$route.params.id)
     },
     fetchEngagements (id) {
       nodeAPI.groupEngagements({
-        data: {
-          id: id
-        },
+        data: { id: id },
         success: response => {
-          if (response.data.result) {
-            this.engagements = response.data.result
-            this.loading = false
-          }
+          this.engagements = response.data.result
+          this.loading = false
+          this.error = false
         },
         fail: (e) => {
           console.log(e)
+          this.errorItem = 'engagements'
+          this.errorCode = 400
+          this.error = true
         }
       })
+    },
+    parseTab () {
+      let tabId = this.$route.params.tabAction
+      let find = this.tabs.find(i => i.id === tabId)
+
+      // Handles defaulting to first tab if no tab defined in route
+      if (tabId === undefined) {
+        this.switchTab(this.tabs[0])
+      } else {
+        this.activeTab = (find !== undefined) ? tabId : 'notFound'
+      }
+    },
+    switchTab (tab) {
+      this.activeTab = tab.id
+      this.$router.push({ name: 'groupEdit', params: { id: this.group.id, tabAction: tab.path } })
     }
   },
   watch: {
@@ -104,6 +112,7 @@ export default {
   },
   components: {
     top,
+    error,
     loading,
     tabs,
     editForm,

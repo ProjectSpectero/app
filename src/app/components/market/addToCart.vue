@@ -7,11 +7,11 @@
     <div class="modal-content">
       <h3>{{ item.friendly_name }}</h3>
 
-      <div
+      <!-- <div
         v-if="item.plan"
         v-html="$i18n.t(`market.PLAN_WARNING`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })"
-        class="message message-brand">
-      </div>
+        class="message message-info">
+      </div> -->
 
       <div
         v-if="item.type === 'NODE_GROUP'"
@@ -25,7 +25,6 @@
         <li v-if="item.city">City: <strong>{{ item.city }}</strong></li>
         <li v-if="item.cc">Country Code: <strong>{{ item.cc }}</strong></li>
         <li>Market Model: <strong>{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</strong></li>
-        <li>Status: <strong>{{ $i18n.t(`nodes.STATUS.${item.status}`) }}</strong></li>
       </ul>
 
       <div class="actions">
@@ -40,11 +39,11 @@
             <h5><span class="icon-shopping-cart"></span> {{ changeTerm ? 'Change term' : 'Purchase access' }}</h5>
             <div>
               <div class="terms">
-                <div :class="{ active: term === 'monthly' }" v-on:click="toggleTerm('monthly')">
+                <div :class="{ active: term === 'MONTHLY' }" v-on:click="toggleTerm('MONTHLY')">
                   <label>Monthly</label>
                   <span class="price">{{ item.price | currency}} per month</span>
                 </div>
-                <div :class="{ active: term === 'yearly', unavailable: !item.plan }" v-on:click="item.plan ? toggleTerm('yearly') : false">
+                <div :class="{ active: term === 'YEARLY', unavailable: !item.plan }" v-on:click="item.plan ? toggleTerm('YEARLY') : false">
                   <label>Yearly</label>
                   <span class="price">
                     <template v-if="item.plan">
@@ -71,11 +70,11 @@
               <div class="details">
                 <ul>
                   <li>
-                    Price: <strong>{{ (term === 'yearly') ? yearlyPrice : item.price | currency }}</strong><br>
+                    Price: <strong>{{ (term === 'YEARLY') ? yearlyPrice : item.price | currency }}</strong><br>
                     <span class="link remove" @click="remove">Remove from cart</span>
                   </li>
                   <li>
-                    Term: <strong>{{ $i18n.t(`market.TERM.${term.toUpperCase()}`) }}</strong><br>
+                    Term: <strong>{{ $i18n.t(`market.TERM.${term}`) }}</strong><br>
                     <span class="link" @click="showTerms">Change term</span>
                   </li>
                 </ul>
@@ -88,7 +87,6 @@
           </div>
         </template>
       </div>
-
     </div>
   </div>
 </template>
@@ -99,7 +97,7 @@ import { mapActions } from 'vuex'
 export default {
   data () {
     return {
-      term: 'monthly',
+      term: 'MONTHLY',
       showChangeTerm: false
     }
   },
@@ -108,23 +106,29 @@ export default {
   },
   methods: {
     ...mapActions({
-      addToCart: 'market/addToCart',
-      removeFromCart: 'market/removeFromCart',
-      changeTerm: 'market/changeTerm'
+      addToCart: 'cart/add',
+      removeFromCart: 'cart/remove',
+      changeTerm: 'cart/changeTerm',
+      refreshCart: 'cart/refresh'
     }),
-    add () {
+    async add () {
       this.showChangeTerm = false
 
-      this.addToCart({
-        item: this.item,
-        term: this.term,
-        plan: this.plan
-      })
-      this.$toasted.success(this.$i18n.t('market.ADDED_TO_CART', { name: this.item.friendly_name }))
+      try {
+        await this.addToCart({
+          id: this.item.id,
+          type: this.item.type,
+          term: this.term,
+          plan: this.plan ? this.plan.id : null
+        })
+        this.$toasted.success(this.$i18n.t('market.ADDED_TO_CART', { name: this.item.friendly_name }))
+      } catch (e) {
+        this.$toasted.error(this.$i18n.t(`market.${e.message}`, { name: this.item.friendly_name }))
+      }
     },
     remove () {
-      this.removeFromCart(this.item.id)
-      this.$toasted.error(this.$i18n.t('market.REMOVED_FROM_CART', { name: this.item.friendly_name }))
+      this.removeFromCart(this.item)
+      this.$toasted.show(this.$i18n.t('market.REMOVED_FROM_CART', { name: this.item.friendly_name }))
     },
     toggleTerm (term) {
       this.term = term
@@ -136,29 +140,30 @@ export default {
       this.showChangeTerm = false
 
       this.changeTerm({
-        item: this.item,
+        id: this.item.id,
+        type: this.item.type,
         term: this.term
       })
-      this.$toasted.info(this.$i18n.t('market.TERM_MODIFIED', { term: this.term }))
+      this.$toasted.info(this.$i18n.t('market.TERM_MODIFIED'))
     }
   },
   computed: {
     inCart () {
-      return this.$store.getters['market/checkIfInCart'](this.item.id)
+      return this.$store.getters['cart/getItem'](this.item.id, this.item.type)
     },
     plan () {
-      return this.$store.getters['market/plan'](this.item.plan)
+      return this.item.plan ? this.$store.getters['market/plan'](this.item.plan) : null
     },
     yearlyPrice () {
-      let price = this.item.price * 12
+      let price = (this.item.price / 30) * 365
       if (this.plan && this.plan['yearly_discount_pct']) {
-        price -= this.item.price * 12 * this.plan['yearly_discount_pct']
+        price -= price * this.plan['yearly_discount_pct']
       }
-      return price
+      return Math.floor(price) // floor the price for marketing purposes
     }
   },
   created: function () {
-    if (this.inCart !== false) {
+    if (this.inCart) {
       this.term = this.inCart.term
     }
   }
@@ -166,9 +171,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h3 {
-  font-weight: $font-semi;
-}
 .actions {
   margin-top: $pad;
 }
@@ -190,7 +192,6 @@ h3 {
   h5 {
     font-size: 120%;
     line-height: 100%;
-    font-weight: $font-semi;
     margin-bottom: 16px;
 
     [class^="icon-"] {

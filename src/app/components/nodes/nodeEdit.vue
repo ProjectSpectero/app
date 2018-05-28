@@ -1,22 +1,67 @@
 <template>
   <div>
-    <top title="Edit Node"></top>
+    <top :title="$i18n.t('nodes.EDIT_NODE')">
+      <div slot="sub" class="sub">
+        <div class="col-info">
+          <div class="info-box">
+            <h5>Name</h5>
+            <p>{{ node.friendly_name }}</p>
+          </div>
+          <div class="info-box">
+            <h5>Market Model</h5>
+            <div :class="'badge'">{{ $i18n.t(`nodes.MODEL.${node.market_model}`) }}</div>
+          </div>
+          <div class="info-box">
+            <h5>Status</h5>
+            <div :class="'badge status-' + node.status">{{ $i18n.t(`nodes.STATUS.${node.status}`) }}</div>
+          </div>
+          <div class="info-box">
+            <h5>IP/Port</h5>
+            <p>{{ node.ip }}:{{ node.port }}</p>
+          </div>
+          <div v-if="node.asn" class="info-box">
+            <h5>ASN</h5>
+            <p>{{ node.asn }}</p>
+          </div>
+          <div v-if="node.cc || node.city" class="info-box">
+            <h5>Location</h5>
+            <p>
+              <template v-if="node.cc">{{ getCountryById(node.cc).name }}</template>
+              <template v-if="node.city"> ({{ node.city }})</template>
+            </p>
+          </div>
+          <div class="info-box">
+            <h5>Price</h5>
+            <p>{{ node.price | currency }} USD</p>
+          </div>
+        </div>
+      </div>
+    </top>
+
     <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
 
-    <edit-form v-if="activeTab === 1" :node="node"></edit-form>
-    <list-engagements v-else-if="activeTab === 2" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
-    <list-ips v-else :ips="ips"></list-ips>
+    <edit-form v-if="activeTab === 'general'" :node="node"></edit-form>
+    <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
+    <list-ips v-else-if="activeTab === 'ips'" :ips="ips"></list-ips>
+    <list-system v-else-if="activeTab === 'system'" :node="node"></list-system>
+    <not-found v-else></not-found>
   </div>
 </template>
 
 <script>
-import top from '@/shared/components/top'
+import { mapGetters } from 'vuex'
 import tabs from './tabs'
 import editForm from './nodeEditForm'
 import listEngagements from './listEngagements'
 import listIps from './listIps'
+import listSystem from './listSystem'
+import top from '@/shared/components/top'
+import notFound from '@/shared/components/404'
 
 export default {
+  metaInfo: {
+    title: 'Edit Node'
+  },
   props: {
     action: String,
     node: Object,
@@ -27,35 +72,35 @@ export default {
   },
   data () {
     return {
-      loading: true,
-      activeTab: 1
+      activeTab: null
     }
   },
-  metaInfo: {
-    title: 'Edit Node'
+  computed: {
+    ...mapGetters({
+      countries: 'settings/countries'
+    })
   },
   created () {
     this.parseTab()
   },
   methods: {
-    parseTab () {
-      if (window.location.hash) {
-        const hash = window.location.hash.toString()
-        const tab = this.tabs.find(t => t.hash === hash)
-
-        if (tab) {
-          this.switchTab(tab)
-        }
-      } else {
-        this.switchTab(this.tabs[0])
-      }
-    },
     updateEngagements () {
       this.$emit('updateEngagements')
     },
+    parseTab () {
+      let tabId = this.$route.params.tabAction
+      let find = this.tabs.find(i => i.id === tabId)
+
+      // Handles defaulting to first tab if no tab defined in route
+      if (tabId === undefined) {
+        this.switchTab(this.tabs[0])
+      } else {
+        this.activeTab = (find !== undefined) ? tabId : 'notFound'
+      }
+    },
     switchTab (tab) {
       this.activeTab = tab.id
-      this.$router.push({ name: 'node', params: { action: this.action, id: this.node.id }, hash: tab.hash })
+      this.$router.push({ name: 'node', params: { id: this.node.id, tabAction: tab.path }, action: tab.path })
     }
   },
   watch: {
@@ -66,7 +111,23 @@ export default {
     tabs,
     editForm,
     listEngagements,
-    listIps
+    listIps,
+    listSystem,
+    notFound
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~@styles/components/badges';
+
+.badge {
+  &.status-CONFIRMED, &.status-ENABLED {
+    @extend .badge-success;
+  }
+
+  &.status-UNCONFIRMED, &.status-DISABLED {
+    @extend .badge-error;
+  }
+}
+</style>

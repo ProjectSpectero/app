@@ -1,12 +1,14 @@
 <template>
-  <div class="restart">
-    One or more operations require that you restart the {{ service }} service.
-    <button @click.stop.prevent="restart" class="button">Restart {{ service }} now</button>
+  <div>
+    <div class="message message-warning">
+      One or more operations require that you restart the {{ service }} service.
+    </div>
+    <button @click.stop.prevent="restart" class="button button-dark">Restart {{ service }} Now</button>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import serviceAPI from '../../../api/service.js'
 
 export default {
@@ -28,6 +30,7 @@ export default {
           this.$toasted.show(this.$i18n.t('services.RESTART_SUCCESS'))
         },
         fail: error => {
+          console.error(error)
           this.$toasted.error(this.$i18n.t('services.RESTART_ERROR'))
         }
       })
@@ -35,3 +38,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>

@@ -1,37 +1,54 @@
 <template>
-  <div v-if="tableData">
-    <top title="Invoices"></top>
-    <div class="content-split">
-      <div class="split-item split-list filters-side">
-        <router-link v-for="s in status" :key="s" :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ badge: currentStatus === s }">
-          <span>{{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}</span>
-        </router-link>
+  <div>
+    <template v-if="!error">
+      <top :title="$i18n.t('misc.INVOICES')">
+        <help-button obj="invoices.topics"></help-button>
+      </top>
+      <div v-if="tableData">
+        <div class="container content-split">
+          <div class="split-item split-list">
+            <router-link v-for="s in status" :key="s" :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
+              {{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}
+            </router-link>
+          </div>
+          <div class="split-item split-details">
+            <template v-if="tableData.length">
+              <invoices-list
+                :searchId="searchId"
+                :pagination="pagination"
+                :tableData="tableData"
+                @changedPage="changedPage"
+                @sortByColumn="sortByColumn">
+              </invoices-list>
+            </template>
+            <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'invoices' })"></not-found>
+          </div>
+        </div>
       </div>
-      <div class="split-item split-details">
-        <invoices-list
-          :searchId="searchId"
-          :pagination="pagination"
-          :tableData="tableData"
-          @changedPage="changedPage"
-          @sortByColumn="sortByColumn">
-        </invoices-list>
-      </div>
-    </div>
+      <loading v-else></loading>
+    </template>
+    <error v-else :item="errorItem" :code="errorCode"/>
   </div>
 </template>
 
 <script>
-import top from '@/shared/components/top'
-import paginator from '@/shared/components/paginator'
-import invoicesList from './list'
-import invoiceAPI from '@/app/api/invoice.js'
 import filtersMixin from '@/app/mixins/listFilters'
+import invoiceAPI from '@/app/api/invoice'
+import invoicesList from './list'
+import paginator from '@/shared/components/paginator'
+import top from '@/shared/components/top'
+import error from '@/shared/components/errors/error'
+import loading from '@/shared/components/loading'
+import notFound from '@/shared/components/notFound'
+import helpButton from '@/shared/components/docs/button'
 
 export default {
   mixins: [filtersMixin],
   data () {
     return {
-      status: ['all', 'paid', 'unpaid']
+      perPage: 10,
+      status: ['all', 'paid', 'unpaid'],
+      errorItem: 'invoices'
     }
   },
   created () {
@@ -56,18 +73,20 @@ export default {
           rules: this.rules,
           success: async response => {
             if (response.data.result.searchId) {
+              this.error = false
               this.searchId = response.data.result.searchId
             }
 
-            console.log('Fetching with searchId', this.searchId)
-
             this.fetchInvoices(page)
           },
-          fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
+          fail: e => {
+            console.log(e)
+            this.errorCode = 400
+            this.error = true
+          }
         })
       } else {
         this.searchId = null
-        console.log('Fetching with searchId', this.searchId)
         this.fetchInvoices(page)
       }
     },
@@ -77,10 +96,15 @@ export default {
         page: page,
         limit: this.perPage,
         success: response => {
+          this.error = false
           this.pagination = response.data.pagination
           this.tableData = response.data.result
         },
-        fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
+        fail: e => {
+          console.log(e)
+          this.errorCode = 400
+          this.error = true
+        }
       })
     }
   },
@@ -95,8 +119,12 @@ export default {
   },
   components: {
     top,
+    error,
     paginator,
-    invoicesList
+    invoicesList,
+    loading,
+    notFound,
+    helpButton
   },
   metaInfo: {
     title: 'Invoices'
@@ -105,14 +133,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@styles/components/badges';
 
-.badge {
-  &.status-paid {
-    @extend .badge-success
-  }
-  &.status-unpaid {
-    @extend .badge-error
-  }
-}
 </style>

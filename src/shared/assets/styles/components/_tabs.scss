@@ -1,0 +1,29 @@
+.tabs {
+  margin: $pad $pad 0 $pad;
+  padding: 6px;
+  background: $white;
+  border-radius: 4px;
+  border: 1px solid $color-border;
+  overflow: hidden;
+
+  > li {
+    display: inline-block;
+    margin-right: 4px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.1s ease-out;
+    border-radius: 4px;
+
+    &:hover {
+      color: $color-info;
+      background: lighten($color-info, 54%);
+    }
+    &.active {
+      font-weight: $font-semi;
+      color: $color-info;
+
+      background: $color-info;
+      color: #fff;
+    }
+  }
+}

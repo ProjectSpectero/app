@@ -1,56 +1,124 @@
 <template>
-  <div v-if="order">
-    <top title="Order Details">
-      <router-link class="button" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
-        View Invoice
-      </router-link>
+  <div>
+    <template v-if="!error">
+      <div v-if="order">
+        <top title="Order Details" :subtitle="'Order Number: ' + order.id.toString().padStart(5, '0')">
+          <router-link v-if="!loading && order.status === 'ACTIVE'" class="button button-info" :to="{ name: 'resources', params: { id: order.id } }">
+            <span class="icon-package"></span> {{ $i18n.t('orders.VIEW_RESOURCES') }}
+          </router-link>
 
-      <div class="inline" v-if="order.last_invoice && order.last_invoice.status === 'UNPAID'">
-        <router-link class="button button-success" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
-          Pay Now
-        </router-link>
-      </div>
-    </top>
-    <div v-if="!loading" class="order">
-      <div class="container">
-        <div class="order-info">
-          <div class="info-box">
-            <h5>Reference Number</h5>
-            <p>{{ order.id }}</p>
+          <dropdown>
+            <template slot="btn">
+              <button class="button">Actions</button>
+            </template>
+            <template slot="body">
+              <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">
+                <span class="icon-tag"></span> {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
+              </router-link>
+
+              <template v-if="order.status !== 'CANCELLED'">
+                <router-link v-if="order.last_invoice && order.last_invoice.status === 'UNPAID'" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
+                  <span class="icon-dollar-sign"></span> {{ $i18n.t('misc.PAY_NOW') }}
+                </router-link>
+                <router-link v-if="!loading && order.status === 'ACTIVE'" :to="{ name: 'resources', params: { id: order.id } }">
+                  <span class="icon-package"></span> {{ $i18n.t('orders.VIEW_RESOURCES') }}
+                </router-link>
+                <a @click.stop="cancel(order.id)" class="danger">
+                  <span class="icon-x-circle"></span> {{ $i18n.t('misc.CANCEL') }} {{ $i18n.t('misc.ORDER') }}
+                </a>
+              </template>
+            </template>
+          </dropdown>
+
+          <div v-if="!loading" slot="sub" class="sub">
+            <div class="col-info">
+              <div class="info-box">
+                <h5>{{ $i18n.t('misc.ORDER_DATE') }}</h5>
+                <p>{{ order.created_at | moment('MMM D, YYYY') }}</p>
+              </div>
+              <div class="info-box">
+                <h5>{{ $i18n.t('misc.TERM') }}</h5>
+                <p>{{ $i18n.t('market.TERM.' + ((order.term === 365) ? 'YEARLY' : 'MONTHLY')) }}</p>
+              </div>
+              <div class="info-box">
+                <h5>{{ $i18n.t('misc.STATUS') }}</h5>
+                <div :class="'badge status-' + order.status.toLowerCase()">
+                  {{ $i18n.t('orders.ORDER_STATUS.' + order.status) }}
+                </div>
+              </div>
+              <div class="info-box">
+                <h5>{{ $i18n.t('misc.ORDER') }} {{ $i18n.t('misc.TOTAL') }}</h5>
+                <p>{{ order.last_invoice.amount | currency }}</p>
+              </div>
+              <div class="info-box">
+                <h5>{{ $i18n.t('misc.NEXT_DUE_DATE') }}</h5>
+                <p>{{ order.due_next | moment('MMM D, YYYY') }}</p>
+                <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">
+                  {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
+                </router-link>
+              </div>
+            </div>
           </div>
-          <div class="info-box">
-            <h5>Status</h5>
-            <p>{{ order.status }}</p>
-          </div>
-          <div class="info-box">
-            <h5>Total</h5>
-            <p>{{ order.last_invoice.amount | currency }} {{ order.last_invoice.currency }}</p>
-          </div>
-          <div class="info-box">
-            <h5>Next Due Date</h5>
-            <p>{{ order.due_next | moment('MMM D, YYYY') }}</p>
-            <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">View Latest Invoice</router-link>
+        </top>
+        <div v-if="!loading">
+          <div class="container">
+            {{ verified }} {{ verificationErrors }} {{ order.last_invoice }}
+            <template v-if="verified && !verificationErrors && order.last_invoice.status === 'UNPAID'">
+              <alert-outstanding :due="due" :invoice="order.last_invoice"></alert-outstanding>
+            </template>
+            <template v-else-if="verified && verificationErrors && order.last_invoice.status !== 'PAID' && order.last_invoice.status !== 'CANCELLED'">
+              <alert-processing :errorBag="verificationErrors" :invoice="order.last_invoice" @update="fetchOrder"></alert-processing>
+            </template>
+
+            <section class="col-12">
+              <h3>Items in this order</h3>
+              <div class="filter-bar">
+                <sort-dropdown :buttonText="'Sort Items By'" :sortFields="sort.fields" @sortUpdate="sortUpdate"></sort-dropdown>
+              </div>
+              <order-item v-for="(item, index) in order.line_items" :key="index" :item="item" @sortItems="sortItems" />
+            </section>
           </div>
         </div>
       </div>
-
-      <items :items="order.line_items"></items>
-    </div>
+      <loading v-else></loading>
+    </template>
+    <error v-else :item="errorItem" :code="errorCode"/>
   </div>
 </template>
 
 <script>
+import orderAPI from '@/app/api/order'
+import invoiceAPI from '@/app/api/invoice'
 import { mapGetters } from 'vuex'
+import Dropdown from 'bp-vuejs-dropdown'
+import orderItem from './orderItem'
 import top from '@/shared/components/top'
-import orderAPI from '@/app/api/order.js'
-import items from './items'
+import error from '@/shared/components/errors/error'
+import loading from '@/shared/components/loading'
+import tooltip from '@/shared/components/tooltip'
+import sortDropdown from '@/shared/components/sortDropdown'
+import alertProcessing from '../invoices/alertProcessing'
+import alertOutstanding from '../invoices/alertOutstanding'
 
 export default {
   data () {
     return {
-      loading: true,
-      error: null,
-      order: null
+      order: null,
+      due: null,
+      errorItem: 'order',
+      errorCode: 404,
+      verified: false,
+      verificationErrors: null,
+      sort: {
+        fields: {
+          'id': 'ID',
+          'status': 'Status',
+          'type': 'Type',
+          'sync_status': 'Sync Status'
+        },
+        order: 'desc',
+        col: 'id'
+      }
     }
   },
   created () {
@@ -67,21 +135,100 @@ export default {
         data: {
           id: this.$route.params.id
         },
-        success: response => {
+        success: async response => {
           if (response.data.result) {
             this.order = response.data.result
-            this.loading = false
+            this.sortItems()
+
+            // Fetch due for last invoice (comes with the order object)
+            await this.fetchDue()
+
+            // Verifies the order for invalid resources
+            await this.verify()
+
+            this.error = false
           } else {
-            this.error404()
+            this.error = true
           }
         },
-        fail: () => this.error404()
+        fail: e => {
+          console.log(e)
+          this.error = true
+        }
+      })
+    },
+    async fetchDue () {
+      await invoiceAPI.due({
+        data: { id: this.order.last_invoice_id },
+        success: response => {
+          if (response.data.result) {
+            this.due = response.data.result
+            this.error = false
+            this.loading = false
+          }
+        },
+        fail: e => {
+          console.log(e)
+          this.error = true
+        }
+      })
+    },
+    async cancel (id) {
+      await orderAPI.delete({
+        data: {
+          id: id
+        },
+        success: response => {
+          this.order.status = 'CANCELLED'
+          this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
+        },
+        fail: e => {
+          this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
+        }
+      })
+    },
+    async verify () {
+      await orderAPI.verify({
+        data: { id: this.order.id },
+        success: response => {
+          this.verified = true
+          this.verificationErrors = null
+        },
+        fail: error => {
+          this.verified = true
+
+          if (typeof error.errors === 'object') {
+            this.verificationErrors = error.errors
+          } else {
+            this.$toasted.error(this.errorAPI(error, 'orders'))
+          }
+        }
+      })
+    },
+    sortUpdate (data) {
+      this.sort.col = data.col
+      this.sort.order = data.order
+
+      this.sortItems()
+    },
+    sortItems () {
+      return this.order.line_items.sort((a, b) => {
+        const parsedA = a[this.sort.col].toString().toUpperCase()
+        const parsedB = b[this.sort.col].toString().toUpperCase()
+        return (this.sort.order === 'asc') ? (parsedA < parsedB) : (parsedA > parsedB)
       })
     }
   },
   components: {
     top,
-    items
+    error,
+    loading,
+    Dropdown,
+    sortDropdown,
+    orderItem,
+    alertOutstanding,
+    alertProcessing,
+    tooltip
   },
   metaInfo: {
     title: 'Order Details'
@@ -90,35 +237,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.order-info {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+@import '~@styles/components/badges';
 
-  .info-box {
-    flex: 1;
-    margin-right: $pad;
-    border-right: 1px solid $color-border;
-
-    &:last-child {
-      margin-right: 0;
-      border-right: none;
-    }
+.badge {
+  &.status-active {
+    @extend .badge-success;
   }
-  h5 {
-    display: block;
-    margin-bottom: 4px;
-    font-size: 13px;
-    line-height: 100%;
-    font-weight: $font-semi;
-    text-transform: uppercase;
-    color: $color-light;
-  }
-  p {
-    display: block;
-    font-size: 16px;
-    line-height: 22px;
-    font-weight: $font-semi;
+  &.status-automated_fraud_check, &.status-manual_fraud_check {
+    @extend .badge-warning;
   }
 }
 </style>

@@ -1,20 +1,26 @@
 <template>
-  <div>
-      <div v-if="ips && ips.length" class="list pad-margin">
+  <div class="container">
+      <div v-if="ips && ips.length" class="list section padded">
         <v-client-table :data="ips" :columns="columns" :options="options">
           <template v-if="props.row.ip" slot="ip" slot-scope="props">
             {{ props.row.ip }}
+          </template>
+          <template slot="cc" slot-scope="props">
+            <template v-if="props.row.cc">
+              {{ getCountryById(props.row.cc).name }}
+            </template>
           </template>
           <template slot="created_at" slot-scope="props">
             {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
           </template>
         </v-client-table>
       </div>
-      <not-found v-else type="ips"></not-found>
+      <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'IPs' })"></not-found>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import notFound from '@/shared/components/notFound'
 
 export default {
@@ -33,7 +39,7 @@ export default {
       headings: {
         ip: 'IP Address',
         asn: 'ASN',
-        cc: 'Country Code',
+        cc: 'Country',
         city: 'City',
         created_at: 'Creation Date'
       },
@@ -65,6 +71,11 @@ export default {
       sortable: this.sortableColumns,
       filterable: this.filterableColumns
     }
+  },
+  computed: {
+    ...mapGetters({
+      countries: 'settings/countries'
+    })
   },
   methods: {
     setColumns () {

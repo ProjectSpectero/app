@@ -1,7 +1,5 @@
-import userRoutes from './user'
-import servicesRoutes from './services'
+import daemonRoutes from './daemon'
 
 export default [
-  ...userRoutes,
-  ...servicesRoutes
+  ...daemonRoutes
 ]

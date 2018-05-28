@@ -1,9 +1,8 @@
 <template>
   <div>
     <h2>Node Key</h2>
-
-    <div class="col-container col-2">
-      <div class="col-half">
+    <div class="grid-container">
+      <div class="col-6">
         <div class="form-input">
           <div class="label"><label for="nodeKeyPlaceholder"><strong>Current Node Key</strong></label></div>
           <textarea

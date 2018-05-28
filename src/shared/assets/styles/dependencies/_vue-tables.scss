@@ -1,33 +1,42 @@
 // Custom table
 
 .datatable {
+  background: $white;
+  border: 1px solid $color-border;
+  border-radius: 4px;
+
   table {
-    background: $white;
-    border: 1px solid $color-border;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     width: 100%;
     text-align: left;
-    margin-bottom: 2rem;
     border-collapse: collapse;
   }
 
   th, td {
-    padding: 12px 16px;
+    padding: 12px 6px;
     border-top: 1px solid $color-border;
+
+    &:first-child {
+      padding-left: 16px;
+    }
+    &:last-child {
+      padding-right: 16px;
+    }
+  }
+  th {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .button {
+    @extend .button.button-sm;
   }
 
   .sortable {
     cursor: pointer;
 
     > .direction {
-      &.asc {
-
-      }
-
-      &.desc {
-
-      }
+      line-height: 80%;
     }
   }
 
@@ -61,7 +70,7 @@
   }
   .VueTables__sort-icon, .sortable .direction {
     @extend [class^="icon-"];
-    margin-left: 5px;
+    margin-left: 2px;
     position: relative;
     top: 1px;
 
@@ -95,7 +104,7 @@
     border-width: 1px 1px 0 1px;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-    overflow: hidden;
+    overflow: auto;
 
     > .VueTables__table {
       width: 100%;
@@ -107,7 +116,6 @@
         border-bottom: 1px solid $color-border;
       }
       th {
-        // text-align: left;
         font-size: $font-size;
         font-weight: $font-semi;
         color: $color-light;

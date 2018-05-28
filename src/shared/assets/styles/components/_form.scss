@@ -1,6 +1,9 @@
 // Input padding
 .form-input {
-  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-bottom: 14px;
 }
 .form-checkbox {
   margin-bottom: 8px;

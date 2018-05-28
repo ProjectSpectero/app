@@ -13,6 +13,9 @@ import VueAnalytics from 'vue-ua'
 import VueModal from 'vue-js-modal'
 import { ClientTable } from 'vue-tables-2'
 import VueCurrencyFilter from 'vue-currency-filter'
+import VueClipboard from 'vue-clipboard2'
+import VueFloatLabel from 'vue-float-label'
+import VueTooltip from 'vue-directive-tooltip'
 
 import globalMixin from '@/shared/mixins/global'
 
@@ -25,6 +28,17 @@ Vue.use(VueCookie)
 Vue.use(VeeValidate)
 Vue.use(ClientTable)
 Vue.use(VueMoment)
+Vue.use(VueClipboard)
+Vue.use(VueFloatLabel)
+Vue.use(VueTooltip)
+
+Vue.use(VueTooltip, {
+  delay: 500,
+  placement: 'right',
+  class: 'tooltip-red',
+  triggers: ['hover'],
+  offset: 0
+})
 
 Vue.use(VueModal, {
   dynamic: true
@@ -64,8 +78,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 // i18n data
-const messages = { en: require('./shared/lang/en.js') }
-const i18n = new VueI18n({ locale: 'en', messages })
+const i18n = new VueI18n({ locale: 'en', messages: { en: require('./shared/lang/en.js') } })
 const globalMethods = globalMixin(i18n)
 
 // Load global mixin

@@ -1,43 +1,49 @@
 <template>
   <div>
-    <top title="Services"></top>
-    <div class="container container-600" v-for="(status, service) in services" :key="service">
-      <div class="pad">
-        <h2>{{ service }}</h2>
-        <p>Status: <strong>{{ status }}</strong></p>
-        <div class="buttonActions">
-          <button class="button" :class="{ 'button-success': status !== 'Running' }" @click="start(service)" :disabled="status === 'Running'">Start</button>
-          <button class="button" :class="{ 'button-danger': status === 'Running' }" @click="stop(service)" :disabled="status !== 'Running'">Stop</button>
+    <h2>Services</h2>
+    <div v-if="daemonInitialized" class="service" v-for="(status, service) in services" :key="service">
+      <h3>{{ service }}</h3>
+      <p class="status">
+        {{ $i18n.t('misc.STATUS') }}: <span class="badge badge-dark">{{ status }}</span>
+      </p>
+      <div class="buttonActions">
+        <button class="button" :class="{ 'button-success': status !== 'Running' }" @click="start(service)" :disabled="status === 'Running'">
+          <span class="icon-play-circle"></span> {{ $i18n.t('misc.START') }}
+        </button>
+        <button class="button" :class="{ 'button-danger': status === 'Running' }" @click="stop(service)" :disabled="status !== 'Running'">
+          <span class="icon-stop-circle"></span> {{ $i18n.t('misc.STOP') }}
+        </button>
 
-          <router-link :to="{ name: service }" class="button right">Configure</router-link>
-        </div>
+        <router-link :to="{ name: 'service.' + service }" class="button button-dark right">
+          <span class="icon-sliders"></span> {{ $i18n.t('misc.CONFIGURE') }}
+        </router-link>
       </div>
     </div>
+    <loading v-else></loading>
   </div>
 </template>
 
 <script>
+import loading from '@/shared/components/loading'
 import { mapGetters, mapActions } from 'vuex'
-import top from '@/shared/components/top'
 
 export default {
   created () {
-    this.setup()
+    if (this.daemonInitialized) {
+      this.fetchServices()
+    }
   },
   computed: {
     ...mapGetters({
+      daemonInitialized: 'daemonAuth/initialized',
       services: 'services/services'
     })
   },
   methods: {
     ...mapActions({
       fetchServices: 'services/fetch',
-      fetchIps: 'services/fetchIps',
       toggleStatus: 'services/toggleStatus'
     }),
-    async setup () {
-      await this.fetchServices()
-    },
     start (service) {
       this.toggleStatus({ service: service, action: 'start' })
     },
@@ -45,11 +51,30 @@ export default {
       this.toggleStatus({ service: service, action: 'stop' })
     }
   },
-  components: {
-    top
+  watch: {
+    daemonInitialized: function () {
+      this.fetchServices()
+    }
   },
   metaInfo: {
     title: 'Services'
+  },
+  components: {
+    loading
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.service {
+  max-width: 800px;
+  margin-bottom: $pad;
+  padding: $pad;
+  border: 1px solid $color-border;
+  border-radius: 4px;
+
+  p.status {
+    margin-bottom: 12px;
+  }
+}
+</style>

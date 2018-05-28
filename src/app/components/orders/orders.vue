@@ -1,36 +1,53 @@
 <template>
   <div>
-    <top title="Orders"></top>
-    <div class="content-split">
-      <div class="split-item split-list filters-side">
-        <router-link v-for="s in status" :key="s" :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ badge: currentStatus === s }">
-          <span>{{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}</span>
-        </router-link>
+    <template v-if="!error">
+      <top :title="$i18n.t('misc.ORDERS')">
+        <help-button obj="orders.topics"></help-button>
+      </top>
+      <div v-if="tableData">
+        <div class="container content-split">
+          <div class="split-item split-list">
+            <router-link v-for="s in status" :key="s" :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
+              {{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}
+            </router-link>
+          </div>
+          <div class="split-item split-details">
+            <template v-if="tableData.length">
+              <orders-list
+                :searchId="searchId"
+                :pagination="pagination"
+                :tableData="tableData"
+                @refresh="fetchOrders"
+                @changedPage="changedPage"
+                @sortByColumn="sortByColumn">
+              </orders-list>
+            </template>
+            <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'orders' })"></not-found>
+          </div>
+        </div>
       </div>
-      <div class="split-item split-details">
-        <orders-list
-          :searchId="searchId"
-          :pagination="pagination"
-          :tableData="tableData"
-          @changedPage="changedPage"
-          @sortByColumn="sortByColumn">
-        </orders-list>
-      </div>
-    </div>
+      <loading v-else></loading>
+    </template>
+    <error v-else :item="errorItem" :code="errorCode"/>
   </div>
 </template>
 
 <script>
-import orderAPI from '@/app/api/order.js'
-import top from '@/shared/components/top'
-import ordersList from './list'
 import filtersMixin from '@/app/mixins/listFilters'
+import orderAPI from '@/app/api/order'
+import ordersList from './list'
+import top from '@/shared/components/top'
+import error from '@/shared/components/errors/error'
+import loading from '@/shared/components/loading'
+import notFound from '@/shared/components/notFound'
+import helpButton from '@/shared/components/docs/button'
 
 export default {
   mixins: [filtersMixin],
   data () {
     return {
-      status: ['all', 'active', 'cancelled']
+      status: ['all', 'active', 'cancelled'],
+      errorItem: 'orders'
     }
   },
   created () {
@@ -55,12 +72,17 @@ export default {
           rules: this.rules,
           success: async response => {
             if (response.data.result.searchId) {
+              this.error = false
               this.searchId = response.data.result.searchId
             }
 
             this.fetchOrders(page)
           },
-          fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
+          fail: e => {
+            console.log(e)
+            this.errorCode = 400
+            this.error = true
+          }
         })
       } else {
         this.searchId = null
@@ -74,10 +96,15 @@ export default {
         limit: this.perPage,
         keepURL: (this.type === 'simple'),
         success: response => {
+          this.error = false
           this.pagination = response.data.pagination
           this.tableData = response.data.result
         },
-        fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
+        fail: e => {
+          console.log(e)
+          this.errorCode = 400
+          this.error = true
+        }
       })
     }
   },
@@ -92,7 +119,11 @@ export default {
   },
   components: {
     top,
-    ordersList
+    error,
+    ordersList,
+    loading,
+    notFound,
+    helpButton
   },
   metaInfo: {
     title: 'Orders'
