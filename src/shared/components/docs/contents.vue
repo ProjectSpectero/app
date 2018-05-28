@@ -5,7 +5,7 @@
         <h2 v-if="!child">{{ page.title }}</h2>
         <h4 v-else>{{ page.title }}</h4>
 
-        <h6 v-if="page.subTitle">{{ page.subTitle }}</h6>
+        <h6 v-if="page.subtitle">{{ page.subtitle }}</h6>
       </div>
 
       <div class="content">

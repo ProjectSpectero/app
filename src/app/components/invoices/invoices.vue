@@ -1,7 +1,9 @@
 <template>
   <div>
     <template v-if="!error">
-      <top title="Invoices"></top>
+      <top :title="$i18n.t('misc.INVOICES')">
+        <help-button obj="invoices.topics"></help-button>
+      </top>
       <div v-if="tableData">
         <div class="container content-split">
           <div class="split-item split-list">
@@ -38,6 +40,7 @@ import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
 import notFound from '@/shared/components/notFound'
+import helpButton from '@/shared/components/docs/button'
 
 export default {
   mixins: [filtersMixin],
@@ -120,7 +123,8 @@ export default {
     paginator,
     invoicesList,
     loading,
-    notFound
+    notFound,
+    helpButton
   },
   metaInfo: {
     title: 'Invoices'

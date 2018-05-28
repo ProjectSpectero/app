@@ -62,6 +62,7 @@
         </top>
         <div v-if="!loading">
           <div class="container">
+            {{ verified }} {{ verificationErrors }} {{ order.last_invoice }}
             <template v-if="verified && !verificationErrors && order.last_invoice.status === 'UNPAID'">
               <alert-outstanding :due="due" :invoice="order.last_invoice"></alert-outstanding>
             </template>

@@ -1,9 +1,10 @@
 <template>
   <div>
-    <top title="Market">
+    <top :title="$i18n.t('misc.MARKET')">
       <router-link :to="{ name: 'cart' }" v-if="totals.total > 0" class="button">
         {{ $i18n.t('misc.VIEW_CART') }}
       </router-link>
+      <help-button obj="market.topics"></help-button>
     </top>
 
     <div class="container content-split">
@@ -80,6 +81,7 @@ import top from '@/shared/components/top'
 import paginator from '@/shared/components/paginator'
 import loading from '@/shared/components/loading'
 import tableHeader from '@/shared/components/table/thead'
+import helpButton from '@/shared/components/docs/button'
 
 export default {
   data () {
@@ -154,7 +156,8 @@ export default {
     tableHeader,
     filters,
     addToCart,
-    loading
+    loading,
+    helpButton
   }
 }
 </script>
