@@ -55,7 +55,6 @@ export default {
           if (response.data.result) {
             this.group = response.data.result
             this.error = false
-            this.loading = false
 
             await this.fetchEngagements(this.group.id)
 
@@ -73,7 +72,8 @@ export default {
       })
     },
     updateEngagements () {
-      this.$emit('updateEngagements')
+      this.loading = true
+      this.fetchGroup(this.$route.params.id)
     },
     fetchEngagements (id) {
       nodeAPI.groupEngagements({
