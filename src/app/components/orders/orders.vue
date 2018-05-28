@@ -17,6 +17,7 @@
                 :searchId="searchId"
                 :pagination="pagination"
                 :tableData="tableData"
+                @refresh="fetchOrders"
                 @changedPage="changedPage"
                 @sortByColumn="sortByColumn">
               </orders-list>

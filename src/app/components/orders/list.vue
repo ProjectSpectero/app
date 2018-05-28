@@ -75,23 +75,25 @@ export default {
       this.$emit('changedPage', page)
     },
     async cancel (id) {
-      await orderAPI.delete({
-        data: {
-          id: id
-        },
-        success: response => {
-          // Update order status to 'cancelled' in table instead of redirect to first page
-          let itemIndex = this.tableData.findIndex(i => i.id === id)
-          if (itemIndex) {
-            this.tableData[itemIndex].status = 'CANCELLED'
-          }
+      if (confirm(this.$i18n.t('orders.DELETE_ORDER_CONFIRM_DIALOG'))) {
+        await orderAPI.delete({
+          data: { id: id },
+          success: response => {
+            // Update order status to 'cancelled' in table instead of redirect to first page
+            let itemIndex = this.tableData.findIndex(i => i.id === id)
+            if (itemIndex) {
+              this.tableData[itemIndex].status = 'CANCELLED'
+            }
 
-          this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
-        },
-        fail: e => {
-          this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
-        }
-      })
+            this.$emit('refresh')
+
+            this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
+          },
+          fail: e => {
+            this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
+          }
+        })
+      }
     }
   },
   components: {

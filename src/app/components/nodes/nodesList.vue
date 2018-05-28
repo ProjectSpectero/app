@@ -121,9 +121,7 @@ export default {
     },
     verifyNode (node) {
       nodeAPI.verify({
-        data: {
-          id: node.id
-        },
+        data: { id: node.id },
         success: async response => {
           this.$emit('refetch')
           this.$toasted.success(this.$i18n.t('nodes.NODE_VERIFY_SUCCESS', { node: node.friendly_name }))
@@ -137,9 +135,7 @@ export default {
     removeGroup () {
       if (confirm(this.$i18n.t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {
         nodeAPI.deleteGroup({
-          data: {
-            id: this.selectedGroup
-          },
+          data: { id: this.selectedGroupInformation.id },
           success: response => {
             this.fetchNodes()
             this.$toasted.show(this.$i18n.t('nodes.GROUP_DELETE_SUCCESS'))

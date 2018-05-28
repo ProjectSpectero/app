@@ -232,6 +232,7 @@ module.exports = {
     FIX: 'Remove these resources and fix your order',
     FIX_SUCCESS: 'Your order has been fixed and is available for payment.',
     FIX_ERROR: 'There was an error while attempting to fix your order!',
+    DELETE_ORDER_CONFIRM_DIALOG: 'Are you sure you want to cancel this order?',
     CANCEL: 'Cancel this order',
     CANCEL_ERROR: 'There was a problem cancelling your order. Please try again or contact us if this issue persists.',
     CANCEL_SUCCESS: 'Your order has been cancelled.',
@@ -257,6 +258,7 @@ module.exports = {
   nodes: {
     UNCATEGORIZED: 'Uncategorized',
     NO_NODES_TITLE: 'No nodes',
+    HAS_NODES: 'You cannot delete this group before reassigning its nodes to a different group!',
     RESOURCE_NOT_FOUND: 'We were unable to find that resource.',
     NO_NODES_TEXT: 'There are no nodes to display in this node group.',
     EDIT_GROUP: 'Edit group',
