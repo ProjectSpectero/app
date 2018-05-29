@@ -263,7 +263,7 @@ module.exports = {
     NO_NODES_TEXT: 'There are no nodes to display in this node group.',
     EDIT_GROUP: 'Edit group',
     EDIT_NODE: 'Edit node',
-    DELETE_GROUP_CONFIRM_DIALOG: "Are you sure you want to remove this node group? All your nodes will be set as 'Uncategorized'",
+    DELETE_GROUP_CONFIRM_DIALOG: 'Are you sure you want to remove this node group?',
     DELETE_SUCCESS: 'Node removed successfully!',
     GROUP_DELETE_SUCCESS: 'Group removed successfully!',
     DELETE_ERROR: 'An error ocurred while trying to delete your node. Please try again later.',
