@@ -1,7 +1,7 @@
 <template>
   <div class="modal">
     <div class="modal-header">
-      <h2>Purchase {{ (item.type.toLowerCase() === 'node') ? 'Node' : 'Node Group' }}</h2>
+      <h2>{{ $i18n.t('misc.PURCHASE') }} {{ (item.type.toLowerCase() === 'node') ? $i18n.t('misc.NODE') : $i18n.t('misc.NODE_GROUP') }}</h2>
       <button @click="$emit('close')" class="modal-close"></button>
     </div>
     <div class="modal-content">
@@ -20,11 +20,13 @@
       </div>
 
       <ul class="details">
-        <li v-if="item.type === 'NODE_GROUP'">Total Nodes: <strong>{{ item.nodes.length }} Nodes</strong></li>
-        <li v-if="item.asn">ASN: <strong>{{ item.asn }}</strong></li>
-        <li v-if="item.city">City: <strong>{{ item.city }}</strong></li>
-        <li v-if="item.cc">Country Code: <strong>{{ item.cc }}</strong></li>
-        <li>Market Model: <strong>{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</strong></li>
+        <li v-if="item.type === 'NODE_GROUP'">
+          {{ $i18n.t('misc.TOTAL_NODES') }}: <strong>{{ item.nodes.length }} {{ $i18n.t('misc.NODES') }}</strong>
+        </li>
+        <li v-if="item.asn">{{ $i18n.t('misc.ASN') }}: <strong>{{ item.asn }}</strong></li>
+        <li v-if="item.city">{{ $i18n.t('misc.CITY') }}: <strong>{{ item.city }}</strong></li>
+        <li v-if="item.cc">{{ $i18n.t('misc.CC') }}: <strong>{{ item.cc }}</strong></li>
+        <li>{{ $i18n.t('misc.MARKET_MODEL') }}: <strong>{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</strong></li>
       </ul>
 
       <div class="actions">
@@ -36,28 +38,34 @@
       <div class="cart">
         <template v-if="!inCart || showChangeTerm">
           <div class="addToCart">
-            <h5><span class="icon-shopping-cart"></span> {{ changeTerm ? 'Change term' : 'Purchase access' }}</h5>
+            <h5>
+              <span class="icon-shopping-cart"></span> {{ changeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('market.PURCHASE_ACCESS') }}
+            </h5>
             <div>
               <div class="terms">
                 <div :class="{ active: term === 'MONTHLY' }" v-on:click="toggleTerm('MONTHLY')">
-                  <label>Monthly</label>
-                  <span class="price">{{ item.price | currency}} per month</span>
+                  <label>{{ $i18n.t('market.TERM.MONTHLY') }}</label>
+                  <span class="price">{{ item.price | currency}} {{ $i18n.t('market.PER_MONTH') }}</span>
                 </div>
                 <div :class="{ active: term === 'YEARLY', unavailable: !item.plan }" v-on:click="item.plan ? toggleTerm('YEARLY') : false">
-                  <label>Yearly</label>
+                  <label>{{ $i18n.t('market.TERM.YEARLY') }}</label>
                   <span class="price">
                     <template v-if="item.plan">
-                      {{ yearlyPrice | currency }} per year
+                      {{ yearlyPrice | currency }} {{ $i18n.t('market.PER_YEAR') }}
                     </template>
                     <template v-else>
-                      Unavailable
+                      {{ $i18n.t('market.UNAVAILABLE') }}
                     </template>
                   </span>
-                  <div v-if="this.plan && this.plan['yearly_discount_pct']" class="savings">Save {{ this.plan['yearly_discount_pct'] * 100 }}%</div>
+                  <div v-if="this.plan && this.plan['yearly_discount_pct']" class="savings">
+                    {{ $i18n.t('misc.SAVE') }} {{ this.plan['yearly_discount_pct'] * 100 }}%
+                  </div>
                 </div>
               </div>
               <div>
-                <button @click.stop="showChangeTerm ? modifyTerm() : add()" class="button button-info"><span class="icon-shopping-cart"></span> {{ showChangeTerm ? $i18n.t('misc.CHANGE_TERM') : $i18n.t('misc.ADD_TO_CART') }}</button>
+                <button @click.stop="showChangeTerm ? modifyTerm() : add()" class="button button-info">
+                  <span class="icon-shopping-cart"></span> {{ showChangeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('misc.ADD_TO_CART') }}
+                </button>
               </div>
             </div>
           </div>
@@ -65,23 +73,33 @@
 
         <template v-else>
           <div class="addedToCart">
-            <h5><span class="icon-shopping-cart"></span> Added to your cart</h5>
+            <h5>
+              <span class="icon-shopping-cart"></span> {{ $i18n.t('market.ADDED_TO_YOUR_CART') }}
+            </h5>
             <div>
               <div class="details">
                 <ul>
                   <li>
-                    Price: <strong>{{ (term === 'YEARLY') ? yearlyPrice : item.price | currency }}</strong><br>
-                    <span class="link remove" @click="remove">Remove from cart</span>
+                    {{ $i18n.t('misc.PRICE') }}: <strong>{{ (term === 'YEARLY') ? yearlyPrice : item.price | currency }}</strong><br>
+                    <span class="link remove" @click="remove">
+                      {{ $i18n.t('market.REMOVE_FROM_CART') }}
+                    </span>
                   </li>
                   <li>
-                    Term: <strong>{{ $i18n.t(`market.TERM.${term}`) }}</strong><br>
-                    <span class="link" @click="showTerms">Change term</span>
+                    {{ $i18n.t('misc.TERM') }}: <strong>{{ $i18n.t(`market.TERM.${term}`) }}</strong><br>
+                    <span class="link" @click="showTerms">
+                      {{ $i18n.t('market.REMOVE_FROM_CART') }}
+                    </span>
                   </li>
                 </ul>
               </div>
               <div>
-                <button @click="$emit('close')" class="button">{{ $i18n.t('misc.CONTINUE_SHOPPING') }}</button>
-                <router-link :to="{ name: 'cart' }" v-on:click.native="$emit('close')" class="button button-success"><span class="icon-check-circle"></span> {{ $i18n.t('misc.CHECKOUT') }}</router-link>
+                <button @click="$emit('close')" class="button">
+                  {{ $i18n.t('misc.CONTINUE_SHOPPING') }}
+                </button>
+                <router-link :to="{ name: 'cart' }" v-on:click.native="$emit('close')" class="button button-success">
+                  <span class="icon-check-circle"></span> {{ $i18n.t('misc.CHECKOUT') }}
+                </router-link>
               </div>
             </div>
           </div>

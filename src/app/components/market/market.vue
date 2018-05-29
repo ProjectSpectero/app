@@ -44,8 +44,8 @@
                   <span v-else>{{ countIpsInNodeGroup(item) }}</span>
                 </td>
                 <td>
-                  <span v-if="item.type === 'NODE_GROUP'">Node Group</span>
-                  <span v-else>Node</span>
+                  <span v-if="item.type === 'NODE_GROUP'">{{ $i18n.t('misc.NODE_GROUP') }}</span>
+                  <span v-else>{{ $i18n.t('misc.NODE') }}</span>
                 </td>
                 <td>{{ item.price | currency }} USD</td>
                 <td class="table-actions">

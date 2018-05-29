@@ -25,21 +25,21 @@
         <div class="summary-box-container">
           <div class="summary-box section">
             <section>
-              <h3>Cart Summary</h3>
+              <h3>{{ $i18n.t('market.CART_SUMMARY') }}</h3>
               <div class="line-items">
                 <div class="item" v-if="totals.type.node > 0">
-                  <p>Nodes</p>
+                  <p>{{ $i18n.t('misc.NODES') }}</p>
                   <div class="amount">{{ totals.type.node | currency }}</div>
                 </div>
                 <div class="item" v-if="totals.type.group > 0">
-                  <p>Node Groups</p>
+                  <p>{{ $i18n.t('misc.NODE_GROUPS') }}</p>
                   <div class="amount">{{ totals.type.group | currency }}</div>
                 </div>
 
                 <div class="separator"></div>
 
                 <div class="item total">
-                  <p>Due Today</p>
+                  <p>{{ $i18n.t('market.DUE_TODAY') }}</p>
                   <div class="amount">{{ totals.total | currency }} USD</div>
                 </div>
               </div>
@@ -50,15 +50,15 @@
           </div>
           <div v-if="totals.cycle.monthly > 0 || totals.cycle.yearly > 0" class="summary-box section">
             <section class="recurring">
-              <h3>Recurring Fees</h3>
-              <p>There are recurring fees associated with items in this cart.</p>
+              <h3>{{ $i18n.t('market.RECURRING_FEES') }}</h3>
+              <p>{{ $i18n.t('market.RECURRING_FEES_TEXT') }}</p>
               <div class="line-items">
                 <div class="item" v-if="totals.cycle.monthly > 0">
-                  <p>Monthly</p>
+                  <p>{{ $i18n.t('market.TERM.MONTHLY') }}</p>
                   <div class="amount">{{ totals.cycle.monthly | currency }} /month</div>
                 </div>
                 <div class="item" v-if="totals.cycle.yearly > 0">
-                  <p>Yearly</p>
+                  <p>{{ $i18n.t('market.TERM.YEARLY') }}</p>
                   <div class="amount">{{ totals.cycle.yearly | currency }} /year</div>
                 </div>
               </div>

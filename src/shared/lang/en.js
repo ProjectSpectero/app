@@ -8,6 +8,8 @@ module.exports = {
     ITEM: 'Item',
     NODE: 'Node',
     NODE_GROUP: 'Node group',
+    NODE_GROUPS: 'Node groups',
+    TOTAL_NODES: 'Total Nodes',
     NODES: 'Nodes',
     STATUS: 'Status',
     ORDER: 'Order',
@@ -25,8 +27,10 @@ module.exports = {
     NEXT_DUE_DATE: 'Next Due Date',
     RESOURCES: 'Resources',
     CART: 'Cart',
+    IP_COUNT: 'IP Count',
     SETTINGS: 'Settings',
     LOGOUT: 'Logout',
+    TYPE: 'Type',
     NOT_FOUND: 'We were unable to find any {type}.',
     LOADING: 'Loading',
     CONTINUE: 'Continue',
@@ -47,14 +51,18 @@ module.exports = {
     REMOVE: 'Remove',
     GENERAL_INFO: 'General Information',
     PRICE: 'Price',
+    LOCATION: 'Location',
     FRIENDLY_NAME: 'Friendly name',
     MARKET_MODEL: 'Market Model',
     ASN: 'ASN',
     AVAILABLE_SOON: 'Available soon.',
     CC: 'Country code',
     CITY: 'City',
+    COUNTRY: 'Country',
+    ANY_COUNTRY: 'Any country',
     PORT_NUMBER: 'Port No.',
     IP: 'IP Address',
+    IP_ADDRESSES: 'IP Addresses',
     ACCESS_TOKEN: 'Access Token',
     PLACEHOLDER_ACCESS_TOKEN: 'Add a new access token in the format username:password to update',
     PROTOCOL: 'Protocol',
@@ -174,6 +182,7 @@ module.exports = {
   },
 
   invoices: {
+    BACK: 'Back to invoices',
     PAY_INVOICE: 'Pay Invoice',
     PAY_TEXT2: 'Please pay the amount due using the options available below.',
     INVOICE_STATUS: {
@@ -193,7 +202,18 @@ module.exports = {
     RESOURCE_ERROR: {
       RESOURCE_NOT_FOUND: 'Resource no longer available',
       RESOURCE_SOLD_OUT: 'Resource sold out'
-    }
+    },
+    PAID: 'Invoice Paid',
+    THANKS: 'Thank you for your payment, your invoice has been paid in full.',
+    BILL_TO: 'Bill to',
+    NUMBER: 'Invoice Number',
+    STATUS: 'Invoice Status',
+    TYPE: 'Invoice Type',
+    DATE: 'Invoice Date',
+    PAYMENT_DUE: 'Payment Due',
+    AMOUNT_DUE: 'Amount Due',
+    BALANCE_DUE: 'Balance Due',
+    BALANCE_DUE_TEXT: 'There is an outstanding balance of <strong>{amount} {currency}</strong> due on this invoice. Please pay now to avoid any late fees.'
   },
 
   orders: {
@@ -289,6 +309,7 @@ module.exports = {
       DISABLED: 'Disabled'
     },
     MODEL: {
+      ANY: 'Any type',
       UNLISTED: 'Unlisted',
       MANAGED: 'Managed',
       LISTED_SHARED: 'Shared',
@@ -306,6 +327,7 @@ module.exports = {
   },
 
   market: {
+    BACK: 'Back to market',
     MODEL_NODE: {
       UNLISTED: 'Unlisted',
       MANAGED: 'Managed',
@@ -329,7 +351,27 @@ module.exports = {
     TERM: {
       MONTHLY: 'Monthly',
       YEARLY: 'Yearly'
-    }
+    },
+    PER_MONTH: 'per month',
+    PER_YEAR: 'per year',
+    UNAVAILABLE: 'Unavailable',
+    CHANGE_TERM: 'Change term',
+    PURCHASE_ACCESS: 'Purchase access',
+    ADDED_TO_YOUR_CART: 'Added to your cart',
+    REMOVE_FROM_CART: 'Remove from cart',
+    CART_SUMMARY: 'Cart Summary',
+    DUE_TODAY: 'Due today',
+    RECURRING_FEES: 'Recurring fees',
+    RECURRING_FEES_TEXT: 'There are recurring fees associated with items in this cart.',
+    RENEWS: 'Renews',
+    YEARLY_SAVING: 'By paying yearly, you\'re saving',
+    YEARLY_COULD_SAVE: 'By paying yearly, you could save',
+    YEARLY_SWITCH: 'Switch to yearly',
+    GROUPED_RESULTS: 'Grouped results',
+    SHOW_GROUPED_RESULTS: 'Show grouped results',
+    SERVICE_TYPES: 'Service types',
+    PRICE_RANGE: 'Price range',
+    MIN_IPS: 'Min. no. of IP addresses'
   },
 
   users: {
