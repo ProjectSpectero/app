@@ -48,6 +48,13 @@ async function API (project, method, path, data, success, failed) {
     const status = (e.response !== undefined && e.response.status !== undefined) ? e.response.status : null
     const err = new Err(errors, status)
 
+    // Gracefully handling timeout errors
+    if (e.code === 'ECONNABORTED') {
+      failed(new Err(['ECONNABORTED'], 598))
+      Vue.prototype.$Progress.fail()
+      return
+    }
+
     // Remove authorization cookie if 401 returned by any API call.
     if (status === 401 && getCookie(project.cookieName) !== null) {
       removeCookie(project.cookieName)
@@ -64,7 +71,7 @@ async function API (project, method, path, data, success, failed) {
       data.fail(err)
     }
 
-    Vue.prototype.$Progress.finish()
+    Vue.prototype.$Progress.fail()
 
     return { error: true, data: err, status: status }
   }
