@@ -20,7 +20,7 @@
           <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
             <alert-outstanding :due="due" :invoice="invoice"></alert-outstanding>
           </template>
-          <template v-else-if="verified && verificationErrors && invoice.status !== 'PAID' && invoice.status !== 'CANCELLED'">
+          <template v-else-if="verified && verificationErrors && isFixable(order.status)">
             <alert-processing :errorBag="verificationErrors" :invoice="invoice" @update="fetchInvoice"></alert-processing>
           </template>
 
@@ -320,6 +320,12 @@ export default {
         }
       })
     },
+    isFixable () {
+      const options = ['MANUAL_FRAUD_CHECK', 'AUTOMATED_FRAUD_CHECK', 'PENDING']
+      const status = this.order.status
+
+      return options.includes(status)
+    },
     async verifyOrder () {
       await orderAPI.verify({
         data: { id: this.invoice.order_id },
@@ -332,7 +338,6 @@ export default {
 
           if (typeof error.errors === 'object') {
             this.verificationErrors = error.errors
-            console.log('changed this.verificationErrors', this.verificationErrors)
           } else {
             this.$toasted.error(this.errorAPI(error, 'orders'))
           }

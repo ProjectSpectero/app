@@ -130,7 +130,7 @@ module.exports = {
     ENDPOINT_NOT_FOUND: 'Endpoint not found or unreachable',
     RELEASES_FETCH_FAILED: 'Unable to load release data, please try again later.',
     MATRICES_FETCH_FAILED: 'Unable to load compatibility matrices data, please try again later.',
-    ECONNABORTED: 'Our servers are taking too long to answer. Please try again later.'
+    ECONNABORTED: 'We\'re having trouble connecting to the authentication server. Please try again later.'
   },
 
   payments: {
