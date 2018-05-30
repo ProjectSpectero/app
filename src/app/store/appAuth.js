@@ -1,4 +1,4 @@
-import userAPI from '@/app/api/user.js'
+import userAPI from '@/app/api/user'
 import { setCookie, getCookie, removeCookie } from 'tiny-cookie'
 
 const state = {

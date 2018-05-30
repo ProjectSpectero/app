@@ -62,11 +62,10 @@
         </top>
         <div v-if="!loading">
           <div class="container">
-            {{ verified }} {{ verificationErrors }} {{ order.last_invoice }}
             <template v-if="verified && !verificationErrors && order.last_invoice.status === 'UNPAID'">
               <alert-outstanding :due="due" :invoice="order.last_invoice"></alert-outstanding>
             </template>
-            <template v-else-if="verified && verificationErrors && order.last_invoice.status !== 'PAID' && order.last_invoice.status !== 'CANCELLED'">
+            <template v-else-if="verified && verificationErrors && isFixable()">
               <alert-processing :errorBag="verificationErrors" :invoice="order.last_invoice" @update="fetchOrder"></alert-processing>
             </template>
 
@@ -143,8 +142,11 @@ export default {
             // Fetch due for last invoice (comes with the order object)
             await this.fetchDue()
 
-            // Verifies the order for invalid resources
-            await this.verify()
+            // Test if this order is fixable (only certain status need the verify + fix combo)
+            // for invalid resources
+            if (this.isFixable()) {
+              await this.verify()
+            }
 
             this.error = false
           } else {
@@ -186,6 +188,12 @@ export default {
           this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
         }
       })
+    },
+    isFixable () {
+      const options = ['MANUAL_FRAUD_CHECK', 'AUTOMATED_FRAUD_CHECK', 'PENDING']
+      const status = this.order.status
+
+      return options.includes(status)
     },
     async verify () {
       await orderAPI.verify({

@@ -1,23 +1,30 @@
 <template>
   <div class="item">
     <div class="title">
-      <router-link :to="{ name: 'marketView', params: { type: (item.type === 'NODE_GROUP') ? 'group' : 'node', id: item.id } }" class="name">{{ item.data.friendly_name }}</router-link>
-      <div class="type"><span v-if="item.type === 'NODE_GROUP'">Node Group</span><span v-else>Node</span></div>
+      <router-link :to="{ name: 'marketView', params: { type: (item.type === 'NODE_GROUP') ? 'group' : 'node', id: item.id } }" class="name">
+        {{ item.data.friendly_name }}
+      </router-link>
+      <div class="type">
+        <span v-if="item.type === 'NODE_GROUP'">{{ $i18n.t('misc.NODE_GROUP') }}</span>
+        <span v-else>{{ $i18n.t('misc.NODE') }}</span>
+      </div>
     </div>
     <div class="price">
-      {{ item.pricing[item.term === 'YEARLY' ? 'yearly' : 'monthly'] | currency}}
-      <span class="renews">Renews {{ $i18n.t(`market.TERM.${item.term}`) }}</span>
+      {{ item.pricing[item.term === 'YEARLY' ? 'yearly' : 'monthly'] | currency }}
+      <span class="renews">{{ $i18n.t('market.RENEWS') }} {{ $i18n.t(`market.TERM.${item.term}`) }}</span>
     </div>
 
     <div class="savings">
       <template v-if="item.pricing.yearlyDiscount">
         <p v-if="item.term === 'YEARLY'" class="text-success">
-          <span class="icon-check-circle"></span> By paying yearly, you're saving <strong>{{ item.pricing.yearlySavings | currency }}</strong>
+          <span class="icon-check-circle"></span> {{ $i18n.t('market.YEARLY_SAVING') }} <strong>{{ item.pricing.yearlySavings | currency }}</strong>
         </p>
         <p v-else class="text-warning switch-yearly">
-          <span class="icon-alert-circle"></span> By paying yearly, you could save <strong>{{ item.pricing.yearlySavings | currency }}</strong>
+          <span class="icon-alert-circle"></span> {{ $i18n.t('market.YEARLY_COULD_SAVE') }} <strong>{{ item.pricing.yearlySavings | currency }}</strong>
           <br>
-          <span @click.stop="swithTermYearly" class="link">Switch to yearly</span>
+          <span @click.stop="swithTermYearly" class="link">
+            {{ $i18n.t('market.YEARLY_SWITCH') }}
+          </span>
         </p>
       </template>
     </div>

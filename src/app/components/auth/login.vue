@@ -45,12 +45,12 @@
         {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('users.LOGIN_BUTTON') }}
       </button>
     </form>
-    <div class="bottom-link">
+    <!-- <div class="bottom-link">
       <router-link :to="{ name: 'register' }">
         {{ $i18n.t('users.NO_ACCOUNT') }}
         <strong>{{ $i18n.t('users.CREATE_ACCOUNT_NOW') }}</strong>
       </router-link>
-    </div>
+    </div> -->
   </div>
 </template>
 

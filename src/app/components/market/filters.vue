@@ -1,31 +1,37 @@
 <template>
   <form class="filters" @submit.prevent.stop="submitFilters">
     <div class="form-input">
-      <div class="label"><label for="market-model">Market Model</label></div>
+      <div class="label">
+        <label for="market-model">{{ $i18n.t('misc.MARKET_MODEL') }}</label>
+      </div>
       <select name="market-model" id="market-model" v-model="nodes.market_model" @change="changeConditionalFilter('market_model', '=')">
-        <option value="" selected>Any Type</option>
-        <option value="LISTED_SHARED">Shared</option>
-        <option value="LISTED_DEDICATED">Dedicated</option>
+        <option value="" selected>{{ $i18n.t('nodes.MODEL.ANY') }}</option>
+        <option value="LISTED_SHARED">{{ $i18n.t('nodes.MODEL.LISTED_SHARED') }}</option>
+        <option value="LISTED_DEDICATED">{{ $i18n.t('nodes.MODEL.LISTED_DEDICATED') }}</option>
       </select>
     </div>
 
     <div class="form-input">
-      <div class="label"><label for="market-asn">ASN</label></div>
+      <div class="label"><label for="market-asn">{{ $i18n.t('misc.ASN') }}</label></div>
       <input type="text" name="market-asn" id="market-asn" v-model="nodes.asn" @keyup="changeNumericInFilter('asn')" class="input">
     </div>
 
     <div class="form-input">
-      <div class="label"><label>Grouped Results</label></div>
+      <div class="label">
+        <label>{{ $i18n.t('market.GROUPED_RESULTS') }}</label>
+      </div>
       <div class="form-checkbox">
         <label for="filter-grouped">
           <input id="filter-grouped" type="checkbox" v-model="nodes.grouped" @change="toggleGrouped">
-          Show Grouped Results
+          {{ $i18n.t('market.SHOW_GROUPED_RESULTS') }}
         </label>
       </div>
     </div>
 
     <div class="form-input">
-      <div class="label"><label>Service Types</label></div>
+      <div class="label">
+        <label>{{ $i18n.t('market.SERVICE_TYPES') }}</label>
+      </div>
       <div class="form-checkbox" :for="type" v-for="type in serviceTypes" :key="type">
         <label :for="type">
           <input :id="type" type="checkbox" :checked="isServiceTypeSelected(type)" @change="toggleServiceType(type)">
@@ -35,7 +41,9 @@
     </div>
 
     <div class="form-input">
-      <div class="label"><label>Price Range</label></div>
+      <div class="label">
+        <label>{{ $i18n.t('market.PRICE_RANGE') }}</label>
+      </div>
       <vue-slider ref="slider-price" v-bind="sliders.price" v-model="sliders.price.value" class="slider" v-on:callback="filterPriceRange">
         <template slot="label" slot-scope="{ label, active }">
           <span :class="['custom-label', { active }]" v-if="label % 25 === 0">
@@ -46,9 +54,13 @@
     </div>
 
     <div class="form-input">
-      <div class="label"><label for="filter-country">Country</label></div>
+      <div class="label">
+        <label for="filter-country">{{ $i18n.t('misc.COUNTRY') }}</label>
+      </div>
       <select id="filter-country" v-model="nodes.cc" @change="filterCountryCode">
-        <option value="" selected>Any Country</option>
+        <option value="" selected>
+          {{ $i18n.t('misc.ANY_COUNTRY') }}
+        </option>
         <option disabled>&nbsp;</option>
         <option v-for="country in countries" :key="country.code" :value="country.code">
           {{ country.name }}
@@ -57,12 +69,16 @@
     </div>
 
     <div class="form-input">
-      <div class="label"><label for="filter-city">City</label></div>
+      <div class="label">
+        <label for="filter-city">{{ $i18n.t('misc.CITY') }}</label>
+      </div>
       <input type="text" id="filter-city" v-model="nodes.city" @keyup="changeConditionalFilter('city', '=')" class="input">
     </div>
 
     <div class="form-input">
-      <div class="label"><label for="filter-nodeCount">Minimum number of IP addresses</label></div>
+      <div class="label">
+        <label for="filter-nodeCount">{{ $i18n.t('market.MIN_IPS') }}</label>
+      </div>
       <input type="number" id="filter-nodeCount" v-model="nodes.ip_count" @keyup="filterIPCount" @change="filterIPCount" class="input" min="0">
     </div>
 

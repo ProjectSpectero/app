@@ -34,9 +34,9 @@
                 {{ $i18n.t(`nodes.STATUS.${row.status}`) }}
               </div>
             </td>
-            <td>
-              <button v-if="row.status === 'unconfirmed'" class="button button-sm" @click.stop="verifyNode(row)">
-                {{ $i18n.t('misc.VERIFY') }}
+            <td class="table-actions">
+              <button v-if="row.status === 'UNCONFIRMED'" class="button button-success button-sm" @click.stop="verifyNode(row)">
+                <span class="icon-check"></span> {{ $i18n.t('misc.VERIFY') }}
               </button>
 
               <router-link class="button button-sm button-info" :to="{ name: 'manage', params: { nodeId: isDevelopmentEnvironment ? row.id : 101 } }">
