@@ -35,7 +35,7 @@
               </div>
             </td>
             <td>
-              <button v-if="row.status === 'unconfirmed'" class="button button-sm" @click.stop="verifyNode(row)">
+              <button v-if="row.status === 'UNCONFIRMED'" class="button button-sm" @click.stop="verifyNode(row)">
                 {{ $i18n.t('misc.VERIFY') }}
               </button>
 

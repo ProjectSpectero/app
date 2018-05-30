@@ -277,6 +277,9 @@ module.exports = {
   },
 
   nodes: {
+    VERIFY_NODE: 'Verify node',
+    VERIFICATION_FAILED_TITLE: 'Something went wrong!',
+    VERIFICATION_FAILED: 'Something happened while attempting to verify your node <strong>{name}</strong>. We have sent you an email with further details.',
     UNCATEGORIZED: 'Uncategorized',
     NO_NODES_TITLE: 'No nodes',
     HAS_NODES: 'You cannot delete this group before reassigning its nodes to a different group!',
