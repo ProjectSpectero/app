@@ -98,6 +98,7 @@ import tooltip from '@/shared/components/tooltip'
 import sortDropdown from '@/shared/components/sortDropdown'
 import alertProcessing from '../invoices/alertProcessing'
 import alertOutstanding from '../invoices/alertOutstanding'
+import cancelOrderModal from './cancelOrderModal'
 
 export default {
   data () {
@@ -175,18 +176,14 @@ export default {
         }
       })
     },
-    async cancel (id) {
-      await orderAPI.delete({
-        data: {
-          id: id
-        },
-        success: response => {
+    cancel (id) {
+      this.$modal.show(cancelOrderModal, {
+        id: id,
+        cancelItem: () => {
           this.order.status = 'CANCELLED'
-          this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
-        },
-        fail: e => {
-          this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
         }
+      }, {
+        height: 'auto'
       })
     },
     isFixable () {
@@ -236,7 +233,8 @@ export default {
     orderItem,
     alertOutstanding,
     alertProcessing,
-    tooltip
+    tooltip,
+    cancelOrderModal
   },
   metaInfo: {
     title: 'Order Details'

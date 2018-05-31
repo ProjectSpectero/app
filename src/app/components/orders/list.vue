@@ -39,9 +39,9 @@
 </template>
 
 <script>
-import orderAPI from '@/app/api/order'
 import paginator from '@/shared/components/paginator'
 import tableHeader from '@/shared/components/table/thead'
+import cancelOrderModal from './cancelOrderModal'
 
 export default {
   props: {
@@ -74,31 +74,21 @@ export default {
     changedPage (page) {
       this.$emit('changedPage', page)
     },
-    async cancel (id) {
-      if (confirm(this.$i18n.t('orders.DELETE_ORDER_CONFIRM_DIALOG'))) {
-        await orderAPI.delete({
-          data: { id: id },
-          success: response => {
-            // Update order status to 'cancelled' in table instead of redirect to first page
-            let itemIndex = this.tableData.findIndex(i => i.id === id)
-            if (itemIndex) {
-              this.tableData[itemIndex].status = 'CANCELLED'
-            }
-
-            this.$emit('refresh')
-
-            this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
-          },
-          fail: e => {
-            this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
-          }
-        })
-      }
+    cancel (id) {
+      this.$modal.show(cancelOrderModal, {
+        id: id,
+        cancelItem: () => {
+          this.$emit('refresh')
+        }
+      }, {
+        height: 'auto'
+      })
     }
   },
   components: {
     paginator,
-    tableHeader
+    tableHeader,
+    cancelOrderModal
   }
 }
 </script>
