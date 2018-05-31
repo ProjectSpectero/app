@@ -10,6 +10,9 @@
           <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
             <pay :invoice="invoice" :due="due" classes="button button-success" @update="fetchInvoice"></pay>
           </template>
+          <template v-else-if="invoice.type === 'CREDIT' && invoice.status === 'UNPAID' && canShowDueAmount">
+            <pay :invoice="invoice" :due="due" classes="button button-success" @update="fetchInvoice"></pay>
+          </template>
         </top>
         <div class="container">
           <div v-if="invoice.status === 'PAID'" class="message-paid message message-success">
@@ -18,6 +21,9 @@
           </div>
 
           <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
+            <alert-outstanding :due="due" :invoice="invoice"></alert-outstanding>
+          </template>
+          <template v-else-if="invoice.type === 'CREDIT' && invoice.status === 'UNPAID' && canShowDueAmount">
             <alert-outstanding :due="due" :invoice="invoice"></alert-outstanding>
           </template>
           <template v-else-if="verified && verificationErrors && isFixable(order.status)">
