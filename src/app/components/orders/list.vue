@@ -19,10 +19,6 @@
                 <router-link v-if="row.status !== 'CANCELLED' && row.last_invoice && row.last_invoice.status === 'UNPAID'" class="button button-success" :to="{ name: 'invoice', params: { id: row.last_invoice.id } }">
                   {{ $i18n.t('misc.PAY_NOW') }}
                 </router-link>
-
-                <button v-if="row.status !== 'CANCELLED'" @click.stop="cancel(row.id)" class="button">
-                  {{ $i18n.t('misc.CANCEL') }}
-                </button>
               </template>
 
               <router-link class="button button-info" :to="{ name: 'order', params: { id: row.id } }">
@@ -41,7 +37,6 @@
 <script>
 import paginator from '@/shared/components/paginator'
 import tableHeader from '@/shared/components/table/thead'
-import cancelOrderModal from './cancelOrderModal'
 
 export default {
   props: {
@@ -73,22 +68,11 @@ export default {
     },
     changedPage (page) {
       this.$emit('changedPage', page)
-    },
-    cancel (id) {
-      this.$modal.show(cancelOrderModal, {
-        id: id,
-        cancelItem: () => {
-          this.$emit('refresh')
-        }
-      }, {
-        height: 'auto'
-      })
     }
   },
   components: {
     paginator,
-    tableHeader,
-    cancelOrderModal
+    tableHeader
   }
 }
 </script>
