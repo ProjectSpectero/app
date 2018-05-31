@@ -23,7 +23,7 @@
                 <template v-else-if="field.type === 'model'">
                   <div class="form-input" v-if="marketModels">
                     <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.MARKET_MODEL') }}</label></div>
-                    <div class="side-by-side">
+                    <div class="input-with-tooltip">
                       <select v-model="form.market_model">
                         <option v-for="model in marketModels" :key="model" :value="model">
                           {{ $i18n.t(`nodes.MODEL.${model}`) }}

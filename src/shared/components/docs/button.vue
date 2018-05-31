@@ -27,10 +27,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .tooltip-trigger {
-    display: inline-block;
-    margin-left: 0;
-    font-size: 24px;
-    cursor: pointer;
-  }
+.tooltip-trigger {
+  display: inline-block;
+  margin-left: 0;
+  font-size: 24px;
+  cursor: pointer;
+}
 </style>
