@@ -10,21 +10,26 @@
           <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
             <pay :invoice="invoice" :due="due" classes="button button-success" @update="fetchInvoice"></pay>
           </template>
+          <template v-else-if="invoice.type === 'CREDIT' && invoice.status === 'UNPAID' && canShowDueAmount">
+            <pay :invoice="invoice" :due="due" classes="button button-success" @update="fetchInvoice"></pay>
+          </template>
         </top>
         <div class="container">
-          <div v-if="invoice.status === 'PAID'" class="message-paid message message-success">
-            <h5><span class="icon-check-circle"></span> {{ $i18n.t('invoices.PAID') }}</h5>
-            <p>{{ $i18n.t('invoices.THANKS') }}</p>
-          </div>
-
-          <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
-            <alert-outstanding :due="due" :invoice="invoice"></alert-outstanding>
-          </template>
-          <template v-else-if="verified && verificationErrors && isFixable(order.status)">
-            <alert-processing :errorBag="verificationErrors" :invoice="invoice" @update="fetchInvoice"></alert-processing>
-          </template>
-
           <div class="invoice">
+            <div v-if="invoice.status === 'PAID'" class="message-paid message message-success">
+              <h5><span class="icon-check-circle"></span> {{ $i18n.t('invoices.PAID') }}</h5>
+              <p>{{ $i18n.t('invoices.THANKS') }}</p>
+            </div>
+            <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
+              <alert-outstanding :due="due" :invoice="invoice"></alert-outstanding>
+            </template>
+            <template v-else-if="invoice.type === 'CREDIT' && invoice.status === 'UNPAID' && canShowDueAmount">
+              <alert-outstanding :due="due" :invoice="invoice"></alert-outstanding>
+            </template>
+            <template v-else-if="verified && verificationErrors && isFixable(order.status)">
+              <alert-processing :errorBag="verificationErrors" :invoice="invoice" @update="fetchInvoice"></alert-processing>
+            </template>
+
             <div class="header">
               <div class="logo-container">
                 <div class="logo logo-dark logo-md"></div>
@@ -471,6 +476,9 @@ export default {
     .total-outstanding {
       margin-top: 16px;
     }
+  }
+  .outstanding, .processing, .message-paid {
+    margin-bottom: 20px;
   }
 }
 @media print {

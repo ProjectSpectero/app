@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     stripeKey () {
-      return (process.env.STRIPE_MODE === 'sandbox') ? process.env.STRIPE_SANDBOX_PUBLIC_KEY : process.env.STRIPE_LIVE_PUBLIC_KEY
+      return (process.env.STRIPE_MODE === 'live') ? process.env.STRIPE_LIVE_PUBLIC_KEY : process.env.STRIPE_SANDBOX_PUBLIC_KEY
     }
   },
   methods: {

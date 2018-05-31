@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import userAPI from '@/app/api/user.js'
 
 export default {
@@ -41,11 +42,15 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      syncCurrentUser: 'appAuth/syncCurrentUser'
+    }),
     regenerateNodeKey () {
       this.formLoading = true
 
       userAPI.regenerateNodeKey({
         success: response => {
+          this.syncCurrentUser()
           this.nodeKey = response.data.result.node_key
           this.$toasted.success('New node key has been generated.')
           this.formLoading = false
