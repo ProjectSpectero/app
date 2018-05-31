@@ -21,6 +21,7 @@
 
 <script>
 import orderAPI from '@/app/api/order'
+import cancelOrderModal from '../orders/cancelOrderModal'
 
 export default {
   props: {
@@ -29,17 +30,14 @@ export default {
     status: Number
   },
   methods: {
-    async cancel () {
-      await orderAPI.delete({
-        data: { id: this.invoice.order_id },
-        success: response => {
-          this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
+    cancel () {
+      this.$modal.show(cancelOrderModal, {
+        id: this.invoice.order_id,
+        cancelItem: () => {
           this.$router.push({ name: 'orders' })
-        },
-        fail: e => {
-          console.log(e)
-          this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
         }
+      }, {
+        height: 'auto'
       })
     },
     async fix () {
@@ -56,6 +54,9 @@ export default {
     fixed () {
       this.$emit('close')
     }
+  },
+  components: {
+    cancelOrderModal
   }
 }
 </script>

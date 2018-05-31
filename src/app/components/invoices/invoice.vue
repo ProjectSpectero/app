@@ -7,6 +7,10 @@
             {{ $i18n.t('invoices.BACK') }}
           </router-link>
 
+          <router-link :to="{ name: 'order', params: { id: invoice.order_id } }" class="button button-info">
+            {{ $i18n.t('misc.VIEW') }} {{ $i18n.t('misc.ORDER') }}
+          </router-link>
+
           <template v-if="!loading">
             <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
               <pay :invoice="invoice" :due="due" classes="button button-success" @update="fetchInvoice"></pay>

@@ -33,6 +33,8 @@
             <tbody>
               <tr v-for="(item, index) in results" :key="index">
                 <td>
+                  <flag v-if="item.cc" :iso="item.cc" :squared="false" />
+                  <div v-else class="flag-icon-empty">2+</div>
                   {{ item.friendly_name }}
                   <div v-if="item.plan" class="badge badge-brand badge-plan">{{ item.plan }}</div>
                 </td>
@@ -177,6 +179,30 @@ export default {
     left: 0;
     z-index: 2;
     background: rgba(255,255,255,0.75);
+  }
+  .flag-icon {
+    position: relative;
+    top: -1px;
+    margin-right: 8px;
+    width: 1.5em;
+    line-height: 1.2em;
+  }
+  .flag-icon-empty {
+    width: 21px;
+    height: 16px;
+    position: relative;
+    top: -1px;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: left;
+    color: rgba(0,0,0,0.5);
+    font-weight: $font-bold;
+    font-size: 13px;
+    background: #EEE;
+    cursor: default;
+    pointer-events: none;
   }
 }
 .cart {

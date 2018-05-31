@@ -19,10 +19,6 @@
                 <router-link v-if="row.status !== 'CANCELLED' && row.last_invoice && row.last_invoice.status === 'UNPAID'" class="button button-success" :to="{ name: 'invoice', params: { id: row.last_invoice.id } }">
                   {{ $i18n.t('misc.PAY_NOW') }}
                 </router-link>
-
-                <button v-if="row.status !== 'CANCELLED'" @click.stop="cancel(row.id)" class="button">
-                  {{ $i18n.t('misc.CANCEL') }}
-                </button>
               </template>
 
               <router-link class="button button-info" :to="{ name: 'order', params: { id: row.id } }">
@@ -39,7 +35,6 @@
 </template>
 
 <script>
-import orderAPI from '@/app/api/order'
 import paginator from '@/shared/components/paginator'
 import tableHeader from '@/shared/components/table/thead'
 
@@ -73,27 +68,6 @@ export default {
     },
     changedPage (page) {
       this.$emit('changedPage', page)
-    },
-    async cancel (id) {
-      if (confirm(this.$i18n.t('orders.DELETE_ORDER_CONFIRM_DIALOG'))) {
-        await orderAPI.delete({
-          data: { id: id },
-          success: response => {
-            // Update order status to 'cancelled' in table instead of redirect to first page
-            let itemIndex = this.tableData.findIndex(i => i.id === id)
-            if (itemIndex) {
-              this.tableData[itemIndex].status = 'CANCELLED'
-            }
-
-            this.$emit('refresh')
-
-            this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
-          },
-          fail: e => {
-            this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
-          }
-        })
-      }
     }
   },
   components: {
