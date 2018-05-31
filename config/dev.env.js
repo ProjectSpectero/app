@@ -1,7 +1,15 @@
 const merge = require('webpack-merge')
 const prodEnv = require('./prod.env')
+const config = require('dotenv').config()
+const dotenvVars = {}
 
-module.exports = merge(prodEnv, {
+if (config.parsed !== undefined) {
+  for (let key in config.parsed) {
+    dotenvVars[key] = JSON.stringify(config.parsed[key])
+  }
+}
+
+module.exports = merge(prodEnv, dotenvVars, {
   NODE_ENV: '"development"',
   APP_ENDPOINT: '"dev.spectero.com"',
   APP_HTTPS: true,
