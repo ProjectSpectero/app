@@ -16,6 +16,7 @@ import VueCurrencyFilter from 'vue-currency-filter'
 import VueClipboard from 'vue-clipboard2'
 import VueFloatLabel from 'vue-float-label'
 import VueTooltip from 'vue-directive-tooltip'
+import FlagIcon from 'vue-flag-icon'
 
 import globalMixin from '@/shared/mixins/global'
 
@@ -31,6 +32,7 @@ Vue.use(VueMoment)
 Vue.use(VueClipboard)
 Vue.use(VueFloatLabel)
 Vue.use(VueTooltip)
+Vue.use(FlagIcon)
 
 Vue.use(VueTooltip, {
   delay: 500,

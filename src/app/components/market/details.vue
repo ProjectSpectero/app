@@ -50,21 +50,18 @@
         </div>
       </div>
     </top>
-    <div class="container">
-      <template v-if="item.nodes">
+    <template v-if="item.nodes">
+      <div class="container">
         <div class="section padded">
           <h4>{{ $i18n.t('misc.NODES') }}</h4>
           <nodes :nodes="item.nodes"></nodes>
         </div>
-      </template>
+      </div>
+    </template>
 
-      <template v-if="item.ip_addresses">
-        <div class="section padded">
-          <h4>{{ $i18n.t('misc.IP_ADDRESSES') }}</h4>
-          <ips :ips="item.ip_addresses" :showAddresses="false"></ips>
-        </div>
-      </template>
-    </div>
+    <template v-if="item.ip_addresses">
+      <ips :ips="item.ip_addresses" :showAddresses="false"></ips>
+    </template>
   </div>
 </template>
 

@@ -36,7 +36,11 @@ export default {
       columns: ['type', 'amount', 'quantity', 'status', 'sync_status', 'actions'],
       sortableColumns: ['type', 'amount', 'quantity', 'status', 'sync_status'],
       filterableColumns: ['type', 'amount', 'quantity', 'status', 'sync_status'],
-      options: {}
+      options: {},
+      headings: {
+        sync_status: 'Sync Status',
+        actions: ''
+      }
     }
   },
   created () {
@@ -59,6 +63,7 @@ export default {
       },
       perPage: 10,
       pagination: true,
+      headings: this.headings,
       sortable: this.sortableColumns,
       filterable: this.filterableColumns
     }
