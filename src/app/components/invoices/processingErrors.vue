@@ -1,6 +1,7 @@
 <template>
   <div>
     <p>{{ $i18n.t('invoices.UNABLE_TO_PROCESS') }}</p>
+    <p>{{ $i18n.t('invoices.FIX_OPTIONS_TEXT') }}</p>
 
     <template v-if="status !== 400">
       <ul v-if="errorBag && errorBag[0]" class="error-list">
@@ -9,8 +10,8 @@
         </li>
       </ul>
 
-      <button @click="fix" class="button button-success">{{ $i18n.t('orders.FIX')}}</button>
-      <button @click="cancel" class="button button-danger">{{ $i18n.t('orders.CANCEL')}}</button>
+      <button @click="fix" class="button button-warning">{{ $i18n.t('orders.FIX')}}</button>
+      <button @click="cancel" class="button button-danger button-bordered right">{{ $i18n.t('orders.CANCEL')}}</button>
     </template>
     <template v-else>
       {{ $i18n.t('invoices.RESOURCES_MISMATCH', { order: invoice.order_id }) }}
@@ -60,7 +61,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+p {
+  margin-bottom: 14px;
+}
 .error-list {
-  margin: 14px 0;
+  margin-bottom: 14px;
 }
 </style>

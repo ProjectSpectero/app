@@ -1,6 +1,6 @@
 <template>
-  <div class="processing message message-error">
-    <h5><span class="icon-alert-circle"></span> Order Problem</h5>
+  <div class="processing message message-warning">
+    <h5><span class="icon-alert-circle"></span> Resources Unavailable</h5>
     <processing-errors :errorBag="errorBag" :invoice="invoice" @close="update"></processing-errors>
   </div>
 </template>
