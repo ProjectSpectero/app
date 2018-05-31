@@ -1,21 +1,22 @@
 <template>
   <div class="container">
-      <div v-if="ips && ips.length" class="list section padded">
-        <v-client-table :data="ips" :columns="columns" :options="options">
-          <template v-if="props.row.ip" slot="ip" slot-scope="props">
-            {{ props.row.ip }}
+    <div v-if="ips && ips.length" class="list section padded">
+      <h4>{{ $i18n.t('misc.IP_ADDRESSES') }}</h4>
+      <v-client-table :data="ips" :columns="columns" :options="options">
+        <template v-if="props.row.ip" slot="ip" slot-scope="props">
+          {{ props.row.ip }}
+        </template>
+        <template slot="cc" slot-scope="props">
+          <template v-if="props.row.cc">
+            {{ getCountryById(props.row.cc).name }}
           </template>
-          <template slot="cc" slot-scope="props">
-            <template v-if="props.row.cc">
-              {{ getCountryById(props.row.cc).name }}
-            </template>
-          </template>
-          <template slot="created_at" slot-scope="props">
-            {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
-          </template>
-        </v-client-table>
-      </div>
-      <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'IPs' })"></not-found>
+        </template>
+        <template slot="created_at" slot-scope="props">
+          {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
+        </template>
+      </v-client-table>
+    </div>
+    <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'IPs' })"></not-found>
   </div>
 </template>
 
