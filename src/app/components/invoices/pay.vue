@@ -27,29 +27,32 @@ export default {
       })
     },
     async verify () {
-      await orderAPI.verify({
-        data: { id: this.invoice.order_id },
-        success: response => {
-          this.showPaymentModal()
-        },
-        fail: async error => {
-          if (typeof error.errors === 'object') {
-            console.log(this.invoice)
-            this.$modal.show(processingErrorsModal, {
-              invoice: this.invoice,
-              errorBag: error.errors,
-              status: error.status,
-              fixed: () => {
-                this.showPaymentModal()
-              }
-            }, {
-              height: 'auto'
-            })
-          } else {
-            this.$toasted.error(this.errorAPI(error, 'orders'))
+      if (this.invoice.type !== 'CREDIT') {
+        await orderAPI.verify({
+          data: { id: this.invoice.order_id },
+          success: response => {
+            this.showPaymentModal()
+          },
+          fail: async error => {
+            if (typeof error.errors === 'object') {
+              this.$modal.show(processingErrorsModal, {
+                invoice: this.invoice,
+                errorBag: error.errors,
+                status: error.status,
+                fixed: () => {
+                  this.showPaymentModal()
+                }
+              }, {
+                height: 'auto'
+              })
+            } else {
+              this.$toasted.error(this.errorAPI(error, 'orders'))
+            }
           }
-        }
-      })
+        })
+      } else {
+        this.showPaymentModal()
+      }
     }
   },
   components: {
