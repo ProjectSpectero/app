@@ -26,7 +26,7 @@
           <div v-if="node.cc || node.city" class="info-box">
             <h5>Location</h5>
             <p>
-              <template v-if="node.cc">{{ getCountryById(node.cc).name }}</template>
+              <template v-if="node.cc"><flag :iso="node.cc" :squared="false" /> {{ getCountryById(node.cc).name }}</template>
               <template v-if="node.city"> ({{ node.city }})</template>
             </p>
           </div>
