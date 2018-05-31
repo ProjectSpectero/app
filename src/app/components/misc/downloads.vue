@@ -274,11 +274,11 @@ li > ol {
   }
 }
 p.cmd {
-  line-height: 38px;
+  padding: 10px 14px;
   display: inline-block;
-  padding: 0 14px;
   color: #26FF6D;
   background: #28303A;
   font-family: monospace;
+  word-break: break-all;
 }
 </style>
