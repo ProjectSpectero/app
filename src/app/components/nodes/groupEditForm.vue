@@ -43,7 +43,7 @@
                 :disabled="formLoading"
                 v-validate="rules['price']"
                 data-vv-as="price">
-                <p v-html="$i18n.t('nodes.GROUP_PRICE_AVAILABILITY', { model1: marketModels[1], model2: marketModels[2] })"></p>
+                <p class="input-note" v-html="$i18n.t('nodes.GROUP_PRICE_AVAILABILITY', { model1: marketModels[1], model2: marketModels[2] })"></p>
 
               <span v-show="errors.has('price')" class="input-error-message">
                 {{ errors.first('price') }}
@@ -52,13 +52,15 @@
 
             <div class="form-input" v-if="marketModels">
               <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.MARKET_MODEL') }}</label></div>
-              <select v-model="form.market_model">
-                <option v-for="model in marketModels" :key="model" :value="model">
-                  {{ $i18n.t(`nodes.MODEL.${model}`) }}
-                </option>
-              </select>
+              <div class="input-with-tooltip">
+                <select v-model="form.market_model">
+                  <option v-for="model in marketModels" :key="model" :value="model">
+                    {{ $i18n.t(`nodes.MODEL.${model}`) }}
+                  </option>
+                </select>
 
-              <tooltip id="nodes.topics.marketModels"></tooltip>
+                <tooltip id="nodes.topics.marketModels"></tooltip>
+              </div>
             </div>
           </div>
           <button v-if="formFields" type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
