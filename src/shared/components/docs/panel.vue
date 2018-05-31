@@ -6,7 +6,7 @@
     </div>
 
     <div class="content">
-      <contents :items="items"></contents>
+      <contents :items="items" :child="true"></contents>
     </div>
   </div>
 </template>
@@ -41,30 +41,44 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .help {
-    background: #e6e8ef;
-    width: 20%;
-    border-left: 1px solid #c8cad1;
-    overflow-y: auto;
+.help {
+  width: 25%;
+  background: $color-bg;
+  box-shadow: 0px 0px 5px 0px rgba(33, 41, 56, 0.15);
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.top {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  padding: $pad;
+  font-size: 18px;
+  font-weight: $font-semi;
+  background: #fff;
+  box-shadow: 0px 0px 5px 0px rgba(33, 41, 56, 0.15);
+
+  > .title {
+    flex: 1;
   }
 
-  .top {
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    border-bottom: 1px solid #c8cad1;
-    font-size: 18px;
-
-    > .title {
-      flex: 1;
-    }
-
-    > .modal-close {
-      margin-left: 0;
-    }
+  > .modal-close {
+    margin-left: 0;
   }
+}
 
-  .content {
-    padding: 1rem;
+.content {
+  padding: 14px;
+
+  .container {
+    padding: $pad;
   }
+  .child {
+    padding: $pad;
+    background: $white;
+    border: 1px solid $color-border;
+    border-radius: 4px;
+  }
+}
 </style>

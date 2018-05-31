@@ -443,7 +443,7 @@ module.exports = {
     },
     market: {
       title: 'Markeplace',
-      description: 'You can buy nodes and node groups here.',
+      subtitle: 'You can buy nodes and node groups here.',
       topics: {
         methods: {
           title: 'Payment methods',
@@ -453,7 +453,7 @@ module.exports = {
     },
     invoices: {
       title: 'Invoices',
-      description: 'Manage your invoices here.',
+      subtitle: 'Manage your invoices here.',
       topics: {
         status: {
           title: 'Invoice status',
