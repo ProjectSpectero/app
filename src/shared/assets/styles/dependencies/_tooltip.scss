@@ -1,29 +1,42 @@
+$tooltip-bg: rgba(40, 48, 58, 0.95);
+
 .vue-tooltip {
-  background: #fff;
   box-sizing: border-box;
-  color: #333;
   max-width: 320px;
-  padding: 1rem;
-  border-radius: 12px;
+  padding: 16px;
+  font-size: 95%;
+  line-height: 115%;
+  border-radius: 4px;
   z-index: 100;
-  border: 1px solid #E3E3E3;
-  box-shadow: 0 1px 5px rgba(0,0,0,.1);
   margin-top: 14px;
+
+  color: $white;
+  background: $tooltip-bg;
+  
+  .tooltip-content {
+    p {
+      margin-bottom: 10px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 
 .vue-tooltip .vue-tooltip-content {
-  text-align: center;
+  text-align: left;
 }
 
 .vue-tooltip .tooltip-arrow {
   content: '';
   width: 0;
   height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 9px solid #E3E3E3;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid $tooltip-bg;
   position: absolute;
-  top: -10px;
+  top: -6px;
 }
 
 .vue-tooltip[x-placement^="top"] {

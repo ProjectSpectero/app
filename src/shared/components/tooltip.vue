@@ -26,7 +26,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .tooltip-trigger {
-    display: inline-block;
-  }
+.tooltip-trigger {
+  display: inline-block;
+  font-size: 18px;
+  cursor: pointer;
+}
 </style>

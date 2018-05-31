@@ -199,6 +199,7 @@ module.exports = {
       UNPAID: 'Unpaid invoices'
     },
     UNABLE_TO_PROCESS: 'We were unable to process some of the resources of your order.',
+    FIX_OPTIONS_TEXT: 'Use the button below to automatically fix this order and remove any invalid resources. Additionally, you may cancel the order if you\'d like to place a new one.',
     RESOURCES_MISMATCH: 'Your current order has mismatching resources. Please contact us and provide your order ID ({order}) so that we can solve the problem.',
     RESOURCE_ERROR: {
       RESOURCE_NOT_FOUND: 'Resource no longer available',
@@ -250,11 +251,11 @@ module.exports = {
     UNABLE_TO_CHECK_ACCESSOR: 'Unable to check accessor details, please manually refresh the page.',
     ACCESSOR_DETAILS: 'Accessor Details',
     ACCESSOR_DETAILS_TEXT: 'Your accessor details will update once they process.',
-    FIX: 'Remove these resources and fix your order',
+    FIX: 'Fix Order',
     FIX_SUCCESS: 'Your order has been fixed and is available for payment.',
     FIX_ERROR: 'There was an error while attempting to fix your order!',
     DELETE_ORDER_CONFIRM_DIALOG: 'Are you sure you want to cancel this order?',
-    CANCEL: 'Cancel this order',
+    CANCEL: 'Cancel Order',
     CANCEL_ERROR: 'There was a problem cancelling your order. Please try again or contact us if this issue persists.',
     CANCEL_SUCCESS: 'Your order has been cancelled.',
     REGENERATE_ACCESSOR: 'Regenerate Accessor',
