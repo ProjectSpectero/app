@@ -1,7 +1,7 @@
 <template>
   <ul class="tabs">
     <li v-for="tab in tabs" @click.stop="switchTab(tab.id, tab.path)" :key="tab.id" :class="(activeTab === tab.id) ? 'active' : ''">
-      {{ tab.label }}
+      {{ $i18n.t('misc.' + tab.label) }}
     </li>
   </ul>
 </template>

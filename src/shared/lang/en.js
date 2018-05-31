@@ -36,6 +36,7 @@ module.exports = {
     CONTINUE: 'Continue',
     CANCEL: 'Cancel',
     VIEW: 'View',
+    ENGAGEMENTS: 'Engagements',
     VIEW_DETAILS: 'View Details',
     VIEW_FULL_DETAILS: 'View Full Details',
     RESET: 'Reset',
@@ -49,6 +50,7 @@ module.exports = {
     PAY_NOW: 'Pay Now',
     SAVE: 'Save',
     REMOVE: 'Remove',
+    MARKET_INFO: 'Market Information',
     GENERAL_INFO: 'General Information',
     PRICE: 'Price',
     LOCATION: 'Location',
@@ -63,6 +65,7 @@ module.exports = {
     PORT_NUMBER: 'Port No.',
     IP: 'IP Address',
     IP_ADDRESSES: 'IP Addresses',
+    SYSTEM: 'System',
     ACCESS_TOKEN: 'Access Token',
     PLACEHOLDER_ACCESS_TOKEN: 'Add a new access token in the format username:password to update',
     PROTOCOL: 'Protocol',
@@ -311,7 +314,8 @@ module.exports = {
       CONFIRMED: 'Confirmed',
       PENDING_VERIFICATION: 'Pending Verification',
       ENABLED: 'Enabled',
-      DISABLED: 'Disabled'
+      DISABLED: 'Disabled',
+      CANCELLED: 'Cancelled'
     },
     MODEL: {
       ANY: 'Any type',

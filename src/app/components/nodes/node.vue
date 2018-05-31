@@ -35,10 +35,10 @@ export default {
       engagements: null,
       ips: null,
       tabs: [
-        { id: 'general', path: 'general', label: 'General Details' },
-        { id: 'engagements', path: 'engagements', label: 'Engagements' },
-        { id: 'ips', path: 'ips', label: 'IP Addresses' },
-        { id: 'system', path: 'system', label: 'System' }
+        { id: 'general', path: 'general', label: 'GENERAL_INFO' },
+        { id: 'engagements', path: 'engagements', label: 'MARKET' },
+        { id: 'ips', path: 'ips', label: 'IP_ADDRESSES' },
+        { id: 'system', path: 'system', label: 'SYSTEM' }
       ],
       errorItem: 'node'
     }

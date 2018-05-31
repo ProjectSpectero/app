@@ -30,10 +30,6 @@
               <template v-if="node.city"> ({{ node.city }})</template>
             </p>
           </div>
-          <div class="info-box">
-            <h5>Price</h5>
-            <p>{{ node.price | currency }} USD</p>
-          </div>
         </div>
       </div>
     </top>
@@ -41,7 +37,7 @@
     <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
 
     <edit-form v-if="activeTab === 'general'" :node="node"></edit-form>
-    <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
+    <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" :node="node" @updateEngagements="updateEngagements"></list-engagements>
     <list-ips v-else-if="activeTab === 'ips'" :ips="ips"></list-ips>
     <list-system v-else-if="activeTab === 'system'" :node="node"></list-system>
     <not-found v-else></not-found>
