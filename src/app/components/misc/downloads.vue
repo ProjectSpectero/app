@@ -30,12 +30,11 @@
         <router-link :to="{ name: 'nodes' }" class="button button-success"><span class="icon-check"></span> Complete Setup</router-link>
       </section>
       <section v-if="matrices" class="section padded">
-        <h4>Compatibility</h4>
-        <p>The Spectero Daemon is currently compatible with the following {{ osTab}} versions:</p>
+        <h5>Compatibility</h5>
+        <p>The Spectero Daemon is currently compatible with the following {{ osTab}} {{ osTab === 'Linux' ? 'distributions' : 'versions' }}:</p>
         <div class="compatibility">
           <div v-for="(matrix, i) in matrices" :key="i">
             <div v-if="i === osTab" class="matrices-section">
-              <h5 class="title-os">{{ i }}</h5>
               <div class="matrices">
                 <div class="matrix" v-for="(os, j) in matrix" :key="j">
                   <template v-if="os.Distributions">
@@ -274,11 +273,11 @@ li > ol {
   }
 }
 p.cmd {
-  line-height: 38px;
+  padding: 10px 14px;
   display: inline-block;
-  padding: 0 14px;
   color: #26FF6D;
   background: #28303A;
   font-family: monospace;
+  word-break: break-all;
 }
 </style>
