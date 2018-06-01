@@ -11,7 +11,7 @@
         <h2>{{ osTab }} Instructions</h2>
         <h5>Step 1</h5>
         <template v-if="osTab === 'Windows'">
-          <p>Download the latest release of the Spectero Daemon and its CLI.</p>
+          <p>Download the latest release of the Spectero Daemon and its CLI, then run it.</p>
           <a class="button button-info" :href="downloadLinks[osTab]" target="_blank"><span class="icon-download"></span> Download Now</a>
         </template>
         <template v-else>
