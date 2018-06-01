@@ -58,7 +58,7 @@
     <div v-else class="alert-msg-centered">
       <div class="icon-alert-circle big-icon"></div>
       <h1>{{ $i18n.t('nodes.NO_NODES_TITLE') }}</h1>
-      <p>{{ $i18n.t('nodes.NO_NODES_TEXT') }}</p>
+      <p v-html="$i18n.t('nodes.NO_NODES_TEXT')"></p>
     </div>
     <paginator :pagination="pagination" @changedPage="changedPage"></paginator>
   </div>

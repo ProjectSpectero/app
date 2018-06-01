@@ -42,7 +42,11 @@
             </div>
           </div>
         </div>
-        <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'nodes' })"></not-found>
+        <not-found v-else type="nodes">
+          <slot>
+            <p v-html="$i18n.t('nodes.NO_NODES_TEXT')"></p>
+          </slot>
+        </not-found>
       </div>
       <loading v-else></loading>
     </template>

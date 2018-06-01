@@ -90,7 +90,7 @@
           </template>
         </v-client-table>
       </div>
-      <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'engagements' })"></not-found>
+      <not-found v-else type="engagements"></not-found>
     </div>
   </div>
 </template>
