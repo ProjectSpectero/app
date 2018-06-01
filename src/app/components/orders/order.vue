@@ -189,10 +189,10 @@ export default {
     isFixable () {
       const options = ['MANUAL_FRAUD_CHECK', 'AUTOMATED_FRAUD_CHECK', 'PENDING']
       const status = this.order.status
-
       return options.includes(status)
     },
     async verify () {
+      console.warn('Verifying order (status is', this.order.status, ')')
       await orderAPI.verify({
         data: { id: this.order.id },
         success: response => {

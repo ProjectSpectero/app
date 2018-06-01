@@ -7,15 +7,12 @@
             {{ $i18n.t('invoices.BACK') }}
           </router-link>
 
-          <router-link :to="{ name: 'order', params: { id: invoice.order_id } }" class="button button-info">
+          <router-link v-if="invoice.type !== 'CREDIT'" :to="{ name: 'order', params: { id: invoice.order_id } }" class="button button-info">
             {{ $i18n.t('misc.VIEW') }} {{ $i18n.t('misc.ORDER') }}
           </router-link>
 
           <template v-if="!loading">
-            <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
-              <pay :invoice="invoice" :due="due" classes="button button-success" @update="fetchInvoice"></pay>
-            </template>
-            <template v-else-if="invoice.type === 'CREDIT' && invoice.status === 'UNPAID' && canShowDueAmount">
+            <template v-if="((verified && !verificationErrors) || invoice.type === 'CREDIT') && invoice.status === 'UNPAID' && canShowDueAmount">
               <pay :invoice="invoice" :due="due" classes="button button-success" @update="fetchInvoice"></pay>
             </template>
           </template>
@@ -27,6 +24,7 @@
                 <h5><span class="icon-check-circle"></span> {{ $i18n.t('invoices.PAID') }}</h5>
                 <p>{{ $i18n.t('invoices.THANKS') }}</p>
               </div>
+
               <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
                 <alert-outstanding :due="due" :invoice="invoice"></alert-outstanding>
               </template>
@@ -291,8 +289,11 @@ export default {
             this.error = false
             this.order = response.data.result
 
-            // Verify validity of this order (no expired / unavailable resources)
-            await this.verifyOrder()
+            // Test if this order is fixable (only certain status need the verify + fix combo)
+            // for invalid resources
+            if (this.isFixable()) {
+              await this.verify()
+            }
           }
         },
         fail: (e) => {
@@ -341,7 +342,8 @@ export default {
 
       return options.includes(status)
     },
-    async verifyOrder () {
+    async verify () {
+      console.warn('Verifying order from invoice (status is', this.order.status, ')')
       await orderAPI.verify({
         data: { id: this.invoice.order_id },
         success: response => {
