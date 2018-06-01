@@ -5,7 +5,7 @@
         <list-system-spec :spec="spec"></list-system-spec>
       </div>
     </div>
-    <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'system data' })"></not-found>
+    <not-found v-else type="system data"></not-found>
   </div>
 </template>
 

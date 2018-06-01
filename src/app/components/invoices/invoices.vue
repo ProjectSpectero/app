@@ -21,7 +21,11 @@
                 @sortByColumn="sortByColumn">
               </invoices-list>
             </template>
-            <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'invoices' })"></not-found>
+            <not-found v-else type="invoices">
+              <slot>
+                <p v-html="$i18n.t('invoices.NO_INVOICES_TEXT')"></p>
+              </slot>
+            </not-found>
           </div>
         </div>
       </div>

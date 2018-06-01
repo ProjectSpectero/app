@@ -22,7 +22,11 @@
                 @sortByColumn="sortByColumn">
               </orders-list>
             </template>
-            <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'orders' })"></not-found>
+            <not-found v-else type="orders">
+              <slot>
+                <p v-html="$i18n.t('orders.NO_ORDERS_TEXT')"></p>
+              </slot>
+            </not-found>
           </div>
         </div>
       </div>

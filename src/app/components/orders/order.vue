@@ -132,9 +132,7 @@ export default {
   methods: {
     async fetchOrder () {
       await orderAPI.order({
-        data: {
-          id: this.$route.params.id
-        },
+        data: { id: this.$route.params.id },
         success: async response => {
           if (response.data.result) {
             this.order = response.data.result

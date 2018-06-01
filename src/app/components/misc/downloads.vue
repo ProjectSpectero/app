@@ -15,7 +15,7 @@
           <a class="button button-info" :href="downloadLinks[osTab]" target="_blank"><span class="icon-download"></span> Download Now</a>
         </template>
         <template v-else>
-          <p>Download the latest release of the Spectero Daemon and its CLI by running the following command:</p>
+          <p>Download and run the latest release of the Spectero Daemon and its CLI by running the following command:</p>
           <p class="cmd">wget -q -O - {{ downloadLinks[osTab] }} | bash</p>
         </template>
       </section>
