@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { Card, createToken } from 'vue-stripe-elements-plus'
 import paymentAPI from '@/app/api/payment.js'
 
@@ -46,6 +46,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      user: 'appAuth/user'
+    }),
     stripeKey () {
       return (process.env.STRIPE_MODE === 'live') ? process.env.STRIPE_LIVE_PUBLIC_KEY : process.env.STRIPE_SANDBOX_PUBLIC_KEY
     }
@@ -56,7 +59,7 @@ export default {
     }),
     pay () {
       // Stripe token issued
-      createToken().then(stripeData => {
+      createToken({ name: this.user.name }).then(stripeData => {
         this.paid = true
 
         // Process stripe payment on our API
