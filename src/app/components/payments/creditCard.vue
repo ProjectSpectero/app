@@ -4,6 +4,7 @@
       {{ $i18n.t('payments.PAYMENT_SUCCESS') }}
     </div>
     <div v-else>
+      {{ user }}
       <card class="stripe-card"
         :stripe="stripeKey"
         :options="stripeOptions"
@@ -58,8 +59,18 @@ export default {
       setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus'
     }),
     pay () {
+      const details = {
+        name: this.user.name,
+        address_line1: this.user.address_line_1,
+        address_line2: this.user.address_line_2,
+        address_city: this.user.city,
+        address_state: this.user.state,
+        address_zip: this.user.post_code,
+        address_country: this.user.country
+      }
+
       // Stripe token issued
-      createToken({ name: this.user.name }).then(stripeData => {
+      createToken(details).then(stripeData => {
         this.paid = true
 
         // Process stripe payment on our API

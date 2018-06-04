@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="!error">
-      <div v-if="invoice">
+      <div v-if="invoice && user">
         <top title="View Invoice">
           <router-link :to="{ name: 'invoices' }" class="button">
             {{ $i18n.t('invoices.BACK') }}

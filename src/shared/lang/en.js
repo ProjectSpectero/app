@@ -160,6 +160,7 @@ module.exports = {
     PAY_WITH_PAYPAL: 'PayPal Checkout',
     PAY_WITH_STRIPE: 'Credit Card Payment',
     PAY_WITH_ACCOUNT_CREDIT: 'Use Account Credit',
+    NO_CREDIT: 'No Credit Available',
     REQUEST_FAILED: 'We were unable to start the payment process. Please contact us if this keeps happening.',
     ZERO_CREDIT_BALANCE: 'You don\'t have any balance in your account.',
     UNPAID_CREDIT_INVOICES_ARE_PRESENT: 'Unable to invoice credits: you already have one invoice queued for payment!',
@@ -173,6 +174,7 @@ module.exports = {
     NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.',
     NO_ACCOUNT_CREDIT: 'You don\'t have any credit in your account.',
     COUNT_ACCOUNT_CREDIT: 'You currently have <strong><span>$</span>{credit} USD</strong> of credit in your account.',
+    ACCOUNT_CREDIT: '(You have {credit} credits in your account)',
     ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!',
     PROMO: {
       APPLY_MSG: 'Have a promo code? Apply it to your account here.',

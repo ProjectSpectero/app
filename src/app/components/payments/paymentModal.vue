@@ -1,16 +1,21 @@
 <template>
   <div class="modal">
     <div class="modal-header">
-      <h2>{{ $i18n.t('invoices.PAY_INVOICE') }}</h2>
+      <h2>
+        {{ $i18n.t('invoices.PAY_INVOICE') }}
+        <small v-if="user.credit > 0">{{ $i18n.t('payments.ACCOUNT_CREDIT', { credit: user.credit }) }}</small>
+      </h2>
       <button @click="$emit('close')" class="modal-close"></button>
     </div>
     <div class="modal-content">
-      <p class="spaced">Your invoice <strong>{{ invoice.id }}</strong> currently has an outstanding balance of <strong>{{ due.amount | currency }} {{ due.currency }}</strong>.</p>
+      <p class="spaced">
+        Your invoice <strong>{{ invoice.id }}</strong> currently has an outstanding balance of <strong>{{ due.amount | currency }} {{ due.currency }}</strong>.
+      </p>
       <p class="spaced">
         {{ $i18n.t('invoices.PAY_TEXT2') }}
       </p>
       <div>
-        <button @click="pay(type)" v-if="canUse(type)" v-for="type in buttons" :key="type.route" class="button button-info">
+        <button @click="pay(type)" v-if="canUse(type)" v-for="type in buttons" :key="type.route" class="button" :class="type.class" :disabled="!type.enabled">
           {{ $i18n.t('payments.' + type.label) }}
         </button>
       </div>
@@ -19,18 +24,31 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props: {
     invoice: Object,
     due: Object
   },
-  data () {
-    return {
-      buttons: [
-        { label: 'PAY_WITH_PAYPAL', route: 'paypal', usage: ['STANDARD', 'MANUAL', 'CREDIT'] },
-        { label: 'PAY_WITH_STRIPE', route: 'stripe', usage: ['STANDARD'] },
-        { label: 'PAY_WITH_ACCOUNT_CREDIT', route: 'paypalCredit', usage: ['STANDARD'] }
+  computed: {
+    ...mapGetters({
+      user: 'appAuth/user'
+    }),
+    buttons () {
+      let btns = [
+        { label: 'PAY_WITH_PAYPAL', route: 'paypal', usage: ['STANDARD', 'MANUAL', 'CREDIT'], enabled: true, class: 'button-info' },
+        { label: 'PAY_WITH_STRIPE', route: 'stripe', usage: ['STANDARD'], enabled: true, class: 'button-info' },
+        { label: 'PAY_WITH_ACCOUNT_CREDIT', route: 'paypalCredit', usage: ['STANDARD'], enabled: true, class: 'button-info' }
       ]
+
+      if (!this.user.credit) {
+        btns[2].label = 'NO_CREDIT'
+        btns[2].enabled = false
+        btns[2].class = ''
+      }
+
+      return btns
     }
   },
   methods: {
@@ -53,6 +71,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h2 > small {
+  font-size: 14px;
+}
 .button {
   margin-right: 6px;
 
