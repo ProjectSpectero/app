@@ -74,12 +74,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import nodeAPI from '@/app/api/node'
 import tooltip from '@/shared/components/tooltip'
 
 export default {
   props: {
-    group: Object
+    group: {
+      required: false,
+      type: Object
+    }
   },
   data () {
     return {
@@ -103,7 +107,10 @@ export default {
     }
   },
   created () {
-    this.form = Object.assign({}, this.group)
+    // Populate form object
+    this.form = this.group ? Object.assign({}, this.group) : {}
+    this.form.user_id = this.user.id
+    this.form.status = 'ACTIVE'
 
     this.formFields = [
       { name: 'friendly_name', label: 'Friendly name', placeholder: 'Name for this node', type: 'text' },
@@ -111,21 +118,42 @@ export default {
       { name: 'price', label: 'Friendly name', placeholder: 'Price', type: 'number' }
     ]
   },
+  computed: {
+    ...mapGetters({
+      user: 'appAuth/user'
+    })
+  },
   methods: {
     async submit () {
       this.formLoading = true
 
-      await nodeAPI.editGroup({
-        data: this.form,
-        success: response => {
-          this.formLoading = false
-          this.$toasted.success(this.$i18n.t('nodes.GROUP_UPDATE_SUCCESS'))
-        },
-        fail: error => {
-          this.formLoading = false
-          this.$toasted.error(this.errorAPI(error, 'nodes'))
-        }
-      })
+      // Editing or creating?
+      if (this.group) {
+        await nodeAPI.editGroup({
+          data: this.form,
+          success: response => {
+            this.formLoading = false
+            this.$toasted.success(this.$i18n.t('nodes.GROUP_UPDATE_SUCCESS'))
+          },
+          fail: error => {
+            this.formLoading = false
+            this.$toasted.error(this.errorAPI(error, 'nodes'))
+          }
+        })
+      } else {
+        console.log('sending', this.form)
+        await nodeAPI.createGroup({
+          data: this.form,
+          success: response => {
+            this.formLoading = false
+            this.$toasted.success(this.$i18n.t('nodes.GROUP_CREATE_SUCCESS'))
+          },
+          fail: error => {
+            this.formLoading = false
+            this.$toasted.error(this.errorAPI(error, 'errors'))
+          }
+        })
+      }
     }
   },
   components: {

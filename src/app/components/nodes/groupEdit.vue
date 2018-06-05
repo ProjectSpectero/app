@@ -19,7 +19,7 @@
 <script>
 import nodeAPI from '@/app/api/node'
 import tabs from './tabs'
-import editForm from './groupEditForm'
+import editForm from './groupForm'
 import listEngagements from './listEngagements'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
@@ -32,8 +32,8 @@ export default {
   data () {
     return {
       tabs: [
-        { id: 'general', path: 'general', 'label': 'General Details' },
-        { id: 'engagements', path: 'engagements', 'label': 'Engagements' }
+        { id: 'general', path: 'general', 'label': 'GENERAL_DETAILS' },
+        { id: 'engagements', path: 'engagements', 'label': 'ENGAGEMENTS' }
       ],
       activeTab: null,
       group: null,

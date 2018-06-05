@@ -87,6 +87,13 @@ export default {
   },
 
   /**
+   * Creates a group from given parameters.
+   */
+  createGroup (options) {
+    return api('POST', `/node_group`, options)
+  },
+
+  /**
    * Edit node details.
 
    * @param {Integer} id Node id to edit.
