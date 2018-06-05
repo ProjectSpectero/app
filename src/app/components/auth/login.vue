@@ -45,19 +45,23 @@
         {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('users.LOGIN_BUTTON') }}
       </button>
     </form>
-    <!-- <div class="bottom-link">
-      <router-link :to="{ name: 'register' }">
+    <div class="bottom-link">
+      <!-- <router-link :to="{ name: 'register' }">
         {{ $i18n.t('users.NO_ACCOUNT') }}
         <strong>{{ $i18n.t('users.CREATE_ACCOUNT_NOW') }}</strong>
+      </router-link> -->
+
+      <router-link :to="{ name: 'resetPassword' }">
+        {{ $i18n.t('users.FORGOT_PASSWORD') }}
       </router-link>
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-import auth from '@/app/api/auth.js'
-import userAPI from '@/app/api/user.js'
+import auth from '@/app/api/auth'
+import userAPI from '@/app/api/user'
 
 export default {
   metaInfo: {

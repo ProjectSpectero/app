@@ -390,6 +390,13 @@ module.exports = {
   },
 
   users: {
+    FORGOT_PASSWORD: 'Forgot your password?',
+    RESET_TOKEN_ISSUED: 'We have sent an email with a validation link to {email}. Please check your inbox!',
+    RESET_TOKEN_ERROR: 'An error has ocurred while trying to issue a token for reset. Please try again!',
+    NEW_PASSWORD_ISSUED: 'Your password is now <strong>{password}</strong>. Please store it in a safe place and never tell it to anyone!',
+    NEW_PASSWORD_FAILED: 'An error has ocurred while trying to generate a new password for your account. Please try again later!',
+    BACK_TO_LOGIN: 'Back to login',
+    RESET_PASSWORD_BUTTON: 'Reset your password',
     PLACEHOLDER_EMAIL: 'Email address',
     PLACEHOLDER_PASSWORD: 'Password',
     PLEASE_LOGIN: 'Please login to continue',
