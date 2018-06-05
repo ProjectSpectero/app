@@ -23,7 +23,7 @@
     "vue": "^2.5.16",
     "vue-clipboard2": "^0.1.1",
     "vue-cookie": "^1.1.4",
-    "vue-currency-filter": "^2.2.0",
+    "vue-currency-filter": "^2.2.6",
     "vue-directive-tooltip": "^1.4.5",
     "vue-flag-icon": "^1.0.6",
     "vue-float-label": "^1.6.1",
