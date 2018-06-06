@@ -5,14 +5,15 @@
         <help-button obj="nodes.topics"></help-button>
       </top>
       <div>
-        <router-link :to="{ name: 'groupCreate' }">
-          {{ $i18n.t('nodes.CREATE_GROUP') }}
-        </router-link>
+        <div class="container content-split">
+          <div class="split-item split-list nodes-sidebar">
+            <router-link class="button button-success mb-3" :to="{ name: 'groupCreate' }">
+              <span class="icon-plus"></span>
+              {{ $i18n.t('nodes.CREATE_GROUP') }}
+            </router-link>
 
-        <div v-if="groups">
-          <div v-if="groups.length">
-            <div class="container content-split">
-              <div class="split-item split-list nodes-sidebar">
+            <div v-if="groups">
+              <div v-if="groups.length">
                 <div v-for="group in groups" class="node-group" :key="group.id" @click.stop="selectGroup(group, true)" :class="selectedGroup === group.id ? 'active' : ''">
                   <div class="group-name">
                     {{ group.friendly_name }}
@@ -30,30 +31,28 @@
                   </div>
                 </div>
               </div>
-              <div class="split-item split-details">
-                <template v-if="groups && loading">
-                  <loading></loading>
-                </template>
-                <template v-else>
-                  <nodes-list
-                    :selectedGroupInformation="selectedGroupInformation"
-                    :dataLoading="loading"
-                    :searchId="searchId"
-                    :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
-                    :tableData="(selectedGroup === 0) ? uncategorized.result : nodes"
-                    @changedPage="changedPage"
-                    @sortByColumn="sortByColumn" />
-                </template>
-              </div>
+              <not-found v-else type="nodes">
+                <slot><p v-html="$i18n.t('nodes.NO_NODES_TEXT')"></p></slot>
+              </not-found>
             </div>
+            <loading v-else></loading>
           </div>
-          <not-found v-else type="nodes">
-            <slot>
-              <p v-html="$i18n.t('nodes.NO_NODES_TEXT')"></p>
-            </slot>
-          </not-found>
+          <div class="split-item split-details">
+            <template v-if="groups && loading">
+              <loading></loading>
+            </template>
+            <template v-else>
+              <nodes-list
+                :selectedGroupInformation="selectedGroupInformation"
+                :dataLoading="loading"
+                :searchId="searchId"
+                :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
+                :tableData="(selectedGroup === 0) ? uncategorized.result : nodes"
+                @changedPage="changedPage"
+                @sortByColumn="sortByColumn" />
+            </template>
+          </div>
         </div>
-        <loading v-else></loading>
       </div>
     </template>
     <error v-else :item="errorItem" :code="errorCode"/>
@@ -95,11 +94,13 @@ export default {
   },
   computed: {
     selectedGroupInformation () {
-      const found = this.groups.find(u => u.id === this.selectedGroup)
+      if (this.groups) {
+        const found = this.groups.find(u => u.id === this.selectedGroup)
 
-      return {
-        id: found ? found.id : 0,
-        friendly_name: found ? found.friendly_name : this.$i18n.t('nodes.UNCATEGORIZED')
+        return {
+          id: found ? found.id : 0,
+          friendly_name: found ? found.friendly_name : this.$i18n.t('nodes.UNCATEGORIZED')
+        }
       }
     }
   },

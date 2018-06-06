@@ -141,11 +141,10 @@ export default {
           }
         })
       } else {
-        console.log('sending', this.form)
         await nodeAPI.createGroup({
           data: this.form,
           success: response => {
-            this.formLoading = false
+            this.$router.push({ name: 'nodesByGroup', params: { id: response.data.result.id, page: 1 } })
             this.$toasted.success(this.$i18n.t('nodes.GROUP_CREATE_SUCCESS'))
           },
           fail: error => {

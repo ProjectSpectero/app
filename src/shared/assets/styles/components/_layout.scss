@@ -101,21 +101,21 @@
         margin-bottom: 0;
       }
     }
-    
+
     .node-group {
       display: flex;
       align-items: center;
       justify-content: space-between;
-    
+
       .actions {
         a {
           padding-left: 6px;
-    
+
           &:first-child {
             margin-left: 0;
           }
         }
-    
+
         .action-remove {
           color: $color-danger;
         }
@@ -132,12 +132,12 @@
     }
   }
   .nodes-sidebar {
-    > div {
+    .node-group {
       padding: 12px;
       border-radius: 4px;
       transition: all 0.1s ease-out;
       cursor: pointer;
-      
+
       &:hover {
         color: $color-info;
         background: lighten($color-info, 53%);
@@ -145,7 +145,7 @@
       &.active {
         color: $white;
         background-color: $color-info;
-  
+
         .group-name {
           font-weight: $font-semi;
         }
