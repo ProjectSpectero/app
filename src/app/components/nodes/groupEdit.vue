@@ -7,7 +7,7 @@
 
         <div>
           <edit-form v-if="activeTab === 'general'" :group="group"></edit-form>
-          <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
+          <list-engagements v-else-if="activeTab === 'engagements'" :group="group" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
         </div>
       </div>
       <loading v-else></loading>

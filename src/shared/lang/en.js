@@ -306,7 +306,7 @@ module.exports = {
     REQUEST_FAILED: 'The request failed. Please contact us if the error persists.',
     NODE_VERIFY_SUCCESS: 'Your node {node} is now queued for verification. We\'ll send you an email as soon as this is finished.',
     GROUP_UPDATE_SUCCESS: 'Node group updated successfully!',
-    UPDATE_SUCCESS: 'Node information updated successfully!',
+    UPDATE_SUCCESS: 'Information updated successfully!',
     GROUP_FROM_NODE_UPDATE_SUCCESS: 'Group changed successfully!',
     CREATE_GROUP: 'Create a new group',
     HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!',
@@ -319,6 +319,7 @@ module.exports = {
     GO_TO_NODE_GROUP: 'Go to node group',
     MARKET_MODEL_TOOLTIP: 'There are three types of market model:',
     STATUS: {
+      ACTIVE: 'Active',
       UNCONFIRMED: 'Unconfirmed',
       CONFIRMED: 'Confirmed',
       PENDING: 'Pending Verification',
@@ -332,7 +333,8 @@ module.exports = {
       UNLISTED: 'Unlisted',
       MANAGED: 'Managed',
       LISTED_SHARED: 'Shared',
-      LISTED_DEDICATED: 'Dedicated'
+      LISTED_DEDICATED: 'Dedicated',
+      ENTERPRISE: 'Enterprise'
     }
   },
 
