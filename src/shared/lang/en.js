@@ -353,6 +353,7 @@ module.exports = {
       UNLISTED: 'Unlisted',
       MANAGED: 'Managed',
       LISTED_SHARED: 'Shared',
+      ENTERPRISE: 'Enterprise',
       LISTED_DEDICATED: 'Dedicated'
     },
     ORDER_PROCESSED: 'Success! Invoice #{invoice} has been issued.',
