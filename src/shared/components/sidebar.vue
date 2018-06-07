@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div v-if="user" class="sidebar">
     <div class="menu-logo">
       <router-link :to="{ name: 'dashboard' }">
         <div class="logo logo-sm"></div>
@@ -16,6 +16,17 @@
           </li>
         </ul>
       </section> -->
+      <section v-if="user.enterprise" class="nav-section">
+        <h5>{{ $i18n.t('misc.ENTERPRISE') }}</h5>
+        <ul>
+          <li>
+            <router-link :to="{ name: 'orders' }">
+              <span class="icon-hard-drive"></span>
+              {{ $i18n.t('misc.ENTERPRISE') }}
+            </router-link>
+          </li>
+        </ul>
+      </section>
       <section class="nav-section">
         <h5>{{ $i18n.t('misc.DAEMON') }}</h5>
         <ul>
@@ -109,7 +120,7 @@
 </template>
 
 <script>
-import userAPI from '@/app/api/user.js'
+import userAPI from '@/app/api/user'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -135,7 +146,6 @@ export default {
     }),
     async fetchFreshdesk () {
       if (this.user) {
-        console.log(this.user)
         await userAPI.getSupportLink({
           success: response => {
             if (response.data.result.redirect_uri !== undefined) {

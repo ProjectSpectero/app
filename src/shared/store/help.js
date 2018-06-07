@@ -25,7 +25,6 @@ const mutations = {
   },
   SET_CONTENTS_KEY: (state, key) => {
     state.contentsKey = 'help.' + key
-    console.log(state.contentsKey)
   }
 }
 

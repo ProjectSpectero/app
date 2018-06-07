@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import filtersMixin from '@/app/mixins/listFilters'
 import orderAPI from '@/app/api/order'
 import ordersList from './list'
@@ -62,6 +63,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      user: 'appAuth/user'
+    }),
     currentStatus () {
       return this.$route.params.status ? this.$route.params.status.toLowerCase() : 'all'
     }
@@ -94,22 +98,39 @@ export default {
       }
     },
     async fetchOrders (page) {
-      await orderAPI.myOrders({
-        searchId: this.searchId,
-        page: page,
-        limit: this.perPage,
-        keepURL: (this.type === 'simple'),
-        success: response => {
-          this.error = false
-          this.pagination = response.data.pagination
-          this.tableData = response.data.result
-        },
-        fail: e => {
-          console.log(e)
-          this.errorCode = 400
-          this.error = true
-        }
-      })
+      if (this.user.enterprise) {
+        await orderAPI.myEnterpriseOrders({
+          page: page,
+          limit: this.perPage,
+          success: response => {
+            this.error = false
+            this.pagination = response.data.pagination
+            this.tableData = response.data.result
+          },
+          fail: e => {
+            console.log(e)
+            this.errorCode = 400
+            this.error = true
+          }
+        })
+      } else {
+        await orderAPI.myOrders({
+          searchId: this.searchId,
+          page: page,
+          limit: this.perPage,
+          keepURL: (this.type === 'simple'),
+          success: response => {
+            this.error = false
+            this.pagination = response.data.pagination
+            this.tableData = response.data.result
+          },
+          fail: e => {
+            console.log(e)
+            this.errorCode = 400
+            this.error = true
+          }
+        })
+      }
     }
   },
   watch: {

@@ -7,6 +7,7 @@ module.exports = {
     INVOICES: 'Invoices',
     ITEM: 'Item',
     NODE: 'Node',
+    ENTERPRISE: 'Enterprise',
     NODE_GROUP: 'Node group',
     NODE_GROUPS: 'Node groups',
     TOTAL_NODES: 'Total Nodes',

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="user">
     <template v-if="!error">
       <div v-if="order">
         <top title="Order Details" :subtitle="'Order Number: ' + order.id.toString().padStart(5, '0')">
@@ -69,13 +69,18 @@
               <alert-processing :errorBag="verificationErrors" :invoice="order.last_invoice" @update="fetchOrder"></alert-processing>
             </template>
 
-            <section class="col-12">
-              <h3>Items in this order</h3>
-              <div class="filter-bar">
-                <sort-dropdown :buttonText="'Sort Items By'" :sortFields="sort.fields" @sortUpdate="sortUpdate"></sort-dropdown>
-              </div>
-              <order-item v-for="(item, index) in order.line_items" :key="index" :item="item" @sortItems="sortItems" />
-            </section>
+            <template v-if="user.enterprise">
+              <section class="col-12">
+                <h3>Items in this order</h3>
+                <div class="filter-bar">
+                  <sort-dropdown :buttonText="'Sort Items By'" :sortFields="sort.fields" @sortUpdate="sortUpdate"></sort-dropdown>
+                </div>
+                <order-item v-for="(item, index) in order.line_items" :key="index" :item="item" @sortItems="sortItems" />
+              </section>
+            </template>
+            <template v-else>
+              <p>Enterprise order</p>
+            </template>
           </div>
         </div>
       </div>
