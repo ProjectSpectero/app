@@ -16,6 +16,10 @@
                 <span class="icon-tag"></span> {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
               </router-link>
 
+              <router-link :to="{ name: 'orderInvoices', params: { id: order.id } }">
+                <span class="icon-tag"></span> {{ $i18n.t('orders.VIEW_ALL_INVOICES') }}
+              </router-link>
+
               <template v-if="order.status !== 'CANCELLED'">
                 <router-link v-if="order.last_invoice && order.last_invoice.status === 'UNPAID'" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
                   <span class="icon-dollar-sign"></span> {{ $i18n.t('misc.PAY_NOW') }}
@@ -70,6 +74,9 @@
             </template>
 
             <template v-if="user.enterprise">
+              <p>Enterprise order</p>
+            </template>
+            <template v-else>
               <section class="col-12">
                 <h3>Items in this order</h3>
                 <div class="filter-bar">
@@ -77,9 +84,6 @@
                 </div>
                 <order-item v-for="(item, index) in order.line_items" :key="index" :item="item" @sortItems="sortItems" />
               </section>
-            </template>
-            <template v-else>
-              <p>Enterprise order</p>
             </template>
           </div>
         </div>
