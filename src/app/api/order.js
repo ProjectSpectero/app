@@ -42,14 +42,14 @@ export default {
    * Returns orders list for the logged in user.
    */
   myOrders (options) {
-    return api('GET', helpers.appendQuery(`/order/self`, options), options)
+    return api('GET', helpers.appendQuery(`/order/self`, options.queryParams), options)
   },
 
   /**
    * Returns orders list for the logged in enterprise user.
    */
   myEnterpriseOrders (options) {
-    return api('GET', helpers.appendQuery(`/order/self/enterprise`, options), options)
+    return api('GET', helpers.appendQuery(`/order/self/enterprise`, options.queryParams), options)
   },
 
   /**

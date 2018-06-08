@@ -32,10 +32,13 @@ const getters = {
 const actions = {
   async fetch ({ getters, commit }, data) {
     commit('SET_LOADING', true)
+
     await marketAPI.search({
-      page: data.page,
-      limit: data.perPage,
-      includeGrouped: getters.grouped,
+      queryParams: {
+        page: data.page || 1,
+        limit: data.perPage || 10,
+        includeGrouped: getters.grouped
+      },
       data: {
         rules: getters.filters
       },

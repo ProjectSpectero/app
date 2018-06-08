@@ -100,8 +100,11 @@ export default {
     async fetchOrders (page) {
       if (this.user.enterprise) {
         await orderAPI.myEnterpriseOrders({
-          page: page,
-          limit: this.perPage,
+          queryParams: {
+            searchId: this.searchId,
+            page: page || 1,
+            limit: this.perPage || 10
+          },
           success: response => {
             this.error = false
             this.pagination = response.data.pagination
@@ -115,10 +118,11 @@ export default {
         })
       } else {
         await orderAPI.myOrders({
-          searchId: this.searchId,
-          page: page,
-          limit: this.perPage,
-          keepURL: (this.type === 'simple'),
+          queryParams: {
+            searchId: this.searchId,
+            page: page || 1,
+            limit: this.perPage || 10
+          },
           success: response => {
             this.error = false
             this.pagination = response.data.pagination

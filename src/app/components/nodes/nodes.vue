@@ -206,9 +206,11 @@ export default {
 
       if (index !== -1) {
         await nodeAPI.myNodes({
-          searchId: this.searchId,
-          page: page,
-          limit: this.perPage,
+          queryParams: {
+            searchId: this.searchId,
+            page: page,
+            limit: this.perPage
+          },
           success: response => {
             this.nodes = response.data.result
             this.pagination = response.data.pagination
@@ -225,9 +227,11 @@ export default {
     },
     async fetchUncategorized (page) {
       await nodeAPI.uncategorizedNodes({
-        searchId: this.searchId,
-        page: page,
-        limit: this.perPage,
+        queryParams: {
+          searchId: this.searchId,
+          page: page,
+          limit: this.perPage
+        },
         success: response => {
           this.uncategorized = response.data
           this.loading = false

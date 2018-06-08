@@ -76,7 +76,7 @@ const actions = {
 const mutations = {
   SET_CURRENT_USER (state, payload) {
     state.user = payload
-    state.user.enterprise = (state.user.id === 8)
+    state.user.enterprise = (state.user.id === 9)
   },
   SET_LOGIN_INFO (state, payload) {
     state.accessToken = payload.accessToken

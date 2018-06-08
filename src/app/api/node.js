@@ -21,14 +21,14 @@ export default {
    * Returns my nodes.
    */
   myNodes (options) {
-    return api('GET', helpers.appendQuery(`/node/self`, options), options)
+    return api('GET', helpers.appendQuery(`/node/self`, options.queryParams), options)
   },
 
   /**
    * Retrieves all uncategorized nodes.
    */
   uncategorizedNodes (options) {
-    return api('GET', helpers.appendQuery(`/node/self/uncategorized`, options), options)
+    return api('GET', helpers.appendQuery(`/node/self/uncategorized`, options.queryParams), options)
   },
 
   /**
