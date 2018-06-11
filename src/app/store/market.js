@@ -89,7 +89,6 @@ const mutations = {
   },
   UPDATE_GROUPED: (state, status) => {
     state.grouped = status
-    console.log('Updated grouped to', state.grouped)
   },
   UPDATE_FILTER: (state, data) => {
     // Update pre-filled filter with the new value and operator

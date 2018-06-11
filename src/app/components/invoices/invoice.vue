@@ -198,8 +198,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'appAuth/user',
-      pendingPayment: 'appUsers/pendingPayment'
+      user: 'appAuth/user'
     }),
     status () {
       return this.invoice.status
@@ -241,7 +240,6 @@ export default {
   },
   methods: {
     ...mapActions({
-      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus',
       syncCurrentUser: 'appAuth/syncCurrentUser'
     }),
     async fetchInvoice () {
@@ -251,14 +249,6 @@ export default {
           if (response.data.result) {
             this.error = false
             this.invoice = response.data.result
-
-            // Set a temporary pending status for newly created invoices
-            // (we cannot control how long they take to be accepted as of now).
-            // Once we have the fake status set, we can disable that setter.
-            if (this.pendingPayment) {
-              this.$set(this.invoice, 'status', 'PENDING')
-              this.setPendingInvoiceStatus(false)
-            }
 
             // Non-standard invoices (MANUAL/CREDIT) don't have orders
             // associated with them. We can only fetch orders for STANDARD invoices
@@ -343,7 +333,6 @@ export default {
       return options.includes(status)
     },
     async verify () {
-      console.warn('Verifying order from invoice (status is', this.order.status, ')')
       await orderAPI.verify({
         data: { id: this.invoice.order_id },
         success: response => {

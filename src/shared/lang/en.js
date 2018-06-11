@@ -199,6 +199,7 @@ module.exports = {
       PAID: 'Paid',
       UNPAID: 'Unpaid',
       PARTIALLY_REFUNDED: 'Partially Refunded',
+      PROCESSING: 'Processing',
       REFUNDED: 'Refunded',
       CANCELLED: 'Cancelled'
     },
