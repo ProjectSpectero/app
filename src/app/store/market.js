@@ -36,7 +36,7 @@ const actions = {
     await marketAPI.search({
       queryParams: {
         page: data.page || 1,
-        limit: data.perPage || 10,
+        perPage: data.perPage || 10,
         includeGrouped: getters.grouped
       },
       data: {

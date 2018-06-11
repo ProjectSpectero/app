@@ -99,7 +99,7 @@ export default {
         queryParams: {
           searchId: this.searchId,
           page: page || 1,
-          limit: this.perPage || 10
+          perPage: this.perPage || 10
         },
         success: response => {
           this.error = false

@@ -33,7 +33,7 @@ export default {
         queryParams: {
           searchId: null,
           page: 1,
-          limit: 3
+          perPage: 3
         },
         success: response => {
           this.pagination = response.data.pagination

@@ -80,8 +80,8 @@ export default {
       await invoiceAPI.myInvoices({
         queryParams: {
           searchId: this.searchId,
-          page: page,
-          limit: this.perPage
+          page: page || 1,
+          perPage: this.perPage || 10
         },
         success: response => {
           this.error = false
