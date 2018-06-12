@@ -81,7 +81,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'appAuth/user'
+      user: 'appAuth/user',
+      isEnterprise: 'appAuth/isEnterprise'
     }),
     currentStatus () {
       return this.$route.params.status ? this.$route.params.status.toLowerCase() : 'all'
@@ -131,7 +132,7 @@ export default {
       }
     },
     async fetchOrders (page) {
-      if (this.user.enterprise) {
+      if (this.isEnterprise) {
         await orderAPI.myEnterpriseOrders({
           queryParams: {
             searchId: this.searchId,

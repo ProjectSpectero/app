@@ -90,7 +90,7 @@
                 :show-invoice-link="true"/>
             </section>
 
-            <template v-if="user.enterprise">
+            <template v-if="isEnterprise">
               <p>Enterprise order</p>
             </template>
             <template v-else>
@@ -212,7 +212,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'appAuth/user'
+      user: 'appAuth/user',
+      isEnterprise: 'appAuth/isEnterprise'
     })
   },
   created () {

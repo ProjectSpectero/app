@@ -19,7 +19,7 @@
         </ul>
       </section> -->
       <section
-        v-if="user.enterprise"
+        v-if="isEnterprise"
         class="nav-section">
         <h5>{{ $i18n.t('misc.ENTERPRISE') }}</h5>
         <ul>
@@ -148,7 +148,8 @@ export default {
   computed: {
     ...mapGetters({
       count: 'cart/itemCount',
-      user: 'appAuth/user'
+      user: 'appAuth/user',
+      isEnterprise: 'appAuth/isEnterprise'
     })
   },
   async created () {

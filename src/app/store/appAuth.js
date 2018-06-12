@@ -13,9 +13,8 @@ const getters = {
   accessToken: (state) => state.accessToken,
   refreshToken: (state) => state.refreshToken,
   expiry: (state) => state.expiry,
-  currentUser: (state) => state.user,
-  currentUserRoles: (state) => state.user !== null ? state.user.roles : [],
-  isSuperAdmin: (state, getters) => getters.currentUserRoles ? getters.currentUserRoles.indexOf('SuperAdmin') > -1 : false
+  isEnterprise: (state) => state.user.plans ? state.user.plans.indexOf('enterprise') > -1 : false,
+  isPro: (state) => state.user.plans ? state.user.plans.indexOf('pro') > -1 : false
 }
 
 const actions = {
@@ -76,7 +75,7 @@ const actions = {
 const mutations = {
   SET_CURRENT_USER (state, payload) {
     state.user = payload
-    state.user.enterprise = (state.user.id === 8)
+    console.log(state.user)
   },
   SET_LOGIN_INFO (state, payload) {
     state.accessToken = payload.accessToken
