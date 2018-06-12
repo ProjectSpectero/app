@@ -101,7 +101,14 @@ import tooltip from '@/shared/components/tooltip'
 export default {
   props: {
     engagements: Array,
-    node: Object
+    node: {
+      required: false,
+      type: Object
+    },
+    group: {
+      required: false,
+      type: Object
+    }
   },
   data () {
     return {
@@ -132,6 +139,8 @@ export default {
     }
   },
   created () {
+    this.form = Object.assign({}, this.node ? this.node : this.group)
+
     this.options = {
       skin: '',
       texts: {
@@ -156,8 +165,6 @@ export default {
       filterable: this.filterableColumns
     }
 
-    this.form = Object.assign({}, this.node)
-
     this.formFields = [
       { name: 'friendly_name', label: this.$i18n.t('misc.FRIENDLY_NAME'), placeholder: this.$i18n.t('misc.FRIENDLY_NAME'), type: 'text' },
       { name: 'market_model', label: this.$i18n.t('misc.MARKET_MODEL'), placeholder: this.$i18n.t('misc.MARKET_MODEL'), type: 'model', object: this.marketModels, objectKey: null },
@@ -167,8 +174,9 @@ export default {
   methods: {
     async submit () {
       this.formLoading = true
+      const method = this.node ? nodeAPI['edit'] : nodeAPI['editGroup']
 
-      await nodeAPI.edit({
+      await method({
         data: this.form,
         success: response => {
           if (response.data.result) {
@@ -185,9 +193,7 @@ export default {
     deleteEngagement (id) {
       if (confirm(this.$i18n.t('nodes.DELETE_ENGAGEMENT_CONFIRM_DIALOG'))) {
         nodeAPI.deleteEngagement({
-          data: {
-            id: id
-          },
+          data: { id: id },
           success: response => {
             this.$emit('updateEngagements')
             this.$toasted.success(this.$i18n.t('nodes.ENGAGEMENT_DELETE_SUCCESS'))

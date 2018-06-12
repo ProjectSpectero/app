@@ -78,7 +78,6 @@ const actions = {
 const mutations = {
   SET_CURRENT_USER (state, payload) {
     state.user = payload
-    console.log('Fetched current user', state.user)
   },
   SETUP_ENDPOINT (state, payload) {
     state.initialized = true

@@ -98,9 +98,11 @@ export default {
     },
     async fetchInvoices (page) {
       await invoiceAPI.myInvoices({
-        searchId: this.searchId,
-        page: page,
-        limit: this.perPage,
+        queryParams: {
+          searchId: this.searchId,
+          page: page || 1,
+          perPage: this.perPage || 10
+        },
         success: response => {
           this.error = false
           this.pagination = response.data.pagination

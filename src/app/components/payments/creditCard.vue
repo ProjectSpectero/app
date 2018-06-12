@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import { Card, createToken } from 'vue-stripe-elements-plus'
 import paymentAPI from '@/app/api/payment.js'
 
@@ -54,9 +54,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus'
-    }),
     pay () {
       const details = {
         name: this.user.name,
@@ -84,7 +81,6 @@ export default {
           save: (this.saveCard === '1') || false
         },
         success: async processResponse => {
-          await this.setPendingInvoiceStatus(true)
           this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
           this.$router.push({ name: 'invoice', params: { id: invoiceId } })
         },

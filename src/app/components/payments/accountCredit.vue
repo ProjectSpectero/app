@@ -11,8 +11,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import paymentAPI from '@/app/api/payment.js'
+import paymentAPI from '@/app/api/payment'
 import loading from '@/shared/components/loading'
 
 export default {
@@ -25,9 +24,6 @@ export default {
     this.processPayment()
   },
   methods: {
-    ...mapActions({
-      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus'
-    }),
     processPayment () {
       if (this.$route.params.invoiceId) {
         paymentAPI.processAccountCredit({
@@ -36,7 +32,7 @@ export default {
             this.loading = false
             this.error = false
             this.success = true
-            await this.setPendingInvoiceStatus(true)
+
             this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
             this.$router.push({ name: 'invoice', params: { id: this.$route.params.invoiceId } })
           },

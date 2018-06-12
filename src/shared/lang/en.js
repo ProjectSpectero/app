@@ -7,6 +7,7 @@ module.exports = {
     INVOICES: 'Invoices',
     ITEM: 'Item',
     NODE: 'Node',
+    ENTERPRISE: 'Enterprise',
     NODE_GROUP: 'Node group',
     NODE_GROUPS: 'Node groups',
     TOTAL_NODES: 'Total Nodes',
@@ -201,6 +202,7 @@ module.exports = {
       UNPAID: 'Unpaid',
       PARTIALLY_REFUNDED: 'Partially Refunded',
       PARTIALLY_PAID: 'Partially Paid',
+      PROCESSING: 'Processing',
       REFUNDED: 'Refunded',
       CANCELLED: 'Cancelled'
     },
@@ -256,6 +258,7 @@ module.exports = {
     VIEW_RESOURCES: 'View Resources',
     BACK_TO_ORDER: 'Back to Order Details',
     VIEW_ALL_RESOURCES: 'List all resources',
+    VIEW_ALL_INVOICES: 'List All Invoices',
     VIEW_LATEST_INVOICE: 'View Latest Invoice',
     NOT_ENABLED_TITLE: 'Not enabled',
     NOT_ENABLED: '{type} is not enabled for this node.',
@@ -268,6 +271,7 @@ module.exports = {
     ACCESSOR_DETAILS: 'Accessor Details',
     ACCESSOR_DETAILS_TEXT: 'Your accessor details will update once they process.',
     FIX: 'Remove Unavailable Resources',
+    INVOICES_FOR_ORDER: 'Invoices for order #{id}',
     FIX_SUCCESS: 'Your order has been fixed and is available for payment.',
     FIX_ERROR: 'There was an error while attempting to fix your order!',
     DELETE_ORDER_CONFIRM_DIALOG: 'Are you sure you want to cancel this order?',
@@ -312,7 +316,7 @@ module.exports = {
     REQUEST_FAILED: 'The request failed. Please contact us if the error persists.',
     NODE_VERIFY_SUCCESS: 'Your node {node} is now queued for verification. We\'ll send you an email as soon as this is finished.',
     GROUP_UPDATE_SUCCESS: 'Node group updated successfully!',
-    UPDATE_SUCCESS: 'Node information updated successfully!',
+    UPDATE_SUCCESS: 'Information updated successfully!',
     GROUP_FROM_NODE_UPDATE_SUCCESS: 'Group changed successfully!',
     CREATE_GROUP: 'Create Node Group',
     HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!',
@@ -339,7 +343,8 @@ module.exports = {
       UNLISTED: 'Unlisted',
       MANAGED: 'Managed',
       LISTED_SHARED: 'Shared',
-      LISTED_DEDICATED: 'Dedicated'
+      LISTED_DEDICATED: 'Dedicated',
+      ENTERPRISE: 'Enterprise'
     }
   },
 
@@ -358,6 +363,7 @@ module.exports = {
       UNLISTED: 'Unlisted',
       MANAGED: 'Managed',
       LISTED_SHARED: 'Shared',
+      ENTERPRISE: 'Enterprise',
       LISTED_DEDICATED: 'Dedicated'
     },
     ORDER_PROCESSED: 'Success! Invoice #{invoice} has been issued.',

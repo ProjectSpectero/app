@@ -32,10 +32,13 @@ const getters = {
 const actions = {
   async fetch ({ getters, commit }, data) {
     commit('SET_LOADING', true)
+
     await marketAPI.search({
-      page: data.page,
-      limit: data.perPage,
-      includeGrouped: getters.grouped,
+      queryParams: {
+        page: data.page || 1,
+        perPage: data.perPage || 10,
+        includeGrouped: getters.grouped
+      },
       data: {
         rules: getters.filters
       },
@@ -86,7 +89,6 @@ const mutations = {
   },
   UPDATE_GROUPED: (state, status) => {
     state.grouped = status
-    console.log('Updated grouped to', state.grouped)
   },
   UPDATE_FILTER: (state, data) => {
     // Update pre-filled filter with the new value and operator

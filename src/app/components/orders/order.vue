@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="user">
     <template v-if="!error">
       <div v-if="order">
         <top title="Order Details" :subtitle="'Order Number: ' + order.id.toString().padStart(5, '0')">
@@ -14,6 +14,10 @@
             <template slot="body">
               <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">
                 <span class="icon-tag"></span> {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
+              </router-link>
+
+              <router-link :to="{ name: 'orderInvoices', params: { id: order.id } }">
+                <span class="icon-tag"></span> {{ $i18n.t('orders.VIEW_ALL_INVOICES') }}
               </router-link>
 
               <template v-if="order.status !== 'CANCELLED'">
@@ -66,41 +70,45 @@
               <alert-outstanding v-if="verified && verificationErrors.length === 0 && order.last_invoice.status === 'UNPAID'" :due="due" :invoice="order.last_invoice" :show-invoice-link="true"></alert-outstanding>
             </section>
 
-            <section class="col-9">
-              <div class="content-section">
-                <header>
-                  <h3><span class="icon-server icon-bg-info"></span>Order Resources</h3>
-                  <div class="filter-bar">
-                    <sort-dropdown :buttonText="'Sort Resources'" :sortFields="sort.fields" @sortUpdate="sortUpdate"></sort-dropdown>
-                  </div>
-                </header>
-                <template v-if="verified && verificationErrors.length > 0 && isFixable()">
-                  <alert-processing :errorBag="verificationErrors" :invoice="order.last_invoice" @update="fetchOrder"></alert-processing>
-                </template>
-                <order-item v-for="(item, index) in order.line_items" :key="index" :item="item" @sortItems="sortItems" />
-              </div>
-            </section>
-
-            <section class="col-3">
-              <div class="content-section latest-invoice">
-                <header>
-                  <h3><span class="icon-dollar-sign icon-bg-info"></span>Latest Invoice</h3>
-                </header>
-                <div class="invoice-details">
-                  <div class="balance">
-                    <h6>Balance Due</h6>
-                    <span class="balance-left" :class="{'text-info': due.amount > 0}">{{ due.amount | currency }}</span>
-                  </div>
-                  <div class="details">
-                    <small class="text-light">Invoice No: {{ order.last_invoice_id }}</small>
-                    <small v-if="order.due_next" class="text-light">{{ $i18n.t('misc.NEXT_DUE_DATE') }}: {{ order.due_next | moment('MMM D, YYYY') }}</small>
-                  </div>
+            <template v-if="user.enterprise">
+              <p>Enterprise order</p>
+            </template>
+            <template v-else>
+              <section class="col-9">
+                <div class="content-section">
+                  <header>
+                    <h3><span class="icon-server icon-bg-info"></span>Order Resources</h3>
+                    <div class="filter-bar">
+                      <sort-dropdown :buttonText="'Sort Resources'" :sortFields="sort.fields" @sortUpdate="sortUpdate"></sort-dropdown>
+                    </div>
+                  </header>
+                  <template v-if="verified && verificationErrors.length > 0 && isFixable()">
+                    <alert-processing :errorBag="verificationErrors" :invoice="order.last_invoice" @update="fetchOrder"></alert-processing>
+                  </template>
+                  <order-item v-for="(item, index) in order.line_items" :key="index" :item="item" @sortItems="sortItems" />
                 </div>
-                <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }" class="button-info">View Invoice</router-link>
-                <router-link :to="{ name: 'orderInvoices', params: { id: order.id } }" class="button">View All Invoices</router-link>
-              </div>
-            </section>
+              </section>
 
+              <section class="col-3">
+                <div class="content-section latest-invoice">
+                  <header>
+                    <h3><span class="icon-dollar-sign icon-bg-info"></span>Latest Invoice</h3>
+                  </header>
+                  <div class="invoice-details">
+                    <div class="balance">
+                      <h6>Balance Due</h6>
+                      <span class="balance-left" :class="{'text-info': due.amount > 0}">{{ due.amount | currency }}</span>
+                    </div>
+                    <div class="details">
+                      <small class="text-light">Invoice No: {{ order.last_invoice_id }}</small>
+                      <small v-if="order.due_next" class="text-light">{{ $i18n.t('misc.NEXT_DUE_DATE') }}: {{ order.due_next | moment('MMM D, YYYY') }}</small>
+                    </div>
+                  </div>
+                  <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }" class="button-info">View Invoice</router-link>
+                  <router-link :to="{ name: 'orderInvoices', params: { id: order.id } }" class="button">View All Invoices</router-link>
+                </div>
+              </section>
+            </template>
           </div>
         </div>
       </div>

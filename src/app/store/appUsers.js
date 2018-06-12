@@ -1,5 +1,4 @@
 const state = {
-  pendingPayment: false
 }
 
 const getters = {
@@ -48,20 +47,15 @@ const getters = {
     let rules = Object.assign({}, getters.editRules)
     rules.password.required = true
     return rules
-  },
-  pendingPayment: state => state.pendingPayment
+  }
 }
 
 const actions = {
-  setPendingInvoiceStatus ({ commit }, status) {
-    commit('SET_PENDING_INVOICE_STATUS', status)
-  }
+
 }
 
 const mutations = {
-  SET_PENDING_INVOICE_STATUS (state, status) {
-    state.pendingPayment = status
-  }
+
 }
 
 export default {

@@ -30,10 +30,11 @@ export default {
   methods: {
     async fetchOrders () {
       await orderAPI.myOrders({
-        searchId: null,
-        page: 1,
-        limit: 3,
-        keepURL: true,
+        queryParams: {
+          searchId: null,
+          page: 1,
+          perPage: 3
+        },
         success: response => {
           this.pagination = response.data.pagination
           this.tableData = response.data.result

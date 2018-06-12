@@ -30,9 +30,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import invoiceAPI from '@/app/api/invoice.js'
-import paymentAPI from '@/app/api/payment.js'
+import { mapGetters } from 'vuex'
+import invoiceAPI from '@/app/api/invoice'
+import paymentAPI from '@/app/api/payment'
 import creditCard from './creditCard'
 
 export default {
@@ -59,9 +59,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus'
-    }),
     fetchDue () {
       invoiceAPI.due({
         data: {
@@ -89,7 +86,6 @@ export default {
             invoiceId: this.invoiceId
           },
           success: async processResponse => {
-            await this.setPendingInvoiceStatus(true)
             this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
             this.$router.push({ name: 'invoice', params: { id: this.invoiceId } })
           },
