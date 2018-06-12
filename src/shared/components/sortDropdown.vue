@@ -7,16 +7,26 @@
       <div class="dropdown-filters">
         <div class="sort-fields">
           <ul>
-            <li @click="setCol(field)" v-for="(title, field) in sortFields" :key="field" :class="{'active': col === field}">{{ title }}</li>
+            <li
+              v-for="(title, field) in sortFields"
+              :key="field"
+              :class="{'active': col === field}"
+              @click="setCol(field)">{{ title }}</li>
           </ul>
         </div>
         <div class="sort-order">
           <ul>
-            <li @click="setOrder('asc')" :class="{'active': order === 'asc'}"><span class="icon-arrow-up"></span> Ascending</li>
-            <li @click="setOrder('desc')" :class="{'active': order === 'desc'}"><span class="icon-arrow-down"></span> Descending</li>
+            <li
+              :class="{'active': order === 'asc'}"
+              @click="setOrder('asc')"><span class="icon-arrow-up"/> Ascending</li>
+            <li
+              :class="{'active': order === 'desc'}"
+              @click="setOrder('desc')"><span class="icon-arrow-down"/> Descending</li>
           </ul>
         </div>
-        <button @click="applyFilters()" class="button-info full-width">Apply Filters</button>
+        <button
+          class="button-info full-width"
+          @click="applyFilters()">Apply Filters</button>
       </div>
     </template>
   </dropdown>
@@ -26,15 +36,29 @@
 import Dropdown from 'bp-vuejs-dropdown'
 
 export default {
+  components: {
+    Dropdown
+  },
   props: {
-    buttonText: String,
-    sortFields: Object
+    buttonText: {
+      type: String,
+      required: false,
+      default: 'Dropdown Button'
+    },
+    sortFields: {
+      type: Object,
+      required: true
+    }
   },
   data () {
     return {
       col: '',
       order: 'asc'
     }
+  },
+  created () {
+    this.col = Object.keys(this.sortFields)[0]
+    this.syncFilters()
   },
   methods: {
     setCol (col) {
@@ -53,13 +77,6 @@ export default {
         order: this.order
       })
     }
-  },
-  created () {
-    this.col = Object.keys(this.sortFields)[0]
-    this.syncFilters()
-  },
-  components: {
-    Dropdown
   }
 }
 </script>

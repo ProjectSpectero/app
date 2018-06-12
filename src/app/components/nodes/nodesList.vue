@@ -1,29 +1,47 @@
 <template>
-  <div v-if="tableData && !dataLoading" class="section padded">
+  <div
+    v-if="tableData && !dataLoading"
+    class="section padded">
     <header>
       <h2 class="mb-0">{{ selectedGroupInformation.friendly_name }}</h2>
-      <div v-if="selectedGroupInformation.id !== 0" class="actions">
-        <button @click.stop="removeGroup" class="button-sm button-danger button-icon">
-          <span class="icon-trash-2"></span>
+      <div
+        v-if="selectedGroupInformation.id !== 0"
+        class="actions">
+        <button
+          class="button-sm button-danger button-icon"
+          @click.stop="removeGroup">
+          <span class="icon-trash-2"/>
         </button>
 
-        <button @click.stop="editGroup" class="button-sm">
+        <button
+          class="button-sm"
+          @click.stop="editGroup">
           {{ $i18n.t('nodes.EDIT_GROUP') }}
         </button>
       </div>
     </header>
-    <div v-if="tableData.length > 0" class="datatable">
+    <div
+      v-if="tableData.length > 0"
+      class="datatable">
       <table>
-        <table-header :columns="columns" :headings="headings" :sortable="sortable" @sortByColumn="sortByColumn"/>
+        <table-header
+          :columns="columns"
+          :headings="headings"
+          :sortable="sortable"
+          @sortByColumn="sortByColumn"/>
         <tbody>
-          <tr v-for="row in tableData" :key="row.id">
+          <tr
+            v-for="row in tableData"
+            :key="row.id">
             <td>
               <div>{{ row.friendly_name }}</div>
               <div class="ip">{{ row.ip }}</div>
             </td>
             <td>
               <div class="service-badges">
-                <div v-for="service in row.services" :key="service.id">
+                <div
+                  v-for="service in row.services"
+                  :key="service.id">
                   {{ service.type }}
                 </div>
               </div>
@@ -35,32 +53,45 @@
               </div>
             </td>
             <td class="table-actions">
-              <button v-if="row.status === 'UNCONFIRMED'" class="button-success button-sm" @click.stop="verifyNode(row)">
-                <span class="icon-check"></span> {{ $i18n.t('misc.VERIFY') }}
+              <button
+                v-if="row.status === 'UNCONFIRMED'"
+                class="button-success button-sm"
+                @click.stop="verifyNode(row)">
+                <span class="icon-check"/> {{ $i18n.t('misc.VERIFY') }}
               </button>
 
-              <router-link class="button-sm button-info" :to="{ name: 'manage', params: { nodeId: isDevelopmentEnvironment ? row.id : 101 } }">
-                <span class="icon-sliders"></span> Manage
+              <router-link
+                :to="{ name: 'manage', params: { nodeId: isDevelopmentEnvironment ? row.id : 101 } }"
+                class="button-sm button-info">
+                <span class="icon-sliders"/> Manage
               </router-link>
 
-              <button class="button-icon" @click.stop="removeNode(row.id)">
-                <span class="icon-trash-2"></span>
+              <button
+                class="button-icon"
+                @click.stop="removeNode(row.id)">
+                <span class="icon-trash-2"/>
               </button>
 
-              <router-link class="button-icon" :to="{ name: 'node', params: { action: 'edit', id: row.id } }">
-                <span class="icon-edit-2"></span>
+              <router-link
+                :to="{ name: 'node', params: { action: 'edit', id: row.id } }"
+                class="button-icon">
+                <span class="icon-edit-2"/>
               </router-link>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div v-else class="alert-msg-centered">
-      <div class="icon-alert-circle big-icon"></div>
+    <div
+      v-else
+      class="alert-msg-centered">
+      <div class="icon-alert-circle big-icon"/>
       <h1>{{ $i18n.t('nodes.NO_NODES_TITLE') }}</h1>
-      <p v-html="$i18n.t('nodes.NO_NODES_TEXT')"></p>
+      <p v-html="$i18n.t('nodes.NO_NODES_TEXT')"/>
     </div>
-    <paginator :pagination="pagination" @changedPage="changedPage"></paginator>
+    <paginator
+      :pagination="pagination"
+      @changedPage="changedPage"/>
   </div>
 </template>
 
@@ -70,15 +101,35 @@ import paginator from '@/shared/components/paginator'
 import tableHeader from '@/shared/components/table/thead'
 
 export default {
+  components: {
+    paginator,
+    tableHeader
+  },
   props: {
     searchId: {
       type: String,
+      required: false,
       default: null
     },
-    dataLoading: Boolean,
-    pagination: Object,
-    tableData: Array,
-    selectedGroupInformation: Object
+    dataLoading: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    pagination: {
+      type: Object,
+      required: false,
+      default: () => {}
+    },
+    tableData: {
+      type: Array,
+      required: true
+    },
+    selectedGroupInformation: {
+      type: Object,
+      required: false,
+      default: () => {}
+    }
   },
   data () {
     return {
@@ -144,10 +195,6 @@ export default {
         })
       }
     }
-  },
-  components: {
-    paginator,
-    tableHeader
   }
 }
 </script>

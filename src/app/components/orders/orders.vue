@@ -2,39 +2,48 @@
   <div>
     <template v-if="!error">
       <top :title="$i18n.t('misc.ORDERS')">
-        <help-button obj="orders.topics"></help-button>
+        <help-button obj="orders.topics"/>
       </top>
       <div v-if="tableData">
         <div class="container">
           <div class="col-12 content-split">
             <div class="split-list">
-              <router-link v-for="s in status" :key="s" :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
+              <router-link
+                v-for="s in status"
+                :key="s"
+                :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }"
+                :class="{ active: currentStatus === s }"
+                class="filter-link">
                 {{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}
               </router-link>
             </div>
             <div class="split-details">
               <template v-if="tableData.length">
                 <orders-list
-                  :searchId="searchId"
+                  :search-id="searchId"
                   :pagination="pagination"
-                  :tableData="tableData"
+                  :table-data="tableData"
                   @refresh="fetchOrders"
                   @changedPage="changedPage"
-                  @sortByColumn="sortByColumn">
-                </orders-list>
+                  @sortByColumn="sortByColumn"/>
               </template>
-              <not-found v-else type="orders">
+              <not-found
+                v-else
+                type="orders">
                 <slot>
-                  <p v-html="$i18n.t('orders.NO_ORDERS_TEXT')"></p>
+                  <p v-html="$i18n.t('orders.NO_ORDERS_TEXT')"/>
                 </slot>
               </not-found>
             </div>
           </div>
         </div>
       </div>
-      <loading v-else></loading>
+      <loading v-else/>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
@@ -50,18 +59,24 @@ import notFound from '@/shared/components/notFound'
 import helpButton from '@/shared/components/docs/button'
 
 export default {
-  mixins: [filtersMixin],
+  components: {
+    top,
+    error,
+    ordersList,
+    loading,
+    notFound,
+    helpButton
+  },
+  mixins: [
+    filtersMixin
+  ],
+  metaInfo: {
+    title: 'Orders'
+  },
   data () {
     return {
       status: ['all', 'active', 'cancelled'],
       errorItem: 'orders'
-    }
-  },
-  created () {
-    if (this.$route.name === 'orders') {
-      this.$router.push({ name: 'ordersByStatus', params: { status: 'all', page: 1 } })
-    } else {
-      this.sidebarSort('status', this.currentStatus, this.currentPage)
     }
   },
   computed: {
@@ -70,6 +85,22 @@ export default {
     }),
     currentStatus () {
       return this.$route.params.status ? this.$route.params.status.toLowerCase() : 'all'
+    }
+  },
+  watch: {
+    '$route': {
+      handler (n, o) {
+        this.sidebarSort('status', this.currentStatus, n.params.page)
+      },
+      deep: true,
+      immediate: false
+    }
+  },
+  created () {
+    if (this.$route.name === 'orders') {
+      this.$router.push({ name: 'ordersByStatus', params: { status: 'all', page: 1 } })
+    } else {
+      this.sidebarSort('status', this.currentStatus, this.currentPage)
     }
   },
   methods: {
@@ -138,26 +169,6 @@ export default {
         })
       }
     }
-  },
-  watch: {
-    '$route': {
-      handler (n, o) {
-        this.sidebarSort('status', this.currentStatus, n.params.page)
-      },
-      deep: true,
-      immediate: false
-    }
-  },
-  components: {
-    top,
-    error,
-    ordersList,
-    loading,
-    notFound,
-    helpButton
-  },
-  metaInfo: {
-    title: 'Orders'
   }
 }
 </script>

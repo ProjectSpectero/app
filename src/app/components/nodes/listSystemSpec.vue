@@ -1,11 +1,13 @@
 <template>
   <div class="spec">
     <template v-if="typeof spec === 'object'">
-      <div v-for="(subspec, j) in spec" :key="j">
+      <div
+        v-for="(subspec, j) in spec"
+        :key="j">
         <div class="title">{{ j }}</div>
 
         <div class="subspec">
-          <spec :spec="subspec"></spec>
+          <spec :spec="subspec"/>
         </div>
       </div>
     </template>
@@ -19,7 +21,10 @@
 export default {
   name: 'Spec',
   props: {
-    spec: [String, Object, Boolean, Number]
+    spec: {
+      type: [String, Object, Boolean, Number],
+      required: true
+    }
   }
 }
 </script>

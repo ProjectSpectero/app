@@ -4,22 +4,34 @@
       {{ $i18n.t('payments.PAYMENT_SUCCESS') }}
     </div>
     <div v-else>
-      <card class="stripe-card"
+      <card
         :stripe="stripeKey"
         :options="stripeOptions"
+        class="stripe-card"
         @change="setProcessedStatus($event.complete)"
       />
       <div class="label label-save-cc">
         <label for="cc-save">
-          <input type="checkbox" v-model="saveCard" true-value="1" false-value="0" id="cc-save">
+          <input
+            id="cc-save"
+            v-model="saveCard"
+            type="checkbox"
+            true-value="1"
+            false-value="0">
           {{ $i18n.t('payments.CHECK_SAVE_CARD') }}
         </label>
       </div>
 
-      <button v-if="!paid" @click.stop="pay" :disabled="!processed" class="button-md button-success button-full button-pay">
+      <button
+        v-if="!paid"
+        :disabled="!processed"
+        class="button-md button-success button-full button-pay"
+        @click.stop="pay">
         {{ $i18n.t('payments.BUTTON_PROCESS_PAYMENT') }}
       </button>
-      <div v-else class="mt-3">{{ $i18n.t('payments.PAYMENT_PROCESSING') }}</div>
+      <div
+        v-else
+        class="mt-3">{{ $i18n.t('payments.PAYMENT_PROCESSING') }}</div>
     </div>
   </div>
 </template>
@@ -30,8 +42,14 @@ import { Card, createToken } from 'vue-stripe-elements-plus'
 import paymentAPI from '@/app/api/payment.js'
 
 export default {
+  components: {
+    Card
+  },
   props: {
-    invoiceId: Number
+    invoiceId: {
+      type: Number,
+      required: true
+    }
   },
   data () {
     return {
@@ -93,9 +111,6 @@ export default {
     setProcessedStatus (status) {
       this.processed = status
     }
-  },
-  components: {
-    Card
   }
 }
 </script>

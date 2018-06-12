@@ -3,16 +3,23 @@
     <h3>Promo code</h3>
     <p class="headline-msg">{{ $i18n.t('payments.PROMO.APPLY_MSG') }}</p>
     <form @submit.prevent.stop="add">
-      <input type="text" v-model="promoCode" class="input" :placeholder="$i18n.t('payments.PROMO.ENTER_PROMO_CODE_HERE')">
+      <input
+        v-model="promoCode"
+        :placeholder="$i18n.t('payments.PROMO.ENTER_PROMO_CODE_HERE')"
+        type="text"
+        class="input">
       <button
-        type="submit"
-        class="button-md"
         :class="{ 'button-success': promoCode !== '', 'button-loading': pending }"
-        :disabled="promoCode === '' || pending">
-          {{ (pending) ? $i18n.t('misc.PLEASE_WAIT') : $i18n.t('payments.PROMO.APPLY_PROMO_CODE_BUTTON') }}
-        </button>
+        :disabled="promoCode === '' || pending"
+        type="submit"
+        class="button-md">
+        {{ (pending) ? $i18n.t('misc.PLEASE_WAIT') : $i18n.t('payments.PROMO.APPLY_PROMO_CODE_BUTTON') }}
+      </button>
     </form>
-    <p v-if="result.msg" class="promo-status" :class="result.status">{{ $i18n.t('payments.PROMO.STATUS.' + result.msg) }}</p>
+    <p
+      v-if="result.msg"
+      :class="result.status"
+      class="promo-status">{{ $i18n.t('payments.PROMO.STATUS.' + result.msg) }}</p>
   </div>
 </template>
 
@@ -22,7 +29,10 @@ import paymentAPI from '@/app/api/payment.js'
 
 export default {
   props: {
-    user: Object
+    user: {
+      type: Object,
+      required: true
+    }
   },
   data () {
     return {

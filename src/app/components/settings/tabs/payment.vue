@@ -6,24 +6,28 @@
       <div class="col-6">
         <form @submit.prevent.stop="submit">
           <h3>Billing Address</h3>
-          <div class="message message-error" v-if="formError">{{ formError }}</div>
+          <div
+            v-if="formError"
+            class="message message-error">{{ formError }}</div>
 
           <div class="form-input">
             <float-label>
               <input
-                type="text"
-                v-model="form.name"
-                name="name"
+                v-validate="rules['name']"
                 id="name"
-                placeholder="Full Name"
-                class="input max-width"
+                v-model="form.name"
                 :class="{'input-error': errors.has('name')}"
                 :disabled="formLoading"
-                v-validate="rules['name']"
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                class="input max-width"
                 data-vv-as="name">
             </float-label>
 
-            <span v-show="errors.has('name')" class="input-error-message">
+            <span
+              v-show="errors.has('name')"
+              class="input-error-message">
               {{ errors.first('name') }}
             </span>
           </div>
@@ -31,19 +35,21 @@
           <div class="form-input">
             <float-label>
               <input
-                type="text"
-                v-model="form.phone_no"
-                name="phone_no"
+                v-validate="rules['phone_no']"
                 id="phone_no"
-                placeholder="Phone Number"
-                class="input max-width"
+                v-model="form.phone_no"
                 :class="{'input-error': errors.has('phone_no')}"
                 :disabled="formLoading"
-                v-validate="rules['phone_no']"
+                type="text"
+                name="phone_no"
+                placeholder="Phone Number"
+                class="input max-width"
                 data-vv-as="phone_no">
             </float-label>
 
-            <span v-show="errors.has('phone_no')" class="input-error-message">
+            <span
+              v-show="errors.has('phone_no')"
+              class="input-error-message">
               {{ errors.first('phone_no') }}
             </span>
           </div>
@@ -51,19 +57,21 @@
           <div class="form-input">
             <float-label>
               <input
-                type="text"
-                v-model="form.organization"
-                name="organization"
+                v-validate="rules['organization']"
                 id="organization"
-                placeholder="Company Name"
-                class="input max-width"
+                v-model="form.organization"
                 :class="{'input-error': errors.has('organization')}"
                 :disabled="formLoading"
-                v-validate="rules['organization']"
+                type="text"
+                name="organization"
+                placeholder="Company Name"
+                class="input max-width"
                 data-vv-as="organization">
             </float-label>
 
-            <span v-show="errors.has('organization')" class="input-error-message">
+            <span
+              v-show="errors.has('organization')"
+              class="input-error-message">
               {{ errors.first('organization') }}
             </span>
           </div>
@@ -71,19 +79,21 @@
           <div class="form-input">
             <float-label>
               <input
-                type="text"
-                v-model="form.address_line_1"
-                name="address_line_1"
+                v-validate="rules['address_line_1']"
                 id="address_line_1"
-                placeholder="Address Line 1"
-                class="input max-width"
+                v-model="form.address_line_1"
                 :class="{'input-error': errors.has('address_line_1')}"
                 :disabled="formLoading"
-                v-validate="rules['address_line_1']"
+                type="text"
+                name="address_line_1"
+                placeholder="Address Line 1"
+                class="input max-width"
                 data-vv-as="address_line_1">
             </float-label>
 
-            <span v-show="errors.has('address_line_1')" class="input-error-message">
+            <span
+              v-show="errors.has('address_line_1')"
+              class="input-error-message">
               {{ errors.first('address_line_1') }}
             </span>
           </div>
@@ -91,19 +101,21 @@
           <div class="form-input">
             <float-label>
               <input
-                type="text"
-                v-model="form.address_line_2"
-                name="address_line_2"
+                v-validate="rules['address_line_2']"
                 id="address_line_2"
-                placeholder="Address Line 2"
-                class="input max-width"
+                v-model="form.address_line_2"
                 :class="{'input-error': errors.has('address_line_2')}"
                 :disabled="formLoading"
-                v-validate="rules['address_line_2']"
+                type="text"
+                name="address_line_2"
+                placeholder="Address Line 2"
+                class="input max-width"
                 data-vv-as="address_line_2">
             </float-label>
 
-            <span v-show="errors.has('address_line_2')" class="input-error-message">
+            <span
+              v-show="errors.has('address_line_2')"
+              class="input-error-message">
               {{ errors.first('address_line_2') }}
             </span>
           </div>
@@ -112,38 +124,42 @@
             <div class="col">
               <float-label>
                 <input
-                  type="text"
-                  v-model="form.city"
-                  name="city"
+                  v-validate="rules['city']"
                   id="city"
-                  placeholder="City"
-                  class="input max-width"
+                  v-model="form.city"
                   :class="{'input-error': errors.has('city')}"
                   :disabled="formLoading"
-                  v-validate="rules['city']"
+                  type="text"
+                  name="city"
+                  placeholder="City"
+                  class="input max-width"
                   data-vv-as="city">
               </float-label>
 
-              <span v-show="errors.has('city')" class="input-error-message">
+              <span
+                v-show="errors.has('city')"
+                class="input-error-message">
                 {{ errors.first('city') }}
               </span>
             </div>
             <div class="col">
               <float-label>
                 <input
-                  type="text"
-                  v-model="form.state"
-                  name="state"
+                  v-validate="rules['state']"
                   id="state"
-                  placeholder="State"
-                  class="input max-width"
+                  v-model="form.state"
                   :class="{'input-error': errors.has('state')}"
                   :disabled="formLoading"
-                  v-validate="rules['state']"
+                  type="text"
+                  name="state"
+                  placeholder="State"
+                  class="input max-width"
                   data-vv-as="state">
               </float-label>
 
-              <span v-show="errors.has('state')" class="input-error-message">
+              <span
+                v-show="errors.has('state')"
+                class="input-error-message">
                 {{ errors.first('state') }}
               </span>
             </div>
@@ -153,26 +169,33 @@
             <div class="col">
               <float-label>
                 <input
-                  type="text"
-                  v-model="form.post_code"
-                  name="post_code"
+                  v-validate="rules['post_code']"
                   id="post_code"
-                  placeholder="Postal Code"
-                  class="input max-width"
+                  v-model="form.post_code"
                   :class="{'input-error': errors.has('post_code')}"
                   :disabled="formLoading"
-                  v-validate="rules['post_code']"
+                  type="text"
+                  name="post_code"
+                  placeholder="Postal Code"
+                  class="input max-width"
                   data-vv-as="post_code">
               </float-label>
 
-              <span v-show="errors.has('post_code')" class="input-error-message">
+              <span
+                v-show="errors.has('post_code')"
+                class="input-error-message">
                 {{ errors.first('post_code') }}
               </span>
             </div>
             <div class="col">
               <float-label label="Country">
-                <select v-model="form.country" :disabled="formLoading">
-                  <option v-for="country in countries" :key="country.code" :value="country.code">
+                <select
+                  v-model="form.country"
+                  :disabled="formLoading">
+                  <option
+                    v-for="country in countries"
+                    :key="country.code"
+                    :value="country.code">
                     {{ country.name }}
                   </option>
                 </select>
@@ -183,24 +206,30 @@
           <div class="form-input">
             <float-label>
               <input
-                type="text"
-                v-model="form.tax_identification"
-                name="tax_identification"
+                v-validate="rules['tax_identification']"
                 id="tax_identification"
-                placeholder="Tax Identification Number"
-                class="input max-width"
+                v-model="form.tax_identification"
                 :class="{'input-error': errors.has('tax_identification')}"
                 :disabled="formLoading"
-                v-validate="rules['tax_identification']"
+                type="text"
+                name="tax_identification"
+                placeholder="Tax Identification Number"
+                class="input max-width"
                 data-vv-as="tax_identification">
             </float-label>
 
-            <span v-show="errors.has('tax_identification')" class="input-error-message">
+            <span
+              v-show="errors.has('tax_identification')"
+              class="input-error-message">
               {{ errors.first('tax_identification') }}
             </span>
           </div>
 
-          <button type="submit" class="button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+          <button
+            :class="{ 'button-loading': formLoading }"
+            :disabled="formLoading"
+            type="submit"
+            class="button-info button-md max-width">
             Update Billing Address
           </button>
         </form>
@@ -208,9 +237,9 @@
 
       <div class="col-4">
         <h3>Payment Methods</h3>
-        <saved-cards :user="user"></saved-cards>
-        <credits :user="user"></credits>
-        <promo-codes :user="user"></promo-codes>
+        <saved-cards :user="user"/>
+        <credits :user="user"/>
+        <promo-codes :user="user"/>
       </div>
 
     </div>
@@ -224,19 +253,42 @@ import credits from '../components/credits'
 import promoCodes from '../components/promoCodes'
 
 export default {
-  props: {
-    user: Object,
-    formError: String,
-    formLoading: Boolean,
-    processForm: Function
+  components: {
+    savedCards,
+    credits,
+    promoCodes
   },
   metaInfo: {
     title: 'Payment Details'
+  },
+  props: {
+    user: {
+      type: Object,
+      required: true
+    },
+    formError: {
+      type: String,
+      required: true
+    },
+    formLoading: {
+      type: Boolean,
+      required: true
+    },
+    processForm: {
+      type: Function,
+      required: true
+    }
   },
   data () {
     return {
       form: null
     }
+  },
+  computed: {
+    ...mapGetters({
+      rules: 'appUsers/editRules',
+      countries: 'settings/countries'
+    })
   },
   created () {
     this.form = Object.assign({}, this.user)
@@ -245,12 +297,6 @@ export default {
     if (!this.form.country) {
       this.form.country = this.countries[0].code
     }
-  },
-  computed: {
-    ...mapGetters({
-      rules: 'appUsers/editRules',
-      countries: 'settings/countries'
-    })
   },
   methods: {
     submit () {
@@ -262,11 +308,6 @@ export default {
         }
       })
     }
-  },
-  components: {
-    savedCards,
-    credits,
-    promoCodes
   }
 }
 </script>

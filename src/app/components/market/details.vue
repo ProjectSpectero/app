@@ -1,25 +1,34 @@
 <template>
   <div>
     <top :title="item.friendly_name">
-      <router-link :to="{ name: 'market' }" class="button">
+      <router-link
+        :to="{ name: 'market' }"
+        class="button">
         {{ $i18n.t('market.BACK') }}
       </router-link>
-      <button @click.stop="showModal(item)" class="button-success" :class="{ 'button-bordered': existsInCart(item.id) }">
+      <button
+        :class="{ 'button-bordered': existsInCart(item.id) }"
+        class="button-success"
+        @click.stop="showModal(item)">
         <template v-if="existsInCart(item.id)">
-          <span class="icon-check-circle"></span> {{ $i18n.t('misc.IN_CART') }}
+          <span class="icon-check-circle"/> {{ $i18n.t('misc.IN_CART') }}
         </template>
         <template v-else>
-          <span class="icon-shopping-bag"></span> {{ $i18n.t('misc.PURCHASE') }}
+          <span class="icon-shopping-bag"/> {{ $i18n.t('misc.PURCHASE') }}
         </template>
       </button>
 
-      <div slot="sub" class="sub">
+      <div
+        slot="sub"
+        class="sub">
         <div class="col-info">
           <div class="info-box">
             <h5>{{ $i18n.t('misc.MARKET_MODEL') }}</h5>
             <div>
               <div class="badge">{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</div>
-              <div v-if="item.plan" class="badge badge-brand badge-plan">{{ item.plan }}</div>
+              <div
+                v-if="item.plan"
+                class="badge badge-brand badge-plan">{{ item.plan }}</div>
             </div>
           </div>
           <div class="info-box">
@@ -32,11 +41,15 @@
             <p v-if="item.type === 'NODE_GROUP'">{{ $i18n.t('misc.NODE_GROUP') }}</p>
             <p v-else>{{ $i18n.t('misc.NODE') }}</p>
           </div>
-          <div v-if="item.asn" class="info-box">
+          <div
+            v-if="item.asn"
+            class="info-box">
             <h5>{{ $i18n.t('misc.ASN') }}</h5>
             <p>{{ item.asn }}</p>
           </div>
-          <div v-if="item.cc || item.city" class="info-box">
+          <div
+            v-if="item.cc || item.city"
+            class="info-box">
             <h5>{{ $i18n.t('misc.LOCATION') }}</h5>
             <p>
               <template v-if="item.cc">{{ getCountryById(item.cc).name }}</template>
@@ -55,11 +68,13 @@
         <template v-if="item.nodes">
           <div class="section padded">
             <h4>{{ $i18n.t('misc.NODES') }}</h4>
-            <nodes :nodes="item.nodes"></nodes>
+            <nodes :nodes="item.nodes"/>
           </div>
         </template>
         <template v-if="item.ip_addresses">
-          <ips :ips="item.ip_addresses" :showAddresses="false"></ips>
+          <ips
+            :ips="item.ip_addresses"
+            :show-addresses="false"/>
         </template>
       </div>
     </div>
@@ -75,9 +90,27 @@ import addToCart from './addToCart'
 import { mapGetters } from 'vuex'
 
 export default {
+  components: {
+    top,
+    notFound,
+    ips,
+    nodes,
+    addToCart
+  },
+  metaInfo () {
+    return {
+      title: this.item.friendly_name
+    }
+  },
   props: {
-    item: Object,
-    type: String
+    item: {
+      type: Object,
+      required: true
+    },
+    type: {
+      type: String,
+      required: true
+    }
   },
   data () {
     return {
@@ -97,29 +130,6 @@ export default {
       cart: 'cart/cart',
       countries: 'settings/countries'
     })
-  },
-  methods: {
-    existsInCart (id) {
-      return this.cart.find(i => i.id === id)
-    },
-    showModal (item) {
-      this.$modal.show(addToCart, {
-        item: item
-      }, {
-        height: 'auto'
-      })
-    },
-    countIpsInNodeGroup (group) {
-      let ips = 0
-      let nodes = 0
-
-      group.nodes.forEach(node => {
-        nodes++
-        ips += node.ip_addresses.length
-      })
-
-      return this.$i18n.t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
-    }
   },
   created () {
     this.options = {
@@ -146,17 +156,28 @@ export default {
       filterable: this.filterableColumns
     }
   },
-  metaInfo () {
-    return {
-      title: this.item.friendly_name
+  methods: {
+    existsInCart (id) {
+      return this.cart.find(i => i.id === id)
+    },
+    showModal (item) {
+      this.$modal.show(addToCart, {
+        item: item
+      }, {
+        height: 'auto'
+      })
+    },
+    countIpsInNodeGroup (group) {
+      let ips = 0
+      let nodes = 0
+
+      group.nodes.forEach(node => {
+        nodes++
+        ips += node.ip_addresses.length
+      })
+
+      return this.$i18n.t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
     }
-  },
-  components: {
-    top,
-    notFound,
-    ips,
-    nodes,
-    addToCart
   }
 }
 </script>

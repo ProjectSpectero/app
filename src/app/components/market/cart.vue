@@ -2,7 +2,9 @@
   <div>
     <top :title="$i18n.t('misc.CART')">
       <div v-if="cart && cart.length">
-        <button class="button-dark button-bordered" @click.stop="clearCart">
+        <button
+          class="button-dark button-bordered"
+          @click.stop="clearCart">
           {{ $i18n.t('market.CLEAR_CART') }}
         </button>
       </div>
@@ -10,15 +12,28 @@
     <div class="container">
       <div class="cart col-12">
         <div class="cart-items">
-          <div v-if="cart && cart.length" class="section">
-            <cartItem v-for="(item, index) in cart" :key="index" :item="item"></cartItem>
+          <div
+            v-if="cart && cart.length"
+            class="section">
+            <cartItem
+              v-for="(item, index) in cart"
+              :key="index"
+              :item="item"/>
           </div>
-          <div v-else class="cart-empty">
+          <div
+            v-else
+            class="cart-empty">
             <div class="alert-msg-centered">
-              <div class="icon-shopping-cart big-icon"></div>
+              <div class="icon-shopping-cart big-icon"/>
               <h1>{{ $i18n.t('market.CART_EMPTY') }}</h1>
               <p class="spaced">{{ $i18n.t('market.CART_EMPTY_MSG') }}</p>
-              <p><router-link :to="{ name: 'market' }" class="button-info">{{ $i18n.t('market.SHOP_NOW') }}</router-link></p>
+              <p>
+                <router-link
+                  :to="{ name: 'market' }"
+                  class="button-info">
+                  {{ $i18n.t('market.SHOP_NOW') }}
+                </router-link>
+              </p>
             </div>
           </div>
         </div>
@@ -28,37 +43,49 @@
               <section>
                 <h3>{{ $i18n.t('market.CART_SUMMARY') }}</h3>
                 <div class="line-items">
-                  <div class="item" v-if="totals.type.node > 0">
+                  <div
+                    v-if="totals.type.node > 0"
+                    class="item">
                     <p>{{ $i18n.t('misc.NODES') }}</p>
                     <div class="amount">{{ totals.type.node | currency }}</div>
                   </div>
-                  <div class="item" v-if="totals.type.group > 0">
+                  <div
+                    v-if="totals.type.group > 0"
+                    class="item">
                     <p>{{ $i18n.t('misc.NODE_GROUPS') }}</p>
                     <div class="amount">{{ totals.type.group | currency }}</div>
                   </div>
 
-                  <div class="separator"></div>
+                  <div class="separator"/>
 
                   <div class="item total">
                     <p>{{ $i18n.t('market.DUE_TODAY') }}</p>
                     <div class="amount">{{ totals.total | currency }} USD</div>
                   </div>
                 </div>
-                <button class="button-success button-md max-width" @click.stop="checkout">
+                <button
+                  class="button-success button-md max-width"
+                  @click.stop="checkout">
                   {{ $i18n.t('misc.CHECKOUT') }}
                 </button>
               </section>
             </div>
-            <div v-if="totals.cycle.monthly > 0 || totals.cycle.yearly > 0" class="summary-box section">
+            <div
+              v-if="totals.cycle.monthly > 0 || totals.cycle.yearly > 0"
+              class="summary-box section">
               <section class="recurring">
                 <h3>{{ $i18n.t('market.RECURRING_FEES') }}</h3>
                 <p>{{ $i18n.t('market.RECURRING_FEES_TEXT') }}</p>
                 <div class="line-items">
-                  <div class="item" v-if="totals.cycle.monthly > 0">
+                  <div
+                    v-if="totals.cycle.monthly > 0"
+                    class="item">
                     <p>{{ $i18n.t('market.TERM.MONTHLY') }}</p>
                     <div class="amount">{{ totals.cycle.monthly | currency }} /month</div>
                   </div>
-                  <div class="item" v-if="totals.cycle.yearly > 0">
+                  <div
+                    v-if="totals.cycle.yearly > 0"
+                    class="item">
                     <p>{{ $i18n.t('market.TERM.YEARLY') }}</p>
                     <div class="amount">{{ totals.cycle.yearly | currency }} /year</div>
                   </div>
@@ -79,15 +106,22 @@ import marketAPI from '@/app/api/market'
 import cartItem from './cartItem'
 
 export default {
-  async created () {
-    await this.fetchPlans()
-    await this.refreshCart()
+  components: {
+    top,
+    cartItem
+  },
+  metaInfo: {
+    title: 'Cart'
   },
   computed: {
     ...mapGetters({
       cart: 'cart/cart',
       totals: 'cart/totals'
     })
+  },
+  async created () {
+    await this.fetchPlans()
+    await this.refreshCart()
   },
   methods: {
     ...mapActions({
@@ -122,13 +156,6 @@ export default {
         fail: error => this.$toasted.error(this.errorAPI(error, 'market'))
       })
     }
-  },
-  metaInfo: {
-    title: 'Cart'
-  },
-  components: {
-    top,
-    cartItem
   }
 }
 </script>

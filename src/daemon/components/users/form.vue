@@ -3,25 +3,32 @@
     <div class="container container-600">
       <div class="pad">
         <h2>Basic Details</h2>
-        <div class="message error" v-if="formError">{{ formError }}</div>
+        <div
+          v-if="formError"
+          class="message error">{{ formError }}</div>
 
-        <div v-for="field in formFields" :key="field.model" class="input-container">
+        <div
+          v-for="field in formFields"
+          :key="field.model"
+          class="input-container">
           <div class="label">
             <label :for="field.model">{{ field.label }}</label>
           </div>
 
           <input
+            v-validate="rules[field.model]"
             :type="field.type"
             :id="field.model"
-            class="input"
             :name="field.model"
             v-model="form[field.model]"
             :disabled="formDisable"
-            v-validate="rules[field.model]"
             :data-vv-as="field.label.toLowerCase()"
-            :class="{'input-error': errors.has(field.model)}">
+            :class="{'input-error': errors.has(field.model)}"
+            class="input">
 
-          <div v-show="errors.has(field.model)" class="input-error-msg">
+          <div
+            v-show="errors.has(field.model)"
+            class="input-error-msg">
             {{ errors.first(field.model) }}
           </div>
         </div>
@@ -32,8 +39,16 @@
         <h2>Permissions</h2>
         <div class="checkbox-container">
           <ul>
-            <li v-for="permission in permissions" :key="permission.id" :class="{ disabled: permission.disabled }">
-              <input type="checkbox" :id="permission.id" :value="permission.id" :disabled="permission.disabled" v-model="form.roles">
+            <li
+              v-for="permission in permissions"
+              :key="permission.id"
+              :class="{ disabled: permission.disabled }">
+              <input
+                :id="permission.id"
+                :value="permission.id"
+                :disabled="permission.disabled"
+                v-model="form.roles"
+                type="checkbox">
               <label :for="permission.id">
                 {{ permission.label }}
                 <small v-if="permission.disabled">You don't have permission to set this.</small>
@@ -43,10 +58,16 @@
         </div>
       </div>
       <div class="content-bottom">
-        <button class="button-info" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">
+        <button
+          :disabled="formDisable"
+          class="button-info"
+          @click.prevent="submit"
+          @keyup.enter="submit">
           {{ formDisable ? 'Please wait...' : title }}
         </button>
-        <button class="button-light right" @click.prevent="cancel">Cancel</button>
+        <button
+          class="button-light right"
+          @click.prevent="cancel">Cancel</button>
       </div>
     </div>
   </form>
@@ -82,9 +103,6 @@ export default {
       }
     }
   },
-  created () {
-    this.setup()
-  },
   computed: {
     ...mapGetters({
       currentUser: 'daemonAuth/currentUser',
@@ -109,6 +127,9 @@ export default {
 
       return permissions
     }
+  },
+  created () {
+    this.setup()
   },
   methods: {
     ...mapActions({

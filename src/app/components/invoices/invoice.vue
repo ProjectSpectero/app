@@ -3,17 +3,26 @@
     <template v-if="!error">
       <div v-if="invoice && user">
         <top title="View Invoice">
-          <router-link :to="{ name: 'invoices' }" class="button">
+          <router-link
+            :to="{ name: 'invoices' }"
+            class="button">
             {{ $i18n.t('invoices.BACK') }}
           </router-link>
 
-          <router-link v-if="invoice.type !== 'CREDIT'" :to="{ name: 'order', params: { id: invoice.order_id } }" class="button-info">
+          <router-link
+            v-if="invoice.type !== 'CREDIT'"
+            :to="{ name: 'order', params: { id: invoice.order_id } }"
+            class="button-info">
             {{ $i18n.t('misc.VIEW') }} {{ $i18n.t('misc.ORDER') }}
           </router-link>
 
           <template v-if="!loading">
             <template v-if="((verified && verificationErrors.length === 0) || invoice.type === 'CREDIT') && invoice.status === 'UNPAID' && canShowDueAmount">
-              <pay :invoice="invoice" :due="due" classes="button-success" @update="fetchInvoice"></pay>
+              <pay
+                :invoice="invoice"
+                :due="due"
+                classes="button-success"
+                @update="fetchInvoice"/>
             </template>
           </template>
         </top>
@@ -21,24 +30,33 @@
           <div class="container centered">
             <div class="col-12 invoice-col">
               <template v-if="verified && verificationErrors.length === 0 && invoice.status === 'UNPAID' && canShowDueAmount">
-                <alert-outstanding :due="due" :invoice="invoice"></alert-outstanding>
+                <alert-outstanding
+                  :due="due"
+                  :invoice="invoice"/>
               </template>
               <template v-else-if="invoice.type === 'CREDIT' && invoice.status === 'UNPAID' && canShowDueAmount">
-                <alert-outstanding :due="due" :invoice="invoice"></alert-outstanding>
+                <alert-outstanding
+                  :due="due"
+                  :invoice="invoice"/>
               </template>
               <template v-else-if="verified && verificationErrors.length > 0 && isFixable(order.status)">
-                <alert-processing :errorBag="verificationErrors" :invoice="invoice" @update="fetchInvoice"></alert-processing>
+                <alert-processing
+                  :error-bag="verificationErrors"
+                  :invoice="invoice"
+                  @update="fetchInvoice"/>
               </template>
 
               <div class="invoice">
-                <div v-if="invoice.status === 'PAID'" class="message-paid message message-success">
-                  <h5><span class="icon-check-circle"></span> {{ $i18n.t('invoices.PAID') }}</h5>
+                <div
+                  v-if="invoice.status === 'PAID'"
+                  class="message-paid message message-success">
+                  <h5><span class="icon-check-circle"/> {{ $i18n.t('invoices.PAID') }}</h5>
                   <p>{{ $i18n.t('invoices.THANKS') }}</p>
                 </div>
 
                 <div class="header">
                   <div class="logo-container">
-                    <div class="logo logo-dark logo-md"></div>
+                    <div class="logo logo-dark logo-md"/>
                   </div>
                   <div class="header-details">
                     <h1 class="title">Invoice</h1>
@@ -51,7 +69,7 @@
                   </div>
                 </div>
 
-                <div class="divider"></div>
+                <div class="divider"/>
 
                 <div class="details">
                   <div class="client">
@@ -93,7 +111,9 @@
                           <td><strong>Payment Due:</strong></td>
                           <td>{{ invoice.due_date | moment('MMMM D, YYYY') }}</td>
                         </tr>
-                        <tr v-if="canShowDueAmount" class="invert">
+                        <tr
+                          v-if="canShowDueAmount"
+                          class="invert">
                           <td><strong>Amount Due:</strong></td>
                           <td>
                             <strong v-if="invoice.type === 'STANDARD'">{{ due.amount | currency }} {{ due.currency }}</strong>
@@ -117,9 +137,11 @@
                   </div>
                 </div>
 
-                <div class="divider"></div>
+                <div class="divider"/>
 
-                <table v-if="lineItems" class="table-styled">
+                <table
+                  v-if="lineItems"
+                  class="table-styled">
                   <thead>
                     <tr>
                       <th>ID</th>
@@ -130,11 +152,16 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="item in lineItems" :key="item.id" :class="{ 'line-error': item.error }">
+                    <tr
+                      v-for="item in lineItems"
+                      :key="item.id"
+                      :class="{ 'line-error': item.error }">
                       <td>{{ item.id }}</td>
                       <td class="text-left">
                         {{ item.description }}
-                        <span v-if="item.error" class="line-error-msg">
+                        <span
+                          v-if="item.error"
+                          class="line-error-msg">
                           {{ $i18n.t(`invoices.RESOURCE_ERROR.${item.error}`) }}
                         </span>
                       </td>
@@ -150,13 +177,19 @@
                     <div class="label"><strong>Total:</strong></div>
                     <div class="amount"><strong>{{ invoice.amount | currency }} {{ invoice.currency }}</strong></div>
                   </div>
-                  <div v-if="transactions && transactions.length > 0" class="totals-line">
-                    <div v-for="transaction in transactions" :key="transaction.id">
+                  <div
+                    v-if="transactions && transactions.length > 0"
+                    class="totals-line">
+                    <div
+                      v-for="transaction in transactions"
+                      :key="transaction.id">
                       <div class="label">Payment on {{ transaction.updated_at | moment('MMMM D, YYYY') }} ({{ transaction.type }}):</div>
                       <div class="amount">{{ transaction.amount | currency }} {{ transaction.currency }}</div>
                     </div>
                   </div>
-                  <div v-if="canShowDueAmount" class="totals-line total-outstanding">
+                  <div
+                    v-if="canShowDueAmount"
+                    class="totals-line total-outstanding">
                     <div class="label"><strong>{{ $i18n.t('invoices.AMOUNT_DUE') }}:</strong></div>
                     <div class="amount"><strong>{{ due.amount | currency }} {{ due.currency }}</strong></div>
                   </div>
@@ -166,9 +199,12 @@
           </div>
         </div>
       </div>
-      <loading v-else></loading>
+      <loading v-else/>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
@@ -184,6 +220,14 @@ import loading from '@/shared/components/loading'
 import pay from './pay'
 
 export default {
+  components: {
+    top,
+    error,
+    alertOutstanding,
+    alertProcessing,
+    loading,
+    pay
+  },
   metaInfo: {
     title: 'View Invoice'
   },
@@ -200,10 +244,6 @@ export default {
       errorItem: 'invoice',
       errorCode: 404
     }
-  },
-  created () {
-    this.syncCurrentUser()
-    this.fetchInvoice()
   },
   computed: {
     ...mapGetters({
@@ -246,6 +286,10 @@ export default {
 
       return lineItems
     }
+  },
+  created () {
+    this.syncCurrentUser()
+    this.fetchInvoice()
   },
   methods: {
     ...mapActions({
@@ -362,14 +406,6 @@ export default {
         }
       })
     }
-  },
-  components: {
-    top,
-    error,
-    alertOutstanding,
-    alertProcessing,
-    loading,
-    pay
   }
 }
 </script>

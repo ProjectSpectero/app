@@ -1,11 +1,18 @@
 <template>
   <div class="col-12">
-    <div v-if="system" class="spec-list section padded">
-      <div v-for="(spec, i) in system" :key="i" class="spec">
-        <list-system-spec :spec="spec"></list-system-spec>
+    <div
+      v-if="system"
+      class="spec-list section padded">
+      <div
+        v-for="(spec, i) in system"
+        :key="i"
+        class="spec">
+        <list-system-spec :spec="spec"/>
       </div>
     </div>
-    <not-found v-else type="system data"></not-found>
+    <not-found
+      v-else
+      type="system data"/>
   </div>
 </template>
 
@@ -15,8 +22,15 @@ import notFound from '@/shared/components/notFound'
 
 export default {
   name: 'ListSystem',
+  components: {
+    listSystemSpec,
+    notFound
+  },
   props: {
-    node: Object
+    node: {
+      type: Object,
+      required: true
+    }
   },
   computed: {
     system () {
@@ -24,10 +38,6 @@ export default {
         return JSON.parse(this.node.system_data)
       }
     }
-  },
-  components: {
-    listSystemSpec,
-    notFound
   }
 }
 </script>

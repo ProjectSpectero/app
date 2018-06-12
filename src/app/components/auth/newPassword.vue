@@ -8,7 +8,7 @@
       </template>
       <template v-else>
         <div class="message message-success">
-          <p v-html="$i18n.t('users.NEW_PASSWORD_ISSUED', { password: newPassword })"></p>
+          <p v-html="$i18n.t('users.NEW_PASSWORD_ISSUED', { password: newPassword })"/>
         </div>
       </template>
 
@@ -18,7 +18,7 @@
         </router-link>
       </div>
     </div>
-    <loading v-else></loading>
+    <loading v-else/>
   </div>
 </template>
 
@@ -27,6 +27,9 @@ import authAPI from '@/app/api/auth'
 import loading from '@/shared/components/loading'
 
 export default {
+  components: {
+    loading
+  },
   metaInfo: {
     title: 'Reset password'
   },
@@ -59,9 +62,6 @@ export default {
         }
       })
     }
-  },
-  components: {
-    loading
   }
 }
 </script>

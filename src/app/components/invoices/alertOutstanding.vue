@@ -2,11 +2,17 @@
   <div class="outstanding">
     <header>
       <h5>{{ $i18n.t('invoices.BALANCE_DUE') }}</h5>
-      <p v-html="$i18n.t('invoices.BALANCE_DUE_TEXT', { amount: currencyString })"></p>
+      <p v-html="$i18n.t('invoices.BALANCE_DUE_TEXT', { amount: currencyString })"/>
     </header>
     <section class="body">
-      <pay :invoice="invoice" :due="due" classes="button-info"></pay>
-      <router-link v-if="showInvoiceLink" :to="{ name: 'invoice', params: { id: invoice.id } }" class="button">View Invoice</router-link>
+      <pay
+        :invoice="invoice"
+        :due="due"
+        classes="button-info"/>
+      <router-link
+        v-if="showInvoiceLink"
+        :to="{ name: 'invoice', params: { id: invoice.id } }"
+        class="button">View Invoice</router-link>
     </section>
   </div>
 </template>
@@ -15,18 +21,28 @@
 import pay from './pay'
 
 export default {
+  components: {
+    pay
+  },
   props: {
-    invoice: Object,
-    due: Object,
-    showInvoiceLink: Boolean
+    invoice: {
+      type: Object,
+      required: true
+    },
+    due: {
+      type: Object,
+      required: true
+    },
+    showInvoiceLink: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   },
   computed: {
     currencyString () {
       return this.$options.filters.currency(this.due.amount)
     }
-  },
-  components: {
-    pay
   }
 }
 </script>

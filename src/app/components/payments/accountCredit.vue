@@ -1,12 +1,16 @@
 <template>
   <div>
-    <div v-if="!loading" class="boxed boxed-centered">
-      <div v-if="!success" class="boxed-container boxed-md">
+    <div
+      v-if="!loading"
+      class="boxed boxed-centered">
+      <div
+        v-if="!success"
+        class="boxed-container boxed-md">
         <h2>We were unable to process your payment</h2>
         <p>{{ $i18n.t('payments.PAYMENT_INVALID_PARAMETERS') }}</p>
       </div>
     </div>
-    <loading v-else></loading>
+    <loading v-else/>
   </div>
 </template>
 
@@ -15,6 +19,9 @@ import paymentAPI from '@/app/api/payment'
 import loading from '@/shared/components/loading'
 
 export default {
+  components: {
+    loading
+  },
   data () {
     return {
       success: false
@@ -48,9 +55,6 @@ export default {
         this.loading = false
       }
     }
-  },
-  components: {
-    loading
   }
 }
 </script>

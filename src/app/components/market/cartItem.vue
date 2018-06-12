@@ -1,7 +1,9 @@
 <template>
   <div class="item">
     <div class="title">
-      <router-link :to="{ name: 'marketView', params: { type: (item.type === 'NODE_GROUP') ? 'group' : 'node', id: item.id } }" class="name">
+      <router-link
+        :to="{ name: 'marketView', params: { type: (item.type === 'NODE_GROUP') ? 'group' : 'node', id: item.id } }"
+        class="name">
         {{ item.data.friendly_name }}
       </router-link>
       <div class="type">
@@ -16,13 +18,19 @@
 
     <div class="savings">
       <template v-if="item.pricing.yearlyDiscount">
-        <p v-if="item.term === 'YEARLY'" class="text-success">
-          <span class="icon-check-circle"></span> {{ $i18n.t('market.YEARLY_SAVING') }} <strong>{{ item.pricing.yearlySavings | currency }}</strong>
+        <p
+          v-if="item.term === 'YEARLY'"
+          class="text-success">
+          <span class="icon-check-circle"/> {{ $i18n.t('market.YEARLY_SAVING') }} <strong>{{ item.pricing.yearlySavings | currency }}</strong>
         </p>
-        <p v-else class="text-warning switch-yearly">
-          <span class="icon-alert-circle"></span> {{ $i18n.t('market.YEARLY_COULD_SAVE') }} <strong>{{ item.pricing.yearlySavings | currency }}</strong>
+        <p
+          v-else
+          class="text-warning switch-yearly">
+          <span class="icon-alert-circle"/> {{ $i18n.t('market.YEARLY_COULD_SAVE') }} <strong>{{ item.pricing.yearlySavings | currency }}</strong>
           <br>
-          <span @click.stop="swithTermYearly" class="link">
+          <span
+            class="link"
+            @click.stop="swithTermYearly">
             {{ $i18n.t('market.YEARLY_SWITCH') }}
           </span>
         </p>
@@ -30,8 +38,10 @@
     </div>
 
     <div class="actions">
-      <span class="remove-button" @click.stop="remove">
-        <span class="icon-x-circle"></span>
+      <span
+        class="remove-button"
+        @click.stop="remove">
+        <span class="icon-x-circle"/>
       </span>
     </div>
   </div>
@@ -42,7 +52,10 @@ import { mapActions } from 'vuex'
 
 export default {
   props: {
-    item: Object
+    item: {
+      type: Object,
+      required: true
+    }
   },
   methods: {
     ...mapActions({

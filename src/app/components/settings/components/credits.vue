@@ -1,9 +1,15 @@
 <template>
-  <div v-if="user" class="credit-details">
+  <div
+    v-if="user"
+    class="credit-details">
     <h3>Account credit</h3>
-    <p v-if="user.credit && user.credit > 0" v-html="$i18n.t('payments.COUNT_ACCOUNT_CREDIT', { credit: user.credit })"></p>
-    <p v-else>{{ $i18n.t('payments.NO_ACCOUNT_CREDIT')}}</p>
-    <router-link :to="{ name: 'addCredit' }" class="button">
+    <p
+      v-if="user.credit && user.credit > 0"
+      v-html="$i18n.t('payments.COUNT_ACCOUNT_CREDIT', { credit: user.credit })"/>
+    <p v-else>{{ $i18n.t('payments.NO_ACCOUNT_CREDIT') }}</p>
+    <router-link
+      :to="{ name: 'addCredit' }"
+      class="button">
       {{ $i18n.t('payments.ADD_CREDIT') }}
     </router-link>
   </div>
@@ -12,7 +18,10 @@
 <script>
 export default {
   props: {
-    user: Object
+    user: {
+      type: Object,
+      required: true
+    }
   }
 }
 </script>

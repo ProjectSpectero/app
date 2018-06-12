@@ -4,7 +4,9 @@
       <h2>Account Activated!</h2>
       <p>Your account with email <strong>{{ $route.params.email }}</strong> is now activated. Use the button below to login.</p>
       <br>
-      <router-link class="button" :to="{ name: 'login' }">Go to Login</router-link>
+      <router-link
+        :to="{ name: 'login' }"
+        class="button">Go to Login</router-link>
     </div>
     <div v-else>
       <div v-if="error">
@@ -12,11 +14,15 @@
           <p class="message message-success">Your account is already verified!</p>
           <p>Click the button below to login now.</p>
           <br>
-          <router-link class="button" :to="{ name: 'login' }">Go to Login</router-link>
+          <router-link
+            :to="{ name: 'login' }"
+            class="button">Go to Login</router-link>
         </div>
         <div v-else>
           <p class="message message-error">We were unable to verify your account. Please try again later.</p>
-          <router-link class="button" :to="{ name: 'login' }">Go to Login</router-link>
+          <router-link
+            :to="{ name: 'login' }"
+            class="button">Go to Login</router-link>
         </div>
       </div>
       <div v-else>
@@ -31,6 +37,9 @@
 import user from '@/app/api/user.js'
 
 export default {
+  metaInfo: {
+    title: 'Verify Email'
+  },
   data () {
     return {
       verified: false,
@@ -60,9 +69,6 @@ export default {
         }
       })
     }
-  },
-  metaInfo: {
-    title: 'Verify Email'
   }
 }
 </script>

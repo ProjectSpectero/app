@@ -9,11 +9,14 @@
           :engagements="engagements"
           :ips="ips"
           :action="$route.params.action"
-          @updateEngagements="updateEngagements"></node-edit>
+          @updateEngagements="updateEngagements"/>
       </div>
-      <loading v-else></loading>
+      <loading v-else/>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
@@ -24,6 +27,11 @@ import error from '@/shared/components/errors/error'
 import nodeEdit from './nodeEdit'
 
 export default {
+  components: {
+    nodeEdit,
+    loading,
+    error
+  },
   metaInfo: {
     title: this.title
   },
@@ -43,13 +51,13 @@ export default {
       errorItem: 'node'
     }
   },
-  created () {
-    this.fetchNode()
-  },
   computed: {
     title () {
       return (this.$route.params.action === 'edit') ? 'Edit node' : 'View node'
     }
+  },
+  created () {
+    this.fetchNode()
   },
   methods: {
     async fetchGroup (groupId) {
@@ -122,11 +130,6 @@ export default {
         }
       })
     }
-  },
-  components: {
-    nodeEdit,
-    loading,
-    error
   }
 }
 </script>

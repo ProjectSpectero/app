@@ -3,7 +3,9 @@
     <template v-if="!error">
       <div v-if="resources">
         <top :title="'Order '+ orderId +' Resources'">
-          <router-link :to="{ name: 'order', params: { id: orderId } }" class="button">
+          <router-link
+            :to="{ name: 'order', params: { id: orderId } }"
+            class="button">
             {{ $i18n.t('orders.BACK_TO_ORDER') }}
           </router-link>
         </top>
@@ -11,7 +13,12 @@
           <div class="container">
             <div class="col-12 content-split">
               <div class="split-list nodes-sidebar">
-                <div v-for="(item, index) in resources" :key="index" class="node-group" :class="{ active: selectedResource === item }" @click="selectResource(item)">
+                <div
+                  v-for="(item, index) in resources"
+                  :key="index"
+                  :class="{ active: selectedResource === item }"
+                  class="node-group"
+                  @click="selectResource(item)">
                   <div class="group-name">
                     {{ $i18n.t('misc.ITEM') }} {{ item.id }}
                   </div>
@@ -21,7 +28,9 @@
                 </div>
               </div>
               <div class="split-details">
-                <div v-if="accessor" class="accessor">
+                <div
+                  v-if="accessor"
+                  class="accessor">
                   <div class="credentials">
                     <div class="label">
                       <label>{{ $i18n.t('orders.ACCESSOR_DETAILS') }}</label>
@@ -30,15 +39,24 @@
                     <p>{{ $i18n.t('misc.USERNAME') }}: <strong>{{ accessor.username }}</strong></p>
                     <p>{{ $i18n.t('misc.PASSWORD') }}: <strong>{{ accessor.password }}</strong></p>
 
-                    <p v-if="accessorCheckPending" class="changeWarning">
+                    <p
+                      v-if="accessorCheckPending"
+                      class="changeWarning">
                       {{ $i18n.t('orders.ACCESSOR_DETAILS_TEXT') }}
                     </p>
                   </div>
-                  <button @click.stop="showRegenerateAccessorModal(orderId)" class="button-warning">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
+                  <button
+                    class="button-warning"
+                    @click.stop="showRegenerateAccessorModal(orderId)">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
                 </div>
 
                 <ul class="references tabs">
-                  <li v-for="t in types" :key="t" @click="selectReference(t)" class="reference" :class="{ active: selectedType === t }">
+                  <li
+                    v-for="t in types"
+                    :key="t"
+                    :class="{ active: selectedType === t }"
+                    class="reference"
+                    @click="selectReference(t)">
                     <span>{{ t }}</span>
                   </li>
                 </ul>
@@ -47,21 +65,28 @@
                   <resource-details
                     :id="selectedResource.id"
                     :type="selectedResource.type"
-                    :selectedReferences="selectedReferences"
-                    :selectedType="selectedType"></resource-details>
+                    :selected-references="selectedReferences"
+                    :selected-type="selectedType"/>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <loading v-else></loading>
-        <modal name="regenerateAccessorModal" :height="'auto'">
-          <regenerateAccessor :orderId="orderId" @fetchAccessor="fetchAccessor" />
+        <loading v-else/>
+        <modal
+          :height="'auto'"
+          name="regenerateAccessorModal">
+          <regenerateAccessor
+            :order-id="orderId"
+            @fetchAccessor="fetchAccessor" />
         </modal>
       </div>
-      <loading v-else></loading>
+      <loading v-else/>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
@@ -74,6 +99,13 @@ import orderAPI from '@/app/api/order'
 import regenerateAccessor from './regenerateAccessor'
 
 export default {
+  components: {
+    top,
+    loading,
+    error,
+    resourceDetails,
+    regenerateAccessor
+  },
   data () {
     return {
       accessor: null,
@@ -223,13 +255,6 @@ export default {
         }
       })
     }
-  },
-  components: {
-    top,
-    loading,
-    error,
-    resourceDetails,
-    regenerateAccessor
   }
 }
 </script>

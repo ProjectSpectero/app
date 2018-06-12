@@ -1,17 +1,20 @@
 <template>
   <div>
-    <top :title="$i18n.t('nodes.VERIFY_NODE')"></top>
+    <top :title="$i18n.t('nodes.VERIFY_NODE')"/>
     <template v-if="!error">
       <div v-if="!loading">
         <div class="alert-msg-centered">
-          <div class="icon-alert-circle big-icon"></div>
+          <div class="icon-alert-circle big-icon"/>
           <h1>{{ $i18n.t('nodes.VERIFICATION_FAILED_TITLE') }}</h1>
-          <div v-html="$i18n.t('nodes.VERIFICATION_FAILED', { name: node.friendly_name })"></div>
+          <div v-html="$i18n.t('nodes.VERIFICATION_FAILED', { name: node.friendly_name })"/>
         </div>
       </div>
-      <loading v-else></loading>
+      <loading v-else/>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
@@ -22,6 +25,11 @@ import loading from '@/shared/components/loading'
 import error from '@/shared/components/errors/error'
 
 export default {
+  components: {
+    loading,
+    error,
+    top
+  },
   created () {
     this.fetchNode()
   },
@@ -42,11 +50,6 @@ export default {
         }
       })
     }
-  },
-  components: {
-    loading,
-    error,
-    top
   }
 }
 </script>

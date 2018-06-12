@@ -3,17 +3,27 @@
     <div class="boxed-container boxed-md">
       <h1>{{ $i18n.t('payments.ADD_CREDIT_TITLE') }}</h1>
       <p>{{ $i18n.t('payments.ADD_CREDIT_DESC') }}</p>
-      <p class="credit-current">Balance: {{ user.credit | currency }} {{ this.currency }}</p>
+      <p class="credit-current">Balance: {{ user.credit | currency }} {{ currency }}</p>
 
-      <div class="message" v-html="$i18n.t('payments.ADD_CREDIT_MAX_WARNING', { remaining: this.remaining, max: this.max, currency: this.currency })"></div>
+      <div
+        class="message"
+        v-html="$i18n.t('payments.ADD_CREDIT_MAX_WARNING', { remaining: remaining, max: max, currency: currency })"/>
 
       <div class="form-input">
         <div class="label">
           <label for="creditAddAmount">{{ $i18n.t('payments.ADD_CREDIT_FORM_LABEL') }}</label>
         </div>
-        <input type="number" id="creditAddAmount" class="input" v-model="amount" :placeholder="$i18n.t('payments.ADD_CREDIT_PLACEHOLDER')" @keyup="watchMaxValue">
+        <input
+          id="creditAddAmount"
+          v-model="amount"
+          :placeholder="$i18n.t('payments.ADD_CREDIT_PLACEHOLDER')"
+          type="number"
+          class="input"
+          @keyup="watchMaxValue">
       </div>
-      <button @click="add(amount)" class="button-md button-success button-full">
+      <button
+        class="button-md button-success button-full"
+        @click="add(amount)">
         {{ $i18n.t('misc.PURCHASE') }}
       </button>
     </div>
@@ -36,13 +46,13 @@ export default {
   metaInfo: {
     title: 'Add Credit'
   },
-  async created () {
-    await this.fetchMax()
-  },
   computed: {
     ...mapGetters({
       user: 'appAuth/user'
     })
+  },
+  async created () {
+    await this.fetchMax()
   },
   methods: {
     watchMaxValue () {

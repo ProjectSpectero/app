@@ -1,9 +1,9 @@
 <template>
   <div class="spectero daemon">
-    <sidebar></sidebar>
+    <sidebar/>
     <div class="content">
       <modals-container/>
-      <router-view></router-view>
+      <router-view/>
     </div>
   </div>
 </template>
@@ -13,6 +13,14 @@ import { mapActions, mapGetters } from 'vuex'
 import sidebar from '@/shared/components/sidebar'
 
 export default {
+  components: {
+    sidebar
+  },
+  computed: {
+    ...mapGetters({
+      user: 'daemonAuth/user'
+    })
+  },
   async created () {
     if (this.$route.params.nodeId) {
       try {
@@ -28,19 +36,11 @@ export default {
       this.$router.push({ path: '/404' })
     }
   },
-  computed: {
-    ...mapGetters({
-      user: 'daemonAuth/user'
-    })
-  },
   methods: {
     ...mapActions({
       autologin: 'daemonAuth/autologin',
       syncCurrentUser: 'daemonAuth/syncCurrentUser'
     })
-  },
-  components: {
-    sidebar
   }
 }
 </script>

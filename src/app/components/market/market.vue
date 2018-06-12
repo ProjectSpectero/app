@@ -1,28 +1,37 @@
 <template>
   <div>
     <top :title="$i18n.t('misc.MARKET')">
-      <router-link :to="{ name: 'cart' }" v-if="totals.total > 0" class="button">
+      <router-link
+        v-if="totals.total > 0"
+        :to="{ name: 'cart' }"
+        class="button">
         {{ $i18n.t('misc.VIEW_CART') }}
       </router-link>
-      <help-button obj="market.topics"></help-button>
+      <help-button obj="market.topics"/>
     </top>
 
     <div class="container">
       <div class="content-split col-12">
         <div class="split-list">
-          <filters @changedFilters="search"></filters>
+          <filters @changedFilters="search"/>
         </div>
         <div class="market-listings split-details">
-          <div v-if="storeLoading" class="loading-overlay">
-            <loading></loading>
+          <div
+            v-if="storeLoading"
+            class="loading-overlay">
+            <loading/>
           </div>
 
-          <div class="cart" v-if="totals.total > 0">
+          <div
+            v-if="totals.total > 0"
+            class="cart">
             <div class="info">
-              <h4 class="mb-0"><span class="icon icon-shopping-cart"></span> {{ $i18n.t('misc.CART') }}: {{ totals.total | currency }} USD</h4>
+              <h4 class="mb-0"><span class="icon icon-shopping-cart"/> {{ $i18n.t('misc.CART') }}: {{ totals.total | currency }} USD</h4>
             </div>
             <div class="actions">
-              <router-link :to="{ name: 'cart' }" class="button-info">
+              <router-link
+                :to="{ name: 'cart' }"
+                class="button-info">
                 {{ $i18n.t('misc.CHECKOUT') }}
               </router-link>
             </div>
@@ -30,14 +39,26 @@
 
           <div class="datatable">
             <table>
-              <table-header :columns="columns" :headings="headings" :sortable="sortable"/>
+              <table-header
+                :columns="columns"
+                :headings="headings"
+                :sortable="sortable"/>
               <tbody>
-                <tr v-for="(item, index) in results" :key="index">
+                <tr
+                  v-for="(item, index) in results"
+                  :key="index">
                   <td>
-                    <flag v-if="item.cc" :iso="item.cc" :squared="false" />
-                    <div v-else class="flag-icon-empty">2+</div>
+                    <flag
+                      v-if="item.cc"
+                      :iso="item.cc"
+                      :squared="false" />
+                    <div
+                      v-else
+                      class="flag-icon-empty">2+</div>
                     {{ item.friendly_name }}
-                    <div v-if="item.plan" class="badge badge-brand badge-plan">{{ item.plan }}</div>
+                    <div
+                      v-if="item.plan"
+                      class="badge badge-brand badge-plan">{{ item.plan }}</div>
                   </td>
                   <td>
                     <div class="badge">{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</div>
@@ -52,16 +73,21 @@
                   </td>
                   <td>{{ item.price | currency }} USD</td>
                   <td class="table-actions">
-                    <button @click.stop="showModal(item)" class="button-sm button-success" :class="{ 'button-bordered': existsInCart(item.id) }">
+                    <button
+                      :class="{ 'button-bordered': existsInCart(item.id) }"
+                      class="button-sm button-success"
+                      @click.stop="showModal(item)">
                       <template v-if="existsInCart(item.id)">
-                        <span class="icon-check-circle"></span> {{ $i18n.t('misc.IN_CART') }}
+                        <span class="icon-check-circle"/> {{ $i18n.t('misc.IN_CART') }}
                       </template>
                       <template v-else>
-                        <span class="icon-shopping-bag"></span> {{ $i18n.t('misc.PURCHASE') }}
+                        <span class="icon-shopping-bag"/> {{ $i18n.t('misc.PURCHASE') }}
                       </template>
                     </button>
 
-                    <router-link class="button-sm" :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }">
+                    <router-link
+                      :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }"
+                      class="button-sm">
                       {{ $i18n.t('misc.VIEW') }}
                     </router-link>
                   </td>
@@ -70,7 +96,9 @@
             </table>
           </div>
 
-          <paginator :pagination="pagination" @changedPage="search"></paginator>
+          <paginator
+            :pagination="pagination"
+            @changedPage="search"/>
         </div>
       </div>
     </div>
@@ -88,6 +116,18 @@ import tableHeader from '@/shared/components/table/thead'
 import helpButton from '@/shared/components/docs/button'
 
 export default {
+  components: {
+    top,
+    paginator,
+    tableHeader,
+    filters,
+    addToCart,
+    loading,
+    helpButton
+  },
+  metaInfo: {
+    title: 'Market'
+  },
   data () {
     return {
       perPage: 10,
@@ -105,12 +145,6 @@ export default {
       grouped: true
     }
   },
-  async created () {
-    await this.fetchPlans()
-    await this.refreshCart()
-
-    this.search()
-  },
   computed: {
     ...mapGetters({
       cart: 'cart/cart',
@@ -119,6 +153,12 @@ export default {
       storeLoading: 'market/loading',
       totals: 'cart/totals'
     })
+  },
+  async created () {
+    await this.fetchPlans()
+    await this.refreshCart()
+
+    this.search()
   },
   methods: {
     ...mapActions({
@@ -150,18 +190,6 @@ export default {
     search (page) {
       this.fetch({ page: page || 1, perPage: this.perPage, grouped: this.grouped })
     }
-  },
-  metaInfo: {
-    title: 'Market'
-  },
-  components: {
-    top,
-    paginator,
-    tableHeader,
-    filters,
-    addToCart,
-    loading,
-    helpButton
   }
 }
 </script>

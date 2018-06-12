@@ -3,21 +3,31 @@
     <header>
       <div class="title">
         <h1 class="mb-0">{{ title }}</h1>
-        <h2 class="mb-0" v-if="subtitle">{{ subtitle }}</h2>
+        <h2
+          v-if="subtitle"
+          class="mb-0">{{ subtitle }}</h2>
       </div>
       <div class="slot-button">
-        <slot></slot>
+        <slot/>
       </div>
     </header>
-    <slot name="sub"></slot>
+    <slot name="sub"/>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    title: String,
-    subtitle: String
+    title: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    subtitle: {
+      type: String,
+      required: false,
+      default: ''
+    }
   }
 }
 </script>

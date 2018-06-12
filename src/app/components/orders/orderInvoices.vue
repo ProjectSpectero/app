@@ -2,30 +2,38 @@
   <div>
     <template v-if="!error">
       <top :title="$i18n.t('orders.INVOICES_FOR_ORDER', { id: $route.params.id })">
-        <router-link :to="{ name: 'order', params: { id: $route.params.id } }" class="button button-info">
+        <router-link
+          :to="{ name: 'order', params: { id: $route.params.id } }"
+          class="button button-info">
           {{ $i18n.t('orders.BACK_TO_ORDER') }}
         </router-link>
       </top>
 
-      <div v-if="tableData" class="list">
+      <div
+        v-if="tableData"
+        class="list">
         <template v-if="tableData.length">
           <invoices-list
-            :searchId="searchId"
+            :search-id="searchId"
             :pagination="pagination"
-            :tableData="tableData"
+            :table-data="tableData"
             @changedPage="changedPage"
-            @sortByColumn="sortByColumn">
-          </invoices-list>
+            @sortByColumn="sortByColumn"/>
         </template>
-        <not-found v-else type="invoices">
+        <not-found
+          v-else
+          type="invoices">
           <slot>
-            <p v-html="$i18n.t('invoices.NO_INVOICES_TEXT')"></p>
+            <p v-html="$i18n.t('invoices.NO_INVOICES_TEXT')"/>
           </slot>
         </not-found>
       </div>
-      <loading v-else></loading>
+      <loading v-else/>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
@@ -40,7 +48,20 @@ import loading from '@/shared/components/loading'
 import notFound from '@/shared/components/notFound'
 
 export default {
-  mixins: [filtersMixin],
+  components: {
+    top,
+    error,
+    paginator,
+    invoicesList,
+    loading,
+    notFound
+  },
+  mixins: [
+    filtersMixin
+  ],
+  metaInfo: {
+    title: 'Invoices'
+  },
   data () {
     return {
       perPage: 10,
@@ -95,17 +116,6 @@ export default {
         }
       })
     }
-  },
-  components: {
-    top,
-    error,
-    paginator,
-    invoicesList,
-    loading,
-    notFound
-  },
-  metaInfo: {
-    title: 'Invoices'
   }
 }
 </script>

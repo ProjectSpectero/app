@@ -7,26 +7,35 @@
         </div>
       </template>
       <template v-else>
-        <div class="message message-error" v-if="formError">{{ formError }}</div>
+        <div
+          v-if="formError"
+          class="message message-error">{{ formError }}</div>
 
         <div class="form-input">
           <input
-            type="email"
+            v-validate="'required|email'"
             v-model="email"
-            name="email"
             :placeholder="$i18n.t('users.PLACEHOLDER_EMAIL')"
-            class="input max-width"
             :class="{'input-error': errors.has('email')}"
             :disabled="formLoading"
-            v-validate="'required|email'"
+            type="email"
+            name="email"
+            class="input max-width"
             data-vv-as="email">
 
-          <span v-show="errors.has('email')" class="input-error-message">
+          <span
+            v-show="errors.has('email')"
+            class="input-error-message">
             {{ errors.first('email') }}
           </span>
         </div>
 
-        <button class="button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+        <button
+          :class="{ 'button-loading': formLoading }"
+          :disabled="formLoading"
+          class="button-info button-md max-width"
+          @click.prevent="submit"
+          @keyup.enter="submit">
           {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('users.RESET_PASSWORD_BUTTON') }}
         </button>
       </template>

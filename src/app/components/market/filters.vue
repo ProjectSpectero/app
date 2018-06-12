@@ -1,11 +1,21 @@
 <template>
-  <form class="filters" @submit.prevent.stop="submitFilters">
+  <form
+    class="filters"
+    @submit.prevent.stop="submitFilters">
     <div class="form-input">
       <div class="label">
         <label for="market-model">{{ $i18n.t('misc.MARKET_MODEL') }}</label>
       </div>
-      <select name="market-model" id="market-model" v-model="nodes.market_model" @change="changeConditionalFilter('market_model', '=')">
-        <option value="" selected>{{ $i18n.t('nodes.MODEL.ANY') }}</option>
+      <select
+        id="market-model"
+        v-model="nodes.market_model"
+        name="market-model"
+        @change="changeConditionalFilter('market_model', '=')">
+        <option
+          value=""
+          selected>
+          {{ $i18n.t('nodes.MODEL.ANY') }}
+        </option>
         <option value="LISTED_SHARED">{{ $i18n.t('nodes.MODEL.LISTED_SHARED') }}</option>
         <option value="LISTED_DEDICATED">{{ $i18n.t('nodes.MODEL.LISTED_DEDICATED') }}</option>
       </select>
@@ -13,7 +23,13 @@
 
     <div class="form-input">
       <div class="label"><label for="market-asn">{{ $i18n.t('misc.ASN') }}</label></div>
-      <input type="text" name="market-asn" id="market-asn" v-model="nodes.asn" @keyup="changeNumericInFilter('asn')" class="input">
+      <input
+        id="market-asn"
+        v-model="nodes.asn"
+        type="text"
+        class="input"
+        name="market-asn"
+        @keyup="changeNumericInFilter('asn')">
     </div>
 
     <div class="form-input">
@@ -22,7 +38,11 @@
       </div>
       <div class="form-checkbox">
         <label for="filter-grouped">
-          <input id="filter-grouped" type="checkbox" v-model="nodes.grouped" @change="toggleGrouped">
+          <input
+            id="filter-grouped"
+            v-model="nodes.grouped"
+            type="checkbox"
+            @change="toggleGrouped">
           {{ $i18n.t('market.SHOW_GROUPED_RESULTS') }}
         </label>
       </div>
@@ -32,9 +52,17 @@
       <div class="label">
         <label>{{ $i18n.t('market.SERVICE_TYPES') }}</label>
       </div>
-      <div class="form-checkbox" :for="type" v-for="type in serviceTypes" :key="type">
+      <div
+        v-for="type in serviceTypes"
+        :for="type"
+        :key="type"
+        class="form-checkbox">
         <label :for="type">
-          <input :id="type" type="checkbox" :checked="isServiceTypeSelected(type)" @change="toggleServiceType(type)">
+          <input
+            :id="type"
+            :checked="isServiceTypeSelected(type)"
+            type="checkbox"
+            @change="toggleServiceType(type)">
           {{ type }}
         </label>
       </div>
@@ -44,9 +72,18 @@
       <div class="label">
         <label>{{ $i18n.t('market.PRICE_RANGE') }}</label>
       </div>
-      <vue-slider ref="slider-price" v-bind="sliders.price" v-model="sliders.price.value" class="slider" v-on:callback="filterPriceRange">
-        <template slot="label" slot-scope="{ label, active }">
-          <span :class="['custom-label', { active }]" v-if="label % 25 === 0">
+      <vue-slider
+        ref="slider-price"
+        v-bind="sliders.price"
+        v-model="sliders.price.value"
+        class="slider"
+        @callback="filterPriceRange">
+        <template
+          slot="label"
+          slot-scope="{ label, active }">
+          <span
+            v-if="label % 25 === 0"
+            :class="['custom-label', { active }]">
             ${{ label }}{{ (parseInt(label) === sliders.price.maxValue) ? '+' : '' }}
           </span>
         </template>
@@ -57,12 +94,20 @@
       <div class="label">
         <label for="filter-country">{{ $i18n.t('misc.COUNTRY') }}</label>
       </div>
-      <select id="filter-country" v-model="nodes.cc" @change="filterCountryCode">
-        <option value="" selected>
+      <select
+        id="filter-country"
+        v-model="nodes.cc"
+        @change="filterCountryCode">
+        <option
+          value=""
+          selected>
           {{ $i18n.t('misc.ANY_COUNTRY') }}
         </option>
         <option disabled>&nbsp;</option>
-        <option v-for="country in countries" :key="country.code" :value="country.code">
+        <option
+          v-for="country in countries"
+          :key="country.code"
+          :value="country.code">
           {{ country.name }}
         </option>
       </select>
@@ -72,21 +117,33 @@
       <div class="label">
         <label for="filter-city">{{ $i18n.t('misc.CITY') }}</label>
       </div>
-      <input type="text" id="filter-city" v-model="nodes.city" @keyup="changeConditionalFilter('city', '=')" class="input">
+      <input
+        id="filter-city"
+        v-model="nodes.city"
+        type="text"
+        class="input"
+        @keyup="changeConditionalFilter('city', '=')">
     </div>
 
     <div class="form-input">
       <div class="label">
         <label for="filter-nodeCount">{{ $i18n.t('market.MIN_IPS') }}</label>
       </div>
-      <input type="number" id="filter-nodeCount" v-model="nodes.ip_count" @keyup="filterIPCount" @change="filterIPCount" class="input" min="0">
+      <input
+        id="filter-nodeCount"
+        v-model="nodes.ip_count"
+        type="number"
+        class="input"
+        min="0"
+        @keyup="filterIPCount"
+        @change="filterIPCount">
     </div>
 
     <input
-      type="submit"
+      :disabled="!buttonEnabled"
+      :class="{ 'button-success': buttonEnabled }"
       class="button-md max-width buttonFilterSubmit"
-      :class="{ 'button-success': this.buttonEnabled }"
-      :disabled="!this.buttonEnabled"
+      type="submit"
       value="Apply Filters">
   </form>
 </template>
@@ -96,6 +153,9 @@ import { mapGetters, mapActions } from 'vuex'
 import vueSlider from 'vue-slider-component'
 
 export default {
+  components: {
+    vueSlider
+  },
   data () {
     return {
       serviceTypes: ['HTTPProxy', 'OpenVPN'],
@@ -136,10 +196,6 @@ export default {
       }
     }
   },
-  created () {
-    this.setupSlider()
-    this.setupForm()
-  },
   computed: {
     ...mapGetters({
       filters: 'market/filters',
@@ -147,6 +203,10 @@ export default {
       countries: 'settings/countries',
       buttonEnabled: 'market/buttonEnabled'
     })
+  },
+  created () {
+    this.setupSlider()
+    this.setupForm()
   },
   methods: {
     ...mapActions({
@@ -327,9 +387,6 @@ export default {
         this.update(filter, index)
       }
     }
-  },
-  components: {
-    vueSlider
   }
 }
 </script>

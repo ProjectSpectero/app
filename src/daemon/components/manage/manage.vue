@@ -3,34 +3,44 @@
     <template v-if="!error">
       <div v-if="daemonInitialized">
         <top title="Remote Management">
-          <router-link :to="{ name: 'nodes' }" class="button">
+          <router-link
+            :to="{ name: 'nodes' }"
+            class="button">
             {{ $i18n.t('daemon.BACK_TO_NODES') }}
           </router-link>
         </top>
 
         <template v-if="activeTab !== 'notFound'">
-          <div v-if="user" class="managing-user">
+          <div
+            v-if="user"
+            class="managing-user">
             <div class="avatar"><span>{{ initials }}</span></div>
             <p>{{ $i18n.t('daemon.MANAGING_AS') }}: <strong>{{ displayName }}</strong></p>
           </div>
 
-          <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
+          <tabs
+            :tabs="tabs"
+            :active-tab="activeTab"
+            @switchTab="switchTab"/>
         </template>
 
         <div class="container">
           <div class="col-12">
             <div class="section padded">
-              <services v-if="activeTab === 'services'"></services>
-              <proxies v-else-if="activeTab === 'proxies'"></proxies>
-              <certificates v-else-if="activeTab === 'certificates'"></certificates>
-              <not-found v-else></not-found>
+              <services v-if="activeTab === 'services'"/>
+              <proxies v-else-if="activeTab === 'proxies'"/>
+              <certificates v-else-if="activeTab === 'certificates'"/>
+              <not-found v-else/>
             </div>
           </div>
         </div>
       </div>
-      <loading v-else></loading>
+      <loading v-else/>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
@@ -46,6 +56,16 @@ import notFound from '@/shared/components/404'
 import error from '@/shared/components/errors/error'
 
 export default {
+  components: {
+    top,
+    error,
+    notFound,
+    tabs,
+    services,
+    proxies,
+    certificates,
+    loading
+  },
   data () {
     return {
       activeTab: null,
@@ -55,9 +75,6 @@ export default {
         // { id: 'proxies', path: 'proxies', 'label': this.$i18n.t('daemon.PROXIES') }
       ]
     }
-  },
-  created () {
-    this.parseTab()
   },
   computed: {
     ...mapGetters({
@@ -75,6 +92,12 @@ export default {
       return this.user.roles.join(', ')
     }
   },
+  watch: {
+    '$route': 'parseTab'
+  },
+  created () {
+    this.parseTab()
+  },
   methods: {
     parseTab () {
       let tabId = this.$route.params.tabAction
@@ -91,19 +114,6 @@ export default {
       this.activeTab = tab.id
       this.$router.push({ name: 'manage', params: { nodeId: this.$route.params.nodeId, tabAction: tab.path } })
     }
-  },
-  watch: {
-    '$route': 'parseTab'
-  },
-  components: {
-    top,
-    error,
-    notFound,
-    tabs,
-    services,
-    proxies,
-    certificates,
-    loading
   }
 }
 </script>

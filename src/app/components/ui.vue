@@ -5,56 +5,146 @@
         <section>
           <h2>Buttons</h2>
           <h3>Regular</h3>
-          <a href="#" class="button">Button</a>
-          <a href="#" class="button-dark">Dark</a>
-          <a href="#" class="button-info">Info</a>
-          <a href="#" class="button-success">Success</a>
-          <a href="#" class="button-warning">Warning</a>
-          <a href="#" class="button-danger">Danger</a>
-          <a href="#" class="button" disabled>Disabled</a>
+          <a
+            href="#"
+            class="button">Button</a>
+          <a
+            href="#"
+            class="button-dark">Dark</a>
+          <a
+            href="#"
+            class="button-info">Info</a>
+          <a
+            href="#"
+            class="button-success">Success</a>
+          <a
+            href="#"
+            class="button-warning">Warning</a>
+          <a
+            href="#"
+            class="button-danger">Danger</a>
+          <a
+            href="#"
+            class="button"
+            disabled>Disabled</a>
           <br><br>
           <h3>Medium</h3>
-          <a href="#" class="button-md">Button</a>
-          <a href="#" class="button-md button-dark">Dark</a>
-          <a href="#" class="button-md button-info">Info</a>
-          <a href="#" class="button-md button-success">Success</a>
-          <a href="#" class="button-md button-warning">Warning</a>
-          <a href="#" class="button-md button-danger">Danger</a>
-          <a href="#" class="button-md" disabled>Disabled</a>
+          <a
+            href="#"
+            class="button-md">Button</a>
+          <a
+            href="#"
+            class="button-md button-dark">Dark</a>
+          <a
+            href="#"
+            class="button-md button-info">Info</a>
+          <a
+            href="#"
+            class="button-md button-success">Success</a>
+          <a
+            href="#"
+            class="button-md button-warning">Warning</a>
+          <a
+            href="#"
+            class="button-md button-danger">Danger</a>
+          <a
+            href="#"
+            class="button-md"
+            disabled>Disabled</a>
           <br><br>
           <h3>Small</h3>
-          <a href="#" class="button-sm">Button</a>
-          <a href="#" class="button-sm button-dark">Dark</a>
-          <a href="#" class="button-sm button-info">Info</a>
-          <a href="#" class="button-sm button-success">Success</a>
-          <a href="#" class="button-sm button-warning">Warning</a>
-          <a href="#" class="button-sm button-danger">Danger</a>
-          <a href="#" class="button-sm" disabled>Disabled</a>
+          <a
+            href="#"
+            class="button-sm">Button</a>
+          <a
+            href="#"
+            class="button-sm button-dark">Dark</a>
+          <a
+            href="#"
+            class="button-sm button-info">Info</a>
+          <a
+            href="#"
+            class="button-sm button-success">Success</a>
+          <a
+            href="#"
+            class="button-sm button-warning">Warning</a>
+          <a
+            href="#"
+            class="button-sm button-danger">Danger</a>
+          <a
+            href="#"
+            class="button-sm"
+            disabled>Disabled</a>
           <br><br>
           <h3>Bordered</h3>
-          <a href="#" class="button-bordered">Button</a>
-          <a href="#" class="button-dark button-bordered">Dark</a>
-          <a href="#" class="button-info button-bordered">Info</a>
-          <a href="#" class="button-success button-bordered">Success</a>
-          <a href="#" class="button-warning button-bordered">Warning</a>
-          <a href="#" class="button-danger button-bordered">Danger</a>
-          <a href="#" class="button-bordered" disabled>Disabled</a>
+          <a
+            href="#"
+            class="button-bordered">Button</a>
+          <a
+            href="#"
+            class="button-dark button-bordered">Dark</a>
+          <a
+            href="#"
+            class="button-info button-bordered">Info</a>
+          <a
+            href="#"
+            class="button-success button-bordered">Success</a>
+          <a
+            href="#"
+            class="button-warning button-bordered">Warning</a>
+          <a
+            href="#"
+            class="button-danger button-bordered">Danger</a>
+          <a
+            href="#"
+            class="button-bordered"
+            disabled>Disabled</a>
           <br><br>
           <h3>Loading</h3>
-          <a href="#" class="button-loading" disabled>Button</a>
-          <a href="#" class="button-dark button-loading" disabled>Dark</a>
-          <a href="#" class="button-info button-loading" disabled>Info</a>
-          <a href="#" class="button-success button-loading" disabled>Success</a>
-          <a href="#" class="button-warning button-loading" disabled>Warning</a>
-          <a href="#" class="button-danger button-loading" disabled>Danger</a>
+          <a
+            href="#"
+            class="button-loading"
+            disabled>Button</a>
+          <a
+            href="#"
+            class="button-dark button-loading"
+            disabled>Dark</a>
+          <a
+            href="#"
+            class="button-info button-loading"
+            disabled>Info</a>
+          <a
+            href="#"
+            class="button-success button-loading"
+            disabled>Success</a>
+          <a
+            href="#"
+            class="button-warning button-loading"
+            disabled>Warning</a>
+          <a
+            href="#"
+            class="button-danger button-loading"
+            disabled>Danger</a>
           <br><br>
           <h3>Icons</h3>
-          <a href="#" class="button-icon"><span class="icon-bell"></span></a>
-          <a href="#" class="button-dark button-icon"><span class="icon-bar-chart"></span></a>
-          <a href="#" class="button-info button-icon"><span class="icon-anchor"></span></a>
-          <a href="#" class="button-success button-icon"><span class="icon-check"></span></a>
-          <a href="#" class="button-warning button-icon"><span class="icon-alert-triangle"></span></a>
-          <a href="#" class="button-danger button-icon"><span class="icon-x"></span></a>
+          <a
+            href="#"
+            class="button-icon"><span class="icon-bell"/></a>
+          <a
+            href="#"
+            class="button-dark button-icon"><span class="icon-bar-chart"/></a>
+          <a
+            href="#"
+            class="button-info button-icon"><span class="icon-anchor"/></a>
+          <a
+            href="#"
+            class="button-success button-icon"><span class="icon-check"/></a>
+          <a
+            href="#"
+            class="button-warning button-icon"><span class="icon-alert-triangle"/></a>
+          <a
+            href="#"
+            class="button-danger button-icon"><span class="icon-x"/></a>
         </section>
         <section>
           <h2>Messages</h2>
@@ -84,18 +174,32 @@
         <section>
           <h2>Inputs</h2>
           <div class="form-input">
-            <input type="text" class="input" placeholder="Regular input">
+            <input
+              type="text"
+              class="input"
+              placeholder="Regular input">
           </div>
           <div class="form-input">
             <float-label>
-              <input type="text" class="input" placeholder="Input with floating label" value="Hello world!">
+              <input
+                type="text"
+                class="input"
+                placeholder="Input with floating label"
+                value="Hello world!">
             </float-label>
           </div>
           <div class="form-input">
-            <input type="password" class="input input-error" placeholder="Input with error">
+            <input
+              type="password"
+              class="input input-error"
+              placeholder="Input with error">
           </div>
           <div class="form-input">
-            <input type="text" class="input" placeholder="Disabled input" disabled>
+            <input
+              type="text"
+              class="input"
+              placeholder="Disabled input"
+              disabled>
           </div>
 
           <br>
@@ -103,7 +207,10 @@
           <div class="label">
             <label for="textarea-demo">Example Label</label>
           </div>
-          <textarea id="textarea-demo" class="input" style="width: 100%; height: 160px;">This is a textarea input.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra tristique ex rutrum egestas. Nunc porta ipsum vitae mi varius, ac porttitor massa placerat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia efficitur tellus, ut scelerisque lacus. Suspendisse nec ipsum et lectus aliquam consequat at a augue. Duis quis feugiat justo, in facilisis ante. Proin sed dui quis arcu semper convallis.</textarea>
+          <textarea
+            id="textarea-demo"
+            class="input"
+            style="width: 100%; height: 160px;">This is a textarea input.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra tristique ex rutrum egestas. Nunc porta ipsum vitae mi varius, ac porttitor massa placerat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia efficitur tellus, ut scelerisque lacus. Suspendisse nec ipsum et lectus aliquam consequat at a augue. Duis quis feugiat justo, in facilisis ante. Proin sed dui quis arcu semper convallis.</textarea>
         </section>
       </div>
     </div>

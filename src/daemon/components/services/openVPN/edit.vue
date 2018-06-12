@@ -1,7 +1,9 @@
 <template>
   <div>
     <top title="OpenVPN Configuration">
-      <button @click="askBeforeExiting" class="button">
+      <button
+        class="button"
+        @click="askBeforeExiting">
         {{ $i18n.t('misc.CANCEL') }}
       </button>
     </top>
@@ -19,18 +21,18 @@
 import top from '@/shared/components/top'
 
 export default {
+  components: {
+    top
+  },
+  metaInfo: {
+    title: 'OpenVPN Configuration'
+  },
   methods: {
     askBeforeExiting () {
       if (confirm(this.$i18n.t('misc.LEAVE_CONFIRM_DIALOG'))) {
         this.$router.push({ name: 'manage', params: { nodeId: this.$route.params.nodeId, action: 'services' } })
       }
     }
-  },
-  components: {
-    top
-  },
-  metaInfo: {
-    title: 'OpenVPN Configuration'
   }
 }
 </script>

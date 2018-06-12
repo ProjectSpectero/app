@@ -3,14 +3,23 @@
     <div class="section padded col-6">
       <form @submit.prevent.stop="submit">
         <h2>{{ $i18n.t('misc.MARKET_INFO') }}</h2>
-        <div class="message message-error" v-if="formError">{{ formError }}</div>
+        <div
+          v-if="formError"
+          class="message message-error">{{ formError }}</div>
 
-        <div v-for="field in formFields" :key="field.name">
+        <div
+          v-for="field in formFields"
+          :key="field.name">
           <template v-if="field.type === 'select'">
-            <div class="form-input" v-if="field.object">
+            <div
+              v-if="field.object"
+              class="form-input">
               <div class="label"><label :for="field.name">{{ field.label }}</label></div>
               <select v-model="form[field.name]">
-                <option v-for="object in field.object" :key="object.id" :value="field.objectKey ? object[field.objectKey] : object">
+                <option
+                  v-for="object in field.object"
+                  :key="object.id"
+                  :value="field.objectKey ? object[field.objectKey] : object">
                   <span v-if="field.objectKey">{{ object[field.objectKey] }}</span>
                   <span v-else>{{ object }}</span>
                 </option>
@@ -18,15 +27,20 @@
             </div>
           </template>
           <template v-else-if="field.type === 'model'">
-            <div class="form-input" v-if="marketModels">
+            <div
+              v-if="marketModels"
+              class="form-input">
               <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.MARKET_MODEL') }}</label></div>
               <div class="input-with-tooltip">
                 <select v-model="form.market_model">
-                  <option v-for="model in marketModels" :key="model" :value="model">
+                  <option
+                    v-for="model in marketModels"
+                    :key="model"
+                    :value="model">
                     {{ $i18n.t(`nodes.MODEL.${model}`) }}
                   </option>
                 </select>
-                <tooltip id="nodes.topics.marketModels"></tooltip>
+                <tooltip id="nodes.topics.marketModels"/>
               </div>
             </div>
           </template>
@@ -34,45 +48,62 @@
             <div class="form-input">
               <div class="label"><label :for="field.name">{{ field.label }}</label></div>
               <input
+                v-validate="rules[field.name]"
                 :type="field.type"
                 v-model="form[field.name]"
                 :name="field.name"
                 :id="field.name"
                 :placeholder="field.placeholder"
-                class="input max-width"
                 :class="{'input-error': errors.has(field.name)}"
                 :disabled="formLoading"
-                v-validate="rules[field.name]"
-                :data-vv-as="field.name">
+                :data-vv-as="field.name"
+                class="input max-width">
 
-              <span v-show="errors.has(field.name)" class="input-error-message">
+              <span
+                v-show="errors.has(field.name)"
+                class="input-error-message">
                 {{ errors.first(field.name) }}
               </span>
             </div>
           </template>
         </div>
 
-        <button type="submit" class="button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+        <button
+          :class="{ 'button-loading': formLoading }"
+          :disabled="formLoading"
+          type="submit"
+          class="button-info button-md max-width">
           {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
         </button>
       </form>
     </div>
 
-    <div v-if="engagements && engagements.length" class="col-6 list section padded">
-      <v-client-table :data="engagements" :columns="columns" :options="options">
-        <template slot="status" slot-scope="props">
+    <div
+      v-if="engagements && engagements.length"
+      class="col-6 list section padded">
+      <v-client-table
+        :data="engagements"
+        :columns="columns"
+        :options="options">
+        <template
+          slot="status"
+          slot-scope="props">
           <div :class="'badge-' + props.row.status.toLowerCase()">
             {{ $i18n.t(`nodes.STATUS.${props.row.status}`) }}
           </div>
         </template>
 
-        <template slot="sync_status" slot-scope="props">
+        <template
+          slot="sync_status"
+          slot-scope="props">
           <div :class="['sync-status-' + (props.row.sync_status === 'PENDING_SYNC' ? 'pending' : 'complete')]">
-            <span v-if="props.row.sync_status === 'PENDING_SYNC'"><span class="icon-rotate-cw"></span> Sync Pending</span>
-            <span v-else><span class="icon-check-circle"></span> In Sync</span>
+            <span v-if="props.row.sync_status === 'PENDING_SYNC'"><span class="icon-rotate-cw"/> Sync Pending</span>
+            <span v-else><span class="icon-check-circle"/> In Sync</span>
           </div>
         </template>
-        <template slot="type" slot-scope="props">
+        <template
+          slot="type"
+          slot-scope="props">
           <template v-if="props.row.type === 'NODE'">
             <div>{{ $i18n.t('misc.NODE') }} #{{ props.row.resource }}</div>
           </template>
@@ -81,15 +112,22 @@
           </template>
         </template>
 
-        <template slot="actions" slot-scope="props">
-          <button v-if="props.row.status === 'ACTIVE'" class="button" @click.stop="deleteEngagement(props.row.id)">
+        <template
+          slot="actions"
+          slot-scope="props">
+          <button
+            v-if="props.row.status === 'ACTIVE'"
+            class="button"
+            @click.stop="deleteEngagement(props.row.id)">
             {{ $i18n.t('misc.CANCEL') }}
           </button>
           <div v-else>&nbsp;</div>
         </template>
       </v-client-table>
     </div>
-    <not-found v-else type="engagements"></not-found>
+    <not-found
+      v-else
+      type="engagements"/>
   </div>
 </template>
 
@@ -99,15 +137,24 @@ import notFound from '@/shared/components/notFound'
 import tooltip from '@/shared/components/tooltip'
 
 export default {
+  components: {
+    notFound,
+    tooltip
+  },
   props: {
-    engagements: Array,
+    engagements: {
+      type: Array,
+      required: true
+    },
     node: {
+      type: Object,
       required: false,
-      type: Object
+      default: () => {}
     },
     group: {
+      type: Object,
       required: false,
-      type: Object
+      default: () => {}
     }
   },
   data () {
@@ -202,10 +249,6 @@ export default {
         })
       }
     }
-  },
-  components: {
-    notFound,
-    tooltip
   }
 }
 </script>

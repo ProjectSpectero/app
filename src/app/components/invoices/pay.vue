@@ -1,18 +1,32 @@
 <template>
-  <button @click.stop="showPaymentModal" :class="classes">
+  <button
+    :class="classes"
+    @click.stop="showPaymentModal">
     {{ $i18n.t('misc.PAY_NOW') }}
   </button>
 </template>
 
 <script>
 import paymentModal from '../payments/paymentModal'
-import processingErrorsModal from './processingErrorsModal'
 
 export default {
+  components: {
+    paymentModal
+  },
   props: {
-    invoice: Object,
-    due: Object,
-    classes: String
+    invoice: {
+      type: Object,
+      required: true
+    },
+    due: {
+      type: Object,
+      required: true
+    },
+    classes: {
+      type: String,
+      required: false,
+      default: ''
+    }
   },
   methods: {
     async showPaymentModal () {
@@ -25,10 +39,6 @@ export default {
         height: 'auto'
       })
     }
-  },
-  components: {
-    paymentModal,
-    processingErrorsModal
   }
 }
 </script>

@@ -3,7 +3,9 @@
     <div class="message message-warning">
       One or more operations require that you restart the {{ service }} service.
     </div>
-    <button @click.stop.prevent="restart" class="button-dark">Restart {{ service }} Now</button>
+    <button
+      class="button-dark"
+      @click.stop.prevent="restart">Restart {{ service }} Now</button>
   </div>
 </template>
 

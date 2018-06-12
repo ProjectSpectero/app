@@ -5,7 +5,9 @@
         {{ $i18n.t('invoices.PAY_INVOICE') }}
         <small v-if="user.credit > 0">{{ $i18n.t('payments.ACCOUNT_CREDIT', { credit: user.credit }) }}</small>
       </h2>
-      <button @click="$emit('close')" class="modal-close"></button>
+      <button
+        class="modal-close"
+        @click="$emit('close')"/>
     </div>
     <div class="modal-content">
       <p class="spaced">
@@ -15,7 +17,14 @@
         {{ $i18n.t('invoices.PAY_TEXT2') }}
       </p>
       <div>
-        <button @click="pay(type)" v-if="canUse(type)" v-for="type in buttons" :key="type.route" class="button" :class="type.class" :disabled="!type.enabled">
+        <button
+          v-for="type in buttons"
+          v-if="canUse(type)"
+          :key="type.route"
+          :class="type.class"
+          :disabled="!type.enabled"
+          class="button"
+          @click="pay(type)">
           {{ $i18n.t('payments.' + type.label) }}
         </button>
       </div>
@@ -28,8 +37,14 @@ import { mapGetters } from 'vuex'
 
 export default {
   props: {
-    invoice: Object,
-    due: Object
+    invoice: {
+      type: Object,
+      required: true
+    },
+    due: {
+      type: Object,
+      required: true
+    }
   },
   computed: {
     ...mapGetters({

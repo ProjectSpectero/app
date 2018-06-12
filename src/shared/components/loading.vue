@@ -1,7 +1,7 @@
 <template>
   <div class="alert-msg-centered">
     <div class="loader">
-      <div class="spinning-loader"><div></div><div></div><div></div></div>
+      <div class="spinning-loader"><div/><div/><div/></div>
     </div>
   </div>
 </template>

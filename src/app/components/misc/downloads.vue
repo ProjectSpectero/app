@@ -1,9 +1,13 @@
 <template>
   <div class="downloads">
-    <top title="Downloads"></top>
+    <top title="Downloads"/>
 
     <ul class="tabs os-tabs">
-      <li v-for="(link, os) in downloadLinks" :key="os" @click.stop="switchTab(os)" :class="(osTab === os) ? 'active' : ''">{{ os }}</li>
+      <li
+        v-for="(link, os) in downloadLinks"
+        :key="os"
+        :class="(osTab === os) ? 'active' : ''"
+        @click.stop="switchTab(os)">{{ os }}</li>
     </ul>
 
     <div class="container">
@@ -13,7 +17,10 @@
           <h5>Step 1</h5>
           <template v-if="osTab === 'Windows'">
             <p>Download the latest release of the Spectero Daemon and its CLI, then run it.</p>
-            <a class="button-info" :href="downloadLinks[osTab]" target="_blank"><span class="icon-download"></span> Download Now</a>
+            <a
+              :href="downloadLinks[osTab]"
+              class="button-info"
+              target="_blank"><span class="icon-download"/> Download Now</a>
           </template>
           <template v-else>
             <p>Download and run the latest release of the Spectero Daemon and its CLI by running the following command:</p>
@@ -28,28 +35,48 @@
         <section class="section padded">
           <h5>Step 3</h5>
           <p>Once you've connected the daemon to Spectero Cloud, visit our nodes management view to complete the setup process.</p>
-          <router-link :to="{ name: 'nodes' }" class="button-success"><span class="icon-check"></span> Complete Setup</router-link>
+          <router-link
+            :to="{ name: 'nodes' }"
+            class="button-success"><span class="icon-check"/> Complete Setup</router-link>
         </section>
-        <section v-if="matrices" class="section padded">
+        <section
+          v-if="matrices"
+          class="section padded">
           <h5>Compatibility</h5>
-          <p>The Spectero Daemon is currently compatible with the following {{ osTab}} {{ osTab === 'Linux' ? 'distributions' : 'versions' }}:</p>
+          <p>The Spectero Daemon is currently compatible with the following {{ osTab }} {{ osTab === 'Linux' ? 'distributions' : 'versions' }}:</p>
           <div class="compatibility">
-            <div v-for="(matrix, i) in matrices" :key="i">
-              <div v-if="i === osTab" class="matrices-section">
+            <div
+              v-for="(matrix, i) in matrices"
+              :key="i">
+              <div
+                v-if="i === osTab"
+                class="matrices-section">
                 <div class="matrices">
-                  <div class="matrix" v-for="(os, j) in matrix" :key="j">
+                  <div
+                    v-for="(os, j) in matrix"
+                    :key="j"
+                    class="matrix">
                     <template v-if="os.Distributions">
                       <h6 class="title-distro">{{ j }}</h6>
-                      <div v-for="(distro, k) in os.Distributions" :key="k" class="os-item">
+                      <div
+                        v-for="(distro, k) in os.Distributions"
+                        :key="k"
+                        class="os-item">
                         <p>{{ k }}</p>
-                        <span v-if="distro.tested !== undefined" class="compatibility-icon" :class="{ 'compatible': distro.tested === true }"><p>{{ (distro.tested === true) ? 'Tested' : 'Untested' }}</p></span>
+                        <span
+                          v-if="distro.tested !== undefined"
+                          :class="{ 'compatible': distro.tested === true }"
+                          class="compatibility-icon"><p>{{ (distro.tested === true) ? 'Tested' : 'Untested' }}</p></span>
                       </div>
                     </template>
 
                     <template v-else>
                       <div class="os-item">
                         <p>{{ j }}</p>
-                        <span v-if="os.tested !== undefined" class="compatibility-icon" :class="{ 'compatible': os.tested === true }"><p>{{ (os.tested === true) ? 'Tested' : 'Untested' }}</p></span>
+                        <span
+                          v-if="os.tested !== undefined"
+                          :class="{ 'compatible': os.tested === true }"
+                          class="compatibility-icon"><p>{{ (os.tested === true) ? 'Tested' : 'Untested' }}</p></span>
                       </div>
                     </template>
                   </div>
@@ -69,6 +96,9 @@ import { mapGetters } from 'vuex'
 import top from '@/shared/components/top'
 
 export default {
+  components: {
+    top
+  },
   metaInfo: {
     title: 'Downloads'
   },
@@ -80,6 +110,21 @@ export default {
       // latest: null,
       // alt: null,
       // version: null
+    }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'appAuth/user'
+    }),
+    nodeKey () {
+      return this.user.node_key
+    },
+    downloadLinks () {
+      return {
+        'Windows': process.env.DOWNLOAD_LINK_WINDOWS,
+        'Linux': process.env.DOWNLOAD_LINK_LINUX,
+        'MacOS': process.env.DOWNLOAD_LINK_MACOS
+      }
     }
   },
   created () {
@@ -132,24 +177,6 @@ export default {
     //     this.$toasted.error(this.$i18n.t(`errors.RELEASES_FETCH_FAILED`))
     //   }
     // },
-  },
-  computed: {
-    ...mapGetters({
-      user: 'appAuth/user'
-    }),
-    nodeKey () {
-      return this.user.node_key
-    },
-    downloadLinks () {
-      return {
-        'Windows': process.env.DOWNLOAD_LINK_WINDOWS,
-        'Linux': process.env.DOWNLOAD_LINK_LINUX,
-        'MacOS': process.env.DOWNLOAD_LINK_MACOS
-      }
-    }
-  },
-  components: {
-    top
   }
 }
 </script>

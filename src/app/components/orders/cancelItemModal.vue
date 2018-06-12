@@ -2,15 +2,24 @@
   <div class="modal">
     <div class="modal-header">
       <h2>Cancel Engagement</h2>
-      <button @click="$emit('close')" class="modal-close"></button>
+      <button
+        class="modal-close"
+        @click="$emit('close')"/>
     </div>
     <div class="modal-content">
       <p class="spaced">{{ $i18n.t('nodes.DELETE_ENGAGEMENT_CONFIRM_DIALOG') }}</p>
       <div>
-        <button @click="cancel()" class="button" :class="{'button-loading': loading, 'button-danger': !loading}" :disabled="loading">
+        <button
+          :class="{'button-loading': loading, 'button-danger': !loading}"
+          :disabled="loading"
+          class="button"
+          @click="cancel()">
           Cancel Engagement
         </button>
-        <button @click="$emit('close')" class="button right" :disabled="loading">
+        <button
+          :disabled="loading"
+          class="button right"
+          @click="$emit('close')">
           No, Nevermind
         </button>
       </div>
@@ -23,8 +32,15 @@ import nodeAPI from '@/app/api/node'
 
 export default {
   props: {
-    id: Number,
-    cancelItem: Function
+    id: {
+      type: Number,
+      required: true
+    },
+    cancelItem: {
+      type: Function,
+      required: false,
+      default: () => {}
+    }
   },
   data () {
     return {

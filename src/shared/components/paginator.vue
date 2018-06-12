@@ -1,41 +1,71 @@
 <template>
-  <div v-if="pagination && pagination.total" class="pagination">
+  <div
+    v-if="pagination && pagination.total"
+    class="pagination">
     <div class="paginator">
-      <div @click="toPage(1)" :class="['page', 'page-arrow', 'first', (active === 1) ? 'disabled' : '']"><span class="icon-chevrons-left"></span></div>
+      <div
+        :class="['page', 'page-arrow', 'first', (active === 1) ? 'disabled' : '']"
+        @click="toPage(1)"><span class="icon-chevrons-left"/></div>
 
-      <div @click="toPage(active - 1)" :class="['page', 'page-arrow', 'previous', (active === 1) ? 'disabled' : '']"><span class="icon-chevron-left"></span></div>
+      <div
+        :class="['page', 'page-arrow', 'previous', (active === 1) ? 'disabled' : '']"
+        @click="toPage(active - 1)"><span class="icon-chevron-left"/></div>
 
       <template v-if="totalPages > 5 ">
         <ul class="pages">
-          <li @click="toPage(1)" :class="['page', (active === 1) ? 'active' : '']">1</li>
+          <li
+            :class="['page', (active === 1) ? 'active' : '']"
+            @click="toPage(1)">1</li>
 
-          <li v-if="showFirstEllipsis" class="page">...</li>
+          <li
+            v-if="showFirstEllipsis"
+            class="page">...</li>
 
-          <li v-for="page in firstChunk" :key="page" @click="toPage(page)" :class="['page', (active === page) ? 'active' : '']">
+          <li
+            v-for="page in firstChunk"
+            :key="page"
+            :class="['page', (active === page) ? 'active' : '']"
+            @click="toPage(page)">
             {{ page }}
           </li>
 
-          <li v-for="page in lastChunk" :key="page" @click="toPage(page)" :class="['page', (active === page) ? 'active' : '']">
+          <li
+            v-for="page in lastChunk"
+            :key="page"
+            :class="['page', (active === page) ? 'active' : '']"
+            @click="toPage(page)">
             {{ page }}
           </li>
 
-          <li v-if="showLastEllipsis" class="page">...</li>
+          <li
+            v-if="showLastEllipsis"
+            class="page">...</li>
 
-          <li @click="toPage(totalPages)" :class="['page', (active === totalPages) ? 'active' : '']">{{ totalPages }}</li>
+          <li
+            :class="['page', (active === totalPages) ? 'active' : '']"
+            @click="toPage(totalPages)">{{ totalPages }}</li>
         </ul>
       </template>
 
       <template v-else>
         <ul class="pages">
-          <li v-for="page in planePages" :key="page" @click="toPage(page)" :class="['page', (active === page) ? 'active' : '']">
+          <li
+            v-for="page in planePages"
+            :key="page"
+            :class="['page', (active === page) ? 'active' : '']"
+            @click="toPage(page)">
             {{ page }}
           </li>
         </ul>
       </template>
 
-      <div @click="toPage(active + 1)" :class="['page', 'page-arrow', 'next', (active === totalPages) ? 'disabled' : '']"><span class="icon-chevron-right"></span></div>
+      <div
+        :class="['page', 'page-arrow', 'next', (active === totalPages) ? 'disabled' : '']"
+        @click="toPage(active + 1)"><span class="icon-chevron-right"/></div>
 
-      <div @click="toPage(totalPages)" :class="['page', 'page-arrow', 'last', (active === totalPages) ? 'disabled' : '']"><span class="icon-chevrons-right"></span></div>
+      <div
+        :class="['page', 'page-arrow', 'last', (active === totalPages) ? 'disabled' : '']"
+        @click="toPage(totalPages)"><span class="icon-chevrons-right"/></div>
     </div>
   </div>
 </template>
@@ -43,7 +73,10 @@
 <script>
 export default {
   props: {
-    pagination: Object
+    pagination: {
+      type: Object,
+      required: true
+    }
   },
   computed: {
     totalPages () {
@@ -105,11 +138,6 @@ export default {
       return pages
     }
   },
-  methods: {
-    toPage (page) {
-      this.$emit('changedPage', page)
-    }
-  },
   watch: {
     pagination: {
       handler (futurePagination, pastPagination) {
@@ -118,6 +146,11 @@ export default {
         }
       },
       deep: true
+    }
+  },
+  methods: {
+    toPage (page) {
+      this.$emit('changedPage', page)
     }
   }
 }

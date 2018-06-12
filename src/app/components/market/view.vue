@@ -2,11 +2,17 @@
   <div>
     <template v-if="!error">
       <div v-if="item">
-        <item-details v-if="!loading" :item="item" :type="$route.params.type"></item-details>
-        <loading v-else></loading>
+        <item-details
+          v-if="!loading"
+          :item="item"
+          :type="$route.params.type"/>
+        <loading v-else/>
       </div>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
@@ -17,6 +23,11 @@ import loading from '@/shared/components/loading'
 import error from '@/shared/components/errors/error'
 
 export default {
+  components: {
+    loading,
+    error,
+    itemDetails
+  },
   data () {
     return {
       item: null,
@@ -45,11 +56,6 @@ export default {
         }
       })
     }
-  },
-  components: {
-    loading,
-    error,
-    itemDetails
   }
 }
 </script>

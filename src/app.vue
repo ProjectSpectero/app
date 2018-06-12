@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <component :is="layout"></component>
-    <vue-progress-bar></vue-progress-bar>
+    <component :is="layout"/>
+    <vue-progress-bar/>
   </div>
 </template>
 
@@ -15,13 +15,31 @@ import daemon from '@/shared/layouts/daemon'
 
 export default {
   name: 'Spectero',
-  created () {
-    this.init()
+  components: {
+    auth,
+    basic,
+    error,
+    master,
+    daemon
+  },
+  metaInfo: {
+    title: null,
+    titleTemplate: (titleChunk) => {
+      return (titleChunk ? `${titleChunk} - ` : '') + 'Spectero'
+    }
   },
   computed: {
     ...mapGetters({
       layout: 'settings/layout'
     })
+  },
+  watch: {
+    '$route' (to, from) {
+      this.switchLayout(this.fetchLayoutFromRoute(to))
+    }
+  },
+  created () {
+    this.init()
   },
   methods: {
     ...mapActions({
@@ -43,24 +61,6 @@ export default {
     fetchLayoutFromRoute: function (route) {
       return route.meta.layout || ''
     }
-  },
-  watch: {
-    '$route' (to, from) {
-      this.switchLayout(this.fetchLayoutFromRoute(to))
-    }
-  },
-  metaInfo: {
-    title: null,
-    titleTemplate: (titleChunk) => {
-      return (titleChunk ? `${titleChunk} - ` : '') + 'Spectero'
-    }
-  },
-  components: {
-    auth,
-    basic,
-    error,
-    master,
-    daemon
   }
 }
 </script>

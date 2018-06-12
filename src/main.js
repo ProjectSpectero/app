@@ -91,6 +91,8 @@ new Vue({
   router,
   store,
   i18n,
-  template: '<app/>',
-  components: { app }
+  components: {
+    app
+  },
+  template: '<app/>'
 })

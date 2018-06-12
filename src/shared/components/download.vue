@@ -1,6 +1,9 @@
 <template>
-  <button @click="downloadFile" class="button-bordered button-info" :class="buttonClass">
-    <span class="icon-download"></span> {{ $i18n.t('misc.DOWNLOAD_AS_FILE') }}
+  <button
+    :class="buttonClass"
+    class="button-bordered button-info"
+    @click="downloadFile">
+    <span class="icon-download"/> {{ $i18n.t('misc.DOWNLOAD_AS_FILE') }}
   </button>
 </template>
 
@@ -9,13 +12,24 @@ import downloadjs from 'downloadjs'
 
 export default {
   props: {
-    file: String,
-    content: String,
+    file: {
+      type: String,
+      required: true
+    },
+    content: {
+      type: String,
+      required: true
+    },
     type: {
       type: String,
+      required: false,
       default: 'text/plain'
     },
-    buttonClass: String
+    buttonClass: {
+      type: String,
+      required: false,
+      default: ''
+    }
   },
   methods: {
     downloadFile () {

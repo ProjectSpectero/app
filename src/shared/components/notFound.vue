@@ -1,6 +1,6 @@
 <template>
   <div class="alert-msg-centered">
-    <div class="icon-alert-circle big-icon"></div>
+    <div class="icon-alert-circle big-icon"/>
     <h1>{{ $i18n.t('misc.NOT_FOUND_TITLE') }}</h1>
     <slot>
       <p>{{ type ? $i18n.t('misc.NOT_FOUND', { type: type }) : $i18n.t('misc.NOT_FOUND_DEFAULT') }}</p>
@@ -13,7 +13,8 @@ export default {
   props: {
     type: {
       type: String,
-      required: false
+      required: false,
+      default: 'item'
     }
   }
 }

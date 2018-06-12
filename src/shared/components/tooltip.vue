@@ -1,9 +1,15 @@
 <template>
   <div class="tooltip-trigger">
-    <span :class="icon" v-tooltip="{ html: randomId }"></span>
-    <div class="tooltip" :id="randomId">
-      <h4>{{ $i18n.t(`help.${this.id}.title`) }}</h4>
-      <div class="description" v-html="$i18n.t(`help.${this.id}.description`)"></div>
+    <span
+      v-tooltip="{ html: randomId }"
+      :class="icon"/>
+    <div
+      :id="randomId"
+      class="tooltip">
+      <h4>{{ $i18n.t(`help.${id}.title`) }}</h4>
+      <div
+        class="description"
+        v-html="$i18n.t(`help.${id}.description`)"/>
     </div>
   </div>
 </template>
@@ -11,10 +17,15 @@
 <script>
 export default {
   props: {
-    id: String,
+    id: {
+      type: String,
+      required: false,
+      default: ''
+    },
     icon: {
-      default: 'icon-help-circle',
-      required: false
+      type: String,
+      required: false,
+      default: 'icon-help-circle'
     }
   },
   computed: {

@@ -5,7 +5,10 @@
       <p>{{ $i18n.t('invoices.RESOURCES_NOT_AVAILABLE_TEXT') }}</p>
     </header>
     <section class="body">
-      <processing-errors :errorBag="errorBag" :invoice="invoice" @close="update"></processing-errors>
+      <processing-errors
+        :error-bag="errorBag"
+        :invoice="invoice"
+        @close="update"/>
     </section>
   </div>
 </template>
@@ -14,17 +17,24 @@
 import processingErrors from './processingErrors'
 
 export default {
+  components: {
+    processingErrors
+  },
   props: {
-    invoice: Object,
-    errorBag: Array
+    invoice: {
+      type: Object,
+      required: true
+    },
+    errorBag: {
+      type: Array,
+      required: false,
+      default: () => []
+    }
   },
   methods: {
     update () {
       this.$emit('update')
     }
-  },
-  components: {
-    processingErrors
   }
 }
 </script>

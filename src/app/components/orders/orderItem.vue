@@ -1,17 +1,20 @@
 <template>
   <div class="order-item">
-    <div @click="toggleDetails()" class="overview items">
+    <div
+      class="overview items"
+      @click="toggleDetails()">
       <div class="title">
         <h5 class="mb-0">
           <div
             v-tooltip="$i18n.t('orders.ORDER_STATUS.' + ((item.error) ? 'ERROR' : item.status))"
-            class="status-dot status-active"
-            :class="['status-' + status, {'status-error': item.error }]">
-          </div>
+            :class="['status-' + status, {'status-error': item.error }]"
+            class="status-dot status-active"/>
           Resource {{ item.resource }}
         </h5>
-        <span v-if="item.error" class="line-msg text-danger">
-          <span class="icon-alert-circle"></span>
+        <span
+          v-if="item.error"
+          class="line-msg text-danger">
+          <span class="icon-alert-circle"/>
           {{ $i18n.t(`invoices.RESOURCE_ERROR.${item.error}`) }}
         </span>
       </div>
@@ -24,16 +27,22 @@
         </span>
       </div>
       <div
-        :class="['sync-status-' + (item.sync_status === 'PENDING_SYNC' ? 'pending' : 'complete')]"
-        v-tooltip="(item.sync_status === 'PENDING_SYNC') ? 'Sync Pending' : 'In Sync'">
-        <span class="icon-refresh-cw icon-big"></span>
+        v-tooltip="(item.sync_status === 'PENDING_SYNC') ? 'Sync Pending' : 'In Sync'"
+        :class="['sync-status-' + (item.sync_status === 'PENDING_SYNC' ? 'pending' : 'complete')]">
+        <span class="icon-refresh-cw icon-big"/>
       </div>
       <div class="details-toggle">
-        <span v-if="!showDetails" class="icon-chevron-down"></span>
-        <span v-else class="icon-chevron-up"></span>
+        <span
+          v-if="!showDetails"
+          class="icon-chevron-down"/>
+        <span
+          v-else
+          class="icon-chevron-up"/>
       </div>
     </div>
-    <div v-if="showDetails" class="details">
+    <div
+      v-if="showDetails"
+      class="details">
       <div class="items">
         <div class="price">
           <h6>Price</h6>
@@ -43,21 +52,25 @@
           <h6>Total Cost</h6>
           <p>{{ item.amount * item.quantity | currency }}</p>
         </div>
-        <div v-if="item.sync_timestamp" class="date">
+        <div
+          v-if="item.sync_timestamp"
+          class="date">
           <h6>Last Sync</h6>
           <p>{{ item.sync_timestamp | moment('from') }}</p>
         </div>
         <div class="actions">
           <button
             v-if="!item.error"
-            @click.stop="cancel()"
-            class="button-sm"
             :class="{'button-danger': item.status === 'ACTIVE'}"
-            :disabled="item.status !== 'ACTIVE' && !(item.status !== 'ACTIVE' && item.error)">
-            <span class="icon-x-circle"></span> Cancel Resource
+            :disabled="item.status !== 'ACTIVE' && !(item.status !== 'ACTIVE' && item.error)"
+            class="button-sm"
+            @click.stop="cancel()">
+            <span class="icon-x-circle"/> Cancel Resource
           </button>
-          <router-link :to="{ name: 'marketView', params: { id: item.resource, type: (item.type === 'NODE_GROUP' || item.type == 'MANAGED') ? 'group' : 'node' } }" class="button-sm button-info">
-            <span class="icon-book-open"></span> View Details
+          <router-link
+            :to="{ name: 'marketView', params: { id: item.resource, type: (item.type === 'NODE_GROUP' || item.type == 'MANAGED') ? 'group' : 'node' } }"
+            class="button-sm button-info">
+            <span class="icon-book-open"/> View Details
           </router-link>
         </div>
       </div>
@@ -69,8 +82,14 @@
 import cancelItemModal from './cancelItemModal'
 
 export default {
+  components: {
+    cancelItemModal
+  },
   props: {
-    item: Object
+    item: {
+      type: Object,
+      required: true
+    }
   },
   data () {
     return {
@@ -97,9 +116,6 @@ export default {
         height: 'auto'
       })
     }
-  },
-  components: {
-    cancelItemModal
   }
 }
 </script>

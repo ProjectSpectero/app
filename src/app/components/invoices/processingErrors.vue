@@ -2,8 +2,12 @@
   <div>
     <p>{{ $i18n.t('invoices.FIX_ORDER_TEXT') }}</p>
     <template v-if="status !== 400">
-      <button @click="fix" class="button-danger">{{ $i18n.t('orders.FIX')}}</button>
-      <button @click="cancel" class="button">{{ $i18n.t('orders.CANCEL')}}</button>
+      <button
+        class="button-danger"
+        @click="fix">{{ $i18n.t('orders.FIX') }}</button>
+      <button
+        class="button"
+        @click="cancel">{{ $i18n.t('orders.CANCEL') }}</button>
     </template>
     <template v-else>
       {{ $i18n.t('invoices.RESOURCES_MISMATCH', { order: invoice.order_id }) }}
@@ -16,10 +20,24 @@ import orderAPI from '@/app/api/order'
 import cancelOrderModal from '../orders/cancelOrderModal'
 
 export default {
+  components: {
+    cancelOrderModal
+  },
   props: {
-    invoice: Object,
-    errorBag: Array,
-    status: Number
+    invoice: {
+      type: Object,
+      required: true
+    },
+    errorBag: {
+      type: Array,
+      required: false,
+      default: () => []
+    },
+    status: {
+      type: Number,
+      required: false,
+      default: 0
+    }
   },
   methods: {
     cancel () {
@@ -46,9 +64,6 @@ export default {
     fixed () {
       this.$emit('close')
     }
-  },
-  components: {
-    cancelOrderModal
   }
 }
 </script>

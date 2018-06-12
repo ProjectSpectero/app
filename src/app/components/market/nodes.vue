@@ -1,23 +1,39 @@
 <template>
-  <v-client-table :data="nodes" :columns="columns" :options="options">
-    <template slot="name" slot-scope="props">
+  <v-client-table
+    :data="nodes"
+    :columns="columns"
+    :options="options">
+    <template
+      slot="name"
+      slot-scope="props">
       {{ props.row.friendly_name }}
     </template>
 
-    <template slot="services" slot-scope="props">
-      <span v-for="service in props.row.services" :key="service.id" class="badge">{{ service.type }}</span>
+    <template
+      slot="services"
+      slot-scope="props">
+      <span
+        v-for="service in props.row.services"
+        :key="service.id"
+        class="badge">{{ service.type }}</span>
     </template>
 
-    <template slot="ips" slot-scope="props">
+    <template
+      slot="ips"
+      slot-scope="props">
       <ul class="ip-list">
-        <li v-for="ip in props.row.ip_addresses" :key="ip.asn">
+        <li
+          v-for="ip in props.row.ip_addresses"
+          :key="ip.asn">
           <span class="asn">{{ $i18n.t('misc.ASN') }} {{ ip.asn }}</span>
           <span class="location">{{ ip.city }}, {{ getCountryById(ip.cc).name }}</span>
         </li>
       </ul>
     </template>
 
-    <template slot="status" slot-scope="props">
+    <template
+      slot="status"
+      slot-scope="props">
       <div :class="'badge-' + props.row.status.toLowerCase()">
         {{ $i18n.t(`nodes.STATUS.${props.row.status}`) }}
       </div>
@@ -30,7 +46,10 @@ import { mapGetters } from 'vuex'
 
 export default {
   props: {
-    nodes: Array
+    nodes: {
+      type: Array,
+      required: true
+    }
   },
   data () {
     return {
@@ -45,6 +64,11 @@ export default {
         status: 'Status'
       }
     }
+  },
+  computed: {
+    ...mapGetters({
+      countries: 'settings/countries'
+    })
   },
   created () {
     this.options = {
@@ -70,11 +94,6 @@ export default {
       sortable: this.sortableColumns,
       filterable: this.filterableColumns
     }
-  },
-  computed: {
-    ...mapGetters({
-      countries: 'settings/countries'
-    })
   }
 }
 </script>

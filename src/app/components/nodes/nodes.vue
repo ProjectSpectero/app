@@ -2,20 +2,27 @@
   <div>
     <template v-if="!error">
       <top :title="$i18n.t('misc.NODES')">
-        <help-button obj="nodes.topics"></help-button>
+        <help-button obj="nodes.topics"/>
       </top>
       <div>
         <div class="container">
           <div class="col-12 content-split">
             <div class="split-list nodes-sidebar">
-              <router-link class="button-success mb-3" :to="{ name: 'groupCreate' }">
-                <span class="icon-plus"></span>
+              <router-link
+                :to="{ name: 'groupCreate' }"
+                class="button-success mb-3">
+                <span class="icon-plus"/>
                 {{ $i18n.t('nodes.CREATE_GROUP') }}
               </router-link>
 
               <div v-if="groups">
                 <div v-if="groups.length">
-                  <div v-for="group in groups" class="node-group" :key="group.id" @click.stop="selectGroup(group, true)" :class="selectedGroup === group.id ? 'active' : ''">
+                  <div
+                    v-for="group in groups"
+                    :key="group.id"
+                    :class="selectedGroup === group.id ? 'active' : ''"
+                    class="node-group"
+                    @click.stop="selectGroup(group, true)">
                     <div class="group-name">
                       {{ group.friendly_name }}
                     </div>
@@ -23,7 +30,11 @@
                       {{ group.nodes.length }}
                     </div>
                   </div>
-                  <div class="node-group" v-if="uncategorized && uncategorized.result.length" @click.stop="selectUncategorized" :class="selectedGroup === 0 ? 'active' : ''">
+                  <div
+                    v-if="uncategorized && uncategorized.result.length"
+                    :class="selectedGroup === 0 ? 'active' : ''"
+                    class="node-group"
+                    @click.stop="selectUncategorized">
                     <div class="group-name">
                       {{ $i18n.t('nodes.UNCATEGORIZED') }}
                     </div>
@@ -32,23 +43,25 @@
                     </div>
                   </div>
                 </div>
-                <not-found v-else type="nodes">
-                  <slot><p v-html="$i18n.t('nodes.NO_NODES_TEXT')"></p></slot>
+                <not-found
+                  v-else
+                  type="nodes">
+                  <slot><p v-html="$i18n.t('nodes.NO_NODES_TEXT')"/></slot>
                 </not-found>
               </div>
-              <loading v-else></loading>
+              <loading v-else/>
             </div>
             <div class="split-details">
               <template v-if="groups && loading">
-                <loading></loading>
+                <loading/>
               </template>
               <template v-else>
                 <nodes-list
-                  :selectedGroupInformation="selectedGroupInformation"
-                  :dataLoading="loading"
-                  :searchId="searchId"
+                  :selected-group-information="selectedGroupInformation"
+                  :data-loading="loading"
+                  :search-id="searchId"
                   :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
-                  :tableData="(selectedGroup === 0) ? uncategorized.result : nodes"
+                  :table-data="(selectedGroup === 0) ? uncategorized.result : nodes"
                   @changedPage="changedPage"
                   @sortByColumn="sortByColumn" />
               </template>
@@ -57,7 +70,10 @@
         </div>
       </div>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
@@ -72,7 +88,17 @@ import notFound from '@/shared/components/notFound'
 import helpButton from '@/shared/components/docs/button'
 
 export default {
-  mixins: [filtersMixin],
+  components: {
+    top,
+    error,
+    loading,
+    helpButton,
+    notFound,
+    nodesList
+  },
+  mixins: [
+    filtersMixin
+  ],
   metaInfo: {
     title: 'Nodes'
   },
@@ -89,11 +115,6 @@ export default {
       errorItem: 'nodes'
     }
   },
-  async created () {
-    await this.fetchGroups()
-    await this.fetchUncategorized(this.currentPage)
-    this.handleSelection()
-  },
   computed: {
     selectedGroupInformation () {
       if (this.groups) {
@@ -105,6 +126,11 @@ export default {
         }
       }
     }
+  },
+  async created () {
+    await this.fetchGroups()
+    await this.fetchUncategorized(this.currentPage)
+    this.handleSelection()
   },
   methods: {
     handleSelection () {
@@ -264,14 +290,6 @@ export default {
         })
       }
     }
-  },
-  components: {
-    top,
-    error,
-    loading,
-    helpButton,
-    notFound,
-    nodesList
   }
 }
 </script>

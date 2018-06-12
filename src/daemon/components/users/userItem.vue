@@ -6,7 +6,9 @@
         <div class="displayName">
           <h2>{{ displayName }}</h2>
         </div>
-        <span class="username" v-if="user.fullName">
+        <span
+          v-if="user.fullName"
+          class="username">
           {{ user.authKey }}
         </span>
       </div>
@@ -22,13 +24,13 @@
     </section>
     <section class="actions">
       <button @click="triggerModal('deleteUser')">
-        <span class="icon icon-trash"></span>
+        <span class="icon icon-trash"/>
       </button>
       <button @click="triggerModal('editUser')">
-        <span class="icon icon-pencil"></span>
+        <span class="icon icon-pencil"/>
       </button>
       <button @click="triggerModal('userCert')">
-        <span class="icon icon-lock"></span>
+        <span class="icon icon-lock"/>
       </button>
     </section>
   </article>
@@ -37,7 +39,10 @@
 <script>
 export default {
   props: {
-    user: Object
+    user: {
+      type: Object,
+      required: true
+    }
   },
   computed: {
     displayName () {
