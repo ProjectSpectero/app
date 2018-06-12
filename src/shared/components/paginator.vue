@@ -1,15 +1,19 @@
 <template>
   <div
-    v-if="pagination && pagination.total"
+    v-if="pagination"
     class="pagination">
     <div class="paginator">
       <div
         :class="['page', 'page-arrow', 'first', (active === 1) ? 'disabled' : '']"
-        @click="toPage(1)"><span class="icon-chevrons-left"/></div>
+        @click="toPage(1)">
+        <span class="icon-chevrons-left"/>
+      </div>
 
       <div
         :class="['page', 'page-arrow', 'previous', (active === 1) ? 'disabled' : '']"
-        @click="toPage(active - 1)"><span class="icon-chevron-left"/></div>
+        @click="toPage(active - 1)">
+        <span class="icon-chevron-left"/>
+      </div>
 
       <template v-if="totalPages > 5 ">
         <ul class="pages">
@@ -75,7 +79,8 @@ export default {
   props: {
     pagination: {
       type: Object,
-      required: true
+      required: false,
+      default: () => {}
     }
   },
   computed: {
@@ -147,6 +152,9 @@ export default {
       },
       deep: true
     }
+  },
+  created () {
+    console.log(this.pagination)
   },
   methods: {
     toPage (page) {

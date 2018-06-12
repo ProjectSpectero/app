@@ -30,6 +30,7 @@
                       {{ group.nodes.length }}
                     </div>
                   </div>
+
                   <div
                     v-if="uncategorized && uncategorized.result.length"
                     :class="selectedGroup === 0 ? 'active' : ''"
@@ -110,8 +111,11 @@ export default {
       totalGroups: null,
       processedGroups: 0,
       groupsPage: 1,
-      nodes: null,
-      uncategorized: null,
+      nodes: [],
+      uncategorized: {
+        pagination: {},
+        result: []
+      },
       errorItem: 'nodes'
     }
   },

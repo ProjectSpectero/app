@@ -89,6 +89,7 @@
       <h1>{{ $i18n.t('nodes.NO_NODES_TITLE') }}</h1>
       <p v-html="$i18n.t('nodes.NO_NODES_TEXT')"/>
     </div>
+
     <paginator
       :pagination="pagination"
       @changedPage="changedPage"/>
