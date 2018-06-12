@@ -6,8 +6,10 @@
       </button>
     </top>
     <div class="container">
-      <div class="section padded">
-        <p>{{ $i18n.t('misc.AVAILABLE_SOON') }}</p>
+      <div class="col-12">
+        <div class="section padded">
+          <p>{{ $i18n.t('misc.AVAILABLE_SOON') }}</p>
+        </div>
       </div>
     </div>
   </div>

@@ -140,7 +140,7 @@
             </div>
           </div>
 
-          <button v-if="showEmailForm || showPasswordForm" type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+          <button v-if="showEmailForm || showPasswordForm" type="submit" class="button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
             Save Changes
           </button>
         </form>

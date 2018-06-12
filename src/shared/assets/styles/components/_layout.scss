@@ -1,7 +1,11 @@
 .container {
   display: block;
-  padding: $pad;
+  padding: $pad 0;
 
+  &.centered {
+    display: flex;
+    justify-content: center;
+  }
   .section {
     margin-bottom: $pad;
     background: $white;
@@ -68,7 +72,6 @@
 }
 
 .content-split {
-  width: 100%;
   display: flex;
 
   .split-list {
@@ -200,5 +203,50 @@
 
   label {
     margin-right: 12px;
+  }
+}
+[class^="col-"] {
+  > .content-section {
+    margin-bottom: $pad;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+.content-section {
+  padding: $pad;
+  background: $white;
+  border: 1px solid $color-border;
+  border-radius: 4px;
+
+  > header {
+    display: flex;
+    align-items: center;
+    margin-bottom: $pad;
+
+    h3 {
+      flex: 1;
+      margin-bottom: 0;
+
+      [class^="icon-"] {
+        display: inline-block;
+        margin-right: 10px;
+        padding: 8px;
+        font-size: 16px;
+        border-radius: 100%;
+        color: $color-info;
+        background: lighten($color-info, 52%);
+
+        &.icon-bg-info {
+          color: $color-info;
+          background: lighten($color-info, 53%);
+        }
+        &.icon-bg-success {
+          color: $color-success;
+          background: lighten($color-success, 48%);
+        }
+      }
+    }
   }
 }

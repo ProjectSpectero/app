@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="col-12">
     <div v-if="system" class="spec-list section padded">
       <div v-for="(spec, i) in system" :key="i" class="spec">
         <list-system-spec :spec="spec"></list-system-spec>

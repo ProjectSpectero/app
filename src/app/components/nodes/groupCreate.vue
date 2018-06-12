@@ -1,7 +1,9 @@
 <template>
   <div>
     <top :title="$i18n.t('nodes.CREATE_GROUP')"></top>
-    <create-form></create-form>
+    <div class="container">
+      <create-form></create-form>
+    </div>
   </div>
 </template>
 

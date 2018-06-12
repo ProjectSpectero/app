@@ -13,7 +13,7 @@
         </div>
         <input type="number" id="creditAddAmount" class="input" v-model="amount" :placeholder="$i18n.t('payments.ADD_CREDIT_PLACEHOLDER')" @keyup="watchMaxValue">
       </div>
-      <button @click="add(amount)" class="button button-md button-success button-full">
+      <button @click="add(amount)" class="button-md button-success button-full">
         {{ $i18n.t('misc.PURCHASE') }}
       </button>
     </div>

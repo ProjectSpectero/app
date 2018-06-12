@@ -5,28 +5,30 @@
         <help-button obj="orders.topics"></help-button>
       </top>
       <div v-if="tableData">
-        <div class="container content-split">
-          <div class="split-item split-list">
-            <router-link v-for="s in status" :key="s" :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
-              {{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}
-            </router-link>
-          </div>
-          <div class="split-item split-details">
-            <template v-if="tableData.length">
-              <orders-list
-                :searchId="searchId"
-                :pagination="pagination"
-                :tableData="tableData"
-                @refresh="fetchOrders"
-                @changedPage="changedPage"
-                @sortByColumn="sortByColumn">
-              </orders-list>
-            </template>
-            <not-found v-else type="orders">
-              <slot>
-                <p v-html="$i18n.t('orders.NO_ORDERS_TEXT')"></p>
-              </slot>
-            </not-found>
+        <div class="container">
+          <div class="col-12 content-split">
+            <div class="split-list">
+              <router-link v-for="s in status" :key="s" :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
+                {{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}
+              </router-link>
+            </div>
+            <div class="split-details">
+              <template v-if="tableData.length">
+                <orders-list
+                  :searchId="searchId"
+                  :pagination="pagination"
+                  :tableData="tableData"
+                  @refresh="fetchOrders"
+                  @changedPage="changedPage"
+                  @sortByColumn="sortByColumn">
+                </orders-list>
+              </template>
+              <not-found v-else type="orders">
+                <slot>
+                  <p v-html="$i18n.t('orders.NO_ORDERS_TEXT')"></p>
+                </slot>
+              </not-found>
+            </div>
           </div>
         </div>
       </div>

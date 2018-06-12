@@ -3,11 +3,11 @@
     <header>
       <h2 class="mb-0">{{ selectedGroupInformation.friendly_name }}</h2>
       <div v-if="selectedGroupInformation.id !== 0" class="actions">
-        <button @click.stop="removeGroup" class="button button-sm button-danger button-icon">
+        <button @click.stop="removeGroup" class="button-sm button-danger button-icon">
           <span class="icon-trash-2"></span>
         </button>
 
-        <button @click.stop="editGroup" class="button button-sm">
+        <button @click.stop="editGroup" class="button-sm">
           {{ $i18n.t('nodes.EDIT_GROUP') }}
         </button>
       </div>
@@ -30,24 +30,24 @@
             </td>
             <td>{{ $i18n.t(`nodes.MODEL.${row.market_model}`) }}</td>
             <td>
-              <div :class="'badge status-' + row.status">
+              <div :class="'badge-' + row.status.toLowerCase()">
                 {{ $i18n.t(`nodes.STATUS.${row.status}`) }}
               </div>
             </td>
             <td class="table-actions">
-              <button v-if="row.status === 'UNCONFIRMED'" class="button button-success button-sm" @click.stop="verifyNode(row)">
+              <button v-if="row.status === 'UNCONFIRMED'" class="button-success button-sm" @click.stop="verifyNode(row)">
                 <span class="icon-check"></span> {{ $i18n.t('misc.VERIFY') }}
               </button>
 
-              <router-link class="button button-sm button-info" :to="{ name: 'manage', params: { nodeId: isDevelopmentEnvironment ? row.id : 101 } }">
+              <router-link class="button-sm button-info" :to="{ name: 'manage', params: { nodeId: isDevelopmentEnvironment ? row.id : 101 } }">
                 <span class="icon-sliders"></span> Manage
               </router-link>
 
-              <button class="button button-icon" @click.stop="removeNode(row.id)">
+              <button class="button-icon" @click.stop="removeNode(row.id)">
                 <span class="icon-trash-2"></span>
               </button>
 
-              <router-link class="button button-icon" :to="{ name: 'node', params: { action: 'edit', id: row.id } }">
+              <router-link class="button-icon" :to="{ name: 'node', params: { action: 'edit', id: row.id } }">
                 <span class="icon-edit-2"></span>
               </router-link>
             </td>
@@ -153,8 +153,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@styles/components/badges';
-
 header {
   display: flex;
   align-items: center;
@@ -181,15 +179,5 @@ header {
   margin-top: 4px;
   font-size: 12px;
   color: $color-light;
-}
-
-.badge {
-  &.status-CONFIRMED {
-    @extend .badge-success;
-  }
-
-  &.status-UNCONFIRMED {
-    @extend .badge-error;
-  }
 }
 </style>

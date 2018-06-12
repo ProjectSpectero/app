@@ -7,7 +7,7 @@
           <tr v-for="row in tableData" :key="row.id">
             <td>{{ row.id }}</td>
             <td>
-              <div :class="'badge status-' + row.status.toLowerCase()">
+              <div :class="'badge-' + row.status.toLowerCase()">
                 {{ $i18n.t('orders.ORDER_STATUS.' + row.status) }}
               </div>
             </td>
@@ -16,12 +16,12 @@
             <td>{{ row.last_invoice.amount | currency }} {{ row.last_invoice.currency }}</td>
             <td class="table-actions">
               <template v-if="row.status !== 'CANCELLED'">
-                <router-link v-if="row.status !== 'CANCELLED' && row.last_invoice && row.last_invoice.status === 'UNPAID'" class="button button-success" :to="{ name: 'invoice', params: { id: row.last_invoice.id } }">
+                <router-link v-if="row.status !== 'CANCELLED' && row.last_invoice && row.last_invoice.status === 'UNPAID'" class="button-success" :to="{ name: 'invoice', params: { id: row.last_invoice.id } }">
                   {{ $i18n.t('misc.PAY_NOW') }}
                 </router-link>
               </template>
 
-              <router-link class="button button-info" :to="{ name: 'order', params: { id: row.id } }">
+              <router-link class="button-info" :to="{ name: 'order', params: { id: row.id } }">
                 {{ $i18n.t('misc.VIEW') }}
               </router-link>
             </td>
@@ -78,14 +78,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@styles/components/badges';
 
-.badge {
-  &.status-active {
-    @extend .badge-success;
-  }
-  &.status-automated_fraud_check, &.status-manual_fraud_check {
-    @extend .badge-warning;
-  }
-}
 </style>

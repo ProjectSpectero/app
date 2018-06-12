@@ -20,7 +20,7 @@
         </span>
       </div>
 
-      <button class="button button-info max-width" @click.prevent="submit" @keyup.enter="submit" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+      <button class="button-info max-width" @click.prevent="submit" @keyup.enter="submit" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
         {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.CONTINUE') }}
       </button>
     </form>

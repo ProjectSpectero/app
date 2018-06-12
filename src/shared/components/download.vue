@@ -1,5 +1,5 @@
 <template>
-  <button @click="downloadFile" class="button button-bordered button-info" :class="buttonClass">
+  <button @click="downloadFile" class="button-bordered button-info" :class="buttonClass">
     <span class="icon-download"></span> {{ $i18n.t('misc.DOWNLOAD_AS_FILE') }}
   </button>
 </template>

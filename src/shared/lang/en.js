@@ -90,7 +90,8 @@ module.exports = {
     ORDER_DATE: 'Order Date',
     TERM: 'Term',
     USERNAME: 'Username',
-    PASSWORD: 'Password'
+    PASSWORD: 'Password',
+    LEARN_MORE: 'Learn More'
   },
 
   errors: {
@@ -154,6 +155,7 @@ module.exports = {
     PAY_HEADER: 'Payment for invoice #{invoiceId}',
     PAY_DESCRIPTION: 'Use the form below to pay for your order. Once we recieve your payment, you\'ll gain access to the services associated to the invoice.',
     PAY_SECURE: 'Your payment is secure.',
+    PAY_SECURE_DETAILS: 'Your credit card data never touches our server. We operate solely based on tokens with our payment partner Stripe who are leaders in the credit card processing industry.',
     PAYPAL_CONNECT_HEADER: 'Connecting to Paypal',
     PAYPAL_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Paypal One Touch™...',
     PAYMENT_INVALID_PARAMETERS: 'The payment data you have supplied seems to be wrong. Please contact us for more details.',
@@ -198,6 +200,7 @@ module.exports = {
       PAID: 'Paid',
       UNPAID: 'Unpaid',
       PARTIALLY_REFUNDED: 'Partially Refunded',
+      PARTIALLY_PAID: 'Partially Paid',
       REFUNDED: 'Refunded',
       CANCELLED: 'Cancelled'
     },
@@ -207,12 +210,13 @@ module.exports = {
       UNPAID: 'Unpaid invoices'
     },
     NO_INVOICES_TEXT: 'You don\'t have any invoices at the moment. <a href="/downloads">Why don\'t you add some nodes?</a>',
-    UNABLE_TO_PROCESS: 'We were unable to process some of the resources of your order.',
-    FIX_OPTIONS_TEXT: 'Use the button below to automatically fix this order and remove any invalid resources. Additionally, you may cancel the order if you\'d like to place a new one.',
+    RESOURCES_NOT_AVAILABLE: 'Resources no longer available',
+    RESOURCES_NOT_AVAILABLE_TEXT: 'Some resources in your order have become unavailable while we were awaiting your payment.',
+    FIX_ORDER_TEXT: 'If you\'d like to continue the order without the unavailable resources, click the "Remove Unavailable Resources" button. You can also cancel your order and place a new one if you wish.',
     RESOURCES_MISMATCH: 'Your current order has mismatching resources. Please contact us and provide your order ID ({order}) so that we can solve the problem.',
     RESOURCE_ERROR: {
-      RESOURCE_NOT_FOUND: 'Resource no longer available',
-      RESOURCE_SOLD_OUT: 'Resource sold out'
+      RESOURCE_NOT_FOUND: 'Resource no longer available.',
+      RESOURCE_SOLD_OUT: 'Resource sold out.'
     },
     PAID: 'Invoice Paid',
     THANKS: 'Thank you for your payment, your invoice has been paid in full.',
@@ -224,7 +228,8 @@ module.exports = {
     PAYMENT_DUE: 'Payment Due',
     AMOUNT_DUE: 'Amount Due',
     BALANCE_DUE: 'Balance Due',
-    BALANCE_DUE_TEXT: 'There is an outstanding balance of <strong>{amount} {currency}</strong> due on this invoice. Please pay now to avoid any late fees.'
+    BALANCE_DUE_TEXT: 'There is an outstanding balance of <strong>{amount}</strong> due for this order. Please pay now to avoid late fees.',
+    RESOURCE_HAS_BEEN_CANCELLED: 'Resource has been cancelled'
   },
 
   orders: {
@@ -234,7 +239,8 @@ module.exports = {
       AUTOMATED_FRAUD_CHECK: 'Pending Fraud Check',
       MANUAL_FRAUD_CHECK: 'Pending Fraud Check',
       ACTIVE: 'Active',
-      CANCELLED: 'Cancelled'
+      CANCELLED: 'Cancelled',
+      ERROR: 'Not Available'
     },
     MENU_STATUS: {
       ALL: 'All orders',
@@ -261,7 +267,7 @@ module.exports = {
     UNABLE_TO_CHECK_ACCESSOR: 'Unable to check accessor details, please manually refresh the page.',
     ACCESSOR_DETAILS: 'Accessor Details',
     ACCESSOR_DETAILS_TEXT: 'Your accessor details will update once they process.',
-    FIX: 'Fix Order',
+    FIX: 'Remove Unavailable Resources',
     FIX_SUCCESS: 'Your order has been fixed and is available for payment.',
     FIX_ERROR: 'There was an error while attempting to fix your order!',
     DELETE_ORDER_CONFIRM_DIALOG: 'Are you sure you want to cancel this order?',
@@ -296,8 +302,8 @@ module.exports = {
     HAS_NODES: 'You cannot delete this group before reassigning its nodes to a different group!',
     RESOURCE_NOT_FOUND: 'We were unable to find that resource.',
     NO_NODES_TEXT: 'There are no nodes to display at the moment. <a href="/downloads">Why not add some?</a>',
-    EDIT_GROUP: 'Edit group',
-    EDIT_NODE: 'Edit node',
+    EDIT_GROUP: 'Edit Group',
+    EDIT_NODE: 'Edit Node',
     GROUP_CREATE_SUCCESS: 'Group created successfully!',
     DELETE_GROUP_CONFIRM_DIALOG: 'Are you sure you want to remove this node group?',
     DELETE_SUCCESS: 'Node removed successfully!',
@@ -308,7 +314,7 @@ module.exports = {
     GROUP_UPDATE_SUCCESS: 'Node group updated successfully!',
     UPDATE_SUCCESS: 'Node information updated successfully!',
     GROUP_FROM_NODE_UPDATE_SUCCESS: 'Group changed successfully!',
-    CREATE_GROUP: 'Create a new group',
+    CREATE_GROUP: 'Create Node Group',
     HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!',
     ORDERS_EXIST: 'Unable to remove: this node has active orders!',
     GROUP_PRICE_AVAILABILITY: 'Price will only be used for <strong>{model1}</strong> and <strong>{model2}</strong> market models.',
@@ -319,6 +325,7 @@ module.exports = {
     GO_TO_NODE_GROUP: 'Go to node group',
     MARKET_MODEL_TOOLTIP: 'There are three types of market model:',
     STATUS: {
+      ACTIVE: 'Active',
       UNCONFIRMED: 'Unconfirmed',
       CONFIRMED: 'Confirmed',
       PENDING: 'Pending Verification',

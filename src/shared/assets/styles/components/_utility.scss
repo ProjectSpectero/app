@@ -96,12 +96,12 @@ $container-sizes-fixed: (600, 800, 1000);
 }
 
 $neat-grid: (
-  columns: 10,
+  columns: 12,
   gutter: $pad
 );
 
 // Bourbon columns
-@for $i from 1 through 10 {
+@for $i from 1 through map-get($neat-grid, columns) {
   .col-#{$i} {
     @include grid-column($i);
   }

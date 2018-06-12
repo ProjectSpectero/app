@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <button @click.prevent="add" class="button button-md button-success">
+      <button @click.prevent="add" class="button-md button-success">
         {{ $i18n.t('services.ADD_DOMAIN') }}
       </button>
     </div>
@@ -32,7 +32,7 @@
         <div class="ip-label">
           <strong>{{ item }}</strong>
         </div>
-        <button @click.prevent="remove" class="button button-sm button-bordered button-danger" :disabled="!enabled">
+        <button @click.prevent="remove" class="button-sm button-bordered button-danger" :disabled="!enabled">
           {{ $i18n.t('misc.REMOVE') }}
         </button>
       </li>

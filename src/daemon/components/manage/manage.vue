@@ -18,11 +18,13 @@
         </template>
 
         <div class="container">
-          <div class="section padded">
-            <services v-if="activeTab === 'services'"></services>
-            <proxies v-else-if="activeTab === 'proxies'"></proxies>
-            <certificates v-else-if="activeTab === 'certificates'"></certificates>
-            <not-found v-else></not-found>
+          <div class="col-12">
+            <div class="section padded">
+              <services v-if="activeTab === 'services'"></services>
+              <proxies v-else-if="activeTab === 'proxies'"></proxies>
+              <certificates v-else-if="activeTab === 'certificates'"></certificates>
+              <not-found v-else></not-found>
+            </div>
           </div>
         </div>
       </div>

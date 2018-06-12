@@ -1,7 +1,7 @@
 <template>
-  <dropdown :class-name="'right'">
+  <dropdown>
     <template slot="btn">
-      <button class="button button-sort">{{ buttonText ? buttonText : 'Sort By' }}</button>
+      <button class="button-sort">{{ buttonText ? buttonText : 'Sort By' }}</button>
     </template>
     <template slot="body">
       <div class="dropdown-filters">
@@ -16,7 +16,7 @@
             <li @click="setOrder('desc')" :class="{'active': order === 'desc'}"><span class="icon-arrow-down"></span> Descending</li>
           </ul>
         </div>
-        <button @click="applyFilters()" class="button button-info full-width">Apply Filters</button>
+        <button @click="applyFilters()" class="button-info full-width">Apply Filters</button>
       </div>
     </template>
   </dropdown>

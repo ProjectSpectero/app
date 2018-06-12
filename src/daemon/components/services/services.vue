@@ -14,7 +14,7 @@
           <span class="icon-stop-circle"></span> {{ $i18n.t('misc.STOP') }}
         </button>
 
-        <router-link :to="{ name: 'service.' + service }" class="button button-dark right">
+        <router-link :to="{ name: 'service.' + service }" class="button-dark right">
           <span class="icon-sliders"></span> {{ $i18n.t('misc.CONFIGURE') }}
         </router-link>
       </div>

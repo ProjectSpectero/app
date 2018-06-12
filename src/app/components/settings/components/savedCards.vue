@@ -8,7 +8,7 @@
           <p class="small">Expires {{ user.card.expires }}</p>
         </div>
         <div class="cc-button col">
-          <button @click.prevent.stop="clearStripe" class="button button-danger button-icon"><span class="icon-x"></span></button>
+          <button @click.prevent.stop="clearStripe" class="button-danger button-icon"><span class="icon-x"></span></button>
         </div>
       </div>
     </div>

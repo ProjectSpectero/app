@@ -7,56 +7,58 @@
     </ul>
 
     <div class="container">
-      <section class="section padded">
-        <h2>{{ osTab }} Instructions</h2>
-        <h5>Step 1</h5>
-        <template v-if="osTab === 'Windows'">
-          <p>Download the latest release of the Spectero Daemon and its CLI, then run it.</p>
-          <a class="button button-info" :href="downloadLinks[osTab]" target="_blank"><span class="icon-download"></span> Download Now</a>
-        </template>
-        <template v-else>
-          <p>Download and run the latest release of the Spectero Daemon and its CLI by running the following command:</p>
-          <p class="cmd">wget -q -O - {{ downloadLinks[osTab] }} | bash</p>
-        </template>
-      </section>
-      <section class="section padded">
-        <h5>Step 2</h5>
-        <p>Open a CLI shell, then run the following command to add the daemon to the Spectero Cloud:</p>
-        <p class="cmd">spectero cli connect {{ nodeKey }}</p>
-      </section>
-      <section class="section padded">
-        <h5>Step 3</h5>
-        <p>Once you've connected the daemon to Spectero Cloud, visit our nodes management view to complete the setup process.</p>
-        <router-link :to="{ name: 'nodes' }" class="button button-success"><span class="icon-check"></span> Complete Setup</router-link>
-      </section>
-      <section v-if="matrices" class="section padded">
-        <h5>Compatibility</h5>
-        <p>The Spectero Daemon is currently compatible with the following {{ osTab}} {{ osTab === 'Linux' ? 'distributions' : 'versions' }}:</p>
-        <div class="compatibility">
-          <div v-for="(matrix, i) in matrices" :key="i">
-            <div v-if="i === osTab" class="matrices-section">
-              <div class="matrices">
-                <div class="matrix" v-for="(os, j) in matrix" :key="j">
-                  <template v-if="os.Distributions">
-                    <h6 class="title-distro">{{ j }}</h6>
-                    <div v-for="(distro, k) in os.Distributions" :key="k" class="os-item">
-                      <p>{{ k }}</p>
-                      <span v-if="distro.tested !== undefined" class="compatibility-icon" :class="{ 'compatible': distro.tested === true }"><p>{{ (distro.tested === true) ? 'Tested' : 'Untested' }}</p></span>
-                    </div>
-                  </template>
+      <div class="col-12">
+        <section class="section padded">
+          <h2>{{ osTab }} Instructions</h2>
+          <h5>Step 1</h5>
+          <template v-if="osTab === 'Windows'">
+            <p>Download the latest release of the Spectero Daemon and its CLI, then run it.</p>
+            <a class="button-info" :href="downloadLinks[osTab]" target="_blank"><span class="icon-download"></span> Download Now</a>
+          </template>
+          <template v-else>
+            <p>Download and run the latest release of the Spectero Daemon and its CLI by running the following command:</p>
+            <p class="cmd">wget -q -O - {{ downloadLinks[osTab] }} | bash</p>
+          </template>
+        </section>
+        <section class="section padded">
+          <h5>Step 2</h5>
+          <p>Open a CLI shell, then run the following command to add the daemon to the Spectero Cloud:</p>
+          <p class="cmd">spectero cli connect {{ nodeKey }}</p>
+        </section>
+        <section class="section padded">
+          <h5>Step 3</h5>
+          <p>Once you've connected the daemon to Spectero Cloud, visit our nodes management view to complete the setup process.</p>
+          <router-link :to="{ name: 'nodes' }" class="button-success"><span class="icon-check"></span> Complete Setup</router-link>
+        </section>
+        <section v-if="matrices" class="section padded">
+          <h5>Compatibility</h5>
+          <p>The Spectero Daemon is currently compatible with the following {{ osTab}} {{ osTab === 'Linux' ? 'distributions' : 'versions' }}:</p>
+          <div class="compatibility">
+            <div v-for="(matrix, i) in matrices" :key="i">
+              <div v-if="i === osTab" class="matrices-section">
+                <div class="matrices">
+                  <div class="matrix" v-for="(os, j) in matrix" :key="j">
+                    <template v-if="os.Distributions">
+                      <h6 class="title-distro">{{ j }}</h6>
+                      <div v-for="(distro, k) in os.Distributions" :key="k" class="os-item">
+                        <p>{{ k }}</p>
+                        <span v-if="distro.tested !== undefined" class="compatibility-icon" :class="{ 'compatible': distro.tested === true }"><p>{{ (distro.tested === true) ? 'Tested' : 'Untested' }}</p></span>
+                      </div>
+                    </template>
 
-                  <template v-else>
-                    <div class="os-item">
-                      <p>{{ j }}</p>
-                      <span v-if="os.tested !== undefined" class="compatibility-icon" :class="{ 'compatible': os.tested === true }"><p>{{ (os.tested === true) ? 'Tested' : 'Untested' }}</p></span>
-                    </div>
-                  </template>
+                    <template v-else>
+                      <div class="os-item">
+                        <p>{{ j }}</p>
+                        <span v-if="os.tested !== undefined" class="compatibility-icon" :class="{ 'compatible': os.tested === true }"><p>{{ (os.tested === true) ? 'Tested' : 'Untested' }}</p></span>
+                      </div>
+                    </template>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   </div>
 </template>

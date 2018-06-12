@@ -8,46 +8,48 @@
           </router-link>
         </top>
         <div v-if="resources && resources.length">
-          <div class="container content-split">
-            <div class="split-item split-list nodes-sidebar">
-              <div v-for="(item, index) in resources" :key="index" class="node-group" :class="{ active: selectedResource === item }" @click="selectResource(item)">
-                <div class="group-name">
-                  {{ $i18n.t('misc.ITEM') }} {{ item.id }}
-                </div>
-                <div class="count">
-                  {{ item.type === 'NODE_GROUP' ? $i18n.t('misc.NODE_GROUP') : $i18n.t('misc.NODE') }}
-                </div>
-              </div>
-            </div>
-            <div class="split-item split-details">
-              <div v-if="accessor" class="accessor">
-                <div class="credentials">
-                  <div class="label">
-                    <label>{{ $i18n.t('orders.ACCESSOR_DETAILS') }}</label>
+          <div class="container">
+            <div class="col-12 content-split">
+              <div class="split-list nodes-sidebar">
+                <div v-for="(item, index) in resources" :key="index" class="node-group" :class="{ active: selectedResource === item }" @click="selectResource(item)">
+                  <div class="group-name">
+                    {{ $i18n.t('misc.ITEM') }} {{ item.id }}
                   </div>
-
-                  <p>{{ $i18n.t('misc.USERNAME') }}: <strong>{{ accessor.username }}</strong></p>
-                  <p>{{ $i18n.t('misc.PASSWORD') }}: <strong>{{ accessor.password }}</strong></p>
-
-                  <p v-if="accessorCheckPending" class="changeWarning">
-                    {{ $i18n.t('orders.ACCESSOR_DETAILS_TEXT') }}
-                  </p>
+                  <div class="count">
+                    {{ item.type === 'NODE_GROUP' ? $i18n.t('misc.NODE_GROUP') : $i18n.t('misc.NODE') }}
+                  </div>
                 </div>
-                <button @click.stop="showRegenerateAccessorModal(orderId)" class="button button-warning">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
               </div>
+              <div class="split-details">
+                <div v-if="accessor" class="accessor">
+                  <div class="credentials">
+                    <div class="label">
+                      <label>{{ $i18n.t('orders.ACCESSOR_DETAILS') }}</label>
+                    </div>
 
-              <ul class="references tabs">
-                <li v-for="t in types" :key="t" @click="selectReference(t)" class="reference" :class="{ active: selectedType === t }">
-                  <span>{{ t }}</span>
-                </li>
-              </ul>
+                    <p>{{ $i18n.t('misc.USERNAME') }}: <strong>{{ accessor.username }}</strong></p>
+                    <p>{{ $i18n.t('misc.PASSWORD') }}: <strong>{{ accessor.password }}</strong></p>
 
-              <div class="section padded details">
-                <resource-details
-                  :id="selectedResource.id"
-                  :type="selectedResource.type"
-                  :selectedReferences="selectedReferences"
-                  :selectedType="selectedType"></resource-details>
+                    <p v-if="accessorCheckPending" class="changeWarning">
+                      {{ $i18n.t('orders.ACCESSOR_DETAILS_TEXT') }}
+                    </p>
+                  </div>
+                  <button @click.stop="showRegenerateAccessorModal(orderId)" class="button-warning">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
+                </div>
+
+                <ul class="references tabs">
+                  <li v-for="t in types" :key="t" @click="selectReference(t)" class="reference" :class="{ active: selectedType === t }">
+                    <span>{{ t }}</span>
+                  </li>
+                </ul>
+
+                <div class="section padded details">
+                  <resource-details
+                    :id="selectedResource.id"
+                    :type="selectedResource.type"
+                    :selectedReferences="selectedReferences"
+                    :selectedType="selectedType"></resource-details>
+                </div>
               </div>
             </div>
           </div>

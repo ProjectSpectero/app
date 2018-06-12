@@ -4,7 +4,6 @@
       {{ $i18n.t('payments.PAYMENT_SUCCESS') }}
     </div>
     <div v-else>
-      {{ user }}
       <card class="stripe-card"
         :stripe="stripeKey"
         :options="stripeOptions"
@@ -17,7 +16,7 @@
         </label>
       </div>
 
-      <button v-if="!paid" @click.stop="pay" :disabled="!processed" class="button button-md button-success button-full button-pay">
+      <button v-if="!paid" @click.stop="pay" :disabled="!processed" class="button-md button-success button-full button-pay">
         {{ $i18n.t('payments.BUTTON_PROCESS_PAYMENT') }}
       </button>
       <div v-else class="mt-3">{{ $i18n.t('payments.PAYMENT_PROCESSING') }}</div>

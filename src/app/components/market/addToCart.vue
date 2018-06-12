@@ -7,16 +7,10 @@
     <div class="modal-content">
       <h3>{{ item.friendly_name }}</h3>
 
-      <!-- <div
-        v-if="item.plan"
-        v-html="$i18n.t(`market.PLAN_WARNING`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })"
-        class="message message-info">
-      </div> -->
-
       <div
         v-if="item.type === 'NODE_GROUP'"
         v-html="$i18n.t(`market.ITEM_IS_GROUP_WARNING`, { count: item.nodes.length })"
-        class="message message-group-warning">
+        class="message message-info message-group-warning">
       </div>
 
       <ul class="details">
@@ -30,7 +24,7 @@
       </ul>
 
       <div class="actions">
-        <router-link class="button button" :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }" v-on:click.native="$emit('close')">
+        <router-link class="button-info" :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }" v-on:click.native="$emit('close')">
           {{ $i18n.t('misc.VIEW_FULL_DETAILS') }}
         </router-link>
       </div>
@@ -39,7 +33,7 @@
         <template v-if="!inCart || showChangeTerm">
           <div class="addToCart">
             <h5>
-              <span class="icon-shopping-cart"></span> {{ changeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('market.PURCHASE_ACCESS') }}
+              {{ showChangeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('market.PURCHASE_ACCESS') }}
             </h5>
             <div>
               <div class="terms">
@@ -63,7 +57,7 @@
                 </div>
               </div>
               <div>
-                <button @click.stop="showChangeTerm ? modifyTerm() : add()" class="button button-info">
+                <button @click.stop="showChangeTerm ? modifyTerm() : add()" class="button-success">
                   <span class="icon-shopping-cart"></span> {{ showChangeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('misc.ADD_TO_CART') }}
                 </button>
               </div>
@@ -88,7 +82,7 @@
                   <li>
                     {{ $i18n.t('misc.TERM') }}: <strong>{{ $i18n.t(`market.TERM.${term}`) }}</strong><br>
                     <span class="link" @click="showTerms">
-                      {{ $i18n.t('market.REMOVE_FROM_CART') }}
+                      {{ $i18n.t('market.CHANGE_TERM') }}
                     </span>
                   </li>
                 </ul>
@@ -97,7 +91,7 @@
                 <button @click="$emit('close')" class="button">
                   {{ $i18n.t('misc.CONTINUE_SHOPPING') }}
                 </button>
-                <router-link :to="{ name: 'cart' }" v-on:click.native="$emit('close')" class="button button-success">
+                <router-link :to="{ name: 'cart' }" v-on:click.native="$emit('close')" class="button-success">
                   <span class="icon-check-circle"></span> {{ $i18n.t('misc.CHECKOUT') }}
                 </router-link>
               </div>

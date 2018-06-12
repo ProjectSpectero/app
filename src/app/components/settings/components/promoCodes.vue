@@ -6,7 +6,7 @@
       <input type="text" v-model="promoCode" class="input" :placeholder="$i18n.t('payments.PROMO.ENTER_PROMO_CODE_HERE')">
       <button
         type="submit"
-        class="button button-md"
+        class="button-md"
         :class="{ 'button-success': promoCode !== '', 'button-loading': pending }"
         :disabled="promoCode === '' || pending">
           {{ (pending) ? $i18n.t('misc.PLEASE_WAIT') : $i18n.t('payments.PROMO.APPLY_PROMO_CODE_BUTTON') }}

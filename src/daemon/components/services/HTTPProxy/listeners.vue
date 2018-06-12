@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <button @click.prevent="add" class="button button-md button-success">
+      <button @click.prevent="add" class="button-md button-success">
         {{ $i18n.t('services.ADD_LISTENER') }}
       </button>
     </div>
@@ -47,7 +47,7 @@
         <div class="ip-label">
           <strong>{{ listener.item1 }}</strong>:{{ listener.item2 }}
         </div>
-        <button @click.prevent="remove(index)" class="button button-sm button-bordered button-danger">
+        <button @click.prevent="remove(index)" class="button-sm button-bordered button-danger">
           {{ $i18n.t('misc.REMOVE') }}
         </button>
       </li>

@@ -5,52 +5,54 @@
         <help-button obj="nodes.topics"></help-button>
       </top>
       <div>
-        <div class="container content-split">
-          <div class="split-item split-list nodes-sidebar">
-            <router-link class="button button-success mb-3" :to="{ name: 'groupCreate' }">
-              <span class="icon-plus"></span>
-              {{ $i18n.t('nodes.CREATE_GROUP') }}
-            </router-link>
+        <div class="container">
+          <div class="col-12 content-split">
+            <div class="split-list nodes-sidebar">
+              <router-link class="button-success mb-3" :to="{ name: 'groupCreate' }">
+                <span class="icon-plus"></span>
+                {{ $i18n.t('nodes.CREATE_GROUP') }}
+              </router-link>
 
-            <div v-if="groups">
-              <div v-if="groups.length">
-                <div v-for="group in groups" class="node-group" :key="group.id" @click.stop="selectGroup(group, true)" :class="selectedGroup === group.id ? 'active' : ''">
-                  <div class="group-name">
-                    {{ group.friendly_name }}
+              <div v-if="groups">
+                <div v-if="groups.length">
+                  <div v-for="group in groups" class="node-group" :key="group.id" @click.stop="selectGroup(group, true)" :class="selectedGroup === group.id ? 'active' : ''">
+                    <div class="group-name">
+                      {{ group.friendly_name }}
+                    </div>
+                    <div class="count">
+                      {{ group.nodes.length }}
+                    </div>
                   </div>
-                  <div class="count">
-                    {{ group.nodes.length }}
+                  <div class="node-group" v-if="uncategorized && uncategorized.result.length" @click.stop="selectUncategorized" :class="selectedGroup === 0 ? 'active' : ''">
+                    <div class="group-name">
+                      {{ $i18n.t('nodes.UNCATEGORIZED') }}
+                    </div>
+                    <div class="count">
+                      {{ uncategorized.pagination.total }}
+                    </div>
                   </div>
                 </div>
-                <div class="node-group" v-if="uncategorized && uncategorized.result.length" @click.stop="selectUncategorized" :class="selectedGroup === 0 ? 'active' : ''">
-                  <div class="group-name">
-                    {{ $i18n.t('nodes.UNCATEGORIZED') }}
-                  </div>
-                  <div class="count">
-                    {{ uncategorized.pagination.total }}
-                  </div>
-                </div>
+                <not-found v-else type="nodes">
+                  <slot><p v-html="$i18n.t('nodes.NO_NODES_TEXT')"></p></slot>
+                </not-found>
               </div>
-              <not-found v-else type="nodes">
-                <slot><p v-html="$i18n.t('nodes.NO_NODES_TEXT')"></p></slot>
-              </not-found>
+              <loading v-else></loading>
             </div>
-            <loading v-else></loading>
-          </div>
-          <div class="split-item split-details">
-            <template v-if="groups && loading">
-              <loading></loading>
-            </template>
-            <template v-else>
-              <nodes-list
-                :selectedGroupInformation="selectedGroupInformation"
-                :dataLoading="loading"
-                :searchId="searchId"
-                :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
-                :tableData="(selectedGroup === 0) ? uncategorized.result : nodes"
-                @changedPage="changedPage"
-                @sortByColumn="sortByColumn" />
-            </template>
+            <div class="split-details">
+              <template v-if="groups && loading">
+                <loading></loading>
+              </template>
+              <template v-else>
+                <nodes-list
+                  :selectedGroupInformation="selectedGroupInformation"
+                  :dataLoading="loading"
+                  :searchId="searchId"
+                  :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
+                  :tableData="(selectedGroup === 0) ? uncategorized.result : nodes"
+                  @changedPage="changedPage"
+                  @sortByColumn="sortByColumn" />
+              </template>
+            </div>
           </div>
         </div>
       </div>

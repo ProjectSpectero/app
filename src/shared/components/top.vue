@@ -5,7 +5,7 @@
         <h1 class="mb-0">{{ title }}</h1>
         <h2 class="mb-0" v-if="subtitle">{{ subtitle }}</h2>
       </div>
-      <div class="button-slot">
+      <div class="slot-button">
         <slot></slot>
       </div>
     </header>
@@ -48,7 +48,7 @@ export default {
   .title {
     flex: 1;
   }
-  .button-slot {
+  .slot-button {
     display: flex;
 
     .button, .bp-dropdown {

@@ -84,7 +84,7 @@
 
     <input
       type="submit"
-      class="button button-md max-width buttonFilterSubmit"
+      class="button-md max-width buttonFilterSubmit"
       :class="{ 'button-success': this.buttonEnabled }"
       :disabled="!this.buttonEnabled"
       value="Apply Filters">

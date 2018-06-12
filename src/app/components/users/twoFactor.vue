@@ -22,7 +22,7 @@
         </span>
       </div>
 
-      <button class="button button-info max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+      <button class="button-info max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
         {{ formLoading ? $i18n.t('misc.CONTINUE') : $i18n.t('misc.SAVE') }}
       </button>
     </form>

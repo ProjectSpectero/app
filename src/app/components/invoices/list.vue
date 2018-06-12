@@ -7,18 +7,18 @@
           <tr v-for="row in tableData" :key="row.id">
             <td>{{ row.id }}</td>
             <td>
-              <div :class="'badge status-' + row.status.toLowerCase()">
+              <div :class="'badge-' + row.status.toLowerCase()">
                 {{ $i18n.t('invoices.INVOICE_STATUS.' + row.status) }}
               </div>
             </td>
             <td>{{ row.due_date | moment('MMM D, YYYY') }}</td>
             <td>{{ row.amount | currency }} {{ row.currency }}</td>
             <td class="table-actions">
-              <router-link v-if="row.status === 'UNPAID'" class="button button-success" :to="{ name: 'invoice', params: { id: row.id } }">
+              <router-link v-if="row.status === 'UNPAID'" class="button-success" :to="{ name: 'invoice', params: { id: row.id } }">
                 {{ $i18n.t('misc.PAY_NOW') }}
               </router-link>
 
-              <router-link class="button button-info" :to="{ name: 'invoice', params: { id: row.id } }">
+              <router-link class="button-info" :to="{ name: 'invoice', params: { id: row.id } }">
                 {{ $i18n.t('misc.VIEW') }}
               </router-link>
             </td>
@@ -73,14 +73,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@styles/components/badges';
 
-.badge {
-  &.status-paid {
-    @extend .badge-success
-  }
-  &.status-unpaid {
-    @extend .badge-error
-  }
-}
 </style>

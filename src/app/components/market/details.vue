@@ -4,7 +4,7 @@
       <router-link :to="{ name: 'market' }" class="button">
         {{ $i18n.t('market.BACK') }}
       </router-link>
-      <button @click.stop="showModal(item)" class="button button-success" :class="{ 'button-bordered': existsInCart(item.id) }">
+      <button @click.stop="showModal(item)" class="button-success" :class="{ 'button-bordered': existsInCart(item.id) }">
         <template v-if="existsInCart(item.id)">
           <span class="icon-check-circle"></span> {{ $i18n.t('misc.IN_CART') }}
         </template>
@@ -50,18 +50,19 @@
         </div>
       </div>
     </top>
-    <template v-if="item.nodes">
-      <div class="container">
-        <div class="section padded">
-          <h4>{{ $i18n.t('misc.NODES') }}</h4>
-          <nodes :nodes="item.nodes"></nodes>
-        </div>
+    <div class="container">
+      <div class="col-12">
+        <template v-if="item.nodes">
+          <div class="section padded">
+            <h4>{{ $i18n.t('misc.NODES') }}</h4>
+            <nodes :nodes="item.nodes"></nodes>
+          </div>
+        </template>
+        <template v-if="item.ip_addresses">
+          <ips :ips="item.ip_addresses" :showAddresses="false"></ips>
+        </template>
       </div>
-    </template>
-
-    <template v-if="item.ip_addresses">
-      <ips :ips="item.ip_addresses" :showAddresses="false"></ips>
-    </template>
+    </div>
   </div>
 </template>
 

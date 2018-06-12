@@ -7,13 +7,13 @@
           <h5 class="order-number">{{ $i18n.t('payments.PAY_HEADER', { invoiceId: invoiceId }) }}</h5>
           <p class="order-description">{{ $i18n.t('payments.PAY_DESCRIPTION') }}</p>
           <p class="order-total">Total: {{ due.amount | currency }} {{ due.currency }}</p>
-          <p class="order-secure"><span class="icon-lock"></span> {{ $i18n.t('payments.PAY_SECURE') }}</p>
+          <p class="order-secure"><span class="icon-lock"></span> {{ $i18n.t('payments.PAY_SECURE') }} <span class="tooltip-text-trigger" v-tooltip="$i18n.t('payments.PAY_SECURE_DETAILS')">{{ $i18n.t('misc.LEARN_MORE') }} &raquo;</span></p>
         </div>
       </div>
 
       <div v-if="user.stored_card_identifier && !chosen">
         <p><strong>{{ $i18n.t('payments.USE_SAVED_CARD', { card: user.stored_card_identifier }) }}</strong></p><br>
-        <button class="button button-success" @click="canUseCard(true)">{{ $i18n.t('payments.BUTTON_USE_SAVED_CARD_YES') }}</button>
+        <button class="button-success" @click="canUseCard(true)">{{ $i18n.t('payments.BUTTON_USE_SAVED_CARD_YES') }}</button>
         <button class="button" @click="canUseCard(false)">{{ $i18n.t('payments.BUTTON_USE_SAVED_CARD_NO') }}</button>
       </div>
 

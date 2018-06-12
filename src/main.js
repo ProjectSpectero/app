@@ -31,15 +31,12 @@ Vue.use(ClientTable)
 Vue.use(VueMoment)
 Vue.use(VueClipboard)
 Vue.use(VueFloatLabel)
-Vue.use(VueTooltip)
 Vue.use(FlagIcon)
 
 Vue.use(VueTooltip, {
-  delay: 500,
-  placement: 'right',
-  class: 'tooltip-red',
-  triggers: ['hover'],
-  offset: 0
+  delay: 0,
+  placement: 'bottom',
+  offset: 5
 })
 
 Vue.use(VueModal, {

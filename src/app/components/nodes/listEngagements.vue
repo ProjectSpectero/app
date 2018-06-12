@@ -1,7 +1,7 @@
 <template>
   <div>
-    <form class="container" @submit.prevent.stop="submit">
-      <div class="section padded col-6 ml-0">
+    <div class="section padded col-6">
+      <form @submit.prevent.stop="submit">
         <h2>{{ $i18n.t('misc.MARKET_INFO') }}</h2>
         <div class="message message-error" v-if="formError">{{ formError }}</div>
 
@@ -52,46 +52,44 @@
           </template>
         </div>
 
-        <button type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+        <button type="submit" class="button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
           {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
         </button>
-      </div>
-    </form>
-
-    <div class="container">
-      <div v-if="engagements && engagements.length" class="list section padded">
-        <v-client-table :data="engagements" :columns="columns" :options="options">
-          <template slot="status" slot-scope="props">
-            <div :class="'badge status-' + props.row.status">
-              {{ $i18n.t(`nodes.STATUS.${props.row.status}`) }}
-            </div>
-          </template>
-
-          <template slot="sync_status" slot-scope="props">
-            <div :class="['sync-status-' + (props.row.sync_status === 'PENDING_SYNC' ? 'pending' : 'complete')]">
-              <span v-if="props.row.sync_status === 'PENDING_SYNC'"><span class="icon-rotate-cw"></span> Sync Pending</span>
-              <span v-else><span class="icon-check-circle"></span> In Sync</span>
-            </div>
-          </template>
-          <template slot="type" slot-scope="props">
-            <template v-if="props.row.type === 'NODE'">
-              <div>{{ $i18n.t('misc.NODE') }} #{{ props.row.resource }}</div>
-            </template>
-            <template v-else-if="props.row.type === 'NODE_GROUP'">
-              <div>{{ $i18n.t('misc.NODE_GROUP') }} #{{ props.row.resource }}</div>
-            </template>
-          </template>
-
-          <template slot="actions" slot-scope="props">
-            <button v-if="props.row.status === 'ACTIVE'" class="button" @click.stop="deleteEngagement(props.row.id)">
-              {{ $i18n.t('misc.CANCEL') }}
-            </button>
-            <div v-else>&nbsp;</div>
-          </template>
-        </v-client-table>
-      </div>
-      <not-found v-else type="engagements"></not-found>
+      </form>
     </div>
+
+    <div v-if="engagements && engagements.length" class="col-6 list section padded">
+      <v-client-table :data="engagements" :columns="columns" :options="options">
+        <template slot="status" slot-scope="props">
+          <div :class="'badge-' + props.row.status.toLowerCase()">
+            {{ $i18n.t(`nodes.STATUS.${props.row.status}`) }}
+          </div>
+        </template>
+
+        <template slot="sync_status" slot-scope="props">
+          <div :class="['sync-status-' + (props.row.sync_status === 'PENDING_SYNC' ? 'pending' : 'complete')]">
+            <span v-if="props.row.sync_status === 'PENDING_SYNC'"><span class="icon-rotate-cw"></span> Sync Pending</span>
+            <span v-else><span class="icon-check-circle"></span> In Sync</span>
+          </div>
+        </template>
+        <template slot="type" slot-scope="props">
+          <template v-if="props.row.type === 'NODE'">
+            <div>{{ $i18n.t('misc.NODE') }} #{{ props.row.resource }}</div>
+          </template>
+          <template v-else-if="props.row.type === 'NODE_GROUP'">
+            <div>{{ $i18n.t('misc.NODE_GROUP') }} #{{ props.row.resource }}</div>
+          </template>
+        </template>
+
+        <template slot="actions" slot-scope="props">
+          <button v-if="props.row.status === 'ACTIVE'" class="button" @click.stop="deleteEngagement(props.row.id)">
+            {{ $i18n.t('misc.CANCEL') }}
+          </button>
+          <div v-else>&nbsp;</div>
+        </template>
+      </v-client-table>
+    </div>
+    <not-found v-else type="engagements"></not-found>
   </div>
 </template>
 

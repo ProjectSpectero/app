@@ -8,7 +8,7 @@
       <div v-if="!failed" class="message message-warning">{{ $i18n.t('orders.REGENERATE_ACCESSOR_WARNING') }}</div>
       <div v-else class="message message-error">{{ $i18n.t('orders.REGENERATE_ACCESSOR_ERROR') }}</div>
       <div class="action-buttons">
-        <button @click="process()" :disabled="processing" class="button button-info">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
+        <button @click="process()" :disabled="processing" class="button-info">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
         <button @click="$modal.hide('regenerateAccessorModal')" class="button right">{{ $i18n.t('misc.NO_CANCEL') }}</button>
       </div>
     </div>

@@ -13,7 +13,7 @@
           </div>
           <div class="info-box">
             <h5>Status</h5>
-            <div :class="'badge status-' + node.status">{{ $i18n.t(`nodes.STATUS.${node.status}`) }}</div>
+            <div :class="'badge-' + node.status.toLowerCase()">{{ $i18n.t(`nodes.STATUS.${node.status}`) }}</div>
           </div>
           <div class="info-box">
             <h5>IP/Port</h5>
@@ -36,11 +36,13 @@
 
     <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
 
-    <edit-form v-if="activeTab === 'general'" :node="node"></edit-form>
-    <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" :node="node" @updateEngagements="updateEngagements"></list-engagements>
-    <list-ips v-else-if="activeTab === 'ips'" :ips="ips"></list-ips>
-    <list-system v-else-if="activeTab === 'system'" :node="node"></list-system>
-    <not-found v-else></not-found>
+    <div class="container">
+      <edit-form v-if="activeTab === 'general'" :node="node"></edit-form>
+      <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" :node="node" @updateEngagements="updateEngagements"></list-engagements>
+      <list-ips v-else-if="activeTab === 'ips'" :ips="ips"></list-ips>
+      <list-system v-else-if="activeTab === 'system'" :node="node"></list-system>
+      <not-found v-else></not-found>
+    </div>
   </div>
 </template>
 
@@ -115,15 +117,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@styles/components/badges';
 
-.badge {
-  &.status-CONFIRMED, &.status-ENABLED {
-    @extend .badge-success;
-  }
-
-  &.status-UNCONFIRMED, &.status-DISABLED {
-    @extend .badge-error;
-  }
-}
 </style>

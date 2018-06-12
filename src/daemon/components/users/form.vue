@@ -43,10 +43,10 @@
         </div>
       </div>
       <div class="content-bottom">
-        <button class="button button-info" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">
+        <button class="button-info" @click.prevent="submit" @keyup.enter="submit" :disabled="formDisable">
           {{ formDisable ? 'Please wait...' : title }}
         </button>
-        <button class="button button-light right" @click.prevent="cancel">Cancel</button>
+        <button class="button-light right" @click.prevent="cancel">Cancel</button>
       </div>
     </div>
   </form>

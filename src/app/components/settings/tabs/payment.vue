@@ -200,7 +200,7 @@
             </span>
           </div>
 
-          <button type="submit" class="button button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+          <button type="submit" class="button-info button-md max-width" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
             Update Billing Address
           </button>
         </form>

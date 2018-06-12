@@ -5,7 +5,7 @@
       <div v-if="!loading">
         <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
 
-        <div>
+        <div class="container">
           <edit-form v-if="activeTab === 'general'" :group="group"></edit-form>
           <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
         </div>

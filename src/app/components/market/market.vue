@@ -7,69 +7,71 @@
       <help-button obj="market.topics"></help-button>
     </top>
 
-    <div class="container content-split">
-      <div class="split-item split-list">
-        <filters @changedFilters="search"></filters>
-      </div>
-      <div class="market-listings split-item split-details">
-        <div v-if="storeLoading" class="loading-overlay">
-          <loading></loading>
+    <div class="container">
+      <div class="content-split col-12">
+        <div class="split-list">
+          <filters @changedFilters="search"></filters>
         </div>
-
-        <div class="cart" v-if="totals.total > 0">
-          <div class="info">
-            <h4 class="mb-0"><span class="icon icon-shopping-cart"></span> {{ $i18n.t('misc.CART') }}: {{ totals.total | currency }} USD</h4>
+        <div class="market-listings split-details">
+          <div v-if="storeLoading" class="loading-overlay">
+            <loading></loading>
           </div>
-          <div class="actions">
-            <router-link :to="{ name: 'cart' }" class="button button-info">
-              {{ $i18n.t('misc.CHECKOUT') }}
-            </router-link>
+
+          <div class="cart" v-if="totals.total > 0">
+            <div class="info">
+              <h4 class="mb-0"><span class="icon icon-shopping-cart"></span> {{ $i18n.t('misc.CART') }}: {{ totals.total | currency }} USD</h4>
+            </div>
+            <div class="actions">
+              <router-link :to="{ name: 'cart' }" class="button-info">
+                {{ $i18n.t('misc.CHECKOUT') }}
+              </router-link>
+            </div>
           </div>
+
+          <div class="datatable">
+            <table>
+              <table-header :columns="columns" :headings="headings" :sortable="sortable"/>
+              <tbody>
+                <tr v-for="(item, index) in results" :key="index">
+                  <td>
+                    <flag v-if="item.cc" :iso="item.cc" :squared="false" />
+                    <div v-else class="flag-icon-empty">2+</div>
+                    {{ item.friendly_name }}
+                    <div v-if="item.plan" class="badge badge-brand badge-plan">{{ item.plan }}</div>
+                  </td>
+                  <td>
+                    <div class="badge">{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</div>
+                  </td>
+                  <td>
+                    <span v-if="item.ip_addresses">{{ item.ip_addresses.length }}</span>
+                    <span v-else>{{ countIpsInNodeGroup(item) }}</span>
+                  </td>
+                  <td>
+                    <span v-if="item.type === 'NODE_GROUP'">{{ $i18n.t('misc.NODE_GROUP') }}</span>
+                    <span v-else>{{ $i18n.t('misc.NODE') }}</span>
+                  </td>
+                  <td>{{ item.price | currency }} USD</td>
+                  <td class="table-actions">
+                    <button @click.stop="showModal(item)" class="button-sm button-success" :class="{ 'button-bordered': existsInCart(item.id) }">
+                      <template v-if="existsInCart(item.id)">
+                        <span class="icon-check-circle"></span> {{ $i18n.t('misc.IN_CART') }}
+                      </template>
+                      <template v-else>
+                        <span class="icon-shopping-bag"></span> {{ $i18n.t('misc.PURCHASE') }}
+                      </template>
+                    </button>
+
+                    <router-link class="button-sm" :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }">
+                      {{ $i18n.t('misc.VIEW') }}
+                    </router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <paginator :pagination="pagination" @changedPage="search"></paginator>
         </div>
-
-        <div class="datatable">
-          <table>
-            <table-header :columns="columns" :headings="headings" :sortable="sortable"/>
-            <tbody>
-              <tr v-for="(item, index) in results" :key="index">
-                <td>
-                  <flag v-if="item.cc" :iso="item.cc" :squared="false" />
-                  <div v-else class="flag-icon-empty">2+</div>
-                  {{ item.friendly_name }}
-                  <div v-if="item.plan" class="badge badge-brand badge-plan">{{ item.plan }}</div>
-                </td>
-                <td>
-                  <div class="badge">{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</div>
-                </td>
-                <td>
-                  <span v-if="item.ip_addresses">{{ item.ip_addresses.length }}</span>
-                  <span v-else>{{ countIpsInNodeGroup(item) }}</span>
-                </td>
-                <td>
-                  <span v-if="item.type === 'NODE_GROUP'">{{ $i18n.t('misc.NODE_GROUP') }}</span>
-                  <span v-else>{{ $i18n.t('misc.NODE') }}</span>
-                </td>
-                <td>{{ item.price | currency }} USD</td>
-                <td class="table-actions">
-                  <button @click.stop="showModal(item)" class="button button-sm button-success" :class="{ 'button-bordered': existsInCart(item.id) }">
-                    <template v-if="existsInCart(item.id)">
-                      <span class="icon-check-circle"></span> {{ $i18n.t('misc.IN_CART') }}
-                    </template>
-                    <template v-else>
-                      <span class="icon-shopping-bag"></span> {{ $i18n.t('misc.PURCHASE') }}
-                    </template>
-                  </button>
-
-                  <router-link class="button button-sm" :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }">
-                    {{ $i18n.t('misc.VIEW') }}
-                  </router-link>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <paginator :pagination="pagination" @changedPage="search"></paginator>
       </div>
     </div>
   </div>

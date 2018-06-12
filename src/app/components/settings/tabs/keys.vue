@@ -18,7 +18,7 @@
         <br>
         <h3>Generate New Key</h3>
         <p>Use the button below to generate a new node key. Your old key will become invalid if you do this.</p><br>
-        <button class="button button-warning" @click.prevent.stop="regenerateNodeKey" :class="{ 'button-loading': formLoading }" :disabled="formLoading">Regenerate Node Key</button>
+        <button class="button-warning" @click.prevent.stop="regenerateNodeKey" :class="{ 'button-loading': formLoading }" :disabled="formLoading">Regenerate Node Key</button>
       </div>
     </div>
   </div>
