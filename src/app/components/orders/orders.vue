@@ -132,43 +132,25 @@ export default {
       }
     },
     async fetchOrders (page) {
-      if (this.isEnterprise) {
-        await orderAPI.myEnterpriseOrders({
-          queryParams: {
-            searchId: this.searchId,
-            page: page || 1,
-            perPage: this.perPage || 10
-          },
-          success: response => {
-            this.error = false
-            this.pagination = response.data.pagination
-            this.tableData = response.data.result
-          },
-          fail: e => {
-            console.log(e)
-            this.errorCode = 400
-            this.error = true
-          }
-        })
-      } else {
-        await orderAPI.myOrders({
-          queryParams: {
-            searchId: this.searchId,
-            page: page || 1,
-            perPage: this.perPage || 10
-          },
-          success: response => {
-            this.error = false
-            this.pagination = response.data.pagination
-            this.tableData = response.data.result
-          },
-          fail: e => {
-            console.log(e)
-            this.errorCode = 400
-            this.error = true
-          }
-        })
-      }
+      const method = this.isEnterprise ? orderAPI['myEnterpriseOrders'] : orderAPI['myOrders']
+
+      await method({
+        queryParams: {
+          searchId: this.searchId,
+          page: page || 1,
+          perPage: this.perPage || 10
+        },
+        success: response => {
+          this.error = false
+          this.pagination = response.data.pagination
+          this.tableData = response.data.result
+        },
+        fail: e => {
+          console.log(e)
+          this.errorCode = 400
+          this.error = true
+        }
+      })
     }
   }
 }
