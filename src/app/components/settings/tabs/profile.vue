@@ -199,10 +199,6 @@ export default {
     formLoading: {
       type: Boolean,
       required: true
-    },
-    processForm: {
-      type: Function,
-      required: true
     }
   },
   data () {

@@ -66,7 +66,7 @@ export default {
   },
   data () {
     return {
-      formError: null,
+      formError: '',
       formLoading: false,
       form: null,
       nodeKey: null
