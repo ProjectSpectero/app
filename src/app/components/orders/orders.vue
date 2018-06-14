@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="!error">
-      <top :title="$i18n.t('misc.ORDERS')">
+      <top :title="$i18n.t(enterprisePage ? 'misc.ENTERPRISE_ORDERS' : 'misc.ORDERS')">
         <help-button obj="orders.topics"/>
       </top>
       <div v-if="tableData">
@@ -11,7 +11,7 @@
               <router-link
                 v-for="s in status"
                 :key="s"
-                :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }"
+                :to="{ name: enterprisePage ? 'enterpriseOrdersByStatus' : 'ordersByStatus', params: { status: s, page: 1 } }"
                 :class="{ active: currentStatus === s }"
                 class="filter-link">
                 {{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}
@@ -86,6 +86,9 @@ export default {
     }),
     currentStatus () {
       return this.$route.params.status ? this.$route.params.status.toLowerCase() : 'all'
+    },
+    enterprisePage () {
+      return (this.isEnterprise && this.$route.name === 'enterpriseOrdersByStatus')
     }
   },
   watch: {
@@ -100,13 +103,15 @@ export default {
   created () {
     if (this.$route.name === 'orders') {
       this.$router.push({ name: 'ordersByStatus', params: { status: 'all', page: 1 } })
+    } else if (this.$route.name === 'enterpriseOrders') {
+      this.$router.push({ name: 'enterpriseOrdersByStatus', params: { status: 'all', page: 1 } })
     } else {
       this.sidebarSort('status', this.currentStatus, this.currentPage)
     }
   },
   methods: {
     changedPage (page) {
-      this.$router.push({ name: 'ordersByStatus', params: { page: page, status: this.currentStatus } })
+      this.$router.push({ name: this.$route.name, params: { page: page, status: this.currentStatus } })
     },
     async fetch (page) {
       if (this.rules.length) {
@@ -132,7 +137,7 @@ export default {
       }
     },
     async fetchOrders (page) {
-      const method = (this.isEnterprise && this.$route.params.type === 'enterprise') ? orderAPI['myEnterpriseOrders'] : orderAPI['myOrders']
+      const method = this.enterprisePage ? orderAPI['myEnterpriseOrders'] : orderAPI['myOrders']
 
       await method({
         queryParams: {

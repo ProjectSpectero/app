@@ -90,7 +90,7 @@
                 :show-invoice-link="true"/>
             </section>
 
-            <template v-if="isEnterprise">
+            <template v-if="isEnterpriseOrder">
               <p>Enterprise order</p>
             </template>
             <template v-else>
@@ -214,7 +214,10 @@ export default {
     ...mapGetters({
       user: 'appAuth/user',
       isEnterprise: 'appAuth/isEnterprise'
-    })
+    }),
+    isEnterpriseOrder () {
+      return (this.order && this.order.line_items && this.order.line_items.length && this.order.line_items[0].type === 'ENTERPRISE')
+    }
   },
   created () {
     this.fetchOrder()
@@ -355,16 +358,19 @@ export default {
         line-height: 100%;
       }
     }
+
     .details {
       text-align: right;
     }
     span, small {
       display: block;
     }
+
     h6 {
       font-weight: $font-semi;
       color: $color-primary;
     }
+
     small {
       margin-bottom: 12px;
       font-size: 100%;

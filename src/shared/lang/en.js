@@ -4,6 +4,7 @@ module.exports = {
     DASHBOARD: 'Dashboard',
     MARKET: 'Market',
     ORDERS: 'Orders',
+    ENTERPRISE_ORDERS: 'Enterprise Orders',
     INVOICES: 'Invoices',
     ITEM: 'Item',
     NODE: 'Node',
