@@ -91,8 +91,56 @@
             </section>
 
             <template v-if="isEnterpriseOrder">
-              <p>Enterprise order</p>
+              <section class="col-9">
+                <div class="content-section">
+                  <header>
+                    <h3><span class="icon-server icon-bg-info"/>Enterprise Order Resources</h3>
+                  </header>
+                </div>
+                <div class="content-section">
+                  <header>
+                    <h4>IP list</h4>
+                    <p>IPs: 23.155.192.2:12500 - 15500</p> 
+                    <p>IPs: 23.155.192.3:12500 - 15500</p>
+                  </header>
+                </div>
+                <div class="content-section">
+                  <header>
+                    <h4>Authentication</h4>
+                    <p>Username: blue</p>
+                    <p>Password: sQUqqGKgkwKY8JFk</p>
+                  </header>
+                </div>
+              </section>
+              <section class="col-3">
+                <div class="content-section latest-invoice">
+                  <header>
+                    <h3><span class="icon-dollar-sign icon-bg-info"/>Latest Invoice</h3>
+                  </header>
+                  <div class="invoice-details">
+                    <div class="balance">
+                      <h6>Balance Due</h6>
+                      <span
+                        :class="{'text-info': due.amount > 0}"
+                        class="balance-left">{{ due.amount | currency }}</span>
+                    </div>
+                    <div class="details">
+                      <small class="text-light">Invoice No: {{ order.last_invoice_id }}</small>
+                      <small
+                        v-if="order.due_next"
+                        class="text-light">{{ $i18n.t('misc.NEXT_DUE_DATE') }}: {{ order.due_next | moment('MMM D, YYYY') }}</small>
+                    </div>
+                  </div>
+                  <router-link
+                    :to="{ name: 'invoice', params: { id: order.last_invoice_id } }"
+                    class="button-info">View Invoice</router-link>
+                  <router-link
+                    :to="{ name: 'orderInvoices', params: { id: order.id } }"
+                    class="button">View All Invoices</router-link>
+                </div>
+              </section>
             </template>
+
             <template v-else>
               <section class="col-9">
                 <div class="content-section">
