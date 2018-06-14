@@ -24,7 +24,7 @@
         <h5>{{ $i18n.t('misc.ENTERPRISE') }}</h5>
         <ul>
           <li>
-            <router-link :to="{ name: 'enterpriseOrdersByStatus' }">
+            <router-link :to="{ name: 'enterpriseOrdersByStatus', params: { page: 1, status: 'all' } }">
               <span class="icon-hard-drive"/>
               {{ $i18n.t('misc.ENTERPRISE') }}
             </router-link>
@@ -65,13 +65,13 @@
             </router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'ordersByStatus' }">
+            <router-link :to="{ name: 'ordersByStatus', params: { page: 1, status: 'all' } }">
               <span class="icon-briefcase"/>
               {{ $i18n.t('misc.ORDERS') }}
             </router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'invoicesByStatus' }">
+            <router-link :to="{ name: 'invoicesByStatus', params: { page: 1, status: 'all' } }">
               <span class="icon-dollar-sign"/>
               {{ $i18n.t('misc.INVOICES') }}
             </router-link>
