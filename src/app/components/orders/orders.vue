@@ -132,7 +132,7 @@ export default {
       }
     },
     async fetchOrders (page) {
-      const method = this.isEnterprise ? orderAPI['myEnterpriseOrders'] : orderAPI['myOrders']
+      const method = (this.isEnterprise && this.$route.params.type === 'enterprise') ? orderAPI['myEnterpriseOrders'] : orderAPI['myOrders']
 
       await method({
         queryParams: {

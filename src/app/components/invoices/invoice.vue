@@ -239,6 +239,9 @@ export default {
       engagement: null,
       due: 0,
       transactions: null,
+      fetchExtras: true,
+      reFetch: true,
+      interval: null,
       verified: false,
       verificationErrors: [],
       errorItem: 'invoice',
@@ -250,7 +253,7 @@ export default {
       user: 'appAuth/user'
     }),
     status () {
-      return this.invoice.status
+      return this.$i18n.t(`invoices.INVOICE_STATUS.${this.invoice.status}`)
     },
     statusClass () {
       if (this.status === 'PENDING') {
@@ -287,14 +290,33 @@ export default {
       return lineItems
     }
   },
-  created () {
-    this.syncCurrentUser()
-    this.fetchInvoice()
+  async created () {
+    await this.syncCurrentUser()
+    await this.fetchInvoice()
+
+    // Keep refreshing the invoice while its status is PROCESSING
+    if (this.reFetch) {
+      this.refreshInvoice()
+    }
+  },
+  beforeDestroy () {
+    clearInterval(this.interval)
   },
   methods: {
     ...mapActions({
       syncCurrentUser: 'appAuth/syncCurrentUser'
     }),
+    refreshInvoice () {
+      // Refetch invoice every process.env.PROCESSING_INVOICE_REFRESH_TIMER
+      // if status === PROCESSING
+      this.interval = setInterval(() => {
+        if (this.reFetch) {
+          this.fetchInvoice()
+        } else {
+          clearInterval(this.interval)
+        }
+      }, process.env.PROCESSING_INVOICE_REFRESH_TIMER || 15000)
+    },
     async fetchInvoice () {
       await invoiceAPI.invoice({
         data: { id: this.$route.params.id },
@@ -302,6 +324,8 @@ export default {
           if (response.data.result) {
             this.error = false
             this.invoice = response.data.result
+
+            console.warn('Fetched invoice', this.invoice)
 
             // Non-standard invoices (MANUAL/CREDIT) don't have orders
             // associated with them. We can only fetch orders for STANDARD invoices
@@ -312,8 +336,17 @@ export default {
             }
 
             // Fetch extra info: total due amount and list of transactions
-            this.fetchDue()
-            this.fetchTransactions()
+            // We don't need to fetch these when status checking
+            if (this.fetchExtras) {
+              this.fetchDue()
+              this.fetchTransactions()
+            }
+
+            // Stop invoice re-fetch timer: we only need it
+            // while invoices are being processed
+            if (this.invoice.status !== 'PROCESSING') {
+              this.reFetch = false
+            }
           }
         },
         fail: (e) => {
@@ -371,6 +404,9 @@ export default {
           if (response.data.result) {
             this.error = false
             this.transactions = response.data.result
+
+            // "Close" extras fetching now that we have them
+            this.fetchExtras = false
           }
         },
         fail: e => {
