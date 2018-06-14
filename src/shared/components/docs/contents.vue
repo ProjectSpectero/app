@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'container': !child, 'child': child }">
+  <div :class="{ 'child': child }">
     <article
       v-for="(page, i) in items"
       :key="i"
