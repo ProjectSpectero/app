@@ -100,16 +100,16 @@
                 <div class="content-section">
                   <header>
                     <h4>IP list</h4>
+                  </header>
                     <p>IPs: 23.155.192.2:12500 - 15500</p> 
                     <p>IPs: 23.155.192.3:12500 - 15500</p>
-                  </header>
                 </div>
                 <div class="content-section">
                   <header>
                     <h4>Authentication</h4>
+                  </header>
                     <p>Username: blue</p>
                     <p>Password: sQUqqGKgkwKY8JFk</p>
-                  </header>
                 </div>
               </section>
               <section class="col-3">
