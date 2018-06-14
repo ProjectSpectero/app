@@ -89,11 +89,4 @@ export default {
 h2 > small {
   font-size: 14px;
 }
-.button {
-  margin-right: 6px;
-
-  &:last-child {
-    margin-right: 0;
-  }
-}
 </style>

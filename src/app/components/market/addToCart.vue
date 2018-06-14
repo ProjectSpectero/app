@@ -326,7 +326,7 @@ export default {
     }
   }
 
-  .button {
+  [class^="button-"] {
     // This "fixes" a bug where v-if causes button background color to be
     // delayed when switching to v-else
     transition: none;

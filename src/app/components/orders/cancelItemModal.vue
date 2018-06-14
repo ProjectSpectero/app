@@ -69,11 +69,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.button {
-  margin-right: 6px;
 
-  &:last-child {
-    margin-right: 0;
-  }
-}
 </style>
