@@ -266,6 +266,9 @@ export default {
 
       return 'status-unpaid'
     },
+    isStandardInvoice () {
+      return (this.invoice && this.invoice.order_id && this.invoice.type && this.invoice.type === 'STANDARD')
+    },
     canShowDueAmount () {
       return this.due && this.invoice.status !== 'REFUNDED'
     },
@@ -329,7 +332,7 @@ export default {
 
             // Non-standard invoices (MANUAL/CREDIT) don't have orders
             // associated with them. We can only fetch orders for STANDARD invoices
-            if (this.invoice.type === 'STANDARD' && this.invoice.order_id) {
+            if (this.isStandardInvoice) {
               this.fetchOrder()
             } else {
               this.loading = false

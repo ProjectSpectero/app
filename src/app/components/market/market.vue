@@ -11,8 +11,23 @@
     </top>
 
     <div class="container">
+      <div class="col-12">
+        <div class="menu">
+          <ul>
+            <li @click.stop="switchListing('marketListed')">
+              Listed nodes
+            </li>
+            <li @click.stop="switchListing('marketMine')">
+              My listings
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <div class="content-split col-12">
-        <div class="split-list">
+        <div
+          v-if="route !== 'marketMine'"
+          class="split-list">
           <filters @changedFilters="search"/>
         </div>
         <div class="market-listings split-details">
@@ -26,7 +41,9 @@
             v-if="totals.total > 0"
             class="cart">
             <div class="info">
-              <h4 class="mb-0"><span class="icon icon-shopping-cart"/> {{ $i18n.t('misc.CART') }}: {{ totals.total | currency }} USD</h4>
+              <h4 class="mb-0">
+                <span class="icon icon-shopping-cart"/> {{ $i18n.t('misc.CART') }}: {{ totals.total | currency }} USD
+              </h4>
             </div>
             <div class="actions">
               <router-link
@@ -37,7 +54,9 @@
             </div>
           </div>
 
-          <div class="datatable">
+          <div
+            v-if="results"
+            class="datatable">
             <table>
               <table-header
                 :columns="columns"
@@ -64,8 +83,13 @@
                     <div class="badge">{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</div>
                   </td>
                   <td>
-                    <span v-if="item.ip_addresses">{{ item.ip_addresses.length }}</span>
-                    <span v-else>{{ countIpsInNodeGroup(item) }}</span>
+                    <template v-if="route === 'marketMine'">
+                      <span>{{ item.ip }}</span>
+                    </template>
+                    <template v-else>
+                      <span v-if="item.ip_addresses">{{ item.ip_addresses.length }}</span>
+                      <span v-else-if="item.nodes">{{ countIpsInNodeGroup(item) }}</span>
+                    </template>
                   </td>
                   <td>
                     <span v-if="item.type === 'NODE_GROUP'">{{ $i18n.t('misc.NODE_GROUP') }}</span>
@@ -73,23 +97,33 @@
                   </td>
                   <td>{{ item.price | currency }} USD</td>
                   <td class="table-actions">
-                    <button
-                      :class="{ 'button-bordered': existsInCart(item.id) }"
-                      class="button-sm button-success"
-                      @click.stop="showModal(item)">
-                      <template v-if="existsInCart(item.id)">
-                        <span class="icon-check-circle"/> {{ $i18n.t('misc.IN_CART') }}
-                      </template>
-                      <template v-else>
-                        <span class="icon-shopping-bag"/> {{ $i18n.t('misc.PURCHASE') }}
-                      </template>
-                    </button>
+                    <template v-if="route === 'marketMine'">
+                      <router-link
+                        :to="{ name: 'node', params: { action: 'edit', id: item.id } }"
+                        class="button-icon">
+                        <span class="icon-edit-2"/>
+                      </router-link>
+                    </template>
+                    <template v-else>
+                      <button
+                        :class="{ 'button-bordered': existsInCart(item.id) }"
+                        class="button-sm button-success"
+                        @click.stop="showModal(item)">
+                        <template v-if="existsInCart(item.id)">
+                          <span class="icon-check-circle"/> {{ $i18n.t('misc.IN_CART') }}
+                        </template>
+                        <template v-else>
+                          <span class="icon-shopping-bag"/> {{ $i18n.t('misc.PURCHASE') }}
+                        </template>
+                      </button>
 
-                    <router-link
-                      :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }"
-                      class="button-sm">
-                      {{ $i18n.t('misc.VIEW') }}
-                    </router-link>
+                      <router-link
+                        v-if="item.type"
+                        :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }"
+                        class="button-sm">
+                        {{ $i18n.t('misc.VIEW') }}
+                      </router-link>
+                    </template>
                   </td>
                 </tr>
               </tbody>
@@ -135,14 +169,15 @@ export default {
       headings: {
         friendly_name: 'Name',
         market_model: 'Market Model',
-        ips_count: 'IP Count',
+        ips_count: 'IP',
         type: 'Type',
         price: 'Price',
         actions: ''
       },
       sortable: [],
       filters: [],
-      grouped: true
+      grouped: true,
+      route: 'marketListed'
     }
   },
   computed: {
@@ -155,17 +190,27 @@ export default {
     })
   },
   async created () {
+    if (this.$route.name === 'market') {
+      this.$router.push({ name: 'marketListed' })
+    }
+
     await this.fetchPlans()
     await this.refreshCart()
 
-    this.search()
+    this.switchListing(this.$route.name)
   },
   methods: {
     ...mapActions({
       fetch: 'market/fetch',
+      fetchMine: 'market/fetchMine',
       fetchPlans: 'market/fetchPlans',
       refreshCart: 'cart/refresh'
     }),
+    switchListing (route) {
+      this.route = route
+      this.search()
+      this.$router.push({ name: route })
+    },
     existsInCart (id) {
       return this.cart.find(i => i.id === id)
     },
@@ -188,7 +233,11 @@ export default {
       return this.$i18n.t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
     },
     search (page) {
-      this.fetch({ page: page || 1, perPage: this.perPage, grouped: this.grouped })
+      if (this.route === 'marketMine') {
+        this.fetchMine({ page: page || 1, perPage: this.perPage })
+      } else {
+        this.fetch({ page: page || 1, perPage: this.perPage, grouped: this.grouped })
+      }
     }
   }
 }
@@ -254,5 +303,22 @@ export default {
 }
 .badge-plan {
   margin-left: 4px;
+}
+.menu {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 12px;
+
+  ul {
+    > li {
+      display: inline-block;
+      padding: 14px;
+      background: $white;
+      border: 1px solid $color-border;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  }
 }
 </style>

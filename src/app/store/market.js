@@ -1,4 +1,5 @@
-import marketAPI from '@/app/api/market.js'
+import marketAPI from '@/app/api/market'
+import nodeAPI from '@/app/api/node'
 
 const state = {
   cart: [],
@@ -38,6 +39,27 @@ const actions = {
         page: data.page || 1,
         perPage: data.perPage || 10,
         includeGrouped: getters.grouped
+      },
+      data: {
+        rules: getters.filters
+      },
+      success: response => {
+        commit('UPDATE_RESULTS', { results: response.data.result, pagination: response.data.pagination })
+        commit('SET_LOADING', false)
+      },
+      fail: (e) => {
+        commit('SET_LOADING', false)
+        console.error('Error market api search:', e)
+      }
+    })
+  },
+  async fetchMine ({ getters, commit }, data) {
+    commit('SET_LOADING', true)
+
+    await nodeAPI.myNodes({
+      queryParams: {
+        page: data.page || 1,
+        perPage: data.perPage || 10
       },
       data: {
         rules: getters.filters
