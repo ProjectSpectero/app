@@ -2,8 +2,10 @@
   <div>
     <top :title="$i18n.t('misc.DOCUMENTATION')"/>
 
-    <div class="content">
-      <contents :items="helpContents"/>
+    <div class="container">
+      <div class="col-12">
+        <contents :items="helpContents"/>
+      </div>
     </div>
   </div>
 </template>

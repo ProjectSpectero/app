@@ -170,10 +170,6 @@ export default {
       margin-left: auto;
       display: flex;
       align-items: center;
-
-      .button {
-        margin-left: 6px;
-      }
     }
     &:before {
       flex: 0 0 100%;
