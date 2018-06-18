@@ -99,10 +99,6 @@ export default {
       type: Object,
       required: true
     },
-    nodeGroup: {
-      type: Object,
-      required: true
-    },
     ips: {
       type: Array,
       required: true

@@ -4,7 +4,6 @@
       <div v-if="!loading">
         <node-edit
           :node="node"
-          :group="group"
           :tabs="tabs"
           :engagements="engagements"
           :ips="ips"
@@ -41,7 +40,7 @@ export default {
       node: null,
       group: null,
       engagements: null,
-      ips: null,
+      ips: [],
       tabs: [
         { id: 'general', path: 'general', label: 'GENERAL_INFO' },
         { id: 'engagements', path: 'engagements', label: 'MARKET' },
