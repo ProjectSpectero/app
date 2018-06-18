@@ -3,7 +3,7 @@
     <template v-if="!error">
       <div v-if="order">
         <top
-          :subtitle="'Order Number: ' + order.id.toString().padStart(5, '0')"
+          :subtitle="'Order Number: ' + paddedId"
           title="Order Details">
           <router-link
             v-if="!loading && order.status === 'ACTIVE'"
@@ -98,18 +98,11 @@
                   </header>
                 </div>
                 <div class="content-section">
-                  <header>
-                    <h4>IP list</h4>
-                  </header>
-                  <p>IPs: 23.155.192.2:12500 - 15500</p>
-                  <p>IPs: 23.155.192.3:12500 - 15500</p>
-                </div>
-                <div class="content-section">
-                  <header>
-                    <h4>Authentication</h4>
-                  </header>
-                  <p>Username: blue</p>
-                  <p>Password: sQUqqGKgkwKY8JFk</p>
+                  <order-item
+                    v-for="(item, index) in order.line_items"
+                    :key="index"
+                    :item="item"
+                    @sortItems="sortItems" />
                 </div>
               </section>
               <section class="col-3">
@@ -263,6 +256,9 @@ export default {
       user: 'appAuth/user',
       isEnterprise: 'appAuth/isEnterprise'
     }),
+    paddedId () {
+      return this.order.id.toString().padStart(5, '0')
+    },
     isEnterpriseOrder () {
       return (this.order && this.order.line_items && this.order.line_items.length && this.order.line_items[0].type === 'ENTERPRISE')
     }
@@ -336,7 +332,6 @@ export default {
       return options.includes(status)
     },
     async verify () {
-      console.warn('Verifying order (status is', this.order.status, ')')
       await orderAPI.verify({
         data: { id: this.order.id },
         success: response => {
