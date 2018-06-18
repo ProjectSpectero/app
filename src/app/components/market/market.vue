@@ -11,18 +11,7 @@
     </top>
 
     <div class="container">
-      <div class="col-12">
-        <div class="menu">
-          <ul>
-            <li @click.stop="switchListing('marketListed')">
-              Listed nodes
-            </li>
-            <li @click.stop="switchListing('marketMine')">
-              My listings
-            </li>
-          </ul>
-        </div>
-      </div>
+      <market-menu @selectedRoute="switchListing"/>
 
       <div class="content-split col-12">
         <div
@@ -143,6 +132,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import filters from './filters'
 import addToCart from './addToCart'
+import marketMenu from './marketMenu'
 import top from '@/shared/components/top'
 import paginator from '@/shared/components/paginator'
 import loading from '@/shared/components/loading'
@@ -152,6 +142,7 @@ import helpButton from '@/shared/components/docs/button'
 export default {
   components: {
     top,
+    marketMenu,
     paginator,
     tableHeader,
     filters,
@@ -190,14 +181,14 @@ export default {
     })
   },
   async created () {
-    if (this.$route.name === 'market') {
-      this.$router.push({ name: 'marketListed' })
-    }
-
     await this.fetchPlans()
     await this.refreshCart()
 
-    this.switchListing(this.$route.name)
+    if (this.$route.name === 'market') {
+      this.switchListing('marketListed')
+    } else {
+      this.switchListing(this.$route.name, this.$route.params.page)
+    }
   },
   methods: {
     ...mapActions({
@@ -206,10 +197,9 @@ export default {
       fetchPlans: 'market/fetchPlans',
       refreshCart: 'cart/refresh'
     }),
-    switchListing (route) {
+    switchListing (route, page) {
       this.route = route
-      this.search()
-      this.$router.push({ name: route })
+      this.search(page || 1, route)
     },
     existsInCart (id) {
       return this.cart.find(i => i.id === id)
@@ -232,12 +222,17 @@ export default {
 
       return this.$i18n.t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
     },
-    search (page) {
+    search (page, route) {
+      const p = page || this.$route.params.page || 1
+      const r = route || this.$route.name
+
       if (this.route === 'marketMine') {
-        this.fetchMine({ page: page || 1, perPage: this.perPage })
+        this.fetchMine({ page: p, perPage: this.perPage })
       } else {
-        this.fetch({ page: page || 1, perPage: this.perPage, grouped: this.grouped })
+        this.fetch({ page: p, perPage: this.perPage, grouped: this.grouped })
       }
+
+      this.$router.push({ name: r, params: { page: p } })
     }
   }
 }
@@ -303,22 +298,5 @@ export default {
 }
 .badge-plan {
   margin-left: 4px;
-}
-.menu {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-bottom: 12px;
-
-  ul {
-    > li {
-      display: inline-block;
-      padding: 14px;
-      background: $white;
-      border: 1px solid $color-border;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-  }
 }
 </style>
