@@ -102,7 +102,7 @@
                     v-for="(item, index) in order.line_items"
                     :key="index"
                     :item="item"
-                    @sortItems="sortItems" />
+                    type="ENTERPRISE" />
                 </div>
               </section>
               <section class="col-3">
@@ -156,6 +156,7 @@
                     v-for="(item, index) in order.line_items"
                     :key="index"
                     :item="item"
+                    type="REGULAR"
                     @sortItems="sortItems" />
                 </div>
               </section>

@@ -19,7 +19,7 @@
         </span>
       </div>
 
-      <div>
+      <div v-if="type !== 'ENTERPRISE'">
         <span class="badge">
           <template v-if="item.type === 'MANAGED'">Managed </template>
           Node
@@ -40,54 +40,43 @@
           class="icon-chevron-up"/>
       </div>
     </div>
-    <div
-      v-if="showDetails"
-      class="details">
-      <div class="items">
-        <div class="price">
-          <h6>Price</h6>
-          <p>{{ item.quantity }} x {{ item.amount | currency }}</p>
-        </div>
-        <div class="price">
-          <h6>Total Cost</h6>
-          <p>{{ item.amount * item.quantity | currency }}</p>
-        </div>
-        <div
-          v-if="item.sync_timestamp"
-          class="date">
-          <h6>Last Sync</h6>
-          <p>{{ item.sync_timestamp | moment('from') }}</p>
-        </div>
-        <div class="actions">
-          <button
-            v-if="!item.error"
-            :class="{'button-danger': item.status === 'ACTIVE'}"
-            :disabled="item.status !== 'ACTIVE' && !(item.status !== 'ACTIVE' && item.error)"
-            class="button-sm"
-            @click.stop="cancel()">
-            <span class="icon-x-circle"/> Cancel Resource
-          </button>
-          <router-link
-            :to="{ name: 'marketView', params: { id: item.resource, type: (item.type === 'NODE_GROUP' || item.type == 'MANAGED') ? 'group' : 'node' } }"
-            class="button-sm button-info">
-            <span class="icon-book-open"/> View Details
-          </router-link>
-        </div>
-      </div>
-    </div>
+
+    <order-item-enterprise
+      v-if="type === 'ENTERPRISE'"
+      :item="item"
+      :show-details="showDetails"
+      :status="status"
+      @toggleDetails="toggleDetails"/>
+
+    <order-item-regular
+      v-else
+      :item="item"
+      :show-details="showDetails"
+      :status="status"
+      @toggleDetails="toggleDetails"
+      @sortItems="sortItems"/>
   </div>
 </template>
 
 <script>
-import cancelItemModal from './cancelItemModal'
+import orderItemEnterprise from './orderItemEnterprise'
+import orderItemRegular from './orderItemRegular'
 
 export default {
   components: {
-    cancelItemModal
+    orderItemEnterprise,
+    orderItemRegular
   },
   props: {
     item: {
       type: Object,
+      required: true
+    },
+    type: {
+      validator: (value) => {
+        return ['ENTERPRISE', 'REGULAR'].indexOf(value) !== -1
+      },
+      type: String,
       required: true
     }
   },
@@ -105,22 +94,14 @@ export default {
     toggleDetails () {
       this.showDetails = !this.showDetails
     },
-    cancel () {
-      this.$modal.show(cancelItemModal, {
-        id: this.item.id,
-        cancelItem: () => {
-          this.item.status = 'CANCELLED'
-          this.$emit('sortItems')
-        }
-      }, {
-        height: 'auto'
-      })
+    sortItems () {
+      this.$emit('sortItems')
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '~@styles/components/icons';
 
 .order-item {
