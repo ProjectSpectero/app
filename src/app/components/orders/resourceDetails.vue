@@ -73,7 +73,8 @@ export default {
     },
     accessor: {
       type: Object,
-      required: true
+      required: false,
+      default: () => {}
     },
     selectedReferences: {
       type: Array,
