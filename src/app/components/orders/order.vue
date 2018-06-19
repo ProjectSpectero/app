@@ -90,53 +90,20 @@
                 :show-invoice-link="true"/>
             </section>
 
-            <template v-if="isEnterpriseOrder">
-              <section class="col-9">
-                <div class="content-section">
+            <section class="col-9">
+              <div class="content-section">
+                <template v-if="isEnterpriseOrder">
                   <header>
-                    <h3><span class="icon-server icon-bg-info"/>Enterprise Order Resources</h3>
+                    <h3><span class="icon-server icon-bg-info"/>Enterprise Resources</h3>
                   </header>
-                </div>
-                <div class="content-section">
                   <order-item
                     v-for="(item, index) in order.line_items"
                     :key="index"
                     :item="item"
                     type="ENTERPRISE" />
-                </div>
-              </section>
-              <section class="col-3">
-                <div class="content-section latest-invoice">
-                  <header>
-                    <h3><span class="icon-dollar-sign icon-bg-info"/>Latest Invoice</h3>
-                  </header>
-                  <div class="invoice-details">
-                    <div class="balance">
-                      <h6>Balance Due</h6>
-                      <span
-                        :class="{'text-info': due.amount > 0}"
-                        class="balance-left">{{ due.amount | currency }}</span>
-                    </div>
-                    <div class="details">
-                      <small class="text-light">Invoice No: {{ order.last_invoice_id }}</small>
-                      <small
-                        v-if="order.due_next"
-                        class="text-light">{{ $i18n.t('misc.NEXT_DUE_DATE') }}: {{ order.due_next | moment('MMM D, YYYY') }}</small>
-                    </div>
-                  </div>
-                  <router-link
-                    :to="{ name: 'invoice', params: { id: order.last_invoice_id } }"
-                    class="button-info">View Invoice</router-link>
-                  <router-link
-                    :to="{ name: 'orderInvoices', params: { id: order.id } }"
-                    class="button">View All Invoices</router-link>
-                </div>
-              </section>
-            </template>
+                </template>
 
-            <template v-else>
-              <section class="col-9">
-                <div class="content-section">
+                <template v-else>
                   <header>
                     <h3><span class="icon-server icon-bg-info"/>Order Resources</h3>
                     <div class="filter-bar">
@@ -158,37 +125,36 @@
                     :item="item"
                     type="REGULAR"
                     @sortItems="sortItems" />
-                </div>
-              </section>
-
-              <section class="col-3">
-                <div class="content-section latest-invoice">
-                  <header>
-                    <h3><span class="icon-dollar-sign icon-bg-info"/>Latest Invoice</h3>
-                  </header>
-                  <div class="invoice-details">
-                    <div class="balance">
-                      <h6>Balance Due</h6>
-                      <span
-                        :class="{'text-info': due.amount > 0}"
-                        class="balance-left">{{ due.amount | currency }}</span>
-                    </div>
-                    <div class="details">
-                      <small class="text-light">Invoice No: {{ order.last_invoice_id }}</small>
-                      <small
-                        v-if="order.due_next"
-                        class="text-light">{{ $i18n.t('misc.NEXT_DUE_DATE') }}: {{ order.due_next | moment('MMM D, YYYY') }}</small>
-                    </div>
+                </template>
+              </div>
+            </section>
+            <section class="col-3">
+              <div class="content-section latest-invoice">
+                <header>
+                  <h3><span class="icon-dollar-sign icon-bg-info"/>Latest Invoice</h3>
+                </header>
+                <div class="invoice-details">
+                  <div class="balance">
+                    <h6>Balance Due</h6>
+                    <span
+                      :class="{'text-info': due.amount > 0}"
+                      class="balance-left">{{ due.amount | currency }}</span>
                   </div>
-                  <router-link
-                    :to="{ name: 'invoice', params: { id: order.last_invoice_id } }"
-                    class="button-info">View Invoice</router-link>
-                  <router-link
-                    :to="{ name: 'orderInvoices', params: { id: order.id } }"
-                    class="button">View All Invoices</router-link>
+                  <div class="details">
+                    <small class="text-light">Invoice No: {{ order.last_invoice_id }}</small>
+                    <small
+                      v-if="order.due_next"
+                      class="text-light">{{ $i18n.t('misc.NEXT_DUE_DATE') }}: {{ order.due_next | moment('MMM D, YYYY') }}</small>
+                  </div>
                 </div>
-              </section>
-            </template>
+                <router-link
+                  :to="{ name: 'invoice', params: { id: order.last_invoice_id } }"
+                  class="button-info">View Invoice</router-link>
+                <router-link
+                  :to="{ name: 'orderInvoices', params: { id: order.id } }"
+                  class="button">View All Invoices</router-link>
+              </div>
+            </section>
           </div>
         </div>
       </div>

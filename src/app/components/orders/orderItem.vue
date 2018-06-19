@@ -190,6 +190,11 @@ export default {
       font-weight: $font-semi;
     }
   }
+  .accessor {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed $color-border;
+  }
 }
 
 .status-dot {
