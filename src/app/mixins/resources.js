@@ -26,6 +26,7 @@ export default {
         success: response => {
           this.accessor = response.data.result.accessor ? this.parseAccessor(response.data.result.accessor) : ''
           this.buildResourceTree(response.data.result.resources)
+          this.error = false
         },
         fail: (e) => {
           console.log(e)
@@ -47,11 +48,15 @@ export default {
     },
     buildResourceTree (data) {
       let tree = []
+
       data.forEach(item => {
+        let references = this.parseReferences(item.resource.reference) || []
+        console.log('references in buildResourceTree are', references)
+
         tree.push({
           id: item.resource.id,
           type: item.resource.type,
-          references: this.parseReferences(item.resource.reference)
+          references: references
         })
       })
 
@@ -65,13 +70,15 @@ export default {
     },
     parseReferences (reference) {
       let data = []
-      reference.forEach(r => {
-        const parsed = JSON.parse(r.resource)
+
+      reference.forEach(ref => {
+        const r = ref.resource
+
         data.push({
-          type: r.type,
-          accessReference: parsed.accessReference ? parsed.accessReference.join('\n') : '',
-          accessConfig: parsed.accessConfig,
-          accessCredentials: (parsed.accessCredentials === 'SPECTERO_USERNAME_PASSWORD') ? this.$i18n.t('orders.USE_ACCESSOR') : parsed.accessCredentials
+          type: ref.type,
+          accessReference: r.accessReference ? r.accessReference.join('\n') : '',
+          accessConfig: r.accessConfig,
+          accessCredentials: (r.accessCredentials === 'SPECTERO_USERNAME_PASSWORD') ? this.$i18n.t('orders.USE_ACCESSOR') : r.accessCredentials
         })
       })
 
@@ -114,12 +121,14 @@ export default {
       })
     },
     selectResource (item) {
-      this.selectedResource = item
-      this.selectReference(this.types[0])
+      if (this.types[0]) {
+        this.selectedResource = item
+        this.selectReference(this.types[0])
+      }
     },
     selectReference (type) {
       this.selectedType = type
-      this.selectedReferences = this.selectedResource.references[type]
+      this.selectedReferences = this.selectedResource.references[type] || []
     }
   }
 }

@@ -19,6 +19,7 @@
                   :class="{ active: selectedResource === item }"
                   class="node-group"
                   @click="selectResource(item)">
+
                   <div class="group-name">
                     {{ $i18n.t('misc.ITEM') }} {{ item.id }}
                   </div>
@@ -50,7 +51,9 @@
                     @click.stop="showRegenerateAccessorModal(orderId)">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
                 </div>
 
-                <ul class="references tabs">
+                <ul
+                  v-if="!isEnterpriseOrder"
+                  class="references tabs">
                   <li
                     v-for="t in types"
                     :key="t"
@@ -112,11 +115,17 @@ export default {
   ],
   data () {
     return {
+      order: null,
       selectedType: null,
       selectedResource: null,
       selectedReferences: [],
       types: ['HTTPProxy', 'OpenVPN', 'ShadowSOCKS', 'SSHTunnel'],
       accessorCheckPending: false
+    }
+  },
+  computed: {
+    isEnterpriseOrder () {
+      return (this.order && this.order.line_items && this.order.line_items.length && this.order.line_items[0].type === 'ENTERPRISE')
     }
   },
   created () {
@@ -128,6 +137,7 @@ export default {
         data: { id: this.orderId },
         success: async response => {
           if (response.data.result && response.data.result.status === 'ACTIVE') {
+            this.order = response.data.result
             await this.fetchResources()
           } else {
             this.error = true
