@@ -18,6 +18,13 @@
         <h6>Last Sync</h6>
         <p>{{ item.sync_timestamp | moment('from') }}</p>
       </div>
+
+      <div class="actions">
+        <download
+          :content="ipListFormatted"
+          :file="`spectero-resource-${item.resource}-ips`"
+          button-class="button-sm button-info"/>
+      </div>
     </div>
 
     <div
@@ -34,11 +41,13 @@
 </template>
 
 <script>
+import download from '@/shared/components/download'
 import resourcesMixin from '@/app/mixins/resources'
 import resourceDetails from './resourceDetails'
 
 export default {
   components: {
+    download,
     resourceDetails
   },
   mixins: [
@@ -56,6 +65,11 @@ export default {
     showDetails: {
       type: Boolean,
       required: true
+    }
+  },
+  computed: {
+    ipListFormatted () {
+      return ''
     }
   },
   created () {
