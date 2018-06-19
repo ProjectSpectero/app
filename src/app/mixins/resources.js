@@ -51,7 +51,6 @@ export default {
 
       data.forEach(item => {
         let references = this.parseReferences(item.resource.reference) || []
-        console.log('references in buildResourceTree are', references)
 
         tree.push({
           id: item.resource.id,

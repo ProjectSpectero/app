@@ -69,11 +69,21 @@ export default {
   },
   computed: {
     ipListFormatted () {
-      return ''
+      let list = ''
+
+      if (this.resources) {
+        this.resources.forEach(r => {
+          r.references.forEach(ref => {
+            list += ref.accessReference
+          })
+        })
+      }
+
+      return list
     }
   },
-  created () {
-    this.fetchResources()
+  async created () {
+    await this.fetchResources()
   }
 }
 </script>
