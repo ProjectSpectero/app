@@ -32,7 +32,8 @@
               <template v-if="verified && verificationErrors.length === 0 && invoice.status === 'UNPAID' && canShowDueAmount">
                 <alert-outstanding
                   :due="due"
-                  :invoice="invoice"/>
+                  :invoice="invoice"
+                  :order="order"/>
               </template>
               <template v-else-if="invoice.type === 'CREDIT' && invoice.status === 'UNPAID' && canShowDueAmount">
                 <alert-outstanding

@@ -1,45 +1,52 @@
 <template>
   <div>
-    <top title="Settings"/>
-    <div class="container">
-      <div class="col-12 content-split">
-        <div class="split-list">
+    <top title="Settings">
+      <ul
+        slot="tabs"
+        class="tabs tabs-linked-list">
+        <li>
           <router-link
-            :to="{ name: 'settings', params: { tab: 'profile' } }"
+            :to="{ name: 'settings', params: { tab: 'account' } }"
             class="filter-link">
-            Profile
+            My Account
           </router-link>
+        </li>
+        <li>
           <router-link
             :to="{ name: 'settings', params: { tab: 'payment' } }"
             class="filter-link">
             Payment Details
           </router-link>
+        </li>
+        <li>
           <router-link
             :to="{ name: 'settings', params: { tab: 'keys' } }"
             class="filter-link">
             Node Key
           </router-link>
-        </div>
-        <div class="split-details">
-          <div class="section padded">
-            <tab-profile
-              v-if="currentTab === 'profile'"
-              :user="user"
-              :form-error="formError"
-              :form-loading="formLoading"
-              @processForm="processForm"/>
+        </li>
+      </ul>
+    </top>
+    <div class="container">
+      <div class="col-12">
+        <div class="section">
+          <tab-account
+            v-if="currentTab === 'account'"
+            :user="user"
+            :form-error="formError"
+            :form-loading="formLoading"
+            @processForm="processForm"/>
 
-            <tab-payment
-              v-if="currentTab === 'payment'"
-              :user="user"
-              :form-error="formError"
-              :form-loading="formLoading"
-              @processForm="processForm"/>
+          <tab-payment
+            v-if="currentTab === 'payment'"
+            :user="user"
+            :form-error="formError"
+            :form-loading="formLoading"
+            @processForm="processForm"/>
 
-            <tab-keys
-              v-if="currentTab === 'keys'"
-              :user="user"/>
-          </div>
+          <tab-keys
+            v-if="currentTab === 'keys'"
+            :user="user"/>
         </div>
       </div>
     </div>
@@ -50,14 +57,14 @@
 import top from '@/shared/components/top'
 import { mapGetters } from 'vuex'
 import userAPI from '@/app/api/user.js'
-import tabProfile from './tabs/profile'
+import tabAccount from './tabs/account'
 import tabPayment from './tabs/payment'
 import tabKeys from './tabs/keys'
 
 export default {
   components: {
     top,
-    tabProfile,
+    tabAccount,
     tabPayment,
     tabKeys
   },
@@ -90,10 +97,10 @@ export default {
   },
   methods: {
     checkRouteTab () {
-      let allowed = ['profile', 'payment', 'keys']
+      let allowed = ['account', 'payment', 'keys']
 
       if (this.currentTab === undefined || (allowed.indexOf(this.currentTab) > -1) === false) {
-        this.$router.push({ name: 'settings', params: { tab: 'profile' } })
+        this.$router.push({ name: 'settings', params: { tab: 'account' } })
       }
     },
     processForm (data) {

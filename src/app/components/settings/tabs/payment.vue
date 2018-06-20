@@ -1,9 +1,11 @@
 <template>
   <div>
-    <h2>Payment Details</h2>
     <div class="grid-container">
+      <div class="grid-title">
+        <h2>Payment Details</h2>
+      </div>
 
-      <div class="col-6">
+      <div class="col-8">
         <form @submit.prevent.stop="submit">
           <h3>Billing Address</h3>
           <div

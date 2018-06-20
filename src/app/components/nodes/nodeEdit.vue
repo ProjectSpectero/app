@@ -40,12 +40,13 @@
           </div>
         </div>
       </div>
-    </top>
 
-    <tabs
-      :tabs="tabs"
-      :active-tab="activeTab"
-      @switchTab="switchTab"/>
+      <tabs
+        slot="tabs"
+        :tabs="tabs"
+        :active-tab="activeTab"
+        @switchTab="switchTab"/>
+    </top>
 
     <div class="container">
       <edit-form
@@ -114,7 +115,7 @@ export default {
   },
   data () {
     return {
-      activeTab: null
+      activeTab: ''
     }
   },
   computed: {
