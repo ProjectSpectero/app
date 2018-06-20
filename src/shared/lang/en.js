@@ -232,7 +232,9 @@ module.exports = {
     PAYMENT_DUE: 'Payment Due',
     AMOUNT_DUE: 'Amount Due',
     BALANCE_DUE: 'Balance Due',
-    BALANCE_DUE_TEXT: 'There is an outstanding balance of <strong>{amount}</strong> due for this order. Please pay now to avoid late fees.',
+    BALANCE_DUE_TEXT: 'There is an outstanding balance of <strong>{amount}</strong> due for this order.',
+    BALANCE_DUE_PLEASE_PAY_NOW: 'Please pay now to avoid late fees.',
+    BALANCE_DUE_PAYMENT_POSSIBLE: 'Payment for this order will be automatically deducted on <strong>{dueDate}</strong> using your preferred payment method. You may also make an early payment now if you wish.',
     RESOURCE_HAS_BEEN_CANCELLED: 'Resource has been cancelled'
   },
 

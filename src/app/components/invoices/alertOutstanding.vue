@@ -2,7 +2,16 @@
   <div class="outstanding">
     <header>
       <h5>{{ $i18n.t('invoices.BALANCE_DUE') }}</h5>
-      <p v-html="$i18n.t('invoices.BALANCE_DUE_TEXT', { amount: currencyString })"/>
+      <p>
+        <span v-html="$i18n.t('invoices.BALANCE_DUE_TEXT', { amount: $filters.currency(due.amount) })"/>
+
+        <span
+          v-if="order && order.status === 'ACTIVE'"
+          v-html="$i18n.t('invoices.BALANCE_DUE_PAYMENT_POSSIBLE', { dueDate: $filters.moment(order.due_next, 'MMM D, YYYY') })"/>
+        <span
+          v-else
+          v-html="$i18n.t('invoices.BALANCE_DUE_PLEASE_PAY_NOW')"/>
+      </p>
     </header>
     <section class="body">
       <pay
@@ -33,15 +42,15 @@ export default {
       type: Object,
       required: true
     },
+    order: {
+      type: Object,
+      required: false,
+      default: () => {}
+    },
     showInvoiceLink: {
       type: Boolean,
       required: false,
       default: false
-    }
-  },
-  computed: {
-    currencyString () {
-      return this.$options.filters.currency(this.due.amount)
     }
   }
 }
