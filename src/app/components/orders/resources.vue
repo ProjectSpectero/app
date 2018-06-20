@@ -96,6 +96,7 @@
 
 <script>
 import resourcesMixin from '@/app/mixins/resources'
+import orderMixin from '@/app/mixins/order'
 import top from '@/shared/components/top'
 import loading from '@/shared/components/loading'
 import error from '@/shared/components/errors/error'
@@ -112,7 +113,8 @@ export default {
     regenerateAccessor
   },
   mixins: [
-    resourcesMixin
+    resourcesMixin,
+    orderMixin
   ],
   data () {
     return {
@@ -122,11 +124,6 @@ export default {
       selectedReferences: [],
       types: ['HTTPProxy', 'OpenVPN', 'ShadowSOCKS', 'SSHTunnel'],
       accessorCheckPending: false
-    }
-  },
-  computed: {
-    isEnterpriseOrder () {
-      return (this.order && this.order.line_items && this.order.line_items.length && this.order.line_items[0].type === 'ENTERPRISE')
     }
   },
   created () {

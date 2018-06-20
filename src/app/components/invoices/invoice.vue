@@ -39,7 +39,7 @@
                   :due="due"
                   :invoice="invoice"/>
               </template>
-              <template v-else-if="verified && verificationErrors.length > 0 && isFixable(order.status)">
+              <template v-else-if="verified && verificationErrors.length > 0 && order && isFixable">
                 <alert-processing
                   :error-bag="verificationErrors"
                   :invoice="invoice"
@@ -213,6 +213,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import orderAPI from '@/app/api/order'
 import invoiceAPI from '@/app/api/invoice'
+import orderMixin from '@/app/mixins/order'
 import alertProcessing from './alertProcessing'
 import alertOutstanding from './alertOutstanding'
 import top from '@/shared/components/top'
@@ -232,6 +233,9 @@ export default {
   metaInfo: {
     title: 'View Invoice'
   },
+  mixins: [
+    orderMixin
+  ],
   data () {
     return {
       order: null,
@@ -376,7 +380,7 @@ export default {
 
             // Test if this order is fixable (only certain status need the verify + fix combo)
             // for invalid resources
-            if (this.isFixable()) {
+            if (this.isFixable) {
               await this.verify()
             }
           }
@@ -423,12 +427,6 @@ export default {
           this.error = true
         }
       })
-    },
-    isFixable () {
-      const options = ['MANUAL_FRAUD_CHECK', 'AUTOMATED_FRAUD_CHECK', 'PENDING']
-      const status = this.order.status
-
-      return options.includes(status)
     },
     async verify () {
       await orderAPI.verify({

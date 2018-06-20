@@ -113,7 +113,7 @@
                         @sortUpdate="sortUpdate"/>
                     </div>
                   </header>
-                  <template v-if="verified && verificationErrors.length > 0 && isFixable()">
+                  <template v-if="verified && verificationErrors.length > 0 && isFixable">
                     <alert-processing
                       :error-bag="verificationErrors"
                       :invoice="order.last_invoice"
@@ -170,6 +170,7 @@
 <script>
 import orderAPI from '@/app/api/order'
 import invoiceAPI from '@/app/api/invoice'
+import orderMixin from '@/app/mixins/order'
 import { mapGetters } from 'vuex'
 import Dropdown from 'bp-vuejs-dropdown'
 import orderItem from './orderItem'
@@ -198,6 +199,9 @@ export default {
   metaInfo: {
     title: 'Order Details'
   },
+  mixins: [
+    orderMixin
+  ],
   data () {
     return {
       order: null,
@@ -225,9 +229,6 @@ export default {
     }),
     paddedId () {
       return this.order.id.toString().padStart(5, '0')
-    },
-    isEnterpriseOrder () {
-      return (this.order && this.order.line_items && this.order.line_items.length && this.order.line_items[0].type === 'ENTERPRISE')
     }
   },
   created () {
@@ -252,7 +253,7 @@ export default {
 
             // Test if this order is fixable (only certain status need the verify + fix combo)
             // for invalid resources
-            if (this.isFixable()) {
+            if (this.isFixable) {
               await this.verify()
             }
 
@@ -286,18 +287,12 @@ export default {
     cancel (id) {
       this.$modal.show(cancelOrderModal, {
         id: id,
-        isEnterpriseOrder: this.isEnterpriseOrder,
         cancelItem: () => {
           this.order.status = 'CANCELLED'
         }
       }, {
         height: 'auto'
       })
-    },
-    isFixable () {
-      const options = ['MANUAL_FRAUD_CHECK', 'AUTOMATED_FRAUD_CHECK', 'PENDING']
-      const status = this.order.status
-      return options.includes(status)
     },
     async verify () {
       await orderAPI.verify({
