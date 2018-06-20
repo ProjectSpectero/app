@@ -17,7 +17,7 @@
           </router-link>
 
           <template v-if="!loading">
-            <template v-if="((verified && verificationErrors.length === 0) || invoice.type === 'CREDIT') && invoice.status === 'UNPAID' && canShowDueAmount">
+            <template v-if="((verified && verificationErrors.length === 0) || invoice.type === 'CREDIT') && invoice.status === 'UNPAID' && canShowDueAmount && !standardOrderMismatch">
               <pay
                 :invoice="invoice"
                 :due="due"
@@ -278,6 +278,15 @@ export default {
     },
     isStandardInvoice () {
       return (this.invoice && this.invoice.order_id && this.invoice.type && this.invoice.type === 'STANDARD')
+    },
+    standardOrderMismatch () {
+      // Mismatched orders (where a STANDARD invoice is linked with an order that's not ACTIVE nor PENDING)
+      // can't be able to pay
+      if (this.isStandardInvoice && !this.order) {
+        return true
+      }
+
+      return this.isStandardInvoice && !this.order.status.includes(['ACTIVE', 'PENDING'])
     },
     canShowDueAmount () {
       return this.due && this.invoice.status !== 'REFUNDED'
