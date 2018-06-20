@@ -85,6 +85,7 @@
                       <div class="address-field">{{ user.address_line_1 }}</div>
                       <div class="address-field">{{ user.address_line_2 }}</div>
                       <div class="address-field">{{ user.state }}, {{ user.post_code }}</div>
+                      <div class="address-field">{{ getCountryById(user.country).name }}</div>
                       <div class="address-field spaced">{{ user.email }}</div>
                     </div>
                   </div>
@@ -250,7 +251,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'appAuth/user'
+      user: 'appAuth/user',
+      countries: 'settings/countries'
     }),
     status () {
       return this.$i18n.t(`invoices.INVOICE_STATUS.${this.invoice.status}`)
