@@ -129,11 +129,15 @@ export default {
     async fetchUser () {
       await userAPI.getMe({
         success: response => {
+          let userData = response.data.result
+
           this.formError = null
-          this.storeUser(response.data.result)
+          this.storeUser(userData)
 
           if (this.$route.query.redirect) {
             this.$router.push({ path: this.$route.query.redirect })
+          } else if (userData.plans.indexOf('enterprise') > -1) {
+            this.$router.push({ name: 'enterpriseOrders' })
           } else {
             this.$router.push({ name: 'dashboard' })
           }

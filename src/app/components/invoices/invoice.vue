@@ -85,6 +85,7 @@
                       <div class="address-field">{{ user.address_line_1 }}</div>
                       <div class="address-field">{{ user.address_line_2 }}</div>
                       <div class="address-field">{{ user.state }}, {{ user.post_code }}</div>
+                      <div class="address-field">{{ getCountryById(user.country).name }}</div>
                       <div class="address-field spaced">{{ user.email }}</div>
                     </div>
                   </div>
@@ -250,21 +251,26 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'appAuth/user'
+      user: 'appAuth/user',
+      countries: 'settings/countries'
     }),
     status () {
       return this.$i18n.t(`invoices.INVOICE_STATUS.${this.invoice.status}`)
     },
     statusClass () {
-      if (this.status === 'PENDING') {
-        return 'status-pending'
-      } else if (this.status === 'PAID') {
-        return 'status-paid'
-      } else if (this.status === 'REFUNDED') {
-        return 'status-refunded'
-      }
+      let status = this.status.toLowerCase()
 
-      return 'status-unpaid'
+      if (status === 'pending') {
+        return 'status-pending'
+      } else if (status === 'unpaid') {
+        return 'status-unpaid'
+      } else if (status === 'paid') {
+        return 'status-paid'
+      } else if (status === 'refunded') {
+        return 'status-refunded'
+      } else {
+        return 'unknown'
+      }
     },
     isStandardInvoice () {
       return (this.invoice && this.invoice.order_id && this.invoice.type && this.invoice.type === 'STANDARD')

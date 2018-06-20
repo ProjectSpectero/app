@@ -7,22 +7,35 @@
         @click="$emit('close')"/>
     </div>
     <div class="modal-content">
-      <p class="spaced">{{ $i18n.t('orders.DELETE_ORDER_CONFIRM_DIALOG') }}</p>
-      <div>
-        <button
-          :class="{'button-loading': loading, 'button-danger': !loading}"
-          :disabled="loading"
-          class="button"
-          @click="cancel()">
-          Cancel Order
-        </button>
-        <button
-          :disabled="loading"
-          class="button right"
-          @click="$emit('close')">
-          No, Nevermind
-        </button>
-      </div>
+      <template v-if="isEnterpriseOrder">
+        <div class="message message-info">{{ $i18n.t('orders.CONTACT_ACCOUNT_REPRESENTATIVE') }}</div>
+        <div>
+          <button
+            :disabled="loading"
+            class="button"
+            @click="$emit('close')">
+            Continue
+          </button>
+        </div>
+      </template>
+      <template v-else>
+        <p class="spaced">{{ $i18n.t('orders.DELETE_ORDER_CONFIRM_DIALOG') }}</p>
+        <div>
+          <button
+            :class="{'button-loading': loading, 'button-danger': !loading}"
+            :disabled="loading"
+            class="button"
+            @click="cancel()">
+            Cancel Order
+          </button>
+          <button
+            :disabled="loading"
+            class="button right"
+            @click="$emit('close')">
+            No, Nevermind
+          </button>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -40,6 +53,11 @@ export default {
       type: Function,
       required: false,
       default: () => {}
+    },
+    isEnterpriseOrder: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data () {
