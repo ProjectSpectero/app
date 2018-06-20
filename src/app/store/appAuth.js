@@ -13,8 +13,8 @@ const getters = {
   accessToken: (state) => state.accessToken,
   refreshToken: (state) => state.refreshToken,
   expiry: (state) => state.expiry,
-  isEnterprise: (state) => state.user.plans ? state.user.plans.indexOf('enterprise') > -1 : false,
-  isPro: (state) => state.user.plans ? state.user.plans.indexOf('pro') > -1 : false
+  isEnterprise: (state) => state.user && state.user.plans ? state.user.plans.indexOf('enterprise') > -1 : false,
+  isPro: (state) => state.user && state.user.plans ? state.user.plans.indexOf('pro') > -1 : false
 }
 
 const actions = {
