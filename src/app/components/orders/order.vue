@@ -286,6 +286,7 @@ export default {
     cancel (id) {
       this.$modal.show(cancelOrderModal, {
         id: id,
+        isEnterpriseOrder: this.isEnterpriseOrder,
         cancelItem: () => {
           this.order.status = 'CANCELLED'
         }
