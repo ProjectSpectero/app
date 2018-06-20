@@ -284,7 +284,8 @@ module.exports = {
     REGENERATE_ACCESSOR_WARNING: 'Regenerating your accessor will take up to 5 minutes to sync and your existing accessor details will become invalid. Do you wish to continue?',
     REGENERATE_ACCESSOR_ERROR: 'There was an issue regenerating your accessor. Please try again in a few minutes and if the problem persists please contact support.',
     REGENERATE_ACCESSOR_SUCCESS: 'Your request is processing and your accessor details will update within 5 minutes.',
-    SYNC_STATUS_TOOLTIP: 'The synchronization status of this node / node group.'
+    SYNC_STATUS_TOOLTIP: 'The synchronization status of this node / node group.',
+    CONTACT_ACCOUNT_REPRESENTATIVE: 'Please contact your account representative to perform this action.'
   },
 
   services: {
