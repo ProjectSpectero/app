@@ -256,15 +256,19 @@ export default {
       return this.$i18n.t(`invoices.INVOICE_STATUS.${this.invoice.status}`)
     },
     statusClass () {
-      if (this.status === 'PENDING') {
-        return 'status-pending'
-      } else if (this.status === 'PAID') {
-        return 'status-paid'
-      } else if (this.status === 'REFUNDED') {
-        return 'status-refunded'
-      }
+      let status = this.status.toLowerCase()
 
-      return 'status-unpaid'
+      if (status === 'pending') {
+        return 'status-pending'
+      } else if (status === 'unpaid') {
+        return 'status-unpaid'
+      } else if (status === 'paid') {
+        return 'status-paid'
+      } else if (status === 'refunded') {
+        return 'status-refunded'
+      } else {
+        return 'unknown'
+      }
     },
     isStandardInvoice () {
       return (this.invoice && this.invoice.order_id && this.invoice.type && this.invoice.type === 'STANDARD')
