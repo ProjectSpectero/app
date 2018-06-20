@@ -4,7 +4,9 @@
     class="sidebar">
     <div class="menu-logo">
       <router-link :to="{ name: 'dashboard' }">
-        <div class="logo logo-sm"/>
+        <div
+          :class="{ 'logo-pro': user.plans.indexOf('pro') > -1 }"
+          class="logo logo-sm"/>
       </router-link>
     </div>
     <div class="menu-items middle">
