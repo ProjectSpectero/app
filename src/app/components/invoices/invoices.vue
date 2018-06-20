@@ -2,32 +2,47 @@
   <div>
     <template v-if="!error">
       <top :title="$i18n.t('misc.INVOICES')">
-        <help-button obj="invoices.topics"></help-button>
+        <help-button obj="invoices.topics"/>
       </top>
       <div v-if="tableData">
-        <div class="container content-split">
-          <div class="split-item split-list">
-            <router-link v-for="s in status" :key="s" :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
-              {{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}
-            </router-link>
-          </div>
-          <div class="split-item split-details">
-            <template v-if="tableData.length">
-              <invoices-list
-                :searchId="searchId"
-                :pagination="pagination"
-                :tableData="tableData"
-                @changedPage="changedPage"
-                @sortByColumn="sortByColumn">
-              </invoices-list>
-            </template>
-            <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'invoices' })"></not-found>
+        <div class="container">
+          <div class="col-12 content-split">
+            <div class="split-list">
+              <router-link
+                v-for="s in status"
+                :key="s"
+                :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }"
+                :class="{ active: currentStatus === s }"
+                class="filter-link">
+                {{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}
+              </router-link>
+            </div>
+            <div class="split-details">
+              <template v-if="tableData.length">
+                <invoices-list
+                  :search-id="searchId"
+                  :pagination="pagination"
+                  :table-data="tableData"
+                  @changedPage="changedPage"
+                  @sortByColumn="sortByColumn"/>
+              </template>
+              <not-found
+                v-else
+                type="invoices">
+                <slot>
+                  <p v-html="$i18n.t('invoices.NO_INVOICES_TEXT')"/>
+                </slot>
+              </not-found>
+            </div>
           </div>
         </div>
       </div>
-      <loading v-else></loading>
+      <loading v-else/>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
@@ -43,7 +58,21 @@ import notFound from '@/shared/components/notFound'
 import helpButton from '@/shared/components/docs/button'
 
 export default {
-  mixins: [filtersMixin],
+  components: {
+    top,
+    error,
+    paginator,
+    invoicesList,
+    loading,
+    notFound,
+    helpButton
+  },
+  mixins: [
+    filtersMixin
+  ],
+  metaInfo: {
+    title: 'Invoices'
+  },
   data () {
     return {
       perPage: 10,
@@ -51,16 +80,25 @@ export default {
       errorItem: 'invoices'
     }
   },
+  computed: {
+    currentStatus () {
+      return this.$route.params.status ? this.$route.params.status.toLowerCase() : 'all'
+    }
+  },
+  watch: {
+    '$route': {
+      handler (n, o) {
+        this.sidebarSort('status', this.currentStatus, n.params.page)
+      },
+      deep: true,
+      immediate: false
+    }
+  },
   created () {
     if (this.$route.name === 'invoices') {
       this.$router.push({ name: 'invoicesByStatus', params: { status: 'all', page: 1 } })
     } else {
       this.sidebarSort('status', this.currentStatus, this.currentPage)
-    }
-  },
-  computed: {
-    currentStatus () {
-      return this.$route.params.status ? this.$route.params.status.toLowerCase() : 'all'
     }
   },
   methods: {
@@ -92,9 +130,11 @@ export default {
     },
     async fetchInvoices (page) {
       await invoiceAPI.myInvoices({
-        searchId: this.searchId,
-        page: page,
-        limit: this.perPage,
+        queryParams: {
+          searchId: this.searchId,
+          page: page || 1,
+          perPage: this.perPage || 10
+        },
         success: response => {
           this.error = false
           this.pagination = response.data.pagination
@@ -107,27 +147,6 @@ export default {
         }
       })
     }
-  },
-  watch: {
-    '$route': {
-      handler (n, o) {
-        this.sidebarSort('status', this.currentStatus, n.params.page)
-      },
-      deep: true,
-      immediate: false
-    }
-  },
-  components: {
-    top,
-    error,
-    paginator,
-    invoicesList,
-    loading,
-    notFound,
-    helpButton
-  },
-  metaInfo: {
-    title: 'Invoices'
   }
 }
 </script>

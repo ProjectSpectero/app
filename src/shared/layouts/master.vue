@@ -1,11 +1,11 @@
 <template>
   <div class="spectero">
-    <sidebar></sidebar>
+    <sidebar/>
     <div class="content">
       <modals-container/>
-      <router-view></router-view>
+      <router-view/>
     </div>
-    <help></help>
+    <help/>
   </div>
 </template>
 

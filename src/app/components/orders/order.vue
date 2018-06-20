@@ -1,10 +1,15 @@
 <template>
-  <div>
+  <div v-if="user">
     <template v-if="!error">
       <div v-if="order">
-        <top title="Order Details" :subtitle="'Order Number: ' + order.id.toString().padStart(5, '0')">
-          <router-link v-if="!loading && order.status === 'ACTIVE'" class="button button-info" :to="{ name: 'resources', params: { id: order.id } }">
-            <span class="icon-package"></span> {{ $i18n.t('orders.VIEW_RESOURCES') }}
+        <top
+          :subtitle="'Order Number: ' + paddedId"
+          title="Order Details">
+          <router-link
+            v-if="!loading && order.status === 'ACTIVE'"
+            :to="{ name: 'resources', params: { id: order.id } }"
+            class="button-info">
+            <span class="icon-package"/> {{ $i18n.t('orders.VIEW_RESOURCES') }}
           </router-link>
 
           <dropdown>
@@ -13,24 +18,37 @@
             </template>
             <template slot="body">
               <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">
-                <span class="icon-tag"></span> {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
+                <span class="icon-tag"/> {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
+              </router-link>
+
+              <router-link :to="{ name: 'orderInvoices', params: { id: order.id } }">
+                <span class="icon-tag"/> {{ $i18n.t('orders.VIEW_ALL_INVOICES') }}
               </router-link>
 
               <template v-if="order.status !== 'CANCELLED'">
-                <router-link v-if="order.last_invoice && order.last_invoice.status === 'UNPAID'" :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
-                  <span class="icon-dollar-sign"></span> {{ $i18n.t('misc.PAY_NOW') }}
+                <router-link
+                  v-if="order.last_invoice && order.last_invoice.status === 'UNPAID'"
+                  :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
+                  <span class="icon-dollar-sign"/> {{ $i18n.t('misc.PAY_NOW') }}
                 </router-link>
-                <router-link v-if="!loading && order.status === 'ACTIVE'" :to="{ name: 'resources', params: { id: order.id } }">
-                  <span class="icon-package"></span> {{ $i18n.t('orders.VIEW_RESOURCES') }}
+                <router-link
+                  v-if="!loading && order.status === 'ACTIVE'"
+                  :to="{ name: 'resources', params: { id: order.id } }">
+                  <span class="icon-package"/> {{ $i18n.t('orders.VIEW_RESOURCES') }}
                 </router-link>
-                <a @click.stop="cancel(order.id)" class="danger">
-                  <span class="icon-x-circle"></span> {{ $i18n.t('misc.CANCEL') }} {{ $i18n.t('misc.ORDER') }}
+                <a
+                  class="danger"
+                  @click.stop="cancel(order.id)">
+                  <span class="icon-x-circle"/> {{ $i18n.t('misc.CANCEL') }} {{ $i18n.t('misc.ORDER') }}
                 </a>
               </template>
             </template>
           </dropdown>
 
-          <div v-if="!loading" slot="sub" class="sub">
+          <div
+            v-if="!loading"
+            slot="sub"
+            class="sub">
             <div class="col-info">
               <div class="info-box">
                 <h5>{{ $i18n.t('misc.ORDER_DATE') }}</h5>
@@ -42,7 +60,7 @@
               </div>
               <div class="info-box">
                 <h5>{{ $i18n.t('misc.STATUS') }}</h5>
-                <div :class="'badge status-' + order.status.toLowerCase()">
+                <div :class="'badge-' + order.status.toLowerCase()">
                   {{ $i18n.t('orders.ORDER_STATUS.' + order.status) }}
                 </div>
               </div>
@@ -50,7 +68,9 @@
                 <h5>{{ $i18n.t('misc.ORDER') }} {{ $i18n.t('misc.TOTAL') }}</h5>
                 <p>{{ order.last_invoice.amount | currency }}</p>
               </div>
-              <div class="info-box">
+              <div
+                v-if="order.due_next"
+                class="info-box">
                 <h5>{{ $i18n.t('misc.NEXT_DUE_DATE') }}</h5>
                 <p>{{ order.due_next | moment('MMM D, YYYY') }}</p>
                 <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">
@@ -62,26 +82,88 @@
         </top>
         <div v-if="!loading">
           <div class="container">
-            <template v-if="verified && !verificationErrors && order.last_invoice.status === 'UNPAID'">
-              <alert-outstanding :due="due" :invoice="order.last_invoice"></alert-outstanding>
-            </template>
-            <template v-else-if="verified && verificationErrors && isFixable()">
-              <alert-processing :errorBag="verificationErrors" :invoice="order.last_invoice" @update="fetchOrder"></alert-processing>
-            </template>
-
             <section class="col-12">
-              <h3>Items in this order</h3>
-              <div class="filter-bar">
-                <sort-dropdown :buttonText="'Sort Items By'" :sortFields="sort.fields" @sortUpdate="sortUpdate"></sort-dropdown>
+              <alert-outstanding
+                v-if="verified && verificationErrors.length === 0 && order.last_invoice.status === 'UNPAID'"
+                :due="due"
+                :invoice="order.last_invoice"
+                :show-invoice-link="true"/>
+            </section>
+
+            <section class="col-9">
+              <div class="content-section">
+                <template v-if="isEnterpriseOrder">
+                  <header>
+                    <h3><span class="icon-server icon-bg-info"/>Enterprise Resources</h3>
+                  </header>
+                  <order-item
+                    v-for="(item, index) in order.line_items"
+                    :key="index"
+                    :item="item"
+                    type="ENTERPRISE" />
+                </template>
+
+                <template v-else>
+                  <header>
+                    <h3><span class="icon-server icon-bg-info"/>Order Resources</h3>
+                    <div class="filter-bar">
+                      <sort-dropdown
+                        :button-text="'Sort Resources'"
+                        :sort-fields="sort.fields"
+                        @sortUpdate="sortUpdate"/>
+                    </div>
+                  </header>
+                  <template v-if="verified && verificationErrors.length > 0 && isFixable()">
+                    <alert-processing
+                      :error-bag="verificationErrors"
+                      :invoice="order.last_invoice"
+                      @update="fetchOrder"/>
+                  </template>
+                  <order-item
+                    v-for="(item, index) in order.line_items"
+                    :key="index"
+                    :item="item"
+                    type="REGULAR"
+                    @sortItems="sortItems" />
+                </template>
               </div>
-              <order-item v-for="(item, index) in order.line_items" :key="index" :item="item" @sortItems="sortItems" />
+            </section>
+            <section class="col-3">
+              <div class="content-section latest-invoice">
+                <header>
+                  <h3><span class="icon-dollar-sign icon-bg-info"/>Latest Invoice</h3>
+                </header>
+                <div class="invoice-details">
+                  <div class="balance">
+                    <h6>Balance Due</h6>
+                    <span
+                      :class="{'text-info': due.amount > 0}"
+                      class="balance-left">{{ due.amount | currency }}</span>
+                  </div>
+                  <div class="details">
+                    <small class="text-light">Invoice No: {{ order.last_invoice_id }}</small>
+                    <small
+                      v-if="order.due_next"
+                      class="text-light">{{ $i18n.t('misc.NEXT_DUE_DATE') }}: {{ order.due_next | moment('MMM D, YYYY') }}</small>
+                  </div>
+                </div>
+                <router-link
+                  :to="{ name: 'invoice', params: { id: order.last_invoice_id } }"
+                  class="button-info">View Invoice</router-link>
+                <router-link
+                  :to="{ name: 'orderInvoices', params: { id: order.id } }"
+                  class="button">View All Invoices</router-link>
+              </div>
             </section>
           </div>
         </div>
       </div>
-      <loading v-else></loading>
+      <loading v-else/>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
@@ -101,6 +183,21 @@ import alertOutstanding from '../invoices/alertOutstanding'
 import cancelOrderModal from './cancelOrderModal'
 
 export default {
+  components: {
+    top,
+    error,
+    loading,
+    Dropdown,
+    sortDropdown,
+    orderItem,
+    alertOutstanding,
+    alertProcessing,
+    tooltip,
+    cancelOrderModal
+  },
+  metaInfo: {
+    title: 'Order Details'
+  },
   data () {
     return {
       order: null,
@@ -108,7 +205,7 @@ export default {
       errorItem: 'order',
       errorCode: 404,
       verified: false,
-      verificationErrors: null,
+      verificationErrors: [],
       sort: {
         fields: {
           'id': 'ID',
@@ -121,23 +218,33 @@ export default {
       }
     }
   },
-  created () {
-    this.fetchOrder()
-  },
   computed: {
     ...mapGetters({
-      user: 'appAuth/user'
-    })
+      user: 'appAuth/user',
+      isEnterprise: 'appAuth/isEnterprise'
+    }),
+    paddedId () {
+      return this.order.id.toString().padStart(5, '0')
+    },
+    isEnterpriseOrder () {
+      return (this.order && this.order.line_items && this.order.line_items.length && this.order.line_items[0].type === 'ENTERPRISE')
+    }
+  },
+  created () {
+    this.fetchOrder()
   },
   methods: {
     async fetchOrder () {
       await orderAPI.order({
-        data: {
-          id: this.$route.params.id
-        },
+        data: { id: this.$route.params.id },
         success: async response => {
           if (response.data.result) {
             this.order = response.data.result
+
+            for (let key in this.order.line_items) {
+              this.order.line_items[key].error = null
+            }
+
             this.sortItems()
 
             // Fetch due for last invoice (comes with the order object)
@@ -179,6 +286,7 @@ export default {
     cancel (id) {
       this.$modal.show(cancelOrderModal, {
         id: id,
+        isEnterpriseOrder: this.isEnterpriseOrder,
         cancelItem: () => {
           this.order.status = 'CANCELLED'
         }
@@ -189,7 +297,6 @@ export default {
     isFixable () {
       const options = ['MANUAL_FRAUD_CHECK', 'AUTOMATED_FRAUD_CHECK', 'PENDING']
       const status = this.order.status
-
       return options.includes(status)
     },
     async verify () {
@@ -197,13 +304,21 @@ export default {
         data: { id: this.order.id },
         success: response => {
           this.verified = true
-          this.verificationErrors = null
         },
         fail: error => {
           this.verified = true
 
           if (typeof error.errors === 'object') {
-            this.verificationErrors = error.errors
+            for (let key in error.errors) {
+              let e = error.errors[key]
+              this.verificationErrors.push(e)
+
+              let itemIndex = this.order.line_items.findIndex(i => i.id === e.id)
+              let item = Object.assign({}, this.order.line_items[itemIndex])
+
+              item.error = e.reason
+              this.$set(this.order.line_items, itemIndex, item)
+            }
           } else {
             this.$toasted.error(this.errorAPI(error, 'orders'))
           }
@@ -223,34 +338,58 @@ export default {
         return (this.sort.order === 'asc') ? (parsedA < parsedB) : (parsedA > parsedB)
       })
     }
-  },
-  components: {
-    top,
-    error,
-    loading,
-    Dropdown,
-    sortDropdown,
-    orderItem,
-    alertOutstanding,
-    alertProcessing,
-    tooltip,
-    cancelOrderModal
-  },
-  metaInfo: {
-    title: 'Order Details'
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '~@styles/components/badges';
+.order-item:last-child {
+  margin-bottom: 0;
+}
 
-.badge {
-  &.status-active {
-    @extend .badge-success;
-  }
-  &.status-automated_fraud_check, &.status-manual_fraud_check {
-    @extend .badge-warning;
+.latest-invoice {
+  .invoice-details {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: $pad;
+    padding: $pad 0;
+    border-top: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
+
+    .balance {
+      flex: 1;
+
+      h6 {
+        margin-bottom: 8px;
+      }
+      .balance-left {
+        font-size: 210%;
+        font-weight: $font-bold;
+        line-height: 100%;
+      }
+    }
+
+    .details {
+      text-align: right;
+    }
+    span, small {
+      display: block;
+    }
+
+    h6 {
+      font-weight: $font-semi;
+      color: $color-primary;
+    }
+
+    small {
+      margin-bottom: 12px;
+      font-size: 100%;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
   }
 }
 </style>

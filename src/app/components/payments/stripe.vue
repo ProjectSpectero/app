@@ -7,14 +7,20 @@
           <h5 class="order-number">{{ $i18n.t('payments.PAY_HEADER', { invoiceId: invoiceId }) }}</h5>
           <p class="order-description">{{ $i18n.t('payments.PAY_DESCRIPTION') }}</p>
           <p class="order-total">Total: {{ due.amount | currency }} {{ due.currency }}</p>
-          <p class="order-secure"><span class="icon-lock"></span> {{ $i18n.t('payments.PAY_SECURE') }}</p>
+          <p class="order-secure"><span class="icon-lock"/> {{ $i18n.t('payments.PAY_SECURE') }} <span
+            v-tooltip="$i18n.t('payments.PAY_SECURE_DETAILS')"
+            class="tooltip-text-trigger">{{ $i18n.t('misc.LEARN_MORE') }} &raquo;</span></p>
         </div>
       </div>
 
       <div v-if="user.stored_card_identifier && !chosen">
         <p><strong>{{ $i18n.t('payments.USE_SAVED_CARD', { card: user.stored_card_identifier }) }}</strong></p><br>
-        <button class="button button-success" @click="canUseCard(true)">{{ $i18n.t('payments.BUTTON_USE_SAVED_CARD_YES') }}</button>
-        <button class="button" @click="canUseCard(false)">{{ $i18n.t('payments.BUTTON_USE_SAVED_CARD_NO') }}</button>
+        <button
+          class="button-success"
+          @click="canUseCard(true)">{{ $i18n.t('payments.BUTTON_USE_SAVED_CARD_YES') }}</button>
+        <button
+          class="button"
+          @click="canUseCard(false)">{{ $i18n.t('payments.BUTTON_USE_SAVED_CARD_NO') }}</button>
       </div>
 
       <template v-if="chosen">
@@ -22,7 +28,7 @@
           {{ $i18n.t('payments.PAYMENT_PROCESSING') }}
         </template>
         <template v-else>
-          <credit-card :invoiceId="invoiceId"></credit-card>
+          <credit-card :invoice-id="invoiceId"/>
         </template>
       </template>
     </div>
@@ -30,12 +36,15 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import invoiceAPI from '@/app/api/invoice.js'
-import paymentAPI from '@/app/api/payment.js'
+import { mapGetters } from 'vuex'
+import invoiceAPI from '@/app/api/invoice'
+import paymentAPI from '@/app/api/payment'
 import creditCard from './creditCard'
 
 export default {
+  components: {
+    creditCard
+  },
   metaInfo: {
     title: 'Checkout'
   },
@@ -46,10 +55,6 @@ export default {
       due: 0
     }
   },
-  async created () {
-    await this.fetchDue()
-    this.chosen = !this.user.stored_card_identifier
-  },
   computed: {
     ...mapGetters({
       user: 'appAuth/user'
@@ -58,10 +63,11 @@ export default {
       return parseInt(this.$route.params.invoiceId)
     }
   },
+  async created () {
+    await this.fetchDue()
+    this.chosen = !this.user.stored_card_identifier
+  },
   methods: {
-    ...mapActions({
-      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus'
-    }),
     fetchDue () {
       invoiceAPI.due({
         data: {
@@ -89,7 +95,6 @@ export default {
             invoiceId: this.invoiceId
           },
           success: async processResponse => {
-            await this.setPendingInvoiceStatus(true)
             this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
             this.$router.push({ name: 'invoice', params: { id: this.invoiceId } })
           },
@@ -100,9 +105,6 @@ export default {
         })
       }
     }
-  },
-  components: {
-    creditCard
   }
 }
 </script>

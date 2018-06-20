@@ -1,26 +1,35 @@
 <template>
   <div>
     <form id="form-tfa">
-      <div class="message message-error" v-if="formError">{{ formError }}</div>
+      <div
+        v-if="formError"
+        class="message message-error">{{ formError }}</div>
 
       <div class="form-input">
         <input
-          type="text"
+          v-validate="'required'"
           v-model="tfaValue"
+          :class="{'input-error': errors.has('tfaValue')}"
+          :disabled="formLoading"
+          type="text"
           name="tfaValue"
           placeholder="Enter TFA Key"
           class="input max-width"
-          :class="{'input-error': errors.has('tfaValue')}"
-          :disabled="formLoading"
-          v-validate="'required'"
           data-vv-as="two factor authentication key">
 
-        <span v-show="errors.has('tfaValue')" class="input-error-message">
+        <span
+          v-show="errors.has('tfaValue')"
+          class="input-error-message">
           {{ errors.first('tfaValue') }}
         </span>
       </div>
 
-      <button class="button button-info max-width" @click.prevent="submit" @keyup.enter="submit" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+      <button
+        :class="{ 'button-loading': formLoading }"
+        :disabled="formLoading"
+        class="button-info max-width"
+        @click.prevent="submit"
+        @keyup.enter="submit">
         {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.CONTINUE') }}
       </button>
     </form>
@@ -29,6 +38,9 @@
 
 <script>
 export default {
+  metaInfo: {
+    title: 'Two Factor Auth'
+  },
   data () {
     return {
       tfaValue: null,
@@ -40,9 +52,6 @@ export default {
     reset () {
       Object.assign(this.$data, this.$options.data.call(this))
     }
-  },
-  metaInfo: {
-    title: 'Two Factor Auth'
   }
 }
 </script>

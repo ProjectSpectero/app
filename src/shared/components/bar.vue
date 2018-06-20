@@ -1,23 +1,25 @@
 <template>
   <div class="bar">
-    <component :is="barComponent"></component>
+    <component :is="barComponent"/>
   </div>
 </template>
 
 <script>
-  import restartHTTPProxy from '../services/HTTPProxy/restart'
+import restartHTTPProxy from '../services/HTTPProxy/restart'
 
-  export default {
-    props: {
-      barComponent: String
-    },
-    components: {
-      restartHTTPProxy
+export default {
+  components: {
+    restartHTTPProxy
+  },
+  props: {
+    barComponent: {
+      type: String,
+      required: true
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
 
 </style>
-

@@ -1,95 +1,122 @@
 <template>
   <div class="order-item">
-    <div @click="toggleDetails()" class="overview items">
+    <div
+      class="overview items"
+      @click="toggleDetails()">
       <div class="title">
-        <h5 class="mb-1">
+        <h5 class="mb-0">
+          <div
+            v-tooltip="$i18n.t('orders.ORDER_STATUS.' + ((item.error) ? 'ERROR' : item.status))"
+            :class="['status-' + status, {'status-error': item.error }]"
+            class="status-dot status-active"/>
+          Resource {{ item.resource }}
+        </h5>
+        <span
+          v-if="item.error"
+          class="line-msg text-danger">
+          <span class="icon-alert-circle"/>
+          {{ $i18n.t(`invoices.RESOURCE_ERROR.${item.error}`) }}
+        </span>
+      </div>
+
+      <div v-if="type !== 'ENTERPRISE'">
+        <span class="badge">
           <template v-if="item.type === 'MANAGED'">Managed </template>
           Node
           <template v-if="item.type === 'NODE_GROUP' || item.type === 'MANAGED'"> Group</template>
-          #{{ item.resource }}
-        </h5>
-        <h6 :class="['status-' + item.status]"><div class="status-dot status-active" :class="['status-' + item.status]"></div> {{ item.status }}</h6>
+        </span>
       </div>
-      <div :class="['sync-status-' + (item.sync_status === 'PENDING_SYNC' ? 'pending' : 'complete')]">
-        <span v-if="item.sync_status === 'PENDING_SYNC'"><span class="icon-rotate-cw"></span> Sync Pending</span>
-        <span v-else><span class="icon-check-circle"></span> In Sync</span>
+      <div
+        v-tooltip="(item.sync_status === 'PENDING_SYNC') ? 'Sync Pending' : 'In Sync'"
+        :class="['sync-status-' + (item.sync_status === 'PENDING_SYNC' ? 'pending' : 'complete')]">
+        <span class="icon-refresh-cw icon-big"/>
       </div>
       <div class="details-toggle">
-        <template v-if="!showDetails"><span class="icon-chevron-down"></span> Show Details</template>
-        <template v-else><span class="icon-chevron-up"></span> Hide Details</template>
+        <span
+          v-if="!showDetails"
+          class="icon-chevron-down"/>
+        <span
+          v-else
+          class="icon-chevron-up"/>
       </div>
     </div>
-    <div v-if="showDetails" class="details">
-      <div class="items">
-        <div class="price">
-          <h6>Price</h6>
-          <p>{{ item.quantity }} x {{ item.amount | currency }}</p>
-        </div>
-        <div class="price">
-          <h6>Total Cost</h6>
-          <p>{{ item.amount * item.quantity | currency }}</p>
-        </div>
-        <div class="date">
-          <h6>Last Sync</h6>
-          <p>{{ item.sync_timestamp | moment('from') }}</p>
-        </div>
-        <div class="actions">
-          <button @click.stop="cancel()" class="button button-sm button-bordered" :class="{'button-danger': item.status === 'ACTIVE'}" :disabled="item.status !== 'ACTIVE'"><span class="icon-x-circle"></span> Cancel Item</button>
-          <router-link :to="{ name: 'marketView', params: { id: item.resource, type: (item.type === 'NODE_GROUP' || item.type == 'MANAGED') ? 'group' : 'node' } }" class="button button-sm button-info">
-            <span class="icon-eye"></span> Full Details
-          </router-link>
-        </div>
-      </div>
-    </div>
+
+    <order-item-enterprise
+      v-if="type === 'ENTERPRISE'"
+      :item="item"
+      :show-details="showDetails"
+      :status="status"
+      @toggleDetails="toggleDetails"/>
+
+    <order-item-regular
+      v-else
+      :item="item"
+      :show-details="showDetails"
+      :status="status"
+      @toggleDetails="toggleDetails"
+      @sortItems="sortItems"/>
   </div>
 </template>
 
 <script>
-import cancelItemModal from './cancelItemModal'
+import orderItemEnterprise from './orderItemEnterprise'
+import orderItemRegular from './orderItemRegular'
 
 export default {
+  components: {
+    orderItemEnterprise,
+    orderItemRegular
+  },
   props: {
-    item: Object
+    item: {
+      type: Object,
+      required: true
+    },
+    type: {
+      validator: (value) => {
+        return ['ENTERPRISE', 'REGULAR'].indexOf(value) !== -1
+      },
+      type: String,
+      required: true
+    }
   },
   data () {
     return {
       showDetails: false
     }
   },
+  computed: {
+    status () {
+      return this.item.status.toLowerCase()
+    }
+  },
   methods: {
     toggleDetails () {
       this.showDetails = !this.showDetails
     },
-    cancel () {
-      this.$modal.show(cancelItemModal, {
-        id: this.item.id,
-        cancelItem: () => {
-          this.item.status = 'CANCELLED'
-          this.$emit('sortItems')
-        }
-      }, {
-        height: 'auto'
-      })
+    sortItems () {
+      this.$emit('sortItems')
     }
-  },
-  components: {
-    cancelItemModal
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import '~@styles/components/icons';
+
 .order-item {
   margin-bottom: 12px;
   background: #fff;
-  box-shadow: 0px 2px 5px 0px rgba(33, 41, 56, 0.1);
+  box-shadow: 0px 2px 5px 0px rgba(33, 41, 56, 0.05);
+  border: 1px solid $color-border;
+  border-radius: 6px;
 
   .items {
     display: flex;
     align-items: center;
 
     > div {
-      margin-right: 40px;
+      margin-right: 20px;
 
       &:last-child {
         margin-right: 0;
@@ -97,24 +124,18 @@ export default {
     }
   }
   .overview {
-    padding: 20px;
+    padding: 16px;
     cursor: pointer;
 
     .title {
       flex: 1;
     }
-    h6[class^="status-"] {
-      padding-right: 6px;
-      font-weight: $font-semi;
-    }
     [class^="sync-status-"] {
-      margin-right: 20px;
       font-weight: $font-semi;
 
-      [class^="icon-"] {
-        font-size: 90%;
-        margin-right: 4px;
-      }
+    }
+    [class^="icon-"].icon-big {
+      font-size: 16px;
     }
   }
   .details {
@@ -130,10 +151,6 @@ export default {
       margin-left: auto;
       display: flex;
       align-items: center;
-
-      .button {
-        margin-left: 6px;
-      }
     }
     &:before {
       flex: 0 0 100%;
@@ -143,21 +160,40 @@ export default {
       border-top: 1px dashed $color-border;
     }
   }
-  .status-ACTIVE, .sync-status-complete {
-    color: $color-success;
-    border-color: $color-success;
+
+  .sync-status-complete {
+    color: $color-info;
   }
-  .status-PENDING {
-    color: $color-warning;
-    border-color: $color-warning;
-  }
-  .status-CANCELLED, .sync-status-pending {
+  .sync-status-pending {
     color: $color-light;
-    border-color: $color-light;
   }
+
   .details-toggle {
-    width: 100px;
-    text-align: right;
+    color: $color-light;
+    font-size: 22px;
+  }
+  .line-msg {
+    display: block;
+    margin-top: 8px;
+    font-weight: $font-bold;
+
+    &.no-space {
+      margin-top: 0;
+    }
+    [class^="icon-"] {
+      position: relative;
+      top: 1px;
+    }
+
+    &.line-cancelled-msg {
+      color: $color-light;
+      font-weight: $font-semi;
+    }
+  }
+  .accessor {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed $color-border;
   }
 }
 
@@ -165,9 +201,22 @@ export default {
   width: 10px;
   height: 10px;
   display: inline-block;
-  margin-right: 2px;
-  border-radius: 12px;
-  background: transparent;
-  border: 3px solid $color-border;
+  margin-right: 4px;
+  border-radius: 100%;
+  background-color: $color-light;
+  border-radius: 3px;
+
+  &.status-active {
+    background-color: $color-success;
+  }
+  &.status-pending {
+    background-color: $color-warning;
+  }
+  &.status-cancelled {
+    background-color: $color-light;
+  }
+  &.status-error {
+    background-color: $color-danger;
+  }
 }
 </style>

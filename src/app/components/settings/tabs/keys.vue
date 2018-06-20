@@ -6,19 +6,22 @@
         <div class="form-input">
           <div class="label"><label for="nodeKeyPlaceholder"><strong>Current Node Key</strong></label></div>
           <textarea
-            type="email"
-            :value="nodeKey"
-            name="nodeKeyPlaceholder"
             id="nodeKeyPlaceholder"
+            :value="nodeKey"
+            type="email"
+            name="nodeKeyPlaceholder"
             placeholder="Node Key"
             class="input max-width"
-            disabled>
-          </textarea>
+            disabled/>
         </div>
         <br>
         <h3>Generate New Key</h3>
         <p>Use the button below to generate a new node key. Your old key will become invalid if you do this.</p><br>
-        <button class="button button-warning" @click.prevent.stop="regenerateNodeKey" :class="{ 'button-loading': formLoading }" :disabled="formLoading">Regenerate Node Key</button>
+        <button
+          :class="{ 'button-loading': formLoading }"
+          :disabled="formLoading"
+          class="button-warning"
+          @click.prevent.stop="regenerateNodeKey">Regenerate Node Key</button>
       </div>
     </div>
   </div>
@@ -30,7 +33,10 @@ import userAPI from '@/app/api/user.js'
 
 export default {
   props: {
-    user: Object
+    user: {
+      type: Object,
+      required: true
+    }
   },
   metaInfo: {
     title: 'Node Key'
@@ -40,6 +46,10 @@ export default {
       nodeKey: null,
       formLoading: false
     }
+  },
+  created () {
+    this.form = Object.assign({}, this.user)
+    this.nodeKey = this.form['node_key']
   },
   methods: {
     ...mapActions({
@@ -62,10 +72,6 @@ export default {
         }
       })
     }
-  },
-  created () {
-    this.form = Object.assign({}, this.user)
-    this.nodeKey = this.form['node_key']
   }
 }
 </script>

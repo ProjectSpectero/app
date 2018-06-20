@@ -1,15 +1,21 @@
 <template>
   <div class="alert-msg-centered">
-    <div class="icon-alert-circle big-icon"></div>
-    <h1>Not Found</h1>
-    <p>{{ msg ? msg : 'The resource you requested could not be found.' }}</p>
+    <div class="icon-alert-circle big-icon"/>
+    <h1>{{ $i18n.t('misc.NOT_FOUND_TITLE') }}</h1>
+    <slot>
+      <p>{{ type ? $i18n.t('misc.NOT_FOUND', { type: type }) : $i18n.t('misc.NOT_FOUND_DEFAULT') }}</p>
+    </slot>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    msg: String
+    type: {
+      type: String,
+      required: false,
+      default: 'item'
+    }
   }
 }
 </script>

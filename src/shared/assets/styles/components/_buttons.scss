@@ -33,7 +33,7 @@
   }
 }
 
-.button {
+.button, [class^="button-"] {
   display: inline-block;
   padding: 0 18px;
   font-family: $font-family;
@@ -47,6 +47,7 @@
   transition: all 0.1s ease-out;
   cursor: pointer;
   vertical-align: top;
+  white-space: nowrap;
   @include buttonBackgroundColor(#E9E9E9, true, 0%, false);
   
   &[disabled] {

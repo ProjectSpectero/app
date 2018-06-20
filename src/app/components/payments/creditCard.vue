@@ -4,34 +4,52 @@
       {{ $i18n.t('payments.PAYMENT_SUCCESS') }}
     </div>
     <div v-else>
-      <card class="stripe-card"
+      <card
         :stripe="stripeKey"
         :options="stripeOptions"
+        class="stripe-card"
         @change="setProcessedStatus($event.complete)"
       />
       <div class="label label-save-cc">
         <label for="cc-save">
-          <input type="checkbox" v-model="saveCard" true-value="1" false-value="0" id="cc-save">
+          <input
+            id="cc-save"
+            v-model="saveCard"
+            type="checkbox"
+            true-value="1"
+            false-value="0">
           {{ $i18n.t('payments.CHECK_SAVE_CARD') }}
         </label>
       </div>
 
-      <button v-if="!paid" @click.stop="pay" :disabled="!processed" class="button button-md button-success button-full button-pay">
+      <button
+        v-if="!paid"
+        :disabled="!processed"
+        class="button-md button-success button-full button-pay"
+        @click.stop="pay">
         {{ $i18n.t('payments.BUTTON_PROCESS_PAYMENT') }}
       </button>
-      <div v-else class="mt-3">{{ $i18n.t('payments.PAYMENT_PROCESSING') }}</div>
+      <div
+        v-else
+        class="mt-3">{{ $i18n.t('payments.PAYMENT_PROCESSING') }}</div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import { Card, createToken } from 'vue-stripe-elements-plus'
 import paymentAPI from '@/app/api/payment.js'
 
 export default {
+  components: {
+    Card
+  },
   props: {
-    invoiceId: Number
+    invoiceId: {
+      type: Number,
+      required: true
+    }
   },
   data () {
     return {
@@ -46,17 +64,27 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      user: 'appAuth/user'
+    }),
     stripeKey () {
       return (process.env.STRIPE_MODE === 'live') ? process.env.STRIPE_LIVE_PUBLIC_KEY : process.env.STRIPE_SANDBOX_PUBLIC_KEY
     }
   },
   methods: {
-    ...mapActions({
-      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus'
-    }),
     pay () {
+      const details = {
+        name: this.user.name,
+        address_line1: this.user.address_line_1,
+        address_line2: this.user.address_line_2,
+        address_city: this.user.city,
+        address_state: this.user.state,
+        address_zip: this.user.post_code,
+        address_country: this.user.country
+      }
+
       // Stripe token issued
-      createToken().then(stripeData => {
+      createToken(details).then(stripeData => {
         this.paid = true
 
         // Process stripe payment on our API
@@ -71,7 +99,6 @@ export default {
           save: (this.saveCard === '1') || false
         },
         success: async processResponse => {
-          await this.setPendingInvoiceStatus(true)
           this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
           this.$router.push({ name: 'invoice', params: { id: invoiceId } })
         },
@@ -84,9 +111,6 @@ export default {
     setProcessedStatus (status) {
       this.processed = status
     }
-  },
-  components: {
-    Card
   }
 }
 </script>

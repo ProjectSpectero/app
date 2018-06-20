@@ -1,11 +1,18 @@
 <template>
   <div>
     <div v-if="tableData">
-      <div v-if="tableData.length" class="datatable">
+      <div
+        v-if="tableData.length"
+        class="datatable">
         <table>
-          <table-header :columns="columns" :headings="headings" :sortable="sortable"/>
+          <table-header
+            :columns="columns"
+            :headings="headings"
+            :sortable="sortable"/>
           <tbody>
-            <tr v-for="row in tableData" :key="row.id">
+            <tr
+              v-for="row in tableData"
+              :key="row.id">
               <td>{{ row.id }}</td>
               <td>
                 <div :class="'badge status-' + row.status.toLowerCase()">
@@ -13,7 +20,9 @@
                 </div>
               </td>
               <td>
-                <router-link class="button" :to="{ name: 'order', params: { id: row.id } }">
+                <router-link
+                  :to="{ name: 'order', params: { id: row.id } }"
+                  class="button">
                   {{ $i18n.t('misc.VIEW') }}
                 </router-link>
               </td>
@@ -23,7 +32,7 @@
       </div>
       <div>{{ $i18n.t('misc.EMPTY_RESULTS', { type: 'orders' }) }}</div>
     </div>
-    <loading v-else></loading>
+    <loading v-else/>
   </div>
 </template>
 
@@ -34,9 +43,23 @@ import notFound from '@/shared/components/notFound'
 import tableHeader from '@/shared/components/table/thead'
 
 export default {
+  components: {
+    paginator,
+    tableHeader,
+    notFound,
+    loading
+  },
   props: {
-    pagination: Object,
-    tableData: Array
+    pagination: {
+      type: Object,
+      required: false,
+      default: () => {}
+    },
+    tableData: {
+      type: Array,
+      required: false,
+      default: () => []
+    }
   },
   data () {
     return {
@@ -48,25 +71,10 @@ export default {
       columns: ['id', 'status', 'actions'],
       sortable: []
     }
-  },
-  components: {
-    paginator,
-    tableHeader,
-    notFound,
-    loading
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '~@styles/components/badges';
 
-.badge {
-  &.status-active {
-    @extend .badge-success;
-  }
-  &.status-automated_fraud_check, &.status-manual_fraud_check {
-    @extend .badge-warning;
-  }
-}
 </style>

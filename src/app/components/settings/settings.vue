@@ -1,40 +1,45 @@
 <template>
   <div>
-    <top title="Settings"></top>
-    <div class="container content-split">
-      <div class="split-item split-list">
-        <router-link :to="{ name: 'settings', params: { tab: 'profile' } }" class="filter-link">
-          Profile
-        </router-link>
-        <router-link :to="{ name: 'settings', params: { tab: 'payment' } }" class="filter-link">
-          Payment Details
-        </router-link>
-        <router-link :to="{ name: 'settings', params: { tab: 'keys' } }" class="filter-link">
-          Node Key
-        </router-link>
-      </div>
-      <div class="split-item split-details">
-        <div class="section padded">
-          <tab-profile
-            v-if="currentTab === 'profile'"
-            :user="user"
-            :formError="formError"
-            :formLoading="formLoading"
-            @processForm="processForm">
-          </tab-profile>
+    <top title="Settings"/>
+    <div class="container">
+      <div class="col-12 content-split">
+        <div class="split-list">
+          <router-link
+            :to="{ name: 'settings', params: { tab: 'profile' } }"
+            class="filter-link">
+            Profile
+          </router-link>
+          <router-link
+            :to="{ name: 'settings', params: { tab: 'payment' } }"
+            class="filter-link">
+            Payment Details
+          </router-link>
+          <router-link
+            :to="{ name: 'settings', params: { tab: 'keys' } }"
+            class="filter-link">
+            Node Key
+          </router-link>
+        </div>
+        <div class="split-details">
+          <div class="section padded">
+            <tab-profile
+              v-if="currentTab === 'profile'"
+              :user="user"
+              :form-error="formError"
+              :form-loading="formLoading"
+              @processForm="processForm"/>
 
-          <tab-payment
-            v-if="currentTab === 'payment'"
-            :user="user"
-            :formError="formError"
-            :formLoading="formLoading"
-            @processForm="processForm">
-          </tab-payment>
+            <tab-payment
+              v-if="currentTab === 'payment'"
+              :user="user"
+              :form-error="formError"
+              :form-loading="formLoading"
+              @processForm="processForm"/>
 
-          <tab-keys
-            v-if="currentTab === 'keys'"
-            :user="user">
-          </tab-keys>
+            <tab-keys
+              v-if="currentTab === 'keys'"
+              :user="user"/>
+          </div>
         </div>
       </div>
     </div>
@@ -61,18 +66,11 @@ export default {
   },
   data () {
     return {
-      formError: null,
+      formError: '',
       formLoading: false,
       form: null,
       nodeKey: null
     }
-  },
-  created () {
-    this.form = Object.assign({}, this.user)
-    this.checkRouteTab()
-  },
-  watch: {
-    '$route': 'checkRouteTab'
   },
   computed: {
     ...mapGetters({
@@ -82,6 +80,13 @@ export default {
     currentTab: function () {
       return this.$route.params.tab
     }
+  },
+  watch: {
+    '$route': 'checkRouteTab'
+  },
+  created () {
+    this.form = Object.assign({}, this.user)
+    this.checkRouteTab()
   },
   methods: {
     checkRouteTab () {

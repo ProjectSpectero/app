@@ -1,6 +1,8 @@
 <template>
-  <div class="tooltip-trigger" @click.stop="toggle">
-    <span class="icon-help-circle"></span>
+  <div
+    class="tooltip-trigger"
+    @click.stop="toggle">
+    <span class="icon-help-circle"/>
   </div>
 </template>
 
@@ -9,7 +11,10 @@ import { mapActions } from 'vuex'
 
 export default {
   props: {
-    obj: String
+    obj: {
+      type: String,
+      required: true
+    }
   },
   async created () {
     await this.setContentsKey(this.obj)

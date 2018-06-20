@@ -1,75 +1,128 @@
 <template>
   <div>
     <top :title="$i18n.t('misc.MARKET')">
-      <router-link :to="{ name: 'cart' }" v-if="totals.total > 0" class="button">
+      <router-link
+        v-if="totals.total > 0"
+        :to="{ name: 'cart' }"
+        class="button">
         {{ $i18n.t('misc.VIEW_CART') }}
       </router-link>
-      <help-button obj="market.topics"></help-button>
+      <help-button obj="market.topics"/>
     </top>
 
-    <div class="container content-split">
-      <div class="split-item split-list">
-        <filters @changedFilters="search"></filters>
-      </div>
-      <div class="market-listings split-item split-details">
-        <div v-if="storeLoading" class="loading-overlay">
-          <loading></loading>
-        </div>
+    <div class="container">
+      <market-menu @selectedRoute="switchListing"/>
 
-        <div class="cart" v-if="totals.total > 0">
-          <div class="info">
-            <h4 class="mb-0"><span class="icon icon-shopping-cart"></span> {{ $i18n.t('misc.CART') }}: {{ totals.total | currency }} USD</h4>
-          </div>
-          <div class="actions">
-            <router-link :to="{ name: 'cart' }" class="button button-info">
-              {{ $i18n.t('misc.CHECKOUT') }}
-            </router-link>
-          </div>
+      <div class="content-split col-12">
+        <div
+          v-if="route !== 'marketMine'"
+          class="split-list">
+          <filters @changedFilters="search"/>
         </div>
+        <div class="market-listings split-details">
+          <div
+            v-if="storeLoading"
+            class="loading-overlay">
+            <loading/>
+          </div>
 
-        <div class="datatable">
-          <table>
-            <table-header :columns="columns" :headings="headings" :sortable="sortable"/>
-            <tbody>
-              <tr v-for="(item, index) in results" :key="index">
-                <td>
-                  <flag v-if="item.cc" :iso="item.cc" :squared="false" />
-                  <div v-else class="flag-icon-empty">2+</div>
-                  {{ item.friendly_name }}
-                  <div v-if="item.plan" class="badge badge-brand badge-plan">{{ item.plan }}</div>
-                </td>
-                <td>
-                  <div class="badge">{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</div>
-                </td>
-                <td>
-                  <span v-if="item.ip_addresses">{{ item.ip_addresses.length }}</span>
-                  <span v-else>{{ countIpsInNodeGroup(item) }}</span>
-                </td>
-                <td>
-                  <span v-if="item.type === 'NODE_GROUP'">{{ $i18n.t('misc.NODE_GROUP') }}</span>
-                  <span v-else>{{ $i18n.t('misc.NODE') }}</span>
-                </td>
-                <td>{{ item.price | currency }} USD</td>
-                <td class="table-actions">
-                  <button @click.stop="showModal(item)" class="button button-sm button-success" :class="{ 'button-bordered': existsInCart(item.id) }">
-                    <template v-if="existsInCart(item.id)">
-                      <span class="icon-check-circle"></span> {{ $i18n.t('misc.IN_CART') }}
+          <div
+            v-if="totals.total > 0"
+            class="cart">
+            <div class="info">
+              <h4 class="mb-0">
+                <span class="icon icon-shopping-cart"/> {{ $i18n.t('misc.CART') }}: {{ totals.total | currency }} USD
+              </h4>
+            </div>
+            <div class="actions">
+              <router-link
+                :to="{ name: 'cart' }"
+                class="button-info">
+                {{ $i18n.t('misc.CHECKOUT') }}
+              </router-link>
+            </div>
+          </div>
+
+          <div
+            v-if="results"
+            class="datatable">
+            <table>
+              <table-header
+                :columns="columns"
+                :headings="headings"
+                :sortable="sortable"/>
+              <tbody>
+                <tr
+                  v-for="(item, index) in results"
+                  :key="index">
+                  <td>
+                    <flag
+                      v-if="item.cc"
+                      :iso="item.cc"
+                      :squared="false" />
+                    <div
+                      v-else
+                      class="flag-icon-empty">2+</div>
+                    {{ item.friendly_name }}
+                    <div
+                      v-if="item.plan"
+                      class="badge badge-brand badge-plan">{{ item.plan }}</div>
+                  </td>
+                  <td>
+                    <div class="badge">{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</div>
+                  </td>
+                  <td>
+                    <template v-if="route === 'marketMine'">
+                      <span>{{ item.ip }}</span>
                     </template>
                     <template v-else>
-                      <span class="icon-shopping-bag"></span> {{ $i18n.t('misc.PURCHASE') }}
+                      <span v-if="item.ip_addresses">{{ item.ip_addresses.length }}</span>
+                      <span v-else-if="item.nodes">{{ countIpsInNodeGroup(item) }}</span>
                     </template>
-                  </button>
+                  </td>
+                  <td>
+                    <span v-if="item.type === 'NODE_GROUP'">{{ $i18n.t('misc.NODE_GROUP') }}</span>
+                    <span v-else>{{ $i18n.t('misc.NODE') }}</span>
+                  </td>
+                  <td>{{ item.price | currency }} USD</td>
+                  <td class="table-actions">
+                    <template v-if="route === 'marketMine'">
+                      <router-link
+                        :to="{ name: 'node', params: { action: 'edit', id: item.id } }"
+                        class="button-icon">
+                        <span class="icon-edit-2"/>
+                      </router-link>
+                    </template>
+                    <template v-else>
+                      <button
+                        :class="{ 'button-bordered': existsInCart(item.id) }"
+                        class="button-sm button-success"
+                        @click.stop="showModal(item)">
+                        <template v-if="existsInCart(item.id)">
+                          <span class="icon-check-circle"/> {{ $i18n.t('misc.IN_CART') }}
+                        </template>
+                        <template v-else>
+                          <span class="icon-shopping-bag"/> {{ $i18n.t('misc.PURCHASE') }}
+                        </template>
+                      </button>
 
-                  <router-link class="button button-sm" :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }">
-                    {{ $i18n.t('misc.VIEW') }}
-                  </router-link>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                      <router-link
+                        v-if="item.type"
+                        :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }"
+                        class="button-sm">
+                        {{ $i18n.t('misc.VIEW') }}
+                      </router-link>
+                    </template>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <paginator
+            :pagination="pagination"
+            @changedPage="search"/>
         </div>
-
-        <paginator :pagination="pagination" @changedPage="search"></paginator>
       </div>
     </div>
   </div>
@@ -79,6 +132,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import filters from './filters'
 import addToCart from './addToCart'
+import marketMenu from './marketMenu'
 import top from '@/shared/components/top'
 import paginator from '@/shared/components/paginator'
 import loading from '@/shared/components/loading'
@@ -86,6 +140,19 @@ import tableHeader from '@/shared/components/table/thead'
 import helpButton from '@/shared/components/docs/button'
 
 export default {
+  components: {
+    top,
+    marketMenu,
+    paginator,
+    tableHeader,
+    filters,
+    addToCart,
+    loading,
+    helpButton
+  },
+  metaInfo: {
+    title: 'Market'
+  },
   data () {
     return {
       perPage: 10,
@@ -93,21 +160,16 @@ export default {
       headings: {
         friendly_name: 'Name',
         market_model: 'Market Model',
-        ips_count: 'IP Count',
+        ips_count: 'IP',
         type: 'Type',
         price: 'Price',
         actions: ''
       },
       sortable: [],
       filters: [],
-      grouped: true
+      grouped: true,
+      route: 'marketListed'
     }
-  },
-  async created () {
-    await this.fetchPlans()
-    await this.refreshCart()
-
-    this.search()
   },
   computed: {
     ...mapGetters({
@@ -118,12 +180,27 @@ export default {
       totals: 'cart/totals'
     })
   },
+  async created () {
+    await this.fetchPlans()
+    await this.refreshCart()
+
+    if (this.$route.name === 'market') {
+      this.switchListing('marketListed')
+    } else {
+      this.switchListing(this.$route.name, this.$route.params.page)
+    }
+  },
   methods: {
     ...mapActions({
       fetch: 'market/fetch',
+      fetchMine: 'market/fetchMine',
       fetchPlans: 'market/fetchPlans',
       refreshCart: 'cart/refresh'
     }),
+    switchListing (route, page) {
+      this.route = route
+      this.search(page || 1, route)
+    },
     existsInCart (id) {
       return this.cart.find(i => i.id === id)
     },
@@ -145,21 +222,18 @@ export default {
 
       return this.$i18n.t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
     },
-    search (page) {
-      this.fetch({ page: page || 1, perPage: this.perPage, grouped: this.grouped })
+    search (page, route) {
+      const p = page || this.$route.params.page || 1
+      const r = route || this.$route.name
+
+      if (this.route === 'marketMine') {
+        this.fetchMine({ page: p, perPage: this.perPage })
+      } else {
+        this.fetch({ page: p, perPage: this.perPage, grouped: this.grouped })
+      }
+
+      this.$router.push({ name: r, params: { page: p } })
     }
-  },
-  metaInfo: {
-    title: 'Market'
-  },
-  components: {
-    top,
-    paginator,
-    tableHeader,
-    filters,
-    addToCart,
-    loading,
-    helpButton
   }
 }
 </script>

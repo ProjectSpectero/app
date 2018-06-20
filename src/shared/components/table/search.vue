@@ -1,7 +1,12 @@
 <template>
   <div class="search">
-    <input type="text" @keyup.enter="search" placeholder="Search orders">
-    <button @click.prevent.stop="reset" class="button reset">{{ $i18n.t('misc.RESET') }}</button>
+    <input
+      type="text"
+      placeholder="Search orders"
+      @keyup.enter="search">
+    <button
+      class="button reset"
+      @click.prevent.stop="reset">{{ $i18n.t('misc.RESET') }}</button>
   </div>
 </template>
 

@@ -2,18 +2,40 @@
   <div class="modal">
     <div class="modal-header">
       <h2>Cancel Order</h2>
-      <button @click="$emit('close')" class="modal-close"></button>
+      <button
+        class="modal-close"
+        @click="$emit('close')"/>
     </div>
     <div class="modal-content">
-      <p class="spaced">{{ $i18n.t('orders.DELETE_ORDER_CONFIRM_DIALOG') }}</p>
-      <div>
-        <button @click="cancel()" class="button" :class="{'button-loading': loading, 'button-danger': !loading}" :disabled="loading">
-          Cancel Order
-        </button>
-        <button @click="$emit('close')" class="button right" :disabled="loading">
-          No, Nevermind
-        </button>
-      </div>
+      <template v-if="isEnterpriseOrder">
+        <div class="message message-info">{{ $i18n.t('orders.CONTACT_ACCOUNT_REPRESENTATIVE') }}</div>
+        <div>
+          <button
+            :disabled="loading"
+            class="button"
+            @click="$emit('close')">
+            Continue
+          </button>
+        </div>
+      </template>
+      <template v-else>
+        <p class="spaced">{{ $i18n.t('orders.DELETE_ORDER_CONFIRM_DIALOG') }}</p>
+        <div>
+          <button
+            :class="{'button-loading': loading, 'button-danger': !loading}"
+            :disabled="loading"
+            class="button"
+            @click="cancel()">
+            Cancel Order
+          </button>
+          <button
+            :disabled="loading"
+            class="button right"
+            @click="$emit('close')">
+            No, Nevermind
+          </button>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -23,8 +45,20 @@ import orderAPI from '@/app/api/order'
 
 export default {
   props: {
-    id: Number,
-    cancelItem: Function
+    id: {
+      type: Number,
+      required: true
+    },
+    cancelItem: {
+      type: Function,
+      required: false,
+      default: () => {}
+    },
+    isEnterpriseOrder: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   },
   data () {
     return {
@@ -54,11 +88,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.button {
-  margin-right: 6px;
 
-  &:last-child {
-    margin-right: 0;
-  }
-}
 </style>

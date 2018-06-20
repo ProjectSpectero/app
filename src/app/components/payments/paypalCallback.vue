@@ -6,16 +6,18 @@
         <p>{{ $i18n.t('payments.PAYMENT_INVALID_PARAMETERS') }}</p>
       </div>
     </div>
-    <loading v-else></loading>
+    <loading v-else/>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import paymentAPI from '@/app/api/payment.js'
+import paymentAPI from '@/app/api/payment'
 import loading from '@/shared/components/loading'
 
 export default {
+  components: {
+    loading
+  },
   data () {
     return {
       success: false
@@ -25,9 +27,6 @@ export default {
     this.finishPayment()
   },
   methods: {
-    ...mapActions({
-      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus'
-    }),
     finishPayment () {
       if (this.$route.query.mode && this.$route.query.token && this.$route.query.PayerID) {
         paymentAPI.paypalCallback({
@@ -39,7 +38,6 @@ export default {
           success: async processResponse => {
             this.loading = false
             this.success = true
-            await this.setPendingInvoiceStatus(true)
             this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
             this.$router.push({ name: 'invoice', params: { id: processResponse.data.result.invoice_id } })
           },
@@ -51,9 +49,6 @@ export default {
         })
       }
     }
-  },
-  components: {
-    loading
   }
 }
 </script>

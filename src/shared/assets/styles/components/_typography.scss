@@ -28,7 +28,7 @@ h6 {
 }
 
 p {
-  line-height: 140%;
+  line-height: 160%;
   
   &.small {
     font-size: 90%;
@@ -62,7 +62,15 @@ a {
 .text-warning {
   color: $color-warning;
 }
+.text-light {
+  color: $color-light;
+}
 
 .font-mono {
   font-family: monospace !important;
+}
+
+.tooltip-text-trigger {
+  text-decoration: underline;
+  cursor: pointer;
 }

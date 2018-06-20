@@ -1,7 +1,12 @@
 <template>
-  <div :class="{ 'container': !child, 'child': child }">
-    <article v-for="(page, i) in items" :key="i" :class="{ 'section': !child }">
-      <div v-if="page.title" class="title">
+  <div :class="{ 'child': child }">
+    <article
+      v-for="(page, i) in items"
+      :key="i"
+      :class="{ 'section': !child }">
+      <div
+        v-if="page.title"
+        class="title">
         <h2 v-if="!child">{{ page.title }}</h2>
         <h4 v-else>{{ page.title }}</h4>
 
@@ -9,9 +14,15 @@
       </div>
 
       <div class="content">
-        <div v-if="page.description" v-html="page.description" class="description"></div>
+        <div
+          v-if="page.description"
+          class="description"
+          v-html="page.description"/>
 
-        <contents v-if="page.topics" :items="page.topics" :child="true"></contents>
+        <contents
+          v-if="page.topics"
+          :items="page.topics"
+          :child="true"/>
       </div>
     </article>
   </div>
@@ -19,10 +30,17 @@
 
 <script>
 export default {
-  name: 'contents',
+  name: 'Contents',
   props: {
-    items: Object,
-    child: Boolean
+    items: {
+      type: Object,
+      required: true
+    },
+    child: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   }
 }
 </script>

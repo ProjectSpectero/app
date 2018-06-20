@@ -1,63 +1,80 @@
 <template>
   <div>
     <form id="form-login">
-      <div class="message message-info" v-if="!formError && this.$route.query.redirect">
+      <div
+        v-if="!formError && this.$route.query.redirect"
+        class="message message-info">
         {{ $i18n.t('users.PLEASE_LOGIN') }}
       </div>
 
-      <div class="message message-error" v-if="formError">{{ formError }}</div>
+      <div
+        v-if="formError"
+        class="message message-error">{{ formError }}</div>
 
       <div class="form-input">
         <input
-          type="text"
+          v-validate="'required|email'"
           v-model="username"
-          name="username"
           :placeholder="$i18n.t('users.PLACEHOLDER_EMAIL')"
-          class="input max-width"
           :class="{'input-error': errors.has('username')}"
           :disabled="formLoading"
-          v-validate="'required|email'"
+          type="text"
+          name="username"
+          class="input max-width"
           data-vv-as="email">
 
-        <span v-show="errors.has('username')" class="input-error-message">
+        <span
+          v-show="errors.has('username')"
+          class="input-error-message">
           {{ errors.first('username') }}
         </span>
       </div>
 
       <div class="form-input">
         <input
-          type="password"
+          v-validate="'required'"
           v-model="password"
-          name="password"
           :placeholder="$i18n.t('users.PLACEHOLDER_PASSWORD')"
-          class="input max-width"
           :class="{'input-error': errors.has('password')}"
           :disabled="formLoading"
-          v-validate="'required'"
+          type="password"
+          name="password"
+          class="input max-width"
           data-vv-as="password">
 
-        <span v-show="errors.has('password')" class="input-error-message">
+        <span
+          v-show="errors.has('password')"
+          class="input-error-message">
           {{ errors.first('password') }}
         </span>
       </div>
 
-      <button class="button button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+      <button
+        :class="{ 'button-loading': formLoading }"
+        :disabled="formLoading"
+        class="button-info button-md max-width"
+        @click.prevent="submit"
+        @keyup.enter="submit">
         {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('users.LOGIN_BUTTON') }}
       </button>
     </form>
-    <!-- <div class="bottom-link">
-      <router-link :to="{ name: 'register' }">
+    <div class="bottom-link">
+      <!-- <router-link :to="{ name: 'register' }">
         {{ $i18n.t('users.NO_ACCOUNT') }}
         <strong>{{ $i18n.t('users.CREATE_ACCOUNT_NOW') }}</strong>
+      </router-link> -->
+
+      <router-link :to="{ name: 'resetPassword' }">
+        {{ $i18n.t('users.FORGOT_PASSWORD') }}
       </router-link>
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-import auth from '@/app/api/auth.js'
-import userAPI from '@/app/api/user.js'
+import auth from '@/app/api/auth'
+import userAPI from '@/app/api/user'
 
 export default {
   metaInfo: {
@@ -112,11 +129,15 @@ export default {
     async fetchUser () {
       await userAPI.getMe({
         success: response => {
+          let userData = response.data.result
+
           this.formError = null
-          this.storeUser(response.data.result)
+          this.storeUser(userData)
 
           if (this.$route.query.redirect) {
             this.$router.push({ path: this.$route.query.redirect })
+          } else if (userData.plans.indexOf('enterprise') > -1) {
+            this.$router.push({ name: 'enterpriseOrders' })
           } else {
             this.$router.push({ name: 'dashboard' })
           }

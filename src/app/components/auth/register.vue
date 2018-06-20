@@ -1,43 +1,54 @@
 <template>
   <div>
     <form id="form-register">
-      <div class="message message-error" v-if="formError">{{ formError }}</div>
+      <div
+        v-if="formError"
+        class="message message-error">{{ formError }}</div>
 
       <div class="form-input">
         <input
-          type="text"
+          v-validate="'required|email'"
           v-model="email"
+          :class="{'input-error': errors.has('email')}"
+          :disabled="formLoading"
+          type="text"
           name="email"
           placeholder="Email address"
           class="input max-width"
-          :class="{'input-error': errors.has('email')}"
-          :disabled="formLoading"
-          v-validate="'required|email'"
           data-vv-as="email">
 
-        <span v-show="errors.has('email')" class="input-error-message">
+        <span
+          v-show="errors.has('email')"
+          class="input-error-message">
           {{ errors.first('email') }}
         </span>
       </div>
 
       <div class="form-input">
         <input
-          type="password"
+          v-validate="'required|min:5|max:72'"
           v-model="password"
+          :class="{'input-error': errors.has('password')}"
+          :disabled="formLoading"
+          type="password"
           name="password"
           placeholder="Password"
           class="input max-width"
-          :class="{'input-error': errors.has('password')}"
-          :disabled="formLoading"
-          v-validate="'required|min:5|max:72'"
           data-vv-as="password">
 
-        <span v-show="errors.has('password')" class="input-error-message">
+        <span
+          v-show="errors.has('password')"
+          class="input-error-message">
           {{ errors.first('password') }}
         </span>
       </div>
 
-      <button class="button button-info button-md max-width" @click.prevent="submit" @keyup.enter="submit" :class="{ 'button-loading': formLoading }" :disabled="formLoading">
+      <button
+        :class="{ 'button-loading': formLoading }"
+        :disabled="formLoading"
+        class="button-info button-md max-width"
+        @click.prevent="submit"
+        @keyup.enter="submit">
         {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('users.REGISTER_BUTTON') }}
       </button>
     </form>

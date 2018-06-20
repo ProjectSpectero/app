@@ -1,14 +1,19 @@
 <template>
   <div>
     <template v-if="selectedReferences">
-      <div class="details" v-for="(field, j) in selectedReferences" :key="j">
+      <div
+        v-for="(field, j) in selectedReferences"
+        :key="j"
+        class="details">
         <div v-if="field.accessReference">
           <div class="label"><label>{{ $i18n.t('orders.ACCESS_REFERENCE') }}</label></div>
           <div class="reference-list">
             <span>{{ formatAccessReferences(field.accessReference) }}</span>
           </div>
           <div class="ips items-centered">
-            <copy-to-clipboard :field="field.accessReference" button-class="button-sm"></copy-to-clipboard>
+            <copy-to-clipboard
+              :field="field.accessReference"
+              button-class="button-sm"/>
           </div>
         </div>
 
@@ -17,9 +22,18 @@
             <label for="accessConfig">{{ $i18n.t('orders.ACCESS_CONFIG') }}</label>
           </div>
 
-          <textarea class="input font-mono" v-model="field.accessConfig" id="accessConfig" readonly></textarea>
-          <copy-to-clipboard :field="field.accessConfig" button-class="button-sm"></copy-to-clipboard>
-          <download :content="field.accessConfig" :file="configFileName" button-class="button-sm"></download>
+          <textarea
+            id="accessConfig"
+            v-model="field.accessConfig"
+            class="input font-mono"
+            readonly/>
+          <copy-to-clipboard
+            :field="field.accessConfig"
+            button-class="button-sm"/>
+          <download
+            :content="field.accessConfig"
+            :file="configFileName"
+            button-class="button-sm"/>
         </div>
 
         <div v-if="field.accessCredentials">
@@ -30,7 +44,10 @@
         </div>
       </div>
     </template>
-    <error v-else :header="$i18n.t('orders.NOT_ENABLED_TITLE')" :msg="$i18n.t('orders.NOT_ENABLED', { type: selectedType })"></error>
+    <error
+      v-else
+      :header="$i18n.t('orders.NOT_ENABLED_TITLE')"
+      :msg="$i18n.t('orders.NOT_ENABLED', { type: selectedType })"/>
   </div>
 </template>
 
@@ -40,12 +57,33 @@ import copyToClipboard from '@/shared/components/copyToClipboard'
 import download from '@/shared/components/download'
 
 export default {
+  components: {
+    error,
+    copyToClipboard,
+    download
+  },
   props: {
-    id: Number,
-    type: String,
-    accessor: Object,
-    selectedReferences: Array,
-    selectedType: String
+    id: {
+      type: Number,
+      required: true
+    },
+    type: {
+      type: String,
+      required: true
+    },
+    accessor: {
+      type: Object,
+      required: false,
+      default: () => {}
+    },
+    selectedReferences: {
+      type: Array,
+      required: true
+    },
+    selectedType: {
+      type: String,
+      required: true
+    }
   },
   computed: {
     configFileName () {
@@ -60,11 +98,6 @@ export default {
       }
       return output
     }
-  },
-  components: {
-    error,
-    copyToClipboard,
-    download
   }
 }
 </script>

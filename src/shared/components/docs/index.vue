@@ -1,9 +1,11 @@
 <template>
   <div>
-    <top :title="$i18n.t('misc.DOCUMENTATION')"></top>
+    <top :title="$i18n.t('misc.DOCUMENTATION')"/>
 
-    <div class="content">
-      <contents :items="helpContents"></contents>
+    <div class="container">
+      <div class="col-12">
+        <contents :items="helpContents"/>
+      </div>
     </div>
   </div>
 </template>
@@ -14,14 +16,14 @@ import contents from '@/shared/components/docs/contents'
 import translations from '@/shared/lang/en'
 
 export default {
+  components: {
+    top,
+    contents
+  },
   computed: {
     helpContents () {
       return translations.help
     }
-  },
-  components: {
-    top,
-    contents
   }
 }
 </script>

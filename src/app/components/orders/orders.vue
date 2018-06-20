@@ -1,38 +1,54 @@
 <template>
   <div>
     <template v-if="!error">
-      <top :title="$i18n.t('misc.ORDERS')">
-        <help-button obj="orders.topics"></help-button>
+      <top :title="$i18n.t(enterprisePage ? 'misc.ENTERPRISE_ORDERS' : 'misc.ORDERS')">
+        <help-button obj="orders.topics"/>
       </top>
       <div v-if="tableData">
-        <div class="container content-split">
-          <div class="split-item split-list">
-            <router-link v-for="s in status" :key="s" :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }" class="filter-link" :class="{ active: currentStatus === s }">
-              {{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}
-            </router-link>
-          </div>
-          <div class="split-item split-details">
-            <template v-if="tableData.length">
-              <orders-list
-                :searchId="searchId"
-                :pagination="pagination"
-                :tableData="tableData"
-                @refresh="fetchOrders"
-                @changedPage="changedPage"
-                @sortByColumn="sortByColumn">
-              </orders-list>
-            </template>
-            <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'orders' })"></not-found>
+        <div class="container">
+          <div class="col-12 content-split">
+            <div class="split-list">
+              <router-link
+                v-for="s in status"
+                :key="s"
+                :to="{ name: enterprisePage ? 'enterpriseOrdersByStatus' : 'ordersByStatus', params: { status: s, page: 1 } }"
+                :class="{ active: currentStatus === s }"
+                class="filter-link">
+                {{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}
+              </router-link>
+            </div>
+            <div class="split-details">
+              <template v-if="tableData.length">
+                <orders-list
+                  :search-id="searchId"
+                  :pagination="pagination"
+                  :table-data="tableData"
+                  @refresh="fetchOrders"
+                  @changedPage="changedPage"
+                  @sortByColumn="sortByColumn"/>
+              </template>
+              <not-found
+                v-else
+                type="orders">
+                <slot>
+                  <p v-html="$i18n.t('orders.NO_ORDERS_TEXT')"/>
+                </slot>
+              </not-found>
+            </div>
           </div>
         </div>
       </div>
-      <loading v-else></loading>
+      <loading v-else/>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import filtersMixin from '@/app/mixins/listFilters'
 import orderAPI from '@/app/api/order'
 import ordersList from './list'
@@ -43,28 +59,59 @@ import notFound from '@/shared/components/notFound'
 import helpButton from '@/shared/components/docs/button'
 
 export default {
-  mixins: [filtersMixin],
+  components: {
+    top,
+    error,
+    ordersList,
+    loading,
+    notFound,
+    helpButton
+  },
+  mixins: [
+    filtersMixin
+  ],
+  metaInfo: {
+    title: 'Orders'
+  },
   data () {
     return {
       status: ['all', 'active', 'cancelled'],
       errorItem: 'orders'
     }
   },
+  computed: {
+    ...mapGetters({
+      user: 'appAuth/user',
+      isEnterprise: 'appAuth/isEnterprise'
+    }),
+    currentStatus () {
+      return this.$route.params.status ? this.$route.params.status.toLowerCase() : 'all'
+    },
+    enterprisePage () {
+      return (this.isEnterprise && this.$route.name === 'enterpriseOrdersByStatus')
+    }
+  },
+  watch: {
+    '$route': {
+      handler (n, o) {
+        this.sidebarSort('status', this.currentStatus, n.params.page)
+      },
+      deep: true,
+      immediate: false
+    }
+  },
   created () {
     if (this.$route.name === 'orders') {
       this.$router.push({ name: 'ordersByStatus', params: { status: 'all', page: 1 } })
+    } else if (this.$route.name === 'enterpriseOrders') {
+      this.$router.push({ name: 'enterpriseOrdersByStatus', params: { status: 'all', page: 1 } })
     } else {
       this.sidebarSort('status', this.currentStatus, this.currentPage)
     }
   },
-  computed: {
-    currentStatus () {
-      return this.$route.params.status ? this.$route.params.status.toLowerCase() : 'all'
-    }
-  },
   methods: {
     changedPage (page) {
-      this.$router.push({ name: 'ordersByStatus', params: { page: page, status: this.currentStatus } })
+      this.$router.push({ name: this.$route.name, params: { page: page, status: this.currentStatus } })
     },
     async fetch (page) {
       if (this.rules.length) {
@@ -90,11 +137,14 @@ export default {
       }
     },
     async fetchOrders (page) {
-      await orderAPI.myOrders({
-        searchId: this.searchId,
-        page: page,
-        limit: this.perPage,
-        keepURL: (this.type === 'simple'),
+      const method = this.enterprisePage ? orderAPI['myEnterpriseOrders'] : orderAPI['myOrders']
+
+      await method({
+        queryParams: {
+          searchId: this.searchId,
+          page: page || 1,
+          perPage: this.perPage || 10
+        },
         success: response => {
           this.error = false
           this.pagination = response.data.pagination
@@ -107,26 +157,6 @@ export default {
         }
       })
     }
-  },
-  watch: {
-    '$route': {
-      handler (n, o) {
-        this.sidebarSort('status', this.currentStatus, n.params.page)
-      },
-      deep: true,
-      immediate: false
-    }
-  },
-  components: {
-    top,
-    error,
-    ordersList,
-    loading,
-    notFound,
-    helpButton
-  },
-  metaInfo: {
-    title: 'Orders'
   }
 }
 </script>

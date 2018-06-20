@@ -1,167 +1,211 @@
 <template>
   <div>
     <template v-if="!error">
-      <div v-if="invoice">
+      <div v-if="invoice && user">
         <top title="View Invoice">
-          <router-link :to="{ name: 'invoices' }" class="button">
+          <router-link
+            :to="{ name: 'invoices' }"
+            class="button">
             {{ $i18n.t('invoices.BACK') }}
           </router-link>
 
-          <router-link :to="{ name: 'order', params: { id: invoice.order_id } }" class="button button-info">
+          <router-link
+            v-if="invoice.type !== 'CREDIT'"
+            :to="{ name: 'order', params: { id: invoice.order_id } }"
+            class="button-info">
             {{ $i18n.t('misc.VIEW') }} {{ $i18n.t('misc.ORDER') }}
           </router-link>
 
           <template v-if="!loading">
-            <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
-              <pay :invoice="invoice" :due="due" classes="button button-success" @update="fetchInvoice"></pay>
-            </template>
-            <template v-else-if="invoice.type === 'CREDIT' && invoice.status === 'UNPAID' && canShowDueAmount">
-              <pay :invoice="invoice" :due="due" classes="button button-success" @update="fetchInvoice"></pay>
+            <template v-if="((verified && verificationErrors.length === 0) || invoice.type === 'CREDIT') && invoice.status === 'UNPAID' && canShowDueAmount">
+              <pay
+                :invoice="invoice"
+                :due="due"
+                classes="button-success"
+                @update="fetchInvoice"/>
             </template>
           </template>
         </top>
         <div v-if="!loading">
-          <div class="container">
-            <div class="invoice">
-              <div v-if="invoice.status === 'PAID'" class="message-paid message message-success">
-                <h5><span class="icon-check-circle"></span> {{ $i18n.t('invoices.PAID') }}</h5>
-                <p>{{ $i18n.t('invoices.THANKS') }}</p>
-              </div>
-              <template v-if="verified && !verificationErrors && invoice.status === 'UNPAID' && canShowDueAmount">
-                <alert-outstanding :due="due" :invoice="invoice"></alert-outstanding>
+          <div class="container centered">
+            <div class="col-12 invoice-col">
+              <template v-if="verified && verificationErrors.length === 0 && invoice.status === 'UNPAID' && canShowDueAmount">
+                <alert-outstanding
+                  :due="due"
+                  :invoice="invoice"/>
               </template>
               <template v-else-if="invoice.type === 'CREDIT' && invoice.status === 'UNPAID' && canShowDueAmount">
-                <alert-outstanding :due="due" :invoice="invoice"></alert-outstanding>
+                <alert-outstanding
+                  :due="due"
+                  :invoice="invoice"/>
               </template>
-              <template v-else-if="verified && verificationErrors && isFixable(order.status)">
-                <alert-processing :errorBag="verificationErrors" :invoice="invoice" @update="fetchInvoice"></alert-processing>
+              <template v-else-if="verified && verificationErrors.length > 0 && isFixable(order.status)">
+                <alert-processing
+                  :error-bag="verificationErrors"
+                  :invoice="invoice"
+                  @update="fetchInvoice"/>
               </template>
 
-              <div class="header">
-                <div class="logo-container">
-                  <div class="logo logo-dark logo-md"></div>
+              <div class="invoice">
+                <div
+                  v-if="invoice.status === 'PAID'"
+                  class="message-paid message message-success">
+                  <h5><span class="icon-check-circle"/> {{ $i18n.t('invoices.PAID') }}</h5>
+                  <p>{{ $i18n.t('invoices.THANKS') }}</p>
                 </div>
-                <div class="header-details">
-                  <h1 class="title">Invoice</h1>
-                  <strong class="company">Spectero, Inc.</strong>
-                  <div class="biller address">
-                    <div class="address-field">300 Deleware Ave Ste 210-A</div>
-                    <div class="address-field">Wilmington, DE 19801</div>
-                    <div class="address-field">United States</div>
+
+                <div class="header">
+                  <div class="logo-container">
+                    <div class="logo logo-dark logo-md"/>
+                  </div>
+                  <div class="header-details">
+                    <h1 class="title">Invoice</h1>
+                    <strong class="company">Spectero, Inc.</strong>
+                    <div class="biller address">
+                      <div class="address-field">300 Deleware Ave Ste 210-A</div>
+                      <div class="address-field">Wilmington, DE 19801</div>
+                      <div class="address-field">United States</div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="divider"></div>
+                <div class="divider"/>
 
-              <div class="details">
-                <div class="client">
-                  <span class="details-title">{{ $i18n.t('invoices.BILL_TO') }}</span>
+                <div class="details">
+                  <div class="client">
+                    <span class="details-title">{{ $i18n.t('invoices.BILL_TO') }}</span>
 
-                  <strong class="name">
-                    <div v-if="user.organization">{{ user.organization }}</div>
-                    <div v-if="user.name">{{ user.name }}</div>
-                    <div v-if="user.tax_identification">{{ user.tax_identification }}</div>
-                  </strong>
+                    <strong class="name">
+                      <div v-if="user.organization">{{ user.organization }}</div>
+                      <div v-if="user.name">{{ user.name }}</div>
+                      <div v-if="user.tax_identification">{{ user.tax_identification }}</div>
+                    </strong>
 
-                  <div class="address">
-                    <div class="address-field">{{ user.address_line_1 }}</div>
-                    <div class="address-field">{{ user.address_line_2 }}</div>
-                    <div class="address-field">{{ user.state }}, {{ user.post_code }}</div>
-                    <div class="address-field spaced">{{ user.email }}</div>
+                    <div class="address">
+                      <div class="address-field">{{ user.address_line_1 }}</div>
+                      <div class="address-field">{{ user.address_line_2 }}</div>
+                      <div class="address-field">{{ user.state }}, {{ user.post_code }}</div>
+                      <div class="address-field">{{ getCountryById(user.country).name }}</div>
+                      <div class="address-field spaced">{{ user.email }}</div>
+                    </div>
                   </div>
-                </div>
-                <div class="info">
-                  <table class="info-table">
-                    <tr>
-                      <td><strong>{{ $i18n.t('invoices.NUMBER') }}:</strong></td>
-                      <td>{{ invoice.id }}</td>
-                    </tr>
-                    <tr>
-                      <td><strong>{{ $i18n.t('invoices.TYPE') }}:</strong></td>
-                      <td>{{ invoice.type }}</td>
-                    </tr>
-                    <tr>
-                      <td><strong>{{ $i18n.t('invoices.STATUS') }}:</strong></td>
-                      <td><strong :class="statusClass">{{ status }}</strong></td>
-                    </tr>
-                    <tr>
-                      <td><strong>{{ $i18n.t('invoices.DATE') }}:</strong></td>
-                      <td>{{ invoice.updated_at | moment('MMMM D, YYYY') }}</td>
-                    </tr>
-                    <template v-if="invoice.type === 'STANDARD'">
-                      <tr v-if="canShowDueAmount">
-                        <td><strong>Payment Due:</strong></td>
-                        <td>{{ invoice.due_date | moment('MMMM D, YYYY') }}</td>
-                      </tr>
-                      <tr v-if="canShowDueAmount" class="invert">
-                        <td><strong>Amount Due:</strong></td>
-                        <td>
-                          <strong v-if="invoice.type === 'STANDARD'">{{ due.amount | currency }} {{ due.currency }}</strong>
-                          <strong v-else>{{ invoice.amount | currency }} {{ invoice.currency }}</strong>
-                        </td>
-                      </tr>
-                    </template>
-                    <template v-else>
+                  <div class="info">
+                    <table class="info-table">
                       <tr>
-                        <td><strong>{{ $i18n.t('invoices.PAYMENT_DUE') }}:</strong></td>
-                        <td>{{ invoice.due_date | moment('MMMM D, YYYY') }}</td>
+                        <td><strong>{{ $i18n.t('invoices.NUMBER') }}:</strong></td>
+                        <td>{{ invoice.id }}</td>
                       </tr>
-                      <tr class="invert">
-                        <td><strong>{{ $i18n.t('invoices.AMOUNT_DUE') }}:</strong></td>
-                        <td>
-                          <strong>{{ invoice.amount | currency }} {{ invoice.currency }}</strong>
-                        </td>
+                      <tr>
+                        <td><strong>{{ $i18n.t('invoices.TYPE') }}:</strong></td>
+                        <td>{{ invoice.type }}</td>
                       </tr>
-                    </template>
-                  </table>
-                </div>
-              </div>
-
-              <div class="divider"></div>
-
-              <table v-if="lineItems" class="table-styled">
-                <thead>
-                  <tr>
-                    <th>Item</th>
-                    <th class="text-center">Quantity</th>
-                    <th>Price</th>
-                    <th>Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in lineItems" :key="item.id">
-                    <td>{{ item.description }}</td>
-                    <td class="text-center">{{ item.quantity }}</td>
-                    <td>{{ item.amount | currency }}</td>
-                    <td>{{ item.quantity * item.amount | currency }}</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <div class="totals">
-                <div class="totals-line">
-                  <div class="label"><strong>Total:</strong></div>
-                  <div class="amount"><strong>{{ invoice.amount | currency }} {{ invoice.currency }}</strong></div>
-                </div>
-                <div v-if="transactions && transactions.length > 0" class="totals-line">
-                  <div v-for="transaction in transactions" :key="transaction.id">
-                    <div class="label">Payment on {{ transaction.updated_at | moment('MMMM D, YYYY') }} ({{ transaction.type }}):</div>
-                    <div class="amount">{{ transaction.amount | currency }} {{ transaction.currency }}</div>
+                      <tr>
+                        <td><strong>{{ $i18n.t('invoices.STATUS') }}:</strong></td>
+                        <td><strong :class="statusClass">{{ status }}</strong></td>
+                      </tr>
+                      <tr>
+                        <td><strong>{{ $i18n.t('invoices.DATE') }}:</strong></td>
+                        <td>{{ invoice.updated_at | moment('MMMM D, YYYY') }}</td>
+                      </tr>
+                      <template v-if="invoice.type === 'STANDARD'">
+                        <tr v-if="canShowDueAmount">
+                          <td><strong>Payment Due:</strong></td>
+                          <td>{{ invoice.due_date | moment('MMMM D, YYYY') }}</td>
+                        </tr>
+                        <tr
+                          v-if="canShowDueAmount"
+                          class="invert">
+                          <td><strong>Amount Due:</strong></td>
+                          <td>
+                            <strong v-if="invoice.type === 'STANDARD'">{{ due.amount | currency }} {{ due.currency }}</strong>
+                            <strong v-else>{{ invoice.amount | currency }} {{ invoice.currency }}</strong>
+                          </td>
+                        </tr>
+                      </template>
+                      <template v-else>
+                        <tr>
+                          <td><strong>{{ $i18n.t('invoices.PAYMENT_DUE') }}:</strong></td>
+                          <td>{{ invoice.due_date | moment('MMMM D, YYYY') }}</td>
+                        </tr>
+                        <tr class="invert">
+                          <td><strong>{{ $i18n.t('invoices.AMOUNT_DUE') }}:</strong></td>
+                          <td>
+                            <strong>{{ invoice.amount | currency }} {{ invoice.currency }}</strong>
+                          </td>
+                        </tr>
+                      </template>
+                    </table>
                   </div>
                 </div>
-                <div v-if="canShowDueAmount" class="totals-line total-outstanding">
-                  <div class="label"><strong>{{ $i18n.t('invoices.AMOUNT_DUE') }}:</strong></div>
-                  <div class="amount"><strong>{{ due.amount | currency }} {{ due.currency }}</strong></div>
+
+                <div class="divider"/>
+
+                <table
+                  v-if="lineItems"
+                  class="table-styled">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th class="text-left">Item Description</th>
+                      <th class="text-center">Quantity</th>
+                      <th>Price</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="item in lineItems"
+                      :key="item.id"
+                      :class="{ 'line-error': item.error }">
+                      <td>{{ item.id }}</td>
+                      <td class="text-left">
+                        {{ item.description }}
+                        <span
+                          v-if="item.error"
+                          class="line-error-msg">
+                          {{ $i18n.t(`invoices.RESOURCE_ERROR.${item.error}`) }}
+                        </span>
+                      </td>
+                      <td class="text-center">{{ item.quantity }}</td>
+                      <td>{{ item.amount | currency }}</td>
+                      <td>{{ item.quantity * item.amount | currency }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="totals">
+                  <div class="totals-line">
+                    <div class="label"><strong>Total:</strong></div>
+                    <div class="amount"><strong>{{ invoice.amount | currency }} {{ invoice.currency }}</strong></div>
+                  </div>
+                  <div
+                    v-if="transactions && transactions.length > 0"
+                    class="totals-line">
+                    <div
+                      v-for="transaction in transactions"
+                      :key="transaction.id">
+                      <div class="label">Payment on {{ transaction.updated_at | moment('MMMM D, YYYY') }} ({{ transaction.type }}):</div>
+                      <div class="amount">{{ transaction.amount | currency }} {{ transaction.currency }}</div>
+                    </div>
+                  </div>
+                  <div
+                    v-if="canShowDueAmount"
+                    class="totals-line total-outstanding">
+                    <div class="label"><strong>{{ $i18n.t('invoices.AMOUNT_DUE') }}:</strong></div>
+                    <div class="amount"><strong>{{ due.amount | currency }} {{ due.currency }}</strong></div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <loading v-else></loading>
+      <loading v-else/>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
@@ -177,6 +221,14 @@ import loading from '@/shared/components/loading'
 import pay from './pay'
 
 export default {
+  components: {
+    top,
+    error,
+    alertOutstanding,
+    alertProcessing,
+    loading,
+    pay
+  },
   metaInfo: {
     title: 'View Invoice'
   },
@@ -188,34 +240,40 @@ export default {
       engagement: null,
       due: 0,
       transactions: null,
+      fetchExtras: true,
+      reFetch: true,
+      interval: null,
       verified: false,
-      verificationErrors: null,
+      verificationErrors: [],
       errorItem: 'invoice',
       errorCode: 404
     }
   },
-  created () {
-    this.syncCurrentUser()
-    this.fetchInvoice()
-  },
   computed: {
     ...mapGetters({
       user: 'appAuth/user',
-      pendingPayment: 'appUsers/pendingPayment'
+      countries: 'settings/countries'
     }),
     status () {
-      return this.invoice.status
+      return this.$i18n.t(`invoices.INVOICE_STATUS.${this.invoice.status}`)
     },
     statusClass () {
-      if (this.status === 'PENDING') {
-        return 'status-pending'
-      } else if (this.status === 'PAID') {
-        return 'status-paid'
-      } else if (this.status === 'REFUNDED') {
-        return 'status-refunded'
-      }
+      let status = this.status.toLowerCase()
 
-      return 'status-unpaid'
+      if (status === 'pending') {
+        return 'status-pending'
+      } else if (status === 'unpaid') {
+        return 'status-unpaid'
+      } else if (status === 'paid') {
+        return 'status-paid'
+      } else if (status === 'refunded') {
+        return 'status-refunded'
+      } else {
+        return 'unknown'
+      }
+    },
+    isStandardInvoice () {
+      return (this.invoice && this.invoice.order_id && this.invoice.type && this.invoice.type === 'STANDARD')
     },
     canShowDueAmount () {
       return this.due && this.invoice.status !== 'REFUNDED'
@@ -241,11 +299,33 @@ export default {
       return lineItems
     }
   },
+  async created () {
+    await this.syncCurrentUser()
+    await this.fetchInvoice()
+
+    // Keep refreshing the invoice while its status is PROCESSING
+    if (this.reFetch) {
+      this.refreshInvoice()
+    }
+  },
+  beforeDestroy () {
+    clearInterval(this.interval)
+  },
   methods: {
     ...mapActions({
-      setPendingInvoiceStatus: 'appUsers/setPendingInvoiceStatus',
       syncCurrentUser: 'appAuth/syncCurrentUser'
     }),
+    refreshInvoice () {
+      // Refetch invoice every process.env.PROCESSING_INVOICE_REFRESH_TIMER
+      // if status === PROCESSING
+      this.interval = setInterval(() => {
+        if (this.reFetch) {
+          this.fetchInvoice()
+        } else {
+          clearInterval(this.interval)
+        }
+      }, process.env.PROCESSING_INVOICE_REFRESH_TIMER || 15000)
+    },
     async fetchInvoice () {
       await invoiceAPI.invoice({
         data: { id: this.$route.params.id },
@@ -254,25 +334,28 @@ export default {
             this.error = false
             this.invoice = response.data.result
 
-            // Set a temporary pending status for newly created invoices
-            // (we cannot control how long they take to be accepted as of now).
-            // Once we have the fake status set, we can disable that setter.
-            if (this.pendingPayment) {
-              this.$set(this.invoice, 'status', 'PENDING')
-              this.setPendingInvoiceStatus(false)
-            }
+            console.warn('Fetched invoice', this.invoice)
 
             // Non-standard invoices (MANUAL/CREDIT) don't have orders
             // associated with them. We can only fetch orders for STANDARD invoices
-            if (this.invoice.type === 'STANDARD' && this.invoice.order_id) {
+            if (this.isStandardInvoice) {
               this.fetchOrder()
             } else {
               this.loading = false
             }
 
             // Fetch extra info: total due amount and list of transactions
-            this.fetchDue()
-            this.fetchTransactions()
+            // We don't need to fetch these when status checking
+            if (this.fetchExtras) {
+              this.fetchDue()
+              this.fetchTransactions()
+            }
+
+            // Stop invoice re-fetch timer: we only need it
+            // while invoices are being processed
+            if (this.invoice.status !== 'PROCESSING') {
+              this.reFetch = false
+            }
           }
         },
         fail: (e) => {
@@ -291,8 +374,11 @@ export default {
             this.error = false
             this.order = response.data.result
 
-            // Verify validity of this order (no expired / unavailable resources)
-            await this.verifyOrder()
+            // Test if this order is fixable (only certain status need the verify + fix combo)
+            // for invalid resources
+            if (this.isFixable()) {
+              await this.verify()
+            }
           }
         },
         fail: (e) => {
@@ -327,6 +413,9 @@ export default {
           if (response.data.result) {
             this.error = false
             this.transactions = response.data.result
+
+            // "Close" extras fetching now that we have them
+            this.fetchExtras = false
           }
         },
         fail: e => {
@@ -341,39 +430,39 @@ export default {
 
       return options.includes(status)
     },
-    async verifyOrder () {
+    async verify () {
       await orderAPI.verify({
         data: { id: this.invoice.order_id },
         success: response => {
           this.verified = true
-          this.verificationErrors = null
         },
         fail: error => {
           this.verified = true
 
           if (typeof error.errors === 'object') {
-            this.verificationErrors = error.errors
+            for (let key in error.errors) {
+              let e = error.errors[key]
+              this.verificationErrors.push(e)
+              this.lineItems[this.lineItems.findIndex(i => i.id === e.id)].error = e.reason
+            }
           } else {
             this.$toasted.error(this.errorAPI(error, 'orders'))
           }
         }
       })
     }
-  },
-  components: {
-    top,
-    error,
-    alertOutstanding,
-    alertProcessing,
-    loading,
-    pay
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '~@styles/components/icons';
+
+.invoice-col {
+  max-width: 1200px;
+  margin-left: 0;
+}
 .invoice {
-  max-width: 1000px;
   padding: 24px;
   background: $white;
   border: 1px solid $color-border;
@@ -491,9 +580,26 @@ export default {
   .outstanding, .processing, .message-paid {
     margin-bottom: 20px;
   }
+  .line-error {
+    color: rgba(0,0,0,0.5);
+  }
+  .line-error-msg {
+    display: block;
+    margin-top: 8px;
+    color: $color-danger;
+    font-weight: $font-bold;
+
+    &:before {
+      @extend [class^="icon-"];
+      @extend .icon-alert-circle:before;
+
+      position: relative;
+      top: 1px;
+    }
+  }
 }
 @media print {
-  .message-paid {
+  .message-paid, .line-error-msg {
     display: none !important;
   }
 }

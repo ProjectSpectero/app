@@ -1,53 +1,72 @@
 <template>
   <div>
     <top title="HTTPProxy Configuration">
-      <button @click="askBeforeExiting" class="button">
+      <button
+        class="button"
+        @click="askBeforeExiting">
         {{ $i18n.t('misc.CANCEL') }}
       </button>
     </top>
 
     <div class="container">
-      <div class="section padded">
-        <form v-if="config" @submit.prevent.stop="update">
-          <div class="section">
-            <h2>{{ $i18n.t('services.PROXY_MODE') }}</h2>
-            <select v-model="proxy" @change="proxyChanged" required>
-              <option v-for="option in proxyTypes" :value="option" :key="option">
-                {{ option }}
-              </option>
-            </select>
-          </div>
+      <div class="col-6">
+        <div class="section padded">
+          <form
+            v-if="config"
+            @submit.prevent.stop="update">
+            <div class="section">
+              <h2>{{ $i18n.t('services.PROXY_MODE') }}</h2>
+              <select
+                v-model="proxy"
+                required
+                @change="proxyChanged">
+                <option
+                  v-for="option in proxyTypes"
+                  :value="option"
+                  :key="option">
+                  {{ option }}
+                </option>
+              </select>
+            </div>
 
-          <listeners :listeners="config.listeners" @update="updateListeners"></listeners>
+            <listeners
+              :listeners="config.listeners"
+              @update="updateListeners"/>
 
-          <domains
-            :proxy="proxy"
-            title="Allowed Domains"
-            forbiddenMessageKey="services.UNABLE_TO_DISPLAY_ALLOWED_DOMAINS"
-            :enabled="proxy === 'ExclusiveAllow'"
-            :domains="config.allowedDomains"
-            @update="updateAllowedDomains">
-          </domains>
+            <domains
+              :proxy="proxy"
+              :enabled="proxy === 'ExclusiveAllow'"
+              :domains="config.allowedDomains"
+              title="Allowed Domains"
+              forbidden-message-key="services.UNABLE_TO_DISPLAY_ALLOWED_DOMAINS"
+              @update="updateAllowedDomains"/>
 
-          <domains
-            :proxy="proxy"
-            title="Banned Domains"
-            forbiddenMessageKey="services.UNABLE_TO_DISPLAY_BANNED_DOMAINS"
-            :enabled="proxy === 'Normal'"
-            :domains="config.bannedDomains"
-            @update="updateBannedDomains">
-          </domains>
+            <domains
+              :proxy="proxy"
+              :enabled="proxy === 'Normal'"
+              :domains="config.bannedDomains"
+              title="Banned Domains"
+              forbidden-message-key="services.UNABLE_TO_DISPLAY_BANNED_DOMAINS"
+              @update="updateBannedDomains"/>
 
-          <div>
-            <restart v-if="restartNeeded" :service="name"></restart>
-            <template v-else>
-              <button type="submit" class="button button-info" :disabled="formDisable">
-                {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
-              </button>
-              <button class="button button-light right" @click.prevent="askBeforeExiting">Cancel</button>
-            </template>
-          </div>
-        </form>
+            <div>
+              <restart
+                v-if="restartNeeded"
+                :service="name"/>
+              <template v-else>
+                <button
+                  :disabled="formDisable"
+                  type="submit"
+                  class="button-info">
+                  {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
+                </button>
+                <button
+                  class="button-light right"
+                  @click.prevent="askBeforeExiting">Cancel</button>
+              </template>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -62,6 +81,15 @@ import domains from './domains'
 import restart from './restart'
 
 export default {
+  components: {
+    top,
+    listeners,
+    domains,
+    restart
+  },
+  metaInfo: {
+    title: 'HTTPProxy Configuration'
+  },
   data () {
     return {
       name: 'HTTPProxy',
@@ -72,15 +100,20 @@ export default {
       restartNeeded: false
     }
   },
-  created () {
-    if (this.daemonInitialized) {
-      this.setup()
-    }
-  },
   computed: {
     ...mapGetters({
       daemonInitialized: 'daemonAuth/initialized'
     })
+  },
+  watch: {
+    daemonInitialized: function () {
+      this.setup()
+    }
+  },
+  created () {
+    if (this.daemonInitialized) {
+      this.setup()
+    }
   },
   methods: {
     ...mapActions({
@@ -139,27 +172,12 @@ export default {
         }
       })
     }
-  },
-  watch: {
-    daemonInitialized: function () {
-      this.setup()
-    }
-  },
-  components: {
-    top,
-    listeners,
-    domains,
-    restart
-  },
-  metaInfo: {
-    title: 'HTTPProxy Configuration'
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .section {
-  max-width: 600px;
   padding: $pad;
   margin-bottom: $pad;
   border: 1px solid $color-border;

@@ -1,25 +1,40 @@
 <template>
   <div>
     <h2>Services</h2>
-    <div v-if="daemonInitialized" class="service" v-for="(status, service) in services" :key="service">
-      <h3>{{ service }}</h3>
-      <p class="status">
-        {{ $i18n.t('misc.STATUS') }}: <span class="badge badge-dark">{{ status }}</span>
-      </p>
-      <div class="buttonActions">
-        <button class="button" :class="{ 'button-success': status !== 'Running' }" @click="start(service)" :disabled="status === 'Running'">
-          <span class="icon-play-circle"></span> {{ $i18n.t('misc.START') }}
-        </button>
-        <button class="button" :class="{ 'button-danger': status === 'Running' }" @click="stop(service)" :disabled="status !== 'Running'">
-          <span class="icon-stop-circle"></span> {{ $i18n.t('misc.STOP') }}
-        </button>
+    <div v-if="daemonInitialized">
+      <div
+        v-for="(status, service) in services"
+        :key="service"
+        class="service">
+        <h3>{{ service }}</h3>
+        <p class="status">
+          {{ $i18n.t('misc.STATUS') }}: <span class="badge badge-dark">{{ status }}</span>
+        </p>
+        <div class="buttonActions">
+          <button
+            :disabled="status === 'Running'"
+            :class="{ 'button-success': status !== 'Running' }"
+            class="button"
+            @click="start(service)">
+            <span class="icon-play-circle"/> {{ $i18n.t('misc.START') }}
+          </button>
+          <button
+            :disabled="status !== 'Running'"
+            :class="{ 'button-danger': status === 'Running' }"
+            class="button"
+            @click="stop(service)">
+            <span class="icon-stop-circle"/> {{ $i18n.t('misc.STOP') }}
+          </button>
 
-        <router-link :to="{ name: 'service.' + service }" class="button button-dark right">
-          <span class="icon-sliders"></span> {{ $i18n.t('misc.CONFIGURE') }}
-        </router-link>
+          <router-link
+            :to="{ name: 'service.' + service }"
+            class="button-dark right">
+            <span class="icon-sliders"/> {{ $i18n.t('misc.CONFIGURE') }}
+          </router-link>
+        </div>
       </div>
     </div>
-    <loading v-else></loading>
+    <loading v-else/>
   </div>
 </template>
 
@@ -28,16 +43,27 @@ import loading from '@/shared/components/loading'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  created () {
-    if (this.daemonInitialized) {
-      this.fetchServices()
-    }
+  components: {
+    loading
+  },
+  metaInfo: {
+    title: 'Services'
   },
   computed: {
     ...mapGetters({
       daemonInitialized: 'daemonAuth/initialized',
       services: 'services/services'
     })
+  },
+  watch: {
+    daemonInitialized: function () {
+      this.fetchServices()
+    }
+  },
+  created () {
+    if (this.daemonInitialized) {
+      this.fetchServices()
+    }
   },
   methods: {
     ...mapActions({
@@ -50,17 +76,6 @@ export default {
     stop (service) {
       this.toggleStatus({ service: service, action: 'stop' })
     }
-  },
-  watch: {
-    daemonInitialized: function () {
-      this.fetchServices()
-    }
-  },
-  metaInfo: {
-    title: 'Services'
-  },
-  components: {
-    loading
   }
 }
 </script>

@@ -1,6 +1,10 @@
 <template>
   <ul class="tabs">
-    <li v-for="tab in tabs" @click.stop="switchTab(tab.id, tab.path)" :key="tab.id" :class="(activeTab === tab.id) ? 'active' : ''">
+    <li
+      v-for="tab in tabs"
+      :key="tab.id"
+      :class="(activeTab === tab.id) ? 'active' : ''"
+      @click.stop="switchTab(tab.id, tab.path)">
       {{ tab.label }}
     </li>
   </ul>
@@ -9,8 +13,14 @@
 <script>
 export default {
   props: {
-    tabs: Array,
-    activeTab: String
+    tabs: {
+      type: Array,
+      required: true
+    },
+    activeTab: {
+      type: String,
+      required: true
+    }
   },
   methods: {
     switchTab (id, path) {

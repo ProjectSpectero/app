@@ -1,19 +1,32 @@
 <template>
-  <button @click.stop="verify" :class="classes">
+  <button
+    :class="classes"
+    @click.stop="showPaymentModal">
     {{ $i18n.t('misc.PAY_NOW') }}
   </button>
 </template>
 
 <script>
-import orderAPI from '@/app/api/order'
 import paymentModal from '../payments/paymentModal'
-import processingErrorsModal from './processingErrorsModal'
 
 export default {
+  components: {
+    paymentModal
+  },
   props: {
-    invoice: Object,
-    due: Object,
-    classes: String
+    invoice: {
+      type: Object,
+      required: true
+    },
+    due: {
+      type: Object,
+      required: true
+    },
+    classes: {
+      type: String,
+      required: false,
+      default: ''
+    }
   },
   methods: {
     async showPaymentModal () {
@@ -25,39 +38,7 @@ export default {
       }, {
         height: 'auto'
       })
-    },
-    async verify () {
-      if (this.invoice.type !== 'CREDIT') {
-        await orderAPI.verify({
-          data: { id: this.invoice.order_id },
-          success: response => {
-            this.showPaymentModal()
-          },
-          fail: async error => {
-            if (typeof error.errors === 'object') {
-              this.$modal.show(processingErrorsModal, {
-                invoice: this.invoice,
-                errorBag: error.errors,
-                status: error.status,
-                fixed: () => {
-                  this.showPaymentModal()
-                }
-              }, {
-                height: 'auto'
-              })
-            } else {
-              this.$toasted.error(this.errorAPI(error, 'orders'))
-            }
-          }
-        })
-      } else {
-        this.showPaymentModal()
-      }
     }
-  },
-  components: {
-    paymentModal,
-    processingErrorsModal
   }
 }
 </script>

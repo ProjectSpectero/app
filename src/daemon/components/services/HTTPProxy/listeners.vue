@@ -5,49 +5,62 @@
     <div class="add">
       <div class="input-float">
         <input
+          v-validate="rules.ip"
           id="ip"
+          v-model="ip"
+          :class="{ 'input-error': errors.has('ip') }"
           name="ip"
           type="text"
           class="input"
           placeholder="IP Address"
-          v-model="ip"
-          v-validate="rules.ip"
-          :class="{ 'input-error': errors.has('ip') }"
-          @keyup.enter="add"
-          data-vv-as="IP address">
-        <div v-show="errors.has('ip')" class="input-error-msg">
+          data-vv-as="IP address"
+          @keyup.enter="add">
+        <div
+          v-show="errors.has('ip')"
+          class="input-error-msg">
           {{ errors.first('ip') }}
         </div>
       </div>
 
       <div class="input-float">
         <input
+          v-validate="rules.port"
           id="port"
+          v-model="port"
+          :class="{ 'input-error': errors.has('port') }"
           name="port"
           type="number"
           class="input"
           placeholder="Port"
-          v-model="port"
-          v-validate="rules.port"
-          :class="{ 'input-error': errors.has('port') }"
-          @keyup.enter="add"
-          data-vv-as="port">
-        <div v-show="errors.has('port')" class="input-error-msg">
+          data-vv-as="port"
+          @keyup.enter="add">
+        <div
+          v-show="errors.has('port')"
+          class="input-error-msg">
           {{ errors.first('port') }}
         </div>
       </div>
 
-      <button @click.prevent="add" class="button button-md button-success">
+      <button
+        class="button-md button-success"
+        @click.prevent="add">
         {{ $i18n.t('services.ADD_LISTENER') }}
       </button>
     </div>
 
-    <ul v-if="list.length > 0" class="ip-list">
-      <li v-for="(listener, index) in list" :key="index" class="list-item">
+    <ul
+      v-if="list.length > 0"
+      class="ip-list">
+      <li
+        v-for="(listener, index) in list"
+        :key="index"
+        class="list-item">
         <div class="ip-label">
           <strong>{{ listener.item1 }}</strong>:{{ listener.item2 }}
         </div>
-        <button @click.prevent="remove(index)" class="button button-sm button-bordered button-danger">
+        <button
+          class="button-sm button-bordered button-danger"
+          @click.prevent="remove(index)">
           {{ $i18n.t('misc.REMOVE') }}
         </button>
       </li>
@@ -59,7 +72,10 @@
 <script>
 export default {
   props: {
-    listeners: Array
+    listeners: {
+      type: Array,
+      required: true
+    }
   },
   data () {
     return {

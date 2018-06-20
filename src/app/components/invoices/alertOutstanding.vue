@@ -1,8 +1,19 @@
 <template>
-  <div class="outstanding message message-info">
-    <h5><span class="icon-dollar-sign"></span> {{ $i18n.t('invoices.BALANCE_DUE') }}</h5>
-    <p v-html="$i18n.t('invoices.BALANCE_DUE_TEXT', { amount: currencyString, currency: due.currency })"></p>
-    <pay :invoice="invoice" :due="due" classes="button button-info"></pay>
+  <div class="outstanding">
+    <header>
+      <h5>{{ $i18n.t('invoices.BALANCE_DUE') }}</h5>
+      <p v-html="$i18n.t('invoices.BALANCE_DUE_TEXT', { amount: currencyString })"/>
+    </header>
+    <section class="body">
+      <pay
+        :invoice="invoice"
+        :due="due"
+        classes="button-info"/>
+      <router-link
+        v-if="showInvoiceLink"
+        :to="{ name: 'invoice', params: { id: invoice.id } }"
+        class="button">View Invoice</router-link>
+    </section>
   </div>
 </template>
 
@@ -10,25 +21,69 @@
 import pay from './pay'
 
 export default {
+  components: {
+    pay
+  },
   props: {
-    invoice: Object,
-    due: Object
+    invoice: {
+      type: Object,
+      required: true
+    },
+    due: {
+      type: Object,
+      required: true
+    },
+    showInvoiceLink: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   },
   computed: {
     currencyString () {
       return this.$options.filters.currency(this.due.amount)
     }
-  },
-  components: {
-    pay
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.button {
-  margin-top: 12px;
+@import '~@styles/components/icons';
+
+.outstanding {
+  margin-bottom: $pad;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid $color-info;
+
+  header {
+    padding: 16px;
+    color: $white;
+    background: $color-info;
+
+    h5 {
+      margin-bottom: 0;
+
+      &:before {
+        @extend [class^="icon-"];
+        @extend .icon-dollar-sign:before;
+
+        position: relative;
+        top: 1px;
+        margin-right: 6px;
+      }
+    }
+    p {
+      margin-top: 0.7em;
+      opacity: 0.8;
+    }
+  }
+  .body {
+    padding: 16px;
+    background: $white;
+  }
 }
+
 @media print {
   .outstanding {
     display: none !important;

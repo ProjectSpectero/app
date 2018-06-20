@@ -2,22 +2,17 @@
   <div class="modal">
     <div class="modal-header">
       <h2>{{ $i18n.t('misc.PURCHASE') }} {{ (item.type.toLowerCase() === 'node') ? $i18n.t('misc.NODE') : $i18n.t('misc.NODE_GROUP') }}</h2>
-      <button @click="$emit('close')" class="modal-close"></button>
+      <button
+        class="modal-close"
+        @click="$emit('close')"/>
     </div>
     <div class="modal-content">
       <h3>{{ item.friendly_name }}</h3>
 
-      <!-- <div
-        v-if="item.plan"
-        v-html="$i18n.t(`market.PLAN_WARNING`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })"
-        class="message message-info">
-      </div> -->
-
       <div
         v-if="item.type === 'NODE_GROUP'"
-        v-html="$i18n.t(`market.ITEM_IS_GROUP_WARNING`, { count: item.nodes.length })"
-        class="message message-group-warning">
-      </div>
+        class="message message-info message-group-warning"
+        v-html="$i18n.t(`market.ITEM_IS_GROUP_WARNING`, { count: item.nodes.length })"/>
 
       <ul class="details">
         <li v-if="item.type === 'NODE_GROUP'">
@@ -30,7 +25,10 @@
       </ul>
 
       <div class="actions">
-        <router-link class="button button" :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }" v-on:click.native="$emit('close')">
+        <router-link
+          :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }"
+          class="button-info"
+          @click.native="$emit('close')">
           {{ $i18n.t('misc.VIEW_FULL_DETAILS') }}
         </router-link>
       </div>
@@ -39,15 +37,19 @@
         <template v-if="!inCart || showChangeTerm">
           <div class="addToCart">
             <h5>
-              <span class="icon-shopping-cart"></span> {{ changeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('market.PURCHASE_ACCESS') }}
+              {{ showChangeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('market.PURCHASE_ACCESS') }}
             </h5>
             <div>
               <div class="terms">
-                <div :class="{ active: term === 'MONTHLY' }" v-on:click="toggleTerm('MONTHLY')">
+                <div
+                  :class="{ active: term === 'MONTHLY' }"
+                  @click="toggleTerm('MONTHLY')">
                   <label>{{ $i18n.t('market.TERM.MONTHLY') }}</label>
-                  <span class="price">{{ item.price | currency}} {{ $i18n.t('market.PER_MONTH') }}</span>
+                  <span class="price">{{ item.price | currency }} {{ $i18n.t('market.PER_MONTH') }}</span>
                 </div>
-                <div :class="{ active: term === 'YEARLY', unavailable: !item.plan }" v-on:click="item.plan ? toggleTerm('YEARLY') : false">
+                <div
+                  :class="{ active: term === 'YEARLY', unavailable: !item.plan }"
+                  @click="item.plan ? toggleTerm('YEARLY') : false">
                   <label>{{ $i18n.t('market.TERM.YEARLY') }}</label>
                   <span class="price">
                     <template v-if="item.plan">
@@ -57,14 +59,18 @@
                       {{ $i18n.t('market.UNAVAILABLE') }}
                     </template>
                   </span>
-                  <div v-if="this.plan && this.plan['yearly_discount_pct']" class="savings">
-                    {{ $i18n.t('misc.SAVE') }} {{ this.plan['yearly_discount_pct'] * 100 }}%
+                  <div
+                    v-if="plan && plan['yearly_discount_pct']"
+                    class="savings">
+                    {{ $i18n.t('misc.SAVE') }} {{ plan['yearly_discount_pct'] * 100 }}%
                   </div>
                 </div>
               </div>
               <div>
-                <button @click.stop="showChangeTerm ? modifyTerm() : add()" class="button button-info">
-                  <span class="icon-shopping-cart"></span> {{ showChangeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('misc.ADD_TO_CART') }}
+                <button
+                  class="button-success"
+                  @click.stop="showChangeTerm ? modifyTerm() : add()">
+                  <span class="icon-shopping-cart"/> {{ showChangeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('misc.ADD_TO_CART') }}
                 </button>
               </div>
             </div>
@@ -74,31 +80,40 @@
         <template v-else>
           <div class="addedToCart">
             <h5>
-              <span class="icon-shopping-cart"></span> {{ $i18n.t('market.ADDED_TO_YOUR_CART') }}
+              <span class="icon-shopping-cart"/> {{ $i18n.t('market.ADDED_TO_YOUR_CART') }}
             </h5>
             <div>
               <div class="details">
                 <ul>
                   <li>
                     {{ $i18n.t('misc.PRICE') }}: <strong>{{ (term === 'YEARLY') ? yearlyPrice : item.price | currency }}</strong><br>
-                    <span class="link remove" @click="remove">
+                    <span
+                      class="link remove"
+                      @click="remove">
                       {{ $i18n.t('market.REMOVE_FROM_CART') }}
                     </span>
                   </li>
                   <li>
                     {{ $i18n.t('misc.TERM') }}: <strong>{{ $i18n.t(`market.TERM.${term}`) }}</strong><br>
-                    <span class="link" @click="showTerms">
-                      {{ $i18n.t('market.REMOVE_FROM_CART') }}
+                    <span
+                      class="link"
+                      @click="showTerms">
+                      {{ $i18n.t('market.CHANGE_TERM') }}
                     </span>
                   </li>
                 </ul>
               </div>
               <div>
-                <button @click="$emit('close')" class="button">
+                <button
+                  class="button"
+                  @click="$emit('close')">
                   {{ $i18n.t('misc.CONTINUE_SHOPPING') }}
                 </button>
-                <router-link :to="{ name: 'cart' }" v-on:click.native="$emit('close')" class="button button-success">
-                  <span class="icon-check-circle"></span> {{ $i18n.t('misc.CHECKOUT') }}
+                <router-link
+                  :to="{ name: 'cart' }"
+                  class="button-success"
+                  @click.native="$emit('close')">
+                  <span class="icon-check-circle"/> {{ $i18n.t('misc.CHECKOUT') }}
                 </router-link>
               </div>
             </div>
@@ -113,14 +128,37 @@
 import { mapActions } from 'vuex'
 
 export default {
+  props: {
+    item: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
       term: 'MONTHLY',
       showChangeTerm: false
     }
   },
-  props: {
-    item: Object
+  computed: {
+    inCart () {
+      return this.$store.getters['cart/getItem'](this.item.id, this.item.type)
+    },
+    plan () {
+      return this.item.plan ? this.$store.getters['market/plan'](this.item.plan) : null
+    },
+    yearlyPrice () {
+      let price = (this.item.price / 30) * 365
+      if (this.plan && this.plan['yearly_discount_pct']) {
+        price -= price * this.plan['yearly_discount_pct']
+      }
+      return Math.floor(price) // floor the price for marketing purposes
+    }
+  },
+  created: function () {
+    if (this.inCart) {
+      this.term = this.inCart.term
+    }
   },
   methods: {
     ...mapActions({
@@ -163,26 +201,6 @@ export default {
         term: this.term
       })
       this.$toasted.info(this.$i18n.t('market.TERM_MODIFIED'))
-    }
-  },
-  computed: {
-    inCart () {
-      return this.$store.getters['cart/getItem'](this.item.id, this.item.type)
-    },
-    plan () {
-      return this.item.plan ? this.$store.getters['market/plan'](this.item.plan) : null
-    },
-    yearlyPrice () {
-      let price = (this.item.price / 30) * 365
-      if (this.plan && this.plan['yearly_discount_pct']) {
-        price -= price * this.plan['yearly_discount_pct']
-      }
-      return Math.floor(price) // floor the price for marketing purposes
-    }
-  },
-  created: function () {
-    if (this.inCart) {
-      this.term = this.inCart.term
     }
   }
 }
@@ -308,7 +326,7 @@ export default {
     }
   }
 
-  .button {
+  [class^="button-"] {
     // This "fixes" a bug where v-if causes button background color to be
     // delayed when switching to v-else
     transition: none;

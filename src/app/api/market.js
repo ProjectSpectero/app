@@ -6,7 +6,7 @@ export default {
    * Searches the market.
    */
   search (options) {
-    return api('POST', helpers.appendQuery(`/market/search`, options), options)
+    return api('POST', helpers.appendQuery(`/market/search`, options.queryParams), options)
   },
 
   /**

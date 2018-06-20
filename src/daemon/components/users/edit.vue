@@ -1,10 +1,17 @@
 <template>
   <div>
     <top title="Edit User">
-      <button @click="askBeforeExiting" class="button">Cancel</button>
+      <button
+        class="button"
+        @click="askBeforeExiting">Cancel</button>
     </top>
 
-    <user-form v-if="selectedUser" action="edit" :user="selectedUser" @canceled="askBeforeExiting" @success="showSuccessMessage"></user-form>
+    <user-form
+      v-if="selectedUser"
+      :user="selectedUser"
+      action="edit"
+      @canceled="askBeforeExiting"
+      @success="showSuccessMessage"/>
   </div>
 </template>
 
@@ -14,6 +21,13 @@ import userForm from './form'
 import userAPI from '../../api/user.js'
 
 export default {
+  components: {
+    top,
+    userForm
+  },
+  metaInfo: {
+    title: 'Add User'
+  },
   data () {
     return {
       selectedUser: null
@@ -42,13 +56,6 @@ export default {
     showSuccessMessage () {
       this.$toasted.show(this.$i18n.t('USER_UPDATE_SUCCESS'))
     }
-  },
-  components: {
-    top,
-    userForm
-  },
-  metaInfo: {
-    title: 'Add User'
   }
 }
 </script>

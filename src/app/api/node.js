@@ -21,14 +21,14 @@ export default {
    * Returns my nodes.
    */
   myNodes (options) {
-    return api('GET', helpers.appendQuery(`/node/self`, options), options)
+    return api('GET', helpers.appendQuery(`/node/self`, options.queryParams), options)
   },
 
   /**
    * Retrieves all uncategorized nodes.
    */
   uncategorizedNodes (options) {
-    return api('GET', helpers.appendQuery(`/node/self/uncategorized`, options), options)
+    return api('GET', helpers.appendQuery(`/node/self/uncategorized`, options.queryParams), options)
   },
 
   /**
@@ -84,6 +84,13 @@ export default {
    */
   create (options) {
     return api('POST', `/node`, options)
+  },
+
+  /**
+   * Creates a group from given parameters.
+   */
+  createGroup (options) {
+    return api('POST', `/node_group`, options)
   },
 
   /**

@@ -1,39 +1,59 @@
 <template>
   <div>
     <template v-if="!error">
-      <top :title="$i18n.t('nodes.EDIT_GROUP')"></top>
+      <top :title="$i18n.t('nodes.EDIT_GROUP')"/>
       <div v-if="!loading">
-        <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
+        <tabs
+          :tabs="tabs"
+          :active-tab="activeTab"
+          @switchTab="switchTab"/>
 
-        <div>
-          <edit-form v-if="activeTab === 'general'" :group="group"></edit-form>
-          <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" @updateEngagements="updateEngagements"></list-engagements>
+        <div class="container">
+          <edit-form
+            v-if="activeTab === 'general'"
+            :group="group"/>
+          <list-engagements
+            v-else-if="activeTab === 'engagements'"
+            :group="group"
+            :engagements="engagements"
+            @updateEngagements="updateEngagements"/>
         </div>
       </div>
-      <loading v-else></loading>
+      <loading v-else/>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
 <script>
 import nodeAPI from '@/app/api/node'
 import tabs from './tabs'
-import editForm from './groupEditForm'
+import editForm from './groupForm'
 import listEngagements from './listEngagements'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
 
 export default {
+  components: {
+    top,
+    error,
+    loading,
+    tabs,
+    editForm,
+    listEngagements
+  },
   metaInfo: {
     title: 'Edit Node Group'
   },
   data () {
     return {
       tabs: [
-        { id: 'general', path: 'general', 'label': 'General Details' },
-        { id: 'engagements', path: 'engagements', 'label': 'Engagements' }
+        { id: 'general', path: 'general', 'label': 'GENERAL_DETAILS' },
+        { id: 'engagements', path: 'engagements', 'label': 'ENGAGEMENTS' }
       ],
       activeTab: null,
       group: null,
@@ -41,6 +61,9 @@ export default {
       errorItem: 'group',
       errorCode: 404
     }
+  },
+  watch: {
+    '$route': 'parseTab'
   },
   created () {
     this.fetchGroup(this.$route.params.id)
@@ -106,17 +129,6 @@ export default {
       this.activeTab = tab.id
       this.$router.push({ name: 'groupEdit', params: { id: this.group.id, tabAction: tab.path } })
     }
-  },
-  watch: {
-    '$route': 'parseTab'
-  },
-  components: {
-    top,
-    error,
-    loading,
-    tabs,
-    editForm,
-    listEngagements
   }
 }
 </script>

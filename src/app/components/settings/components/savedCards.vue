@@ -1,20 +1,26 @@
 <template>
-  <div v-if="user" class="cc-details">
+  <div
+    v-if="user"
+    class="cc-details">
     <h3>Credit or debit cards</h3>
-    <div v-if="user.card.last4 !== null" class="cc-inner">
+    <div
+      v-if="user.card.last4 !== null"
+      class="cc-inner">
       <div class="cc-card">
         <div class="cc-info col">
           <p><strong>{{ user.card.brand }}</strong> ending in <strong>{{ user.card.last4 }}</strong></p>
           <p class="small">Expires {{ user.card.expires }}</p>
         </div>
         <div class="cc-button col">
-          <button @click.prevent.stop="clearStripe" class="button button-danger button-icon"><span class="icon-x"></span></button>
+          <button
+            class="button-danger button-icon"
+            @click.prevent.stop="clearStripe"><span class="icon-x"/></button>
         </div>
       </div>
     </div>
     <div v-else>
       <div class="cc-info col">
-        <p>{{ $i18n.t('payments.NO_CREDIT_CARD')}}</p>
+        <p>{{ $i18n.t('payments.NO_CREDIT_CARD') }}</p>
       </div>
     </div>
   </div>
@@ -26,7 +32,10 @@ import paymentAPI from '@/app/api/payment.js'
 
 export default {
   props: {
-    user: Object
+    user: {
+      type: Object,
+      required: true
+    }
   },
   methods: {
     ...mapActions({

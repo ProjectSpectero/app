@@ -1,11 +1,12 @@
 <template>
   <div v-if="tableData">
-    <top :title="$i18n.t('misc.DASHBOARD')">
-    </top>
+    <top :title="$i18n.t('misc.DASHBOARD')"/>
     <div class="dashboard">
       <div class="dashboard-component">
         <h2>{{ $i18n.t('misc.ORDERS') }}</h2>
-        <orders-list :pagination="pagination" :tableData="tableData"></orders-list>
+        <orders-list
+          :pagination="pagination"
+          :table-data="tableData"/>
       </div>
     </div>
   </div>
@@ -17,6 +18,13 @@ import top from '@/shared/components/top'
 import ordersList from '../orders/miniList'
 
 export default {
+  components: {
+    top,
+    ordersList
+  },
+  metaInfo: {
+    title: 'Dashboard'
+  },
   data () {
     return {
       pagination: null,
@@ -30,10 +38,11 @@ export default {
   methods: {
     async fetchOrders () {
       await orderAPI.myOrders({
-        searchId: null,
-        page: 1,
-        limit: 3,
-        keepURL: true,
+        queryParams: {
+          searchId: null,
+          page: 1,
+          perPage: 3
+        },
         success: response => {
           this.pagination = response.data.pagination
           this.tableData = response.data.result
@@ -41,13 +50,6 @@ export default {
         fail: error => this.$toasted.error(this.errorAPI(error, 'errors'))
       })
     }
-  },
-  components: {
-    top,
-    ordersList
-  },
-  metaInfo: {
-    title: 'Dashboard'
   }
 }
 </script>

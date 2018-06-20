@@ -1,7 +1,9 @@
 <template>
   <div>
     <top :title="$i18n.t('nodes.EDIT_NODE')">
-      <div slot="sub" class="sub">
+      <div
+        slot="sub"
+        class="sub">
         <div class="col-info">
           <div class="info-box">
             <h5>Name</h5>
@@ -13,20 +15,26 @@
           </div>
           <div class="info-box">
             <h5>Status</h5>
-            <div :class="'badge status-' + node.status">{{ $i18n.t(`nodes.STATUS.${node.status}`) }}</div>
+            <div :class="'badge-' + node.status.toLowerCase()">{{ $i18n.t(`nodes.STATUS.${node.status}`) }}</div>
           </div>
           <div class="info-box">
             <h5>IP/Port</h5>
             <p>{{ node.ip }}:{{ node.port }}</p>
           </div>
-          <div v-if="node.asn" class="info-box">
+          <div
+            v-if="node.asn"
+            class="info-box">
             <h5>ASN</h5>
             <p>{{ node.asn }}</p>
           </div>
-          <div v-if="node.cc || node.city" class="info-box">
+          <div
+            v-if="node.cc || node.city"
+            class="info-box">
             <h5>Location</h5>
             <p>
-              <template v-if="node.cc"><flag :iso="node.cc" :squared="false" /> {{ getCountryById(node.cc).name }}</template>
+              <template v-if="node.cc"><flag
+                :iso="node.cc"
+                :squared="false" /> {{ getCountryById(node.cc).name }}</template>
               <template v-if="node.city"> ({{ node.city }})</template>
             </p>
           </div>
@@ -34,13 +42,28 @@
       </div>
     </top>
 
-    <tabs :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab"></tabs>
+    <tabs
+      :tabs="tabs"
+      :active-tab="activeTab"
+      @switchTab="switchTab"/>
 
-    <edit-form v-if="activeTab === 'general'" :node="node"></edit-form>
-    <list-engagements v-else-if="activeTab === 'engagements'" :engagements="engagements" :node="node" @updateEngagements="updateEngagements"></list-engagements>
-    <list-ips v-else-if="activeTab === 'ips'" :ips="ips"></list-ips>
-    <list-system v-else-if="activeTab === 'system'" :node="node"></list-system>
-    <not-found v-else></not-found>
+    <div class="container">
+      <edit-form
+        v-if="activeTab === 'general'"
+        :node="node"/>
+      <list-engagements
+        v-else-if="activeTab === 'engagements'"
+        :engagements="engagements"
+        :node="node"
+        @updateEngagements="updateEngagements"/>
+      <list-ips
+        v-else-if="activeTab === 'ips'"
+        :ips="ips"/>
+      <list-system
+        v-else-if="activeTab === 'system'"
+        :node="node"/>
+      <not-found v-else/>
+    </div>
   </div>
 </template>
 
@@ -55,16 +78,39 @@ import top from '@/shared/components/top'
 import notFound from '@/shared/components/404'
 
 export default {
+  components: {
+    top,
+    tabs,
+    editForm,
+    listEngagements,
+    listIps,
+    listSystem,
+    notFound
+  },
   metaInfo: {
     title: 'Edit Node'
   },
   props: {
-    action: String,
-    node: Object,
-    nodeGroup: Object,
-    ips: Array,
-    engagements: Array,
-    tabs: Array
+    action: {
+      type: String,
+      required: true
+    },
+    node: {
+      type: Object,
+      required: true
+    },
+    ips: {
+      type: Array,
+      required: true
+    },
+    engagements: {
+      type: Array,
+      required: true
+    },
+    tabs: {
+      type: Array,
+      required: true
+    }
   },
   data () {
     return {
@@ -75,6 +121,9 @@ export default {
     ...mapGetters({
       countries: 'settings/countries'
     })
+  },
+  watch: {
+    '$route': 'parseTab'
   },
   created () {
     this.parseTab()
@@ -98,32 +147,10 @@ export default {
       this.activeTab = tab.id
       this.$router.push({ name: 'node', params: { id: this.node.id, tabAction: tab.path }, action: tab.path })
     }
-  },
-  watch: {
-    '$route': 'parseTab'
-  },
-  components: {
-    top,
-    tabs,
-    editForm,
-    listEngagements,
-    listIps,
-    listSystem,
-    notFound
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '~@styles/components/badges';
 
-.badge {
-  &.status-CONFIRMED, &.status-ENABLED {
-    @extend .badge-success;
-  }
-
-  &.status-UNCONFIRMED, &.status-DISABLED {
-    @extend .badge-error;
-  }
-}
 </style>

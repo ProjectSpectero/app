@@ -1,38 +1,52 @@
 <template>
   <div class="section">
     <h2>{{ title }}</h2>
-    <div class="add" v-if="enabled">
+    <div
+      v-if="enabled"
+      class="add">
       <div class="input-float">
         <input
+          v-validate="'required|url'"
           id="domain"
+          v-model="domain"
+          :class="{ 'input-error': errors.has('domain') }"
           name="domain"
           type="text"
           class="input"
           placeholder="Enter new domain to add"
-          v-model="domain"
-          v-validate="'required|url'"
-          :class="{ 'input-error': errors.has('domain') }"
-          @keyup.enter="add"
-          data-vv-as="domain">
-        <div v-show="errors.has('domain')" class="input-error-msg">
+          data-vv-as="domain"
+          @keyup.enter="add">
+        <div
+          v-show="errors.has('domain')"
+          class="input-error-msg">
           {{ errors.first('domain') }}
         </div>
       </div>
 
-      <button @click.prevent="add" class="button button-md button-success">
+      <button
+        class="button-md button-success"
+        @click.prevent="add">
         {{ $i18n.t('services.ADD_DOMAIN') }}
       </button>
     </div>
-    <div v-else class="cannot-edit-message">
+    <div
+      v-else
+      class="cannot-edit-message">
       {{ forbiddenMessage }}
     </div>
 
     <ul class="ip-list">
-      <li v-for="(item, index) in list" :key="index" class="list-item">
+      <li
+        v-for="(item, index) in list"
+        :key="index"
+        class="list-item">
         <div class="ip-label">
           <strong>{{ item }}</strong>
         </div>
-        <button @click.prevent="remove" class="button button-sm button-bordered button-danger" :disabled="!enabled">
+        <button
+          :disabled="!enabled"
+          class="button-sm button-bordered button-danger"
+          @click.prevent="remove">
           {{ $i18n.t('misc.REMOVE') }}
         </button>
       </li>
@@ -43,11 +57,29 @@
 <script>
 export default {
   props: {
-    title: String,
-    forbiddenMessageKey: String,
-    domains: Array,
-    proxy: String,
-    enabled: Boolean
+    title: {
+      type: String,
+      required: false,
+      default: 'Domains'
+    },
+    forbiddenMessageKey: {
+      type: String,
+      required: true
+    },
+    domains: {
+      type: Array,
+      required: true
+    },
+    proxy: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    enabled: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   },
   data () {
     return {
@@ -55,13 +87,13 @@ export default {
       list: []
     }
   },
-  created () {
-    this.list = JSON.parse(JSON.stringify(this.domains)) || []
-  },
   computed: {
     forbiddenMessage () {
       return this.$i18n.t(this.forbiddenMessageKey)
     }
+  },
+  created () {
+    this.list = JSON.parse(JSON.stringify(this.domains)) || []
   },
   methods: {
     remove (index) {

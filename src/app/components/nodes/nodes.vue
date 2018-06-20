@@ -2,51 +2,79 @@
   <div>
     <template v-if="!error">
       <top :title="$i18n.t('misc.NODES')">
-        <help-button obj="nodes.topics"></help-button>
+        <help-button obj="nodes.topics"/>
       </top>
-      <div v-if="groups">
-        <div v-if="groups.length">
-          <div class="container content-split">
-            <div class="split-item split-list nodes-sidebar">
-              <div v-for="group in groups" class="node-group" :key="group.id" @click.stop="selectGroup(group, true)" :class="selectedGroup === group.id ? 'active' : ''">
-                <div class="group-name">
-                  {{ group.friendly_name }}
+      <div>
+        <div class="container">
+          <div class="col-12 content-split">
+            <div class="split-list nodes-sidebar">
+              <router-link
+                :to="{ name: 'groupCreate' }"
+                class="button-success mb-3">
+                <span class="icon-plus"/>
+                {{ $i18n.t('nodes.CREATE_GROUP') }}
+              </router-link>
+
+              <div v-if="groups">
+                <div v-if="groups.length">
+                  <div
+                    v-for="group in groups"
+                    :key="group.id"
+                    :class="selectedGroup === group.id ? 'active' : ''"
+                    class="node-group"
+                    @click.stop="selectGroup(group, true)">
+                    <div class="group-name">
+                      {{ group.friendly_name }}
+                    </div>
+                    <div class="count">
+                      {{ group.nodes.length }}
+                    </div>
+                  </div>
+
+                  <div
+                    v-if="uncategorized && uncategorized.result.length"
+                    :class="selectedGroup === 0 ? 'active' : ''"
+                    class="node-group"
+                    @click.stop="selectUncategorized">
+                    <div class="group-name">
+                      {{ $i18n.t('nodes.UNCATEGORIZED') }}
+                    </div>
+                    <div class="count">
+                      {{ uncategorized.pagination.total }}
+                    </div>
+                  </div>
                 </div>
-                <div class="count">
-                  {{ group.nodes.length }}
-                </div>
+                <not-found
+                  v-else
+                  type="nodes">
+                  <slot><p v-html="$i18n.t('nodes.NO_NODES_TEXT')"/></slot>
+                </not-found>
               </div>
-              <div class="node-group" v-if="uncategorized && uncategorized.result.length" @click.stop="selectUncategorized" :class="selectedGroup === 0 ? 'active' : ''">
-                <div class="group-name">
-                  {{ $i18n.t('nodes.UNCATEGORIZED') }}
-                </div>
-                <div class="count">
-                  {{ uncategorized.pagination.total }}
-                </div>
-              </div>
+              <loading v-else/>
             </div>
-            <div class="split-item split-details">
+            <div class="split-details">
               <template v-if="groups && loading">
-                <loading></loading>
+                <loading/>
               </template>
               <template v-else>
                 <nodes-list
-                  :selectedGroupInformation="selectedGroupInformation"
-                  :dataLoading="loading"
-                  :searchId="searchId"
+                  :selected-group-information="selectedGroupInformation"
+                  :data-loading="loading"
+                  :search-id="searchId"
                   :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
-                  :tableData="(selectedGroup === 0) ? uncategorized.result : nodes"
+                  :table-data="(selectedGroup === 0) ? uncategorized.result : nodes"
                   @changedPage="changedPage"
                   @sortByColumn="sortByColumn" />
               </template>
             </div>
           </div>
         </div>
-        <not-found v-else :msg="$i18n.t('misc.NOT_FOUND', { type: 'nodes' })"></not-found>
       </div>
-      <loading v-else></loading>
     </template>
-    <error v-else :item="errorItem" :code="errorCode"/>
+    <error
+      v-else
+      :item="errorItem"
+      :code="errorCode"/>
   </div>
 </template>
 
@@ -61,7 +89,17 @@ import notFound from '@/shared/components/notFound'
 import helpButton from '@/shared/components/docs/button'
 
 export default {
-  mixins: [filtersMixin],
+  components: {
+    top,
+    error,
+    loading,
+    helpButton,
+    notFound,
+    nodesList
+  },
+  mixins: [
+    filtersMixin
+  ],
   metaInfo: {
     title: 'Nodes'
   },
@@ -73,25 +111,30 @@ export default {
       totalGroups: null,
       processedGroups: 0,
       groupsPage: 1,
-      nodes: null,
-      uncategorized: null,
+      nodes: [],
+      uncategorized: {
+        pagination: {},
+        result: []
+      },
       errorItem: 'nodes'
+    }
+  },
+  computed: {
+    selectedGroupInformation () {
+      if (this.groups) {
+        const found = this.groups.find(u => u.id === this.selectedGroup)
+
+        return {
+          id: found ? found.id : 0,
+          friendly_name: found ? found.friendly_name : this.$i18n.t('nodes.UNCATEGORIZED')
+        }
+      }
     }
   },
   async created () {
     await this.fetchGroups()
     await this.fetchUncategorized(this.currentPage)
     this.handleSelection()
-  },
-  computed: {
-    selectedGroupInformation () {
-      const found = this.groups.find(u => u.id === this.selectedGroup)
-
-      return {
-        id: found ? found.id : 0,
-        friendly_name: found ? found.friendly_name : this.$i18n.t('nodes.UNCATEGORIZED')
-      }
-    }
   },
   methods: {
     handleSelection () {
@@ -195,9 +238,11 @@ export default {
 
       if (index !== -1) {
         await nodeAPI.myNodes({
-          searchId: this.searchId,
-          page: page,
-          limit: this.perPage,
+          queryParams: {
+            searchId: this.searchId,
+            page: page,
+            perPage: this.perPage || 10
+          },
           success: response => {
             this.nodes = response.data.result
             this.pagination = response.data.pagination
@@ -214,9 +259,11 @@ export default {
     },
     async fetchUncategorized (page) {
       await nodeAPI.uncategorizedNodes({
-        searchId: this.searchId,
-        page: page,
-        limit: this.perPage,
+        queryParams: {
+          searchId: this.searchId,
+          page: page || 1,
+          perPage: this.perPage || 10
+        },
         success: response => {
           this.uncategorized = response.data
           this.loading = false
@@ -247,14 +294,6 @@ export default {
         })
       }
     }
-  },
-  components: {
-    top,
-    error,
-    loading,
-    helpButton,
-    notFound,
-    nodesList
   }
 }
 </script>

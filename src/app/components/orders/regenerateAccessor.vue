@@ -2,14 +2,25 @@
   <div class="modal">
     <div class="modal-header">
       <h2>{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</h2>
-      <button @click="$modal.hide('regenerateAccessorModal')" class="modal-close"></button>
+      <button
+        class="modal-close"
+        @click="$modal.hide('regenerateAccessorModal')"/>
     </div>
     <div class="modal-content">
-      <div v-if="!failed" class="message message-warning">{{ $i18n.t('orders.REGENERATE_ACCESSOR_WARNING') }}</div>
-      <div v-else class="message message-error">{{ $i18n.t('orders.REGENERATE_ACCESSOR_ERROR') }}</div>
+      <div
+        v-if="!failed"
+        class="message message-warning">{{ $i18n.t('orders.REGENERATE_ACCESSOR_WARNING') }}</div>
+      <div
+        v-else
+        class="message message-error">{{ $i18n.t('orders.REGENERATE_ACCESSOR_ERROR') }}</div>
       <div class="action-buttons">
-        <button @click="process()" :disabled="processing" class="button button-info">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
-        <button @click="$modal.hide('regenerateAccessorModal')" class="button right">{{ $i18n.t('misc.NO_CANCEL') }}</button>
+        <button
+          :disabled="processing"
+          class="button-info"
+          @click="process()">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
+        <button
+          class="button right"
+          @click="$modal.hide('regenerateAccessorModal')">{{ $i18n.t('misc.NO_CANCEL') }}</button>
       </div>
     </div>
   </div>
@@ -19,14 +30,17 @@
 import orderAPI from '@/app/api/order'
 
 export default {
+  props: {
+    orderId: {
+      type: Number,
+      required: true
+    }
+  },
   data () {
     return {
       failed: false,
       processing: false
     }
-  },
-  props: {
-    orderId: Number
   },
   methods: {
     process () {

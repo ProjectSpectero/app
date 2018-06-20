@@ -44,7 +44,7 @@ export default {
    * Returns the invoices list for the logged in user.
    */
   myInvoices (options) {
-    return api('GET', helpers.appendQuery(`/invoice/self`, options), options)
+    return api('GET', helpers.appendQuery(`/invoice/self`, options.queryParams), options)
   },
 
   /**

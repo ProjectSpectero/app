@@ -35,29 +35,29 @@
       padding-left: 4px;
     }
   }
-}
-.message-info {
-  color: darken($color-info, 20%);
-  background: lighten($color-info, 53%);
-  border-color: $color-info;
-}
-.message-error, .message-danger {
-  color: darken($color-danger, 15%);
-  background: lighten($color-danger, 39%);
-  border-color: $color-danger;
-}
-.message-success {
-  color: darken($color-success, 20%);
-  background: lighten($color-success, 48%);
-  border-color: $color-success;
-}
-.message-warning {
-  color: darken($color-warning, 25%);
-  background: lighten($color-warning, 45%);
-  border-color: $color-warning;
-}
-.message-dark {
-  color: darken($color-dark, 25%);
-  background: lighten($color-dark, 75%);
-  border-color: $color-dark;
+  &.message-info {
+    color: darken($color-info, 20%);
+    background: lighten($color-info, 53%);
+    border-color: $color-info;
+  }
+  &.message-error, &.message-danger {
+    color: darken($color-danger, 15%);
+    background: lighten($color-danger, 39%);
+    border-color: $color-danger;
+  }
+  &.message-success {
+    color: darken($color-success, 20%);
+    background: lighten($color-success, 48%);
+    border-color: $color-success;
+  }
+  &.message-warning {
+    color: darken($color-warning, 25%);
+    background: lighten($color-warning, 45%);
+    border-color: $color-warning;
+  }
+  &.message-dark {
+    color: darken($color-dark, 25%);
+    background: lighten($color-dark, 75%);
+    border-color: $color-dark;
+  }
 }

@@ -2,9 +2,9 @@
   <div class="auth">
     <div class="auth-container">
       <div class="logo-container">
-        <div class="logo logo-md logo-dark"></div>
+        <div class="logo logo-md logo-dark"/>
       </div>
-      <router-view></router-view>
+      <router-view/>
     </div>
   </div>
 </template>

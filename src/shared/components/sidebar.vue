@@ -1,8 +1,10 @@
 <template>
-  <div class="sidebar">
+  <div
+    v-if="user"
+    class="sidebar">
     <div class="menu-logo">
       <router-link :to="{ name: 'dashboard' }">
-        <div class="logo logo-sm"></div>
+        <div class="logo logo-sm"/>
       </router-link>
     </div>
     <div class="menu-items middle">
@@ -16,18 +18,31 @@
           </li>
         </ul>
       </section> -->
+      <section
+        v-if="isEnterprise"
+        class="nav-section">
+        <h5>{{ $i18n.t('misc.ENTERPRISE') }}</h5>
+        <ul>
+          <li>
+            <router-link :to="{ name: 'enterpriseOrdersByStatus', params: { page: 1, status: 'all' } }">
+              <span class="icon-hard-drive"/>
+              {{ $i18n.t('misc.ENTERPRISE') }}
+            </router-link>
+          </li>
+        </ul>
+      </section>
       <section class="nav-section">
         <h5>{{ $i18n.t('misc.DAEMON') }}</h5>
         <ul>
           <li>
             <router-link :to="{ name: 'nodes' }">
-              <span class="icon-hard-drive"></span>
+              <span class="icon-hard-drive"/>
               {{ $i18n.t('misc.NODES') }}
             </router-link>
           </li>
           <li>
             <router-link :to="{ name: 'downloads' }">
-              <span class="icon-download-cloud"></span>
+              <span class="icon-download-cloud"/>
               {{ $i18n.t('misc.DOWNLOADS') }}
             </router-link>
           </li>
@@ -38,26 +53,26 @@
         <ul>
           <li>
             <router-link :to="{ name: 'market' }">
-              <span class="icon-shopping-bag"></span>
+              <span class="icon-shopping-bag"/>
               {{ $i18n.t('misc.MARKET') }}
             </router-link>
           </li>
           <li>
             <router-link :to="{ name: 'cart' }">
-              <span class="icon-shopping-cart"></span>
+              <span class="icon-shopping-cart"/>
               {{ $i18n.t('misc.CART') }}
               <span v-if="count">({{ count }})</span>
             </router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'orders' }">
-              <span class="icon-briefcase"></span>
+            <router-link :to="{ name: 'ordersByStatus', params: { page: 1, status: 'all' } }">
+              <span class="icon-briefcase"/>
               {{ $i18n.t('misc.ORDERS') }}
             </router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'invoices' }">
-              <span class="icon-dollar-sign"></span>
+            <router-link :to="{ name: 'invoicesByStatus', params: { page: 1, status: 'all' } }">
+              <span class="icon-dollar-sign"/>
               {{ $i18n.t('misc.INVOICES') }}
             </router-link>
           </li>
@@ -68,13 +83,15 @@
         <ul>
           <li>
             <router-link :to="{ name: 'docs' }">
-              <span class="icon-help-circle"></span>
+              <span class="icon-help-circle"/>
               {{ $i18n.t('misc.DOCUMENTATION') }}
             </router-link>
           </li>
           <li>
-            <a :href="supportLink ? supportLink : '#'" target="_blank">
-              <span class="icon-life-buoy"></span>
+            <a
+              :href="supportLink ? supportLink : '#'"
+              target="_blank">
+              <span class="icon-life-buoy"/>
               {{ $i18n.t('misc.SUPPORT') }}
             </a>
           </li>
@@ -83,25 +100,34 @@
     </div>
     <div class="menu-items dropdown">
       <section class="current-user">
-        <div @click="toggleAccountDropdown()" class="dropdown-toggle" :class="{ 'active': showAccountDropdown }">
-          <div class="avatar"><span class="icon-user placeholder-icon"></span></div>
-          <p>My Account <span class="icon-chevron-down toggle-icon" :class="{ 'icon-chevron-up': showAccountDropdown }"></span></p>
+        <div
+          :class="{ 'active': showAccountDropdown }"
+          class="dropdown-toggle"
+          @click="toggleAccountDropdown()">
+          <div class="avatar"><span class="icon-user placeholder-icon"/></div>
+          <p>My Account <span
+            :class="{ 'icon-chevron-up': showAccountDropdown }"
+            class="icon-chevron-down toggle-icon"/></p>
         </div>
-        <div class="dropdown" :class="{ 'display': showAccountDropdown }">
-            <ul>
-              <li>
-                <router-link :to="{ name: 'settings' }">
-                  <span class="icon-settings"></span>
-                  {{ $i18n.t('misc.SETTINGS') }}
-                </router-link>
-              </li>
-              <li>
-                <a href="#logout" @click.prevent="logOut()">
-                  <span class="icon-log-out"></span>
-                  {{ $i18n.t('misc.LOGOUT') }}
-                </a>
-              </li>
-            </ul>
+        <div
+          :class="{ 'display': showAccountDropdown }"
+          class="dropdown">
+          <ul>
+            <li>
+              <router-link :to="{ name: 'settings' }">
+                <span class="icon-settings"/>
+                {{ $i18n.t('misc.SETTINGS') }}
+              </router-link>
+            </li>
+            <li>
+              <a
+                href="#logout"
+                @click.prevent="logOut()">
+                <span class="icon-log-out"/>
+                {{ $i18n.t('misc.LOGOUT') }}
+              </a>
+            </li>
+          </ul>
         </div>
       </section>
     </div>
@@ -109,7 +135,7 @@
 </template>
 
 <script>
-import userAPI from '@/app/api/user.js'
+import userAPI from '@/app/api/user'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -119,14 +145,15 @@ export default {
       showAccountDropdown: false
     }
   },
-  async created () {
-    await this.fetchFreshdesk()
-  },
   computed: {
     ...mapGetters({
       count: 'cart/itemCount',
-      user: 'appAuth/user'
+      user: 'appAuth/user',
+      isEnterprise: 'appAuth/isEnterprise'
     })
+  },
+  async created () {
+    await this.fetchFreshdesk()
   },
   methods: {
     ...mapActions({
@@ -135,7 +162,6 @@ export default {
     }),
     async fetchFreshdesk () {
       if (this.user) {
-        console.log(this.user)
         await userAPI.getSupportLink({
           success: response => {
             if (response.data.result.redirect_uri !== undefined) {

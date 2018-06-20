@@ -1,12 +1,18 @@
 <template>
-  <div v-if="contentsKey && showHelp" class="help">
+  <div
+    v-if="contentsKey && showHelp"
+    class="help">
     <div class="top">
       <div class="title">Help</div>
-      <button @click="close" class="modal-close"></button>
+      <button
+        class="modal-close"
+        @click="close"/>
     </div>
 
     <div class="content">
-      <contents :items="items" :child="true"></contents>
+      <contents
+        :items="items"
+        :child="true"/>
     </div>
   </div>
 </template>
@@ -17,6 +23,9 @@ import contents from '@/shared/components/docs/contents'
 import translations from '@/shared/lang/en'
 
 export default {
+  components: {
+    contents
+  },
   computed: {
     ...mapGetters({
       showHelp: 'help/showHelp',
@@ -33,9 +42,6 @@ export default {
     close () {
       this.togglePanel()
     }
-  },
-  components: {
-    contents
   }
 }
 </script>
