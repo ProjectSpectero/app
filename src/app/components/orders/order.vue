@@ -12,7 +12,7 @@
             <span class="icon-package"/> {{ $i18n.t('orders.VIEW_RESOURCES') }}
           </router-link>
 
-          <dropdown>
+          <dropdown ref="dropdown">
             <template slot="btn">
               <button class="button">Actions</button>
             </template>
@@ -285,6 +285,7 @@ export default {
       })
     },
     cancel (id) {
+      this.$refs.dropdown.isHidden = true
       this.$modal.show(cancelOrderModal, {
         id: id,
         cancelItem: () => {
