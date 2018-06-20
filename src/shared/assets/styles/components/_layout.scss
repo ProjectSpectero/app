@@ -161,6 +161,10 @@
   .split-details {
     flex: 1;
     padding-left: $pad;
+
+    &.no-space {
+      padding-left: 0;
+    }
   }
 }
 

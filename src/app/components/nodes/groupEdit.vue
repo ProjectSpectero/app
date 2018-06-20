@@ -1,13 +1,14 @@
 <template>
   <div>
     <template v-if="!error">
-      <top :title="$i18n.t('nodes.EDIT_GROUP')"/>
-      <div v-if="!loading">
+      <top :title="$i18n.t('nodes.EDIT_GROUP')">
         <tabs
+          slot="tabs"
           :tabs="tabs"
           :active-tab="activeTab"
           @switchTab="switchTab"/>
-
+      </top>
+      <div v-if="!loading">
         <div class="container">
           <edit-form
             v-if="activeTab === 'general'"
@@ -55,7 +56,7 @@ export default {
         { id: 'general', path: 'general', 'label': 'GENERAL_DETAILS' },
         { id: 'engagements', path: 'engagements', 'label': 'ENGAGEMENTS' }
       ],
-      activeTab: null,
+      activeTab: '',
       group: null,
       engagements: [],
       errorItem: 'group',

@@ -8,18 +8,21 @@
         {{ $i18n.t('misc.VIEW_CART') }}
       </router-link>
       <help-button obj="market.topics"/>
+      <market-menu
+        slot="tabs"
+        @selectedRoute="switchListing"/>
     </top>
 
     <div class="container">
-      <market-menu @selectedRoute="switchListing"/>
-
       <div class="content-split col-12">
         <div
           v-if="route !== 'marketMine'"
           class="split-list">
           <filters @changedFilters="search"/>
         </div>
-        <div class="market-listings split-details">
+        <div
+          :class="{ 'no-space': route === 'marketMine' }"
+          class="market-listings split-details">
           <div
             v-if="storeLoading"
             class="loading-overlay">

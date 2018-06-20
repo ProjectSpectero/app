@@ -1,14 +1,16 @@
 <template>
   <div class="downloads">
-    <top title="Downloads"/>
-
-    <ul class="tabs os-tabs">
-      <li
-        v-for="(link, os) in downloadLinks"
-        :key="os"
-        :class="(osTab === os) ? 'active' : ''"
-        @click.stop="switchTab(os)">{{ os }}</li>
-    </ul>
+    <top title="Downloads">
+      <ul
+        slot="tabs"
+        class="tabs os-tabs">
+        <li
+          v-for="(link, os) in downloadLinks"
+          :key="os"
+          :class="(osTab === os) ? 'active' : ''"
+          @click.stop="switchTab(os)">{{ os }}</li>
+      </ul>
+    </top>
 
     <div class="container">
       <div class="col-12">

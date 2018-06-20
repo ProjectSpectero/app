@@ -54,7 +54,7 @@
 
                 <ul
                   v-if="!isEnterpriseOrder"
-                  class="references tabs">
+                  class="references tabs tabs-inline">
                   <li
                     v-for="t in types"
                     :key="t"
