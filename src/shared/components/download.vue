@@ -3,7 +3,7 @@
     :class="buttonClass"
     class="button-bordered button-info"
     @click="downloadFile">
-    <span class="icon-download"/> {{ $i18n.t('misc.DOWNLOAD_AS_FILE') }}
+    <span class="icon-download"/> {{ buttonText }}
   </button>
 </template>
 
@@ -29,6 +29,11 @@ export default {
       type: String,
       required: false,
       default: ''
+    },
+    buttonText: {
+      type: String,
+      required: false,
+      default: 'Download File'
     }
   },
   methods: {
