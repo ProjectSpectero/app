@@ -21,6 +21,7 @@
 
       <div class="actions">
         <download
+          v-if="item.status === 'ACTIVE'"
           :button-text="'Download Proxy List'"
           :content="ipListFormatted"
           :file="`spectero-resource-${item.resource}-ips`"
