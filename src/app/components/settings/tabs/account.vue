@@ -1,20 +1,21 @@
 <template>
   <div>
-    <h2>Profile</h2>
     <div class="grid-container">
+      <div class="grid-title">
+        <h2>My Account</h2>
+      </div>
       <div class="col-6">
         <form @submit.prevent.stop="submit">
-          <h3>General Information</h3>
           <div
             v-if="formError"
             class="message message-error">{{ formError }}</div>
 
-          <div class="change-email">
-            <div class="form-input">
-              <div class="label"><label for="email"><strong>Email Address</strong></label></div>
-              <div
-                v-if="!showEmailForm"
-                class="profile-edit-input">
+          <div class="account-section change-email">
+            <h3>Email Address</h3>
+            <div
+              v-if="!showEmailForm"
+              class="form-input">
+              <div class="profile-edit-input">
                 <input
                   id="emailPlaceholder"
                   :value="form.email"
@@ -82,12 +83,12 @@
             </div>
           </div>
 
-          <div class="change-password">
-            <div class="form-input">
-              <div class="label"><label for="password"><strong>Password</strong></label></div>
-              <div
-                v-if="!showPasswordForm"
-                class="profile-edit-input">
+          <div class="account-section change-password">
+            <h3>Password</h3>
+            <div
+              v-if="!showPasswordForm"
+              class="form-input">
+              <div class="profile-edit-input">
                 <input
                   id="passwordPlaceholder"
                   type="password"
@@ -185,7 +186,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   metaInfo: {
-    title: 'Profile'
+    title: 'My Account'
   },
   props: {
     user: {
@@ -239,6 +240,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.account-section {
+  margin-bottom: $pad;
+  padding-bottom: $pad/2;
+  border-bottom: 1px solid $color-border;
+
+  &:last-of-type {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+}
 .profile-edit-input {
   position: relative;
 

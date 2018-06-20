@@ -42,8 +42,12 @@
 
 <script>
 import orderAPI from '@/app/api/order'
+import orderMixin from '@/app/mixins/order'
 
 export default {
+  mixins: [
+    orderMixin
+  ],
   props: {
     id: {
       type: Number,
@@ -53,11 +57,6 @@ export default {
       type: Function,
       required: false,
       default: () => {}
-    },
-    isEnterpriseOrder: {
-      type: Boolean,
-      required: false,
-      default: false
     }
   },
   data () {

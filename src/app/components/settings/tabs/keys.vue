@@ -1,7 +1,9 @@
 <template>
   <div>
-    <h2>Node Key</h2>
     <div class="grid-container">
+      <div class="grid-title">
+        <h2>Node Key</h2>
+      </div>
       <div class="col-6">
         <div class="form-input">
           <div class="label"><label for="nodeKeyPlaceholder"><strong>Current Node Key</strong></label></div>

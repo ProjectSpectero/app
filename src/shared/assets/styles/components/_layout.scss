@@ -1,6 +1,7 @@
 .container {
   display: block;
   padding: $pad 0;
+  @include grid-container;
 
   &.centered {
     display: flex;
@@ -35,12 +36,22 @@
       padding: $pad;
     }
   }
-
-  @include grid-container;
 }
 
 .grid-container {
+  padding: $pad 0;
   @include grid-container;
+
+  .grid-title {
+    margin: $pad;
+    margin-top: 0;
+    padding-bottom: $pad;
+    border-bottom: 1px solid $color-border;
+
+    h1, h2, h3 {
+      margin-bottom: 0;
+    }
+  }
 }
 
 .boxed {
@@ -161,6 +172,10 @@
   .split-details {
     flex: 1;
     padding-left: $pad;
+
+    &.no-space {
+      padding-left: 0;
+    }
   }
 }
 

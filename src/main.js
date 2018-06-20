@@ -85,6 +85,8 @@ Vue.mixin(globalMethods)
 
 Vue.config.productionTip = false
 
+Vue.prototype.$filters = Vue.options.filters
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

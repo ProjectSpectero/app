@@ -8,21 +8,22 @@
             class="button">
             {{ $i18n.t('daemon.BACK_TO_NODES') }}
           </router-link>
-        </top>
 
-        <template v-if="activeTab !== 'notFound'">
           <div
-            v-if="user"
+            v-if="user && activeTab !== 'notFound'"
+            slot="sub"
             class="managing-user">
             <div class="avatar"><span>{{ initials }}</span></div>
             <p>{{ $i18n.t('daemon.MANAGING_AS') }}: <strong>{{ displayName }}</strong></p>
           </div>
 
           <tabs
+            v-if="activeTab !== 'notFound'"
+            slot="tabs"
             :tabs="tabs"
             :active-tab="activeTab"
             @switchTab="switchTab"/>
-        </template>
+        </top>
 
         <div class="container">
           <div class="col-12">
@@ -68,7 +69,7 @@ export default {
   },
   data () {
     return {
-      activeTab: null,
+      activeTab: '',
       tabs: [
         { id: 'services', path: 'services', 'label': this.$i18n.t('daemon.SERVICES') },
         { id: 'certificates', path: 'certificates', 'label': this.$i18n.t('daemon.CERTIFICATES') }
@@ -123,11 +124,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: $pad;
-  padding: $pad;
+  padding: $pad 0;
+  margin: 0 $pad;
   background: $white;
-  border: 1px solid $color-border;
-  border-radius: 4px;
+  border-top: 1px solid $color-border;
 
   > p {
     flex: 1;

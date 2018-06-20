@@ -12,6 +12,7 @@
       </div>
     </header>
     <slot name="sub"/>
+    <slot name="tabs"/>
   </div>
 </template>
 
@@ -70,6 +71,11 @@ export default {
     margin-top: 6px;
     font-size: 100%;
     color: $color-light;
+  }
+
+  .tabs {
+    margin: 0 $pad;
+    border-top: 1px solid $color-border;
   }
 }
 </style>
