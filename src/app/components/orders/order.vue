@@ -84,7 +84,7 @@
           <div class="container">
             <section class="col-12">
               <alert-outstanding
-                v-if="verified && verificationErrors.length === 0 && order.last_invoice.status === 'UNPAID'"
+                v-if="isOutstanding"
                 :due="due"
                 :invoice="order.last_invoice"
                 :show-invoice-link="true"/>
@@ -113,12 +113,12 @@
                         @sortUpdate="sortUpdate"/>
                     </div>
                   </header>
-                  <template v-if="verified && verificationErrors.length > 0 && isFixable">
-                    <alert-processing
-                      :error-bag="verificationErrors"
-                      :invoice="order.last_invoice"
-                      @update="fetchOrder"/>
-                  </template>
+                  <alert-processing
+                    v-if="isProcessing"
+                    :error-bag="verificationErrors"
+                    :invoice="order.last_invoice"
+                    @update="fetchOrder"/>
+
                   <order-item
                     v-for="(item, index) in order.line_items"
                     :key="index"
@@ -229,6 +229,12 @@ export default {
     }),
     paddedId () {
       return this.order.id.toString().padStart(5, '0')
+    },
+    isOutstanding () {
+      return this.verified && this.verificationErrors.length === 0 && this.order.last_invoice.status === 'UNPAID'
+    },
+    isProcessing () {
+      return this.verified && this.verificationErrors.length > 0 && this.isFixable
     }
   },
   created () {
@@ -255,6 +261,8 @@ export default {
             // for invalid resources
             if (this.isFixable) {
               await this.verify()
+            } else {
+              this.verified = true
             }
 
             this.error = false
