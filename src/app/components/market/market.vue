@@ -30,7 +30,7 @@
           </div>
 
           <div
-            v-if="totals.total > 0"
+            v-if="totals.total > 0 && route !== 'marketMine'"
             class="cart">
             <div class="info">
               <h4 class="mb-0">
