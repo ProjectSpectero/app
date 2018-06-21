@@ -241,7 +241,7 @@ export default {
       valid: false,
       invoice: null,
       engagement: null,
-      due: 0,
+      due: {},
       transactions: null,
       fetchExtras: true,
       reFetch: true,
