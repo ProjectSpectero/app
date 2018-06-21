@@ -57,6 +57,14 @@ export default {
       error: null,
       paid: false,
       processed: false,
+      paymentDetails: [
+        'name',
+        'address_line_1',
+        'city',
+        'state',
+        'post_code',
+        'country'
+      ],
       saveCard: false,
       stripeOptions: {
         // https://stripe.com/docs/stripe.js#element-options
@@ -71,12 +79,29 @@ export default {
       return (process.env.STRIPE_MODE === 'live') ? process.env.STRIPE_LIVE_PUBLIC_KEY : process.env.STRIPE_SANDBOX_PUBLIC_KEY
     }
   },
+  created () {
+    this.validateUserDetails()
+  },
   methods: {
+    validateUserDetails () {
+      let error = false
+
+      this.paymentDetails.forEach(field => {
+        console.log(this.user[field])
+        if (this.user[field] === null || this.user[field] === '') {
+          error = true
+        }
+      })
+
+      if (error) {
+        this.redirectToProfile()
+      }
+    },
     pay () {
       const details = {
         name: this.user.name,
         address_line1: this.user.address_line_1,
-        address_line2: this.user.address_line_2,
+        address_line2: this.user.address_line_2 || '',
         address_city: this.user.city,
         address_state: this.user.state,
         address_zip: this.user.post_code,
@@ -89,7 +114,14 @@ export default {
 
         // Process stripe payment on our API
         this.processStripe(this.invoiceId, stripeData)
+      }).catch((e) => {
+        console.log(e)
+        this.redirectToProfile()
       })
+    },
+    redirectToProfile () {
+      this.$toasted.error(this.$i18n.t('errors.INSUFFICIENT_PAYMENT_DETAILS'))
+      this.$router.push({ name: 'settings', params: { tab: 'payment', fromInvoice: this.invoiceId } })
     },
     processStripe (invoiceId, stripeData) {
       paymentAPI.processStripe({

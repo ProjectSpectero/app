@@ -120,6 +120,7 @@ module.exports = {
     FIELD_EMAIL: 'Must be a valid email.',
     MISSING_BODY: 'Some required fields are missing or empty.',
     USER_NOT_FOUND: 'Invalid email or password.',
+    INSUFFICIENT_PAYMENT_DETAILS: 'Please complete your billing information before paying!',
     EMAIL_FIELD_UNIQUE: 'This email is already taken.',
     GATEWAY_DISABLED_FOR_PURPOSE: 'This payment gateway has been disabled. Please contact us if you are unable to pay using a different gateway.',
     EMAIL_VERIFICATION_NEEDED: 'Your acount is pending verification. Please check your email!',
@@ -235,7 +236,9 @@ module.exports = {
     BALANCE_DUE_TEXT: 'There is an outstanding balance of <strong>{amount}</strong> due for this order.',
     BALANCE_DUE_PLEASE_PAY_NOW: 'Please pay now to avoid late fees.',
     BALANCE_DUE_PAYMENT_POSSIBLE: 'Payment for this order will be automatically deducted on <strong>{dueDate}</strong> using your preferred payment method. You may also make an early payment now if you wish.',
-    RESOURCE_HAS_BEEN_CANCELLED: 'Resource has been cancelled'
+    RESOURCE_HAS_BEEN_CANCELLED: 'Resource has been cancelled',
+    MISSING_PAYMENT_INFORMATION: 'Please fill out any missing fields from your payment details.',
+    PAY_SPECIFIC_INVOICE: 'Pay invoice #{invoice}'
   },
 
   orders: {
