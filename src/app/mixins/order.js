@@ -4,6 +4,9 @@ export default {
       console.log('isEnterpriseOrder()')
       return (this.order && this.order.line_items && this.order.line_items.length && this.order.line_items[0].type === 'ENTERPRISE')
     },
+    isCreditInvoice () {
+      return this.invoice.type === 'CREDIT'
+    },
     isFixable () {
       console.log('isFixable()')
       if (this.order && !this.isEnterpriseOrder) {

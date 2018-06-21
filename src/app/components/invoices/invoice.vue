@@ -10,7 +10,7 @@
           </router-link>
 
           <router-link
-            v-if="invoice.type !== 'CREDIT'"
+            v-if="!isCreditInvoice"
             :to="{ name: 'order', params: { id: invoice.order_id } }"
             class="button-info">
             {{ $i18n.t('misc.VIEW') }} {{ $i18n.t('misc.ORDER') }}
@@ -20,7 +20,7 @@
             <print :button-text="'Print Invoice'"/>
 
             <pay
-              v-if="((verified && verificationErrors.length === 0) || invoice.type === 'CREDIT') && invoice.status === 'UNPAID' && canShowDueAmount"
+              v-if="isPayable"
               :invoice="invoice"
               :due="due"
               classes="button-success"
@@ -35,9 +35,15 @@
                 :error-bag="verificationErrors"
                 :invoice="invoice"
                 @update="fetchInvoice"/>
+
               <alert-outstanding
-                v-else-if="isOutstanding"
+                v-else-if="isOutstanding && isPayable"
                 :due="due"
+                :invoice="invoice"
+                :order="order"/>
+
+              <alert-unpayable
+                v-else-if="!isPayable"
                 :invoice="invoice"
                 :order="order"/>
 
@@ -211,6 +217,7 @@ import invoiceAPI from '@/app/api/invoice'
 import orderMixin from '@/app/mixins/order'
 import alertProcessing from './alertProcessing'
 import alertOutstanding from './alertOutstanding'
+import alertUnpayable from './alertUnpayable'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
@@ -223,6 +230,7 @@ export default {
     error,
     alertOutstanding,
     alertProcessing,
+    alertUnpayable,
     loading,
     pay,
     print
@@ -280,10 +288,28 @@ export default {
       return this.due && this.invoice.status !== 'REFUNDED'
     },
     isOutstanding () {
-      return (this.verified || this.isEnterpriseOrder || this.invoice.type === 'CREDIT') && this.invoice.status === 'UNPAID' && this.canShowDueAmount && this.verificationErrors.length === 0
+      return (this.verified || this.isEnterpriseOrder || this.isCreditInvoice) && this.invoice.status === 'UNPAID' && this.canShowDueAmount && this.verificationErrors.length === 0
     },
     isProcessing () {
       return (this.verified || this.isEnterpriseOrder) && this.verificationErrors.length > 0 && this.order && this.isFixable
+    },
+    isOrderReady () {
+      // STAMDARD invoices must be linked to an order that is
+      // either PENDING or ACTIVE in order for users to be able to pay for it
+      if (this.isStandardInvoice) {
+        console.log('standard invoice found')
+        console.log('this.order.status', this.order.status)
+        const validOrderStatus = ['PENDING', 'ACTIVE']
+        return validOrderStatus.includes(this.order.status)
+      }
+
+      return true
+    },
+    isPayable () {
+      return ((this.verified && this.verificationErrors.length === 0) || this.isCreditInvoice) &&
+        this.invoice.status === 'UNPAID' &&
+        this.canShowDueAmount &&
+        this.isOrderReady
     },
     lineItems () {
       let lineItems = []
@@ -294,7 +320,7 @@ export default {
       }
 
       // Line items from credit
-      if (this.invoice.type === 'CREDIT') {
+      if (this.isCreditInvoice) {
         lineItems.push({
           id: 0,
           description: 'Add account credit',
@@ -340,8 +366,6 @@ export default {
           if (response.data.result) {
             this.error = false
             this.invoice = response.data.result
-
-            console.warn('Fetched invoice', this.invoice)
 
             // Non-standard invoices (MANUAL/CREDIT) don't have orders
             // associated with them. We can only fetch orders for STANDARD invoices
