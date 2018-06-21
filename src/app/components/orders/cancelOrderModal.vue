@@ -7,7 +7,7 @@
         @click="$emit('close')"/>
     </div>
     <div class="modal-content">
-      <template v-if="isEnterpriseOrder">
+      <template v-if="enterpriseOrder">
         <div class="message message-info">{{ $i18n.t('orders.CONTACT_ACCOUNT_REPRESENTATIVE') }}</div>
         <div>
           <button
@@ -57,6 +57,11 @@ export default {
       type: Function,
       required: false,
       default: () => {}
+    },
+    enterpriseOrder: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data () {

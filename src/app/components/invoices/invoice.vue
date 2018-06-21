@@ -17,35 +17,29 @@
           </router-link>
 
           <template v-if="!loading">
-            <template v-if="((verified && verificationErrors.length === 0) || invoice.type === 'CREDIT') && invoice.status === 'UNPAID' && canShowDueAmount && !standardOrderMismatch">
-              <pay
-                :invoice="invoice"
-                :due="due"
-                classes="button-success"
-                @update="fetchInvoice"/>
-            </template>
+            <print :button-text="'Print Invoice'"/>
+
+            <pay
+              v-if="((verified && verificationErrors.length === 0) || invoice.type === 'CREDIT') && invoice.status === 'UNPAID' && canShowDueAmount"
+              :invoice="invoice"
+              :due="due"
+              classes="button-success"
+              @update="fetchInvoice"/>
           </template>
         </top>
         <div v-if="!loading">
           <div class="container centered">
             <div class="col-12 invoice-col">
-              <template v-if="verified && verificationErrors.length === 0 && invoice.status === 'UNPAID' && canShowDueAmount">
-                <alert-outstanding
-                  :due="due"
-                  :invoice="invoice"
-                  :order="order"/>
-              </template>
-              <template v-else-if="invoice.type === 'CREDIT' && invoice.status === 'UNPAID' && canShowDueAmount">
-                <alert-outstanding
-                  :due="due"
-                  :invoice="invoice"/>
-              </template>
-              <template v-else-if="verified && verificationErrors.length > 0 && order && isFixable">
-                <alert-processing
-                  :error-bag="verificationErrors"
-                  :invoice="invoice"
-                  @update="fetchInvoice"/>
-              </template>
+              <alert-processing
+                v-if="isProcessing"
+                :error-bag="verificationErrors"
+                :invoice="invoice"
+                @update="fetchInvoice"/>
+              <alert-outstanding
+                v-else-if="isOutstanding"
+                :due="due"
+                :invoice="invoice"
+                :order="order"/>
 
               <div class="invoice">
                 <div
@@ -221,6 +215,7 @@ import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
 import pay from './pay'
+import print from '@/shared/components/print'
 
 export default {
   components: {
@@ -229,7 +224,8 @@ export default {
     alertOutstanding,
     alertProcessing,
     loading,
-    pay
+    pay,
+    print
   },
   metaInfo: {
     title: 'View Invoice'
@@ -280,17 +276,14 @@ export default {
     isStandardInvoice () {
       return (this.invoice && this.invoice.order_id && this.invoice.type && this.invoice.type === 'STANDARD')
     },
-    standardOrderMismatch () {
-      // Mismatched orders (where a STANDARD invoice is linked with an order that's not ACTIVE nor PENDING)
-      // can't be able to pay
-      if (this.isStandardInvoice && !this.order) {
-        return true
-      }
-
-      return this.isStandardInvoice && !this.order.status.includes(['ACTIVE', 'PENDING'])
-    },
     canShowDueAmount () {
       return this.due && this.invoice.status !== 'REFUNDED'
+    },
+    isOutstanding () {
+      return (this.verified || this.isEnterpriseOrder || this.invoice.type === 'CREDIT') && this.invoice.status === 'UNPAID' && this.canShowDueAmount && this.verificationErrors.length === 0
+    },
+    isProcessing () {
+      return (this.verified || this.isEnterpriseOrder) && this.verificationErrors.length > 0 && this.order && this.isFixable
     },
     lineItems () {
       let lineItems = []
@@ -392,6 +385,8 @@ export default {
             // for invalid resources
             if (this.isFixable) {
               await this.verify()
+            } else {
+              this.verified = true
             }
           }
         },

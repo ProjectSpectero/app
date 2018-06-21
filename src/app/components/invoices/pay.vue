@@ -2,7 +2,7 @@
   <button
     :class="classes"
     @click.stop="showPaymentModal">
-    {{ $i18n.t('misc.PAY_NOW') }}
+    <span class="icon-dollar-sign"/>{{ $i18n.t('misc.PAY_NOW') }}
   </button>
 </template>
 

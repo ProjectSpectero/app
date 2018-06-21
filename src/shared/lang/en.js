@@ -196,7 +196,7 @@ module.exports = {
   },
 
   invoices: {
-    BACK: 'Back to invoices',
+    BACK: 'Back to Invoices',
     PAY_INVOICE: 'Pay Invoice',
     PAY_TEXT2: 'Please pay the amount due using the options available below.',
     INVOICE_STATUS: {
