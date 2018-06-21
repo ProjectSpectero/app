@@ -61,10 +61,6 @@ export default {
   }
   .slot-button {
     display: flex;
-
-    .button, .bp-dropdown {
-      margin-left: 6px;
-    }
   }
 
   h2 {

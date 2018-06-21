@@ -17,13 +17,14 @@
           </router-link>
 
           <template v-if="!loading">
-            <template v-if="((verified && verificationErrors.length === 0) || invoice.type === 'CREDIT') && invoice.status === 'UNPAID' && canShowDueAmount">
-              <pay
-                :invoice="invoice"
-                :due="due"
-                classes="button-success"
-                @update="fetchInvoice"/>
-            </template>
+            <print :button-text="'Print Invoice'"/>
+
+            <pay
+              v-if="((verified && verificationErrors.length === 0) || invoice.type === 'CREDIT') && invoice.status === 'UNPAID' && canShowDueAmount"
+              :invoice="invoice"
+              :due="due"
+              classes="button-success"
+              @update="fetchInvoice"/>
           </template>
         </top>
         <div v-if="!loading">
@@ -214,6 +215,7 @@ import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
 import pay from './pay'
+import print from '@/shared/components/print'
 
 export default {
   components: {
@@ -222,7 +224,8 @@ export default {
     alertOutstanding,
     alertProcessing,
     loading,
-    pay
+    pay,
+    print
   },
   metaInfo: {
     title: 'View Invoice'
