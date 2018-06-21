@@ -209,9 +209,9 @@ module.exports = {
       CANCELLED: 'Cancelled'
     },
     MENU_STATUS: {
-      ALL: 'All invoices',
-      PAID: 'Paid invoices',
-      UNPAID: 'Unpaid invoices'
+      ALL: 'All Invoices',
+      PAID: 'Paid',
+      UNPAID: 'Unpaid'
     },
     NO_INVOICES_TEXT: 'You don\'t have any invoices at the moment. <a href="/downloads">Why don\'t you add some nodes?</a>',
     RESOURCES_NOT_AVAILABLE: 'Resources no longer available',
@@ -249,9 +249,9 @@ module.exports = {
       ERROR: 'Not Available'
     },
     MENU_STATUS: {
-      ALL: 'All orders',
-      ACTIVE: 'Active orders',
-      CANCELLED: 'Cancelled orders'
+      ALL: 'All Orders',
+      ACTIVE: 'Active',
+      CANCELLED: 'Cancelled'
     },
     SYNC_STATUS: {
       PENDING_SYNC: 'Pending',

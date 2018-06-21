@@ -3,38 +3,40 @@
     <template v-if="!error">
       <top :title="$i18n.t(enterprisePage ? 'misc.ENTERPRISE_ORDERS' : 'misc.ORDERS')">
         <help-button obj="orders.topics"/>
+
+        <ul
+          slot="tabs"
+          class="tabs tabs-linked-list">
+          <li
+            v-for="s in status"
+            :key="s">
+            <router-link
+              :to="{ name: enterprisePage ? 'enterpriseOrdersByStatus' : 'ordersByStatus', params: { status: s, page: 1 } }"
+              :class="{ active: currentStatus === s }">
+              {{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}
+            </router-link>
+          </li>
+        </ul>
       </top>
       <div v-if="tableData">
         <div class="container">
-          <div class="col-12 content-split">
-            <div class="split-list">
-              <router-link
-                v-for="s in status"
-                :key="s"
-                :to="{ name: enterprisePage ? 'enterpriseOrdersByStatus' : 'ordersByStatus', params: { status: s, page: 1 } }"
-                :class="{ active: currentStatus === s }"
-                class="filter-link">
-                {{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}
-              </router-link>
-            </div>
-            <div class="split-details">
-              <template v-if="tableData.length">
-                <orders-list
-                  :search-id="searchId"
-                  :pagination="pagination"
-                  :table-data="tableData"
-                  @refresh="fetchOrders"
-                  @changedPage="changedPage"
-                  @sortByColumn="sortByColumn"/>
-              </template>
-              <not-found
-                v-else
-                type="orders">
-                <slot>
-                  <p v-html="$i18n.t('orders.NO_ORDERS_TEXT')"/>
-                </slot>
-              </not-found>
-            </div>
+          <div class="col-12">
+            <template v-if="tableData.length">
+              <orders-list
+                :search-id="searchId"
+                :pagination="pagination"
+                :table-data="tableData"
+                @refresh="fetchOrders"
+                @changedPage="changedPage"
+                @sortByColumn="sortByColumn"/>
+            </template>
+            <not-found
+              v-else
+              type="orders">
+              <slot>
+                <p v-html="$i18n.t('orders.NO_ORDERS_TEXT')"/>
+              </slot>
+            </not-found>
           </div>
         </div>
       </div>
