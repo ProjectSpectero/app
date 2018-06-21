@@ -28,9 +28,12 @@ export default {
 
       return true
     },
+    isUnpaid () {
+      return this.invoice.status === 'UNPAID'
+    },
     isPayable () {
       return ((this.verified && this.verificationErrors.length === 0) || this.isCreditInvoice) &&
-        this.invoice.status === 'UNPAID' &&
+        this.isUnpaid &&
         this.isOrderReady
     }
   }

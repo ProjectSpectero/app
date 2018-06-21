@@ -20,7 +20,7 @@
             <print :button-text="'Print Invoice'"/>
 
             <pay
-              v-if="isPayable"
+              v-if="isUnpaid && isPayable"
               :invoice="invoice"
               :due="due"
               classes="button-success"
@@ -37,13 +37,13 @@
                 @update="fetchInvoice"/>
 
               <alert-outstanding
-                v-else-if="isOutstanding && isPayable"
+                v-else-if="isOutstanding && isUnpaid && isPayable"
                 :due="due"
                 :invoice="invoice"
                 :order="order"/>
 
               <alert-unpayable
-                v-else-if="!isPayable"
+                v-else-if="isUnpaid && !isPayable"
                 :invoice="invoice"
                 :order="order"/>
 

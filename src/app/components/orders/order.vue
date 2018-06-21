@@ -27,7 +27,7 @@
 
               <template v-if="order.status !== 'CANCELLED'">
                 <router-link
-                  v-if="isPayable"
+                  v-if="isUnpaid && isPayable"
                   :to="{ name: 'invoice', params: { id: invoice.id } }">
                   <span class="icon-dollar-sign"/> {{ $i18n.t('misc.PAY_NOW') }}
                 </router-link>
@@ -84,13 +84,13 @@
           <div class="container">
             <section class="col-12">
               <alert-outstanding
-                v-if="isOutstanding && isPayable"
+                v-if="isOutstanding && isUnpaid && isPayable"
                 :due="due"
                 :invoice="invoice"
                 :show-invoice-link="true"/>
 
               <alert-unpayable
-                v-else-if="!isPayable"
+                v-else-if="isUnpaid && !isPayable"
                 :invoice="invoice"
                 :order="order"/>
             </section>
