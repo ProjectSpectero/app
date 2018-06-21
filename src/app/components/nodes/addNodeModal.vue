@@ -8,7 +8,7 @@
     </div>
     <div class="modal-content">
       <p class="spaced">In order to add a node you must first download the Spectero CLI client. For instructions on how to do this, click the download instructions button below.</p>
-      <p class="spaced">After your install and activate Spectero CLI with your node key (provided on the download instructions page) your node will appear on this page.</p>
+      <p class="spaced">After you install and activate Spectero CLI with your node key (provided on the download instructions page) your node will appear on this page.</p>
       <div>
         <button
           class="button-info"
