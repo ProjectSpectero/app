@@ -281,9 +281,6 @@ export default {
         return 'unknown'
       }
     },
-    isStandardInvoice () {
-      return (this.invoice && this.invoice.order_id && this.invoice.type && this.invoice.type === 'STANDARD')
-    },
     canShowDueAmount () {
       return this.due && this.invoice.status !== 'REFUNDED'
     },
@@ -292,24 +289,6 @@ export default {
     },
     isProcessing () {
       return (this.verified || this.isEnterpriseOrder) && this.verificationErrors.length > 0 && this.order && this.isFixable
-    },
-    isOrderReady () {
-      // STAMDARD invoices must be linked to an order that is
-      // either PENDING or ACTIVE in order for users to be able to pay for it
-      if (this.isStandardInvoice) {
-        console.log('standard invoice found')
-        console.log('this.order.status', this.order.status)
-        const validOrderStatus = ['PENDING', 'ACTIVE']
-        return validOrderStatus.includes(this.order.status)
-      }
-
-      return true
-    },
-    isPayable () {
-      return ((this.verified && this.verificationErrors.length === 0) || this.isCreditInvoice) &&
-        this.invoice.status === 'UNPAID' &&
-        this.canShowDueAmount &&
-        this.isOrderReady
     },
     lineItems () {
       let lineItems = []

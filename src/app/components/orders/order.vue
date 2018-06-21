@@ -17,7 +17,7 @@
               <button class="button">Actions</button>
             </template>
             <template slot="body">
-              <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">
+              <router-link :to="{ name: 'invoice', params: { id: invoice.id } }">
                 <span class="icon-tag"/> {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
               </router-link>
 
@@ -27,8 +27,8 @@
 
               <template v-if="order.status !== 'CANCELLED'">
                 <router-link
-                  v-if="order.last_invoice && order.last_invoice.status === 'UNPAID'"
-                  :to="{ name: 'invoice', params: { id: order.last_invoice.id } }">
+                  v-if="isPayable"
+                  :to="{ name: 'invoice', params: { id: invoice.id } }">
                   <span class="icon-dollar-sign"/> {{ $i18n.t('misc.PAY_NOW') }}
                 </router-link>
                 <router-link
@@ -66,14 +66,14 @@
               </div>
               <div class="info-box">
                 <h5>{{ $i18n.t('misc.ORDER') }} {{ $i18n.t('misc.TOTAL') }}</h5>
-                <p>{{ order.last_invoice.amount | currency }}</p>
+                <p>{{ invoice.amount | currency }}</p>
               </div>
               <div
                 v-if="order.due_next"
                 class="info-box">
                 <h5>{{ $i18n.t('misc.NEXT_DUE_DATE') }}</h5>
                 <p>{{ order.due_next | moment('MMM D, YYYY') }}</p>
-                <router-link :to="{ name: 'invoice', params: { id: order.last_invoice_id } }">
+                <router-link :to="{ name: 'invoice', params: { id: invoice.id } }">
                   {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
                 </router-link>
               </div>
@@ -84,10 +84,15 @@
           <div class="container">
             <section class="col-12">
               <alert-outstanding
-                v-if="isOutstanding"
+                v-if="isOutstanding && isPayable"
                 :due="due"
-                :invoice="order.last_invoice"
+                :invoice="invoice"
                 :show-invoice-link="true"/>
+
+              <alert-unpayable
+                v-else-if="!isPayable"
+                :invoice="invoice"
+                :order="order"/>
             </section>
 
             <section class="col-9">
@@ -116,7 +121,7 @@
                   <alert-processing
                     v-if="isProcessing"
                     :error-bag="verificationErrors"
-                    :invoice="order.last_invoice"
+                    :invoice="invoice"
                     @update="fetchOrder"/>
 
                   <order-item
@@ -141,14 +146,14 @@
                       class="balance-left">{{ due.amount | currency }}</span>
                   </div>
                   <div class="details">
-                    <small class="text-light">Invoice No: {{ order.last_invoice_id }}</small>
+                    <small class="text-light">Invoice No: {{ invoice.id }}</small>
                     <small
                       v-if="order.due_next"
                       class="text-light">{{ $i18n.t('misc.NEXT_DUE_DATE') }}: {{ order.due_next | moment('MMM D, YYYY') }}</small>
                   </div>
                 </div>
                 <router-link
-                  :to="{ name: 'invoice', params: { id: order.last_invoice_id } }"
+                  :to="{ name: 'invoice', params: { id: invoice.id } }"
                   class="button-info">View Invoice</router-link>
                 <router-link
                   :to="{ name: 'orderInvoices', params: { id: order.id } }"
@@ -181,6 +186,7 @@ import tooltip from '@/shared/components/tooltip'
 import sortDropdown from '@/shared/components/sortDropdown'
 import alertProcessing from '../invoices/alertProcessing'
 import alertOutstanding from '../invoices/alertOutstanding'
+import alertUnpayable from '../invoices/alertUnpayable'
 import cancelOrderModal from './cancelOrderModal'
 
 export default {
@@ -192,6 +198,7 @@ export default {
     sortDropdown,
     orderItem,
     alertOutstanding,
+    alertUnpayable,
     alertProcessing,
     tooltip,
     cancelOrderModal
@@ -205,6 +212,7 @@ export default {
   data () {
     return {
       order: null,
+      invoice: null,
       due: null,
       errorItem: 'order',
       errorCode: 404,
@@ -231,14 +239,14 @@ export default {
       return this.order.id.toString().padStart(5, '0')
     },
     isOutstanding () {
-      return this.verified && this.verificationErrors.length === 0 && this.order.last_invoice.status === 'UNPAID'
+      return this.verified && this.verificationErrors.length === 0 && this.invoice.status === 'UNPAID'
     },
     isProcessing () {
       return this.verified && this.verificationErrors.length > 0 && this.isFixable
     }
   },
-  created () {
-    this.fetchOrder()
+  async created () {
+    await this.fetchOrder()
   },
   methods: {
     async fetchOrder () {
@@ -247,6 +255,7 @@ export default {
         success: async response => {
           if (response.data.result) {
             this.order = response.data.result
+            this.invoice = this.order.last_invoice
 
             for (let key in this.order.line_items) {
               this.order.line_items[key].error = null
@@ -278,7 +287,7 @@ export default {
     },
     async fetchDue () {
       await invoiceAPI.due({
-        data: { id: this.order.last_invoice_id },
+        data: { id: this.invoice.id },
         success: response => {
           if (response.data.result) {
             this.due = response.data.result
