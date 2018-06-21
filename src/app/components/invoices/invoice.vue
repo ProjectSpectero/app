@@ -29,23 +29,16 @@
         <div v-if="!loading">
           <div class="container centered">
             <div class="col-12 invoice-col">
-              <template v-if="verified && verificationErrors.length === 0 && invoice.status === 'UNPAID' && canShowDueAmount">
-                <alert-outstanding
-                  :due="due"
-                  :invoice="invoice"
-                  :order="order"/>
-              </template>
-              <template v-else-if="invoice.type === 'CREDIT' && invoice.status === 'UNPAID' && canShowDueAmount">
-                <alert-outstanding
-                  :due="due"
-                  :invoice="invoice"/>
-              </template>
-              <template v-else-if="verified && verificationErrors.length > 0 && order && isFixable">
-                <alert-processing
-                  :error-bag="verificationErrors"
-                  :invoice="invoice"
-                  @update="fetchInvoice"/>
-              </template>
+              <alert-processing
+                v-if="isProcessing"
+                :error-bag="verificationErrors"
+                :invoice="invoice"
+                @update="fetchInvoice"/>
+              <alert-outstanding
+                v-else-if="isOutstanding"
+                :due="due"
+                :invoice="invoice"
+                :order="order"/>
 
               <div class="invoice">
                 <div
@@ -283,6 +276,12 @@ export default {
     canShowDueAmount () {
       return this.due && this.invoice.status !== 'REFUNDED'
     },
+    isOutstanding () {
+      return (this.verified || this.isEnterpriseOrder || this.invoice.type === 'CREDIT') && this.invoice.status === 'UNPAID' && this.canShowDueAmount && this.verificationErrors.length === 0
+    },
+    isProcessing () {
+      return (this.verified || this.isEnterpriseOrder) && this.verificationErrors.length > 0 && this.order && this.isFixable
+    },
     lineItems () {
       let lineItems = []
 
@@ -383,6 +382,8 @@ export default {
             // for invalid resources
             if (this.isFixable) {
               await this.verify()
+            } else {
+              this.verified = true
             }
           }
         },
