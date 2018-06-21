@@ -182,7 +182,7 @@ export default {
       })
     },
     editGroup () {
-      this.$router.push({ name: 'groupEdit', params: { id: this.selectedGroupInformation.id } })
+      this.$router.push({ name: 'nodeGroupEdit', params: { id: this.selectedGroupInformation.id } })
     },
     removeGroup () {
       if (confirm(this.$i18n.t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {

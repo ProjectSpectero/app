@@ -3,7 +3,6 @@
     <template v-if="!error">
       <top :title="$i18n.t(enterprisePage ? 'misc.ENTERPRISE_ORDERS' : 'misc.ORDERS')">
         <help-button obj="orders.topics"/>
-
         <ul
           slot="tabs"
           class="tabs tabs-linked-list">
@@ -90,7 +89,7 @@ export default {
       return this.$route.params.status ? this.$route.params.status.toLowerCase() : 'all'
     },
     enterprisePage () {
-      return (this.isEnterprise && this.$route.name === 'enterpriseOrdersByStatus')
+      return (this.isEnterprise && (this.$route.name === 'enterpriseOrders' || this.$route.name === 'enterpriseOrdersByStatus'))
     }
   },
   watch: {

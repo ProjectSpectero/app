@@ -4,12 +4,6 @@
       <div v-if="invoice && user">
         <top title="View Invoice">
           <router-link
-            :to="{ name: 'invoices' }"
-            class="button">
-            {{ $i18n.t('invoices.BACK') }}
-          </router-link>
-
-          <router-link
             v-if="!isCreditInvoice"
             :to="{ name: 'order', params: { id: invoice.order_id } }"
             class="button-info">

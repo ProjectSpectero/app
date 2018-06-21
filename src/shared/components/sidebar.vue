@@ -26,7 +26,7 @@
         <h5>{{ $i18n.t('misc.ENTERPRISE') }}</h5>
         <ul>
           <li>
-            <router-link :to="{ name: 'enterpriseOrdersByStatus', params: { page: 1, status: 'all' } }">
+            <router-link :to="{ name: 'enterpriseOrders' }">
               <span class="icon-hard-drive"/>
               {{ $i18n.t('misc.ENTERPRISE') }}
             </router-link>
@@ -37,7 +37,9 @@
         <h5>{{ $i18n.t('misc.DAEMON') }}</h5>
         <ul>
           <li>
-            <router-link :to="{ name: 'nodes' }">
+            <router-link
+              :to="{ name: 'nodes' }"
+              :class="{'router-link-active': ['node', 'nodesGroupCreate', 'nodeGroupEdit', 'manage', 'service.HTTPProxy', 'service.OpenVPN'].includes($route.name)}">
               <span class="icon-hard-drive"/>
               {{ $i18n.t('misc.NODES') }}
             </router-link>
@@ -67,13 +69,17 @@
             </router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'ordersByStatus', params: { page: 1, status: 'all' } }">
+            <router-link
+              :to="{ name: 'orders' }"
+              :class="{'router-link-active': ['order', 'orderResources', 'orderInvoices'].includes($route.name)}">
               <span class="icon-briefcase"/>
               {{ $i18n.t('misc.ORDERS') }}
             </router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'invoicesByStatus', params: { page: 1, status: 'all' } }">
+            <router-link
+              :to="{ name: 'invoices' }"
+              :class="{'router-link-active': ['invoice'].includes($route.name)}">
               <span class="icon-dollar-sign"/>
               {{ $i18n.t('misc.INVOICES') }}
             </router-link>
@@ -239,7 +245,7 @@ h5 {
       color: $white;
     }
   }
-  .active, .router-link-exact-active {
+  .active, .router-link-active {
     color: $white;
     border-color: $color-brand;
     background: rgba(0,0,0,.15);

@@ -7,7 +7,7 @@
           title="Order Details">
           <router-link
             v-if="!loading && order.status === 'ACTIVE'"
-            :to="{ name: 'resources', params: { id: order.id } }"
+            :to="{ name: 'orderResources', params: { id: order.id } }"
             class="button-info">
             <span class="icon-package"/> {{ $i18n.t('orders.VIEW_RESOURCES') }}
           </router-link>
@@ -33,7 +33,7 @@
                 </router-link>
                 <router-link
                   v-if="!loading && order.status === 'ACTIVE'"
-                  :to="{ name: 'resources', params: { id: order.id } }">
+                  :to="{ name: 'orderResources', params: { id: order.id } }">
                   <span class="icon-package"/> {{ $i18n.t('orders.VIEW_RESOURCES') }}
                 </router-link>
                 <a

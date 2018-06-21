@@ -7,5 +7,5 @@ export default [
   { path: '/market/listed/:page?', name: 'marketListed', component: market, meta: { auth: true } },
   { path: '/market/mine/:page?', name: 'marketMine', component: market, meta: { auth: true } },
   { path: '/market/:type/:id/view', name: 'marketView', component: marketView },
-  { path: '/market/cart', name: 'cart', component: cart }
+  { path: '/cart', name: 'cart', component: cart }
 ]

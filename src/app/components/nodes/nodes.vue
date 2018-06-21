@@ -3,7 +3,7 @@
     <template v-if="!error">
       <top :title="$i18n.t('misc.NODES')">
         <router-link
-          :to="{ name: 'groupCreate' }"
+          :to="{ name: 'nodesGroupCreate' }"
           class="button">
           <span class="icon-plus"/>{{ $i18n.t('nodes.CREATE_GROUP') }}
         </router-link>
