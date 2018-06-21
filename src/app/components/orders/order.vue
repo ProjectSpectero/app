@@ -296,6 +296,7 @@ export default {
       this.$refs.dropdown.isHidden = true
       this.$modal.show(cancelOrderModal, {
         id: id,
+        enterpriseOrder: this.isEnterpriseOrder,
         cancelItem: () => {
           this.order.status = 'CANCELLED'
         }
