@@ -5,23 +5,17 @@
         slot="tabs"
         class="tabs tabs-linked-list">
         <li>
-          <router-link
-            :to="{ name: 'settings', params: { tab: 'account' } }"
-            class="filter-link">
+          <router-link :to="{ name: 'settings', params: { tab: 'account' } }">
             My Account
           </router-link>
         </li>
         <li>
-          <router-link
-            :to="{ name: 'settings', params: { tab: 'payment' } }"
-            class="filter-link">
+          <router-link :to="{ name: 'settings', params: { tab: 'payment' } }">
             Payment Details
           </router-link>
         </li>
         <li>
-          <router-link
-            :to="{ name: 'settings', params: { tab: 'keys' } }"
-            class="filter-link">
+          <router-link :to="{ name: 'settings', params: { tab: 'keys' } }">
             Node Key
           </router-link>
         </li>

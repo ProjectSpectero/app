@@ -61,6 +61,7 @@ export default {
   }
   .slot-button {
     display: flex;
+    align-items: center;
   }
 
   h2 {

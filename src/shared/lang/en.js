@@ -210,9 +210,9 @@ module.exports = {
       CANCELLED: 'Cancelled'
     },
     MENU_STATUS: {
-      ALL: 'All invoices',
-      PAID: 'Paid invoices',
-      UNPAID: 'Unpaid invoices'
+      ALL: 'All Invoices',
+      PAID: 'Paid',
+      UNPAID: 'Unpaid'
     },
     NO_INVOICES_TEXT: 'You don\'t have any invoices at the moment. <a href="/downloads">Why don\'t you add some nodes?</a>',
     RESOURCES_NOT_AVAILABLE: 'Resources no longer available',
@@ -250,9 +250,9 @@ module.exports = {
       ERROR: 'Not Available'
     },
     MENU_STATUS: {
-      ALL: 'All orders',
-      ACTIVE: 'Active orders',
-      CANCELLED: 'Cancelled orders'
+      ALL: 'All Orders',
+      ACTIVE: 'Active',
+      CANCELLED: 'Cancelled'
     },
     SYNC_STATUS: {
       PENDING_SYNC: 'Pending',
@@ -325,6 +325,7 @@ module.exports = {
     UPDATE_SUCCESS: 'Information updated successfully!',
     GROUP_FROM_NODE_UPDATE_SUCCESS: 'Group changed successfully!',
     CREATE_GROUP: 'Create Node Group',
+    ADD_NODE: 'Add Node',
     HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!',
     ORDERS_EXIST: 'Unable to remove: this node has active orders!',
     GROUP_PRICE_AVAILABILITY: 'Price will only be used for <strong>{model1}</strong> and <strong>{model2}</strong> market models.',

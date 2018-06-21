@@ -3,37 +3,38 @@
     <template v-if="!error">
       <top :title="$i18n.t('misc.INVOICES')">
         <help-button obj="invoices.topics"/>
+        <ul
+          slot="tabs"
+          class="tabs tabs-linked-list">
+          <li
+            v-for="s in status"
+            :key="s">
+            <router-link
+              :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }"
+              :class="{ active: currentStatus === s }">
+              {{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}
+            </router-link>
+          </li>
+        </ul>
       </top>
       <div v-if="tableData">
         <div class="container">
-          <div class="col-12 content-split">
-            <div class="split-list">
-              <router-link
-                v-for="s in status"
-                :key="s"
-                :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }"
-                :class="{ active: currentStatus === s }"
-                class="filter-link">
-                {{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}
-              </router-link>
-            </div>
-            <div class="split-details">
-              <template v-if="tableData.length">
-                <invoices-list
-                  :search-id="searchId"
-                  :pagination="pagination"
-                  :table-data="tableData"
-                  @changedPage="changedPage"
-                  @sortByColumn="sortByColumn"/>
-              </template>
-              <not-found
-                v-else
-                type="invoices">
-                <slot>
-                  <p v-html="$i18n.t('invoices.NO_INVOICES_TEXT')"/>
-                </slot>
-              </not-found>
-            </div>
+          <div class="col-12">
+            <template v-if="tableData.length">
+              <invoices-list
+                :search-id="searchId"
+                :pagination="pagination"
+                :table-data="tableData"
+                @changedPage="changedPage"
+                @sortByColumn="sortByColumn"/>
+            </template>
+            <not-found
+              v-else
+              type="invoices">
+              <slot>
+                <p v-html="$i18n.t('invoices.NO_INVOICES_TEXT')"/>
+              </slot>
+            </not-found>
           </div>
         </div>
       </div>

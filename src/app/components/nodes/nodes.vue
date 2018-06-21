@@ -2,18 +2,26 @@
   <div>
     <template v-if="!error">
       <top :title="$i18n.t('misc.NODES')">
+        <router-link
+          :to="{ name: 'groupCreate' }"
+          class="button">
+          <span class="icon-plus"/>{{ $i18n.t('nodes.CREATE_GROUP') }}
+        </router-link>
+
+        <button
+          class="button-success"
+          @click.prevent="showAddNodeModal()">
+          <span class="icon-plus"/>{{ $i18n.t('nodes.ADD_NODE') }}
+        </button>
+
         <help-button obj="nodes.topics"/>
       </top>
+
       <div>
         <div class="container">
           <div class="col-12 content-split">
             <div class="split-list nodes-sidebar">
-              <router-link
-                :to="{ name: 'groupCreate' }"
-                class="button-success mb-3">
-                <span class="icon-plus"/>
-                {{ $i18n.t('nodes.CREATE_GROUP') }}
-              </router-link>
+              <h3>Your Node Groups</h3>
 
               <div v-if="groups">
                 <div v-if="groups.length">
@@ -87,6 +95,7 @@ import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
 import notFound from '@/shared/components/notFound'
 import helpButton from '@/shared/components/docs/button'
+import addNodeModal from './addNodeModal'
 
 export default {
   components: {
@@ -95,7 +104,8 @@ export default {
     loading,
     helpButton,
     notFound,
-    nodesList
+    nodesList,
+    addNodeModal
   },
   mixins: [
     filtersMixin
@@ -293,6 +303,11 @@ export default {
           }
         })
       }
+    },
+    showAddNodeModal () {
+      this.$modal.show(addNodeModal, {}, {
+        height: 'auto'
+      })
     }
   }
 }
