@@ -324,6 +324,7 @@ module.exports = {
     UPDATE_SUCCESS: 'Information updated successfully!',
     GROUP_FROM_NODE_UPDATE_SUCCESS: 'Group changed successfully!',
     CREATE_GROUP: 'Create Node Group',
+    ADD_NODE: 'Add Node',
     HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!',
     ORDERS_EXIST: 'Unable to remove: this node has active orders!',
     GROUP_PRICE_AVAILABILITY: 'Price will only be used for <strong>{model1}</strong> and <strong>{model2}</strong> market models.',
