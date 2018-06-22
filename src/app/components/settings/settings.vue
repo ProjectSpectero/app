@@ -23,6 +23,16 @@
     </top>
     <div class="container">
       <div class="col-12">
+        <div v-if="$route.params.fromInvoice">
+          {{ $i18n.t('invoices.MISSING_PAYMENT_INFORMATION') }}
+
+          <router-link
+            :to="{ name: 'stripe', params: { invoiceId: $route.params.fromInvoice } }"
+            class="button-info">
+            {{ $i18n.t('invoices.PAY_SPECIFIC_INVOICE', { invoice: $route.params.fromInvoice }) }}
+          </router-link>
+        </div>
+
         <div class="section">
           <tab-account
             v-if="currentTab === 'account'"
@@ -49,8 +59,8 @@
 
 <script>
 import top from '@/shared/components/top'
-import { mapGetters } from 'vuex'
-import userAPI from '@/app/api/user.js'
+import { mapGetters, mapActions } from 'vuex'
+import userAPI from '@/app/api/user'
 import tabAccount from './tabs/account'
 import tabPayment from './tabs/payment'
 import tabKeys from './tabs/keys'
@@ -90,6 +100,9 @@ export default {
     this.checkRouteTab()
   },
   methods: {
+    ...mapActions({
+      syncCurrentUser: 'appAuth/syncCurrentUser'
+    }),
     checkRouteTab () {
       let allowed = ['account', 'payment', 'keys']
 
@@ -102,7 +115,7 @@ export default {
 
       // Remove empty fields from the list
       for (var key in data) {
-        if (data[key] === null || data[key] === '') {
+        if (data[key] === null) {
           delete data[key]
         }
       }
@@ -110,6 +123,7 @@ export default {
       userAPI.edit({
         data: data,
         success: response => {
+          console.log('User updated', data)
           this.dealWithSuccess()
         },
         fail: error => {
@@ -117,7 +131,9 @@ export default {
         }
       })
     },
-    dealWithSuccess () {
+    async dealWithSuccess () {
+      await this.syncCurrentUser()
+
       this.$toasted.success('Your account has been updated successfully.')
       this.formLoading = false
     },
