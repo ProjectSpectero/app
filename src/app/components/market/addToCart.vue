@@ -10,8 +10,13 @@
       <h3>{{ item.friendly_name }}</h3>
 
       <div
+        v-if="item.plan"
+        class="message message-success"
+        v-html="$i18n.t(`market.PLAN_PURCHASE_MSG`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })"/>
+
+      <div
         v-if="item.type === 'NODE_GROUP'"
-        class="message message-info message-group-warning"
+        class="message message message-group-warning"
         v-html="$i18n.t(`market.ITEM_IS_GROUP_WARNING`, { count: item.nodes.length })"/>
 
       <ul class="details">
