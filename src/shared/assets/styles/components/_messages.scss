@@ -9,7 +9,6 @@
   line-height: 150%;
   font-weight: $font-semi;
   margin-bottom: 12px;
-  border: 2px solid #E9E9E9;
   border-radius: 4px;
 
   > div {
@@ -17,6 +16,7 @@
 
     &.actions {
       flex: none;
+      margin-left: 12px;
     }
   }
 
@@ -36,20 +36,23 @@
     }
   }
   p {
-    margin-top: 0.7em;
+    margin-top: 0.5em;
     font-size: 100%;
     line-height: 150%;
     font-weight: $font-regular;
     opacity: 0.8;
+
+    &.actions {
+      opacity: 1;
+      margin-top: 12px;
+      margin-left: 0;
+    }
   }
   h5 {
     display: flex;
     align-items: flex-end;
     margin-bottom: 0;
-  }
-  [class^="icon-"] {
-    font-size: 18px;
-    margin-right: 6px;
+    line-height: 20px;
   }
   ul {
     padding-left: 22px;
@@ -77,28 +80,32 @@
   &.message-info {
     color: $white;
     background: $color-info;
-    border-color: $color-info;
+
+    .button, [class^="button-"] {
+      background: rgba(0,0,0,0.15);
+
+      &:hover {
+        background: rgba(0,0,0,0.3);
+      }
+    }
 
     &:before { @extend .icon-info:before; }
   }
   &.message-error, &.message-danger {
     color: $white;
     background: $color-danger;
-    border-color: $color-danger;
 
     &:before { @extend .icon-alert-circle:before; }
   }
   &.message-success {
     color: $white;
     background: $color-success;
-    border-color: $color-success;
 
     &:before { @extend .icon-check-circle:before; }
   }
   &.message-warning {
     color: rgba(0,0,0,0.7);
     background: $color-warning;
-    border-color: $color-warning;
 
     .button, [class^="button-"] {
       color: rbga(0,0,0,0.7);
@@ -108,7 +115,6 @@
   &.message-dark {
     color: $white;
     background: $color-dark;
-    border-color: $color-dark;
 
     .button, [class^="button-"] {
       background: rgba(0,0,0,0.2);
