@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p>{{ $i18n.t('invoices.FIX_ORDER_TEXT') }}</p>
     <template v-if="status !== 400">
       <button
         class="button-danger"

@@ -37,7 +37,7 @@
                 :order="order"/>
 
               <alert-unpayable
-                v-else-if="isUnpaid && !isPayable"
+                v-else-if="verified && isUnpaid && !isPayable"
                 :invoice="invoice"
                 :order="order"/>
 
@@ -443,6 +443,7 @@ export default {
         data: { id: this.invoice.order_id },
         success: response => {
           this.verified = true
+          this.verificationErrors = []
         },
         fail: error => {
           this.verified = true

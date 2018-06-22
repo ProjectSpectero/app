@@ -318,6 +318,7 @@ export default {
         data: { id: this.order.id },
         success: response => {
           this.verified = true
+          this.verificationErrors = []
         },
         fail: error => {
           this.verified = true
