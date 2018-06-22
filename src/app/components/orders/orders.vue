@@ -11,16 +11,17 @@
             :key="s">
             <router-link
               :to="{ name: enterprisePage ? 'enterpriseOrdersByStatus' : 'ordersByStatus', params: { status: s, page: 1 } }"
-              :class="{ active: currentStatus === s }">
+              :class="{ active: currentStatus === s }"
+              @click.native="tabChange">
               {{ $i18n.t('orders.MENU_STATUS.' + s.toUpperCase()) }}
             </router-link>
           </li>
         </ul>
       </top>
-      <div v-if="tableData">
+      <div v-if="!loading">
         <div class="container">
           <div class="col-12">
-            <template v-if="tableData.length">
+            <template v-if="tableData && tableData.length">
               <orders-list
                 :search-id="searchId"
                 :pagination="pagination"
@@ -77,7 +78,9 @@ export default {
   data () {
     return {
       status: ['all', 'active', 'cancelled'],
-      errorItem: 'orders'
+      errorItem: 'orders',
+      error: false,
+      loading: true
     }
   },
   computed: {
@@ -112,7 +115,11 @@ export default {
   },
   methods: {
     changedPage (page) {
+      this.loading = true
       this.$router.push({ name: this.$route.name, params: { page: page, status: this.currentStatus } })
+    },
+    tabChange () {
+      this.loading = true
     },
     async fetch (page) {
       if (this.rules.length) {
@@ -140,6 +147,8 @@ export default {
     async fetchOrders (page) {
       const method = this.enterprisePage ? orderAPI['myEnterpriseOrders'] : orderAPI['myOrders']
 
+      this.loading = true
+
       await method({
         queryParams: {
           searchId: this.searchId,
@@ -148,6 +157,7 @@ export default {
         },
         success: response => {
           this.error = false
+          this.loading = false
           this.pagination = response.data.pagination
           this.tableData = response.data.result
         },
@@ -155,6 +165,7 @@ export default {
           console.log(e)
           this.errorCode = 400
           this.error = true
+          this.loading = false
         }
       })
     }

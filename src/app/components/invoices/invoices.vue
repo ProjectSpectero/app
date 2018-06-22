@@ -11,16 +11,17 @@
             :key="s">
             <router-link
               :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }"
-              :class="{ active: currentStatus === s }">
+              :class="{ active: currentStatus === s }"
+              @click.native="tabChange">
               {{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}
             </router-link>
           </li>
         </ul>
       </top>
-      <div v-if="tableData">
+      <div v-if="!loading">
         <div class="container">
           <div class="col-12">
-            <template v-if="tableData.length">
+            <template v-if="tableData && tableData.length">
               <invoices-list
                 :search-id="searchId"
                 :pagination="pagination"
@@ -78,7 +79,9 @@ export default {
     return {
       perPage: 10,
       status: ['all', 'paid', 'unpaid'],
-      errorItem: 'invoices'
+      errorItem: 'invoices',
+      error: false,
+      loading: true
     }
   },
   computed: {
@@ -104,7 +107,11 @@ export default {
   },
   methods: {
     changedPage (page) {
+      this.loading = true
       this.$router.push({ name: 'invoicesByStatus', params: { page: page, status: this.currentStatus } })
+    },
+    tabChange () {
+      this.loading = true
     },
     async fetch (page) {
       if (this.rules.length) {
@@ -130,6 +137,8 @@ export default {
       }
     },
     async fetchInvoices (page) {
+      this.loading = true
+
       await invoiceAPI.myInvoices({
         queryParams: {
           searchId: this.searchId,
@@ -138,6 +147,7 @@ export default {
         },
         success: response => {
           this.error = false
+          this.loading = false
           this.pagination = response.data.pagination
           this.tableData = response.data.result
         },
@@ -145,6 +155,7 @@ export default {
           console.log(e)
           this.errorCode = 400
           this.error = true
+          this.loading = false
         }
       })
     }
