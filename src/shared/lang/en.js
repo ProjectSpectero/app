@@ -113,6 +113,7 @@ module.exports = {
     UNAUTHORIZED: 'You are not authorized to do this. Please contact us if the error persists.',
     PAYMENT_FAILED: 'Payment failed',
     INVOICE_ALREADY_PAID: 'This invoice has already been paid!',
+    INVOICE_STATUS_MISMATCH: 'There seems to be a problem processing this invoice. Please try again later and contact our customer support if this issue persists.',
     FIELD_REQUIRED: 'This field is required.',
     FIELD_MAXLENGTH: 'Cannot be longer than {x} characters.',
     FIELD_MINLENGTH: 'Cannot be shorter than {x} characters.',
@@ -375,7 +376,7 @@ module.exports = {
       ENTERPRISE: 'Enterprise',
       LISTED_DEDICATED: 'Dedicated'
     },
-    ORDER_PROCESSED: 'Success! Invoice #{invoice} has been issued.',
+    ORDER_PROCESSED: 'Invoice #{invoice} has been issued.',
     ADDED_TO_CART: '{name} was added to your cart.',
     REMOVED_FROM_CART: '{name} was removed from your cart.',
     ITEM_ALREADY_IN_CART: '{name} is already in your cart.',

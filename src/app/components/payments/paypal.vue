@@ -1,8 +1,14 @@
 <template>
   <div class="boxed boxed-centered">
     <div class="boxed-container boxed-md">
-      <div v-if="error">{{ error }}</div>
-      <div v-else>
+      <div
+        v-if="error"
+        class="message message-error">
+        {{ error }}
+      </div>
+      <div
+        v-else
+        class="message message-info">
         <h2>{{ $i18n.t('payments.PAYPAL_CONNECT_HEADER') }}</h2>
         <p>{{ $i18n.t('payments.PAYPAL_CONNECT_DESCRIPTION') }}</p>
       </div>
