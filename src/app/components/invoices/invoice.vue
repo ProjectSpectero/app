@@ -45,8 +45,10 @@
                 <div
                   v-if="invoice.status === 'PAID'"
                   class="message-paid message message-success">
-                  <h5><span class="icon-check-circle"/> {{ $i18n.t('invoices.PAID') }}</h5>
-                  <p>{{ $i18n.t('invoices.THANKS') }}</p>
+                  <div>
+                    <h5>{{ $i18n.t('invoices.PAID') }}</h5>
+                    <p>{{ $i18n.t('invoices.THANKS') }}</p>
+                  </div>
                 </div>
 
                 <div class="header">
