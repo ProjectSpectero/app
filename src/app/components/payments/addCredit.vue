@@ -32,7 +32,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import paymentAPI from '@/app/api/payment.js'
+import paymentAPI from '@/app/api/payment'
 
 export default {
   data () {

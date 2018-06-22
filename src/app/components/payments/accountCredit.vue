@@ -1,17 +1,19 @@
 <template>
-  <div>
-    <div
-      v-if="!loading"
-      class="boxed boxed-centered">
+  <div
+    v-if="!loading"
+    class="boxed boxed-centered">
+    <div class="boxed-container boxed-md">
       <div
         v-if="!success"
-        class="boxed-container boxed-md">
-        <h2>We were unable to process your payment</h2>
-        <p>{{ $i18n.t('payments.PAYMENT_INVALID_PARAMETERS') }}</p>
+        class="message message-error mb-0">
+        <div>
+          <h5>We were unable to process your payment</h5>
+          <p>{{ $i18n.t('payments.PAYMENT_INVALID_PARAMETERS') }}</p>
+        </div>
       </div>
     </div>
-    <loading v-else/>
   </div>
+  <loading v-else/>
 </template>
 
 <script>

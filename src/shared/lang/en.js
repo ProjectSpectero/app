@@ -148,6 +148,7 @@ module.exports = {
   payments: {
     VALIDATION_FAILED: 'The minimum amount you can purchase is of 5 credits (in $USD).',
     INVOICE_ALREADY_PAID: 'This invoice was already paid!',
+    INVOICE_STATUS_MISMATCH: 'There seems to be a problem processing this invoice. Please try again later and contact our customer support if this issue persists.',
     NO_STORED_CARD: 'Unable to find a card connected to this account.',
     USE_SAVED_CARD: 'You previously saved a credit card ({card}) on our system. Do you want to pay with it?',
     BUTTON_USE_SAVED_CARD_YES: 'Yes, Pay Now',

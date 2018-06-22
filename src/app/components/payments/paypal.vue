@@ -3,14 +3,20 @@
     <div class="boxed-container boxed-md">
       <div
         v-if="error"
-        class="message message-error">
-        {{ error }}
+        class="message message-error mb-0">
+        <div>
+          <h5>Error</h5>
+          <p>{{ error }}</p>
+        </div>
       </div>
+
       <div
         v-else
-        class="message message-info">
-        <h2>{{ $i18n.t('payments.PAYPAL_CONNECT_HEADER') }}</h2>
-        <p>{{ $i18n.t('payments.PAYPAL_CONNECT_DESCRIPTION') }}</p>
+        class="message message-info mb-0">
+        <div>
+          <h5>{{ $i18n.t('payments.PAYPAL_CONNECT_HEADER') }}</h5>
+          <p>{{ $i18n.t('payments.PAYPAL_CONNECT_DESCRIPTION') }}</p>
+        </div>
       </div>
     </div>
   </div>
