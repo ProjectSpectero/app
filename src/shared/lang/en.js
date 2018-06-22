@@ -393,7 +393,7 @@ module.exports = {
     CLEAR_CART: 'Empty Cart',
     SAVINGS_APPLIED: 'Savings have been applied!',
     ITEM_IS_GROUP_WARNING: 'Purchasing this node group will grant you access to the {count} nodes within it. Click "View Full Details" to see all nodes associated to this group.',
-    PLAN_PURCHASE_MSG: 'Purchasing this node group will also unlock access to {planName}.<br><a href="{planUrl}" target="_blank">Learn more</a>',
+    PLAN_PURCHASE_MSG: 'Purchasing this node group will also unlock access to {planName}. <a href="{planUrl}" target="_blank">Learn more</a>',
     TERM: {
       MONTHLY: 'Monthly',
       YEARLY: 'Yearly'
@@ -417,7 +417,13 @@ module.exports = {
     SHOW_GROUPED_RESULTS: 'Show grouped results',
     SERVICE_TYPES: 'Service types',
     PRICE_RANGE: 'Price range',
-    MIN_IPS: 'Min. no. of IP addresses'
+    MIN_IPS: 'Min. no. of IP addresses',
+    CANT_ADD_TO_CART_TITLE: 'Can\'t Add To Cart',
+    CANT_ADD_TO_CART_MSG: 'Because this listing has a plan associated to it, you must purchase it separately.',
+    CANT_ADD_TO_CART_MSG_LOCKED: 'Because an item in your cart has a plan associated to it, you must purchase it separately before being able to add more items.',
+    CHECKOUT_CURRENT_CART: 'Please checkout your current cart or empty it before continuing.',
+    CHECKOUT_EXISTING_ITEMS: 'Checkout Existing Items',
+    EMPTY_CART: 'Empty Cart'
   },
 
   users: {
