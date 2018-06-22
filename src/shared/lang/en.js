@@ -239,8 +239,9 @@ module.exports = {
     BALANCE_DUE_PLEASE_PAY_NOW: 'Please pay now to avoid late fees.',
     BALANCE_DUE_PAYMENT_POSSIBLE: 'Payment for this order will be automatically deducted on <strong>{dueDate}</strong> using your preferred payment method. You may also make an early payment now if you wish.',
     RESOURCE_HAS_BEEN_CANCELLED: 'Resource has been cancelled',
-    MISSING_PAYMENT_INFORMATION: 'Please fill out any missing fields from your payment details.',
-    PAY_SPECIFIC_INVOICE: 'Pay invoice #{invoice}',
+    MISSING_PAYMENT_INFORMATION: 'Billing Details Missing',
+    MISSING_PAYMENT_INFORMATION_TEXT: 'Some of your billing details are missing to complete your payment. Please fill out any missing billing fields below then click the button below to complete your payment.',
+    COMPLETE_PAYMENT: 'Complete Payment',
     UNPAYABLE: 'Order Processing',
     UNPAYABLE_TEXT: 'This order is currently processing. You will be able to make a payment once the order has been fully processed by our verification team.'
   },

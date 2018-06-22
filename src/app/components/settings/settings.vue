@@ -23,16 +23,6 @@
     </top>
     <div class="container">
       <div class="col-12">
-        <div v-if="$route.params.fromInvoice">
-          {{ $i18n.t('invoices.MISSING_PAYMENT_INFORMATION') }}
-
-          <router-link
-            :to="{ name: 'stripe', params: { invoiceId: $route.params.fromInvoice } }"
-            class="button-info">
-            {{ $i18n.t('invoices.PAY_SPECIFIC_INVOICE', { invoice: $route.params.fromInvoice }) }}
-          </router-link>
-        </div>
-
         <div class="section">
           <tab-account
             v-if="currentTab === 'account'"

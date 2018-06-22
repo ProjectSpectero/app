@@ -5,6 +5,22 @@
         <h2>Payment Details</h2>
       </div>
 
+      <div
+        v-if="$route.params.fromInvoice"
+        class="message message-warning col-12 mb-3">
+        <div>
+          <h5>{{ $i18n.t('invoices.MISSING_PAYMENT_INFORMATION') }}</h5>
+          <p>{{ $i18n.t('invoices.MISSING_PAYMENT_INFORMATION_TEXT') }}</p>
+          <p class="actions">
+            <router-link
+              :to="{ name: 'stripe', params: { invoiceId: $route.params.fromInvoice } }"
+              class="button-info">
+              {{ $i18n.t('invoices.COMPLETE_PAYMENT') }}
+            </router-link>
+          </p>
+        </div>
+      </div>
+
       <div class="col-8">
         <form @submit.prevent.stop="submit">
           <h3>Billing Address</h3>
