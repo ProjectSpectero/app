@@ -20,50 +20,41 @@
       <div>
         <div class="container">
           <div class="col-12 content-split">
-            <div class="split-list nodes-sidebar">
-              <h3>Your Node Groups</h3>
-
-              <div v-if="groups">
-                <div v-if="groups.length">
-                  <div
-                    v-for="group in groups"
-                    :key="group.id"
-                    :class="selectedGroup === group.id ? 'active' : ''"
-                    class="node-group"
-                    @click.stop="selectGroup(group, true)">
-                    <div class="group-name">
-                      {{ group.friendly_name }}
-                    </div>
-                    <div class="count">
-                      {{ group.nodes.length }}
-                    </div>
-                  </div>
-
-                  <div
-                    v-if="uncategorized && uncategorized.result.length"
-                    :class="selectedGroup === 0 ? 'active' : ''"
-                    class="node-group"
-                    @click.stop="selectUncategorized">
-                    <div class="group-name">
-                      {{ $i18n.t('nodes.UNCATEGORIZED') }}
-                    </div>
-                    <div class="count">
-                      {{ uncategorized.pagination.total }}
-                    </div>
-                  </div>
+            <div
+              v-if="groups && groups.length"
+              class="split-list nodes-sidebar">
+              <header>
+                <h2 class="mb-0">Node Groups</h2>
+              </header>
+              <div
+                v-for="group in groups"
+                :key="group.id"
+                :class="selectedGroup === group.id ? 'active' : ''"
+                class="node-group"
+                @click.stop="selectGroup(group, true)">
+                <div class="group-name">
+                  {{ group.friendly_name }}
                 </div>
-                <not-found
-                  v-else
-                  type="nodes">
-                  <slot><p v-html="$i18n.t('nodes.NO_NODES_TEXT')"/></slot>
-                </not-found>
+                <div class="count">
+                  {{ group.nodes.length }}
+                </div>
               </div>
-              <loading v-else/>
+
+              <div
+                v-if="uncategorized && uncategorized.result.length"
+                :class="selectedGroup === 0 ? 'active' : ''"
+                class="node-group"
+                @click.stop="selectUncategorized">
+                <div class="group-name">
+                  {{ $i18n.t('nodes.UNCATEGORIZED') }}
+                </div>
+                <div class="count">
+                  {{ uncategorized.pagination.total }}
+                </div>
+              </div>
             </div>
             <div class="split-details">
-              <template v-if="groups && loading">
-                <loading/>
-              </template>
+              <loading v-if="groups && loading"/>
               <template v-else>
                 <nodes-list
                   :selected-group-information="selectedGroupInformation"
@@ -71,8 +62,10 @@
                   :search-id="searchId"
                   :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
                   :table-data="(selectedGroup === 0) ? uncategorized.result : nodes"
+                  :hide-header="groups && groups.length === 0"
                   @changedPage="changedPage"
-                  @sortByColumn="sortByColumn" />
+                  @sortByColumn="sortByColumn"
+                  @showAddNodeModal="showAddNodeModal"/>
               </template>
             </div>
           </div>

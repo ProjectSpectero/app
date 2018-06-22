@@ -2,7 +2,7 @@
   <div
     v-if="tableData && !dataLoading"
     class="section padded">
-    <header>
+    <header v-if="!hideHeader">
       <h2 class="mb-0">{{ selectedGroupInformation.friendly_name }}</h2>
       <div
         v-if="selectedGroupInformation.id !== 0"
@@ -85,9 +85,14 @@
     <div
       v-else
       class="alert-msg-centered">
-      <div class="icon-alert-circle big-icon"/>
+      <div class="icon-slash big-icon"/>
       <h1>{{ $i18n.t('nodes.NO_NODES_TITLE') }}</h1>
-      <p v-html="$i18n.t('nodes.NO_NODES_TEXT')"/>
+      <p>{{ $i18n.t('nodes.NO_NODES_TEXT') }}</p>
+      <button
+        class="button-success"
+        @click.prevent="showAddNodeModal()">
+        <span class="icon-plus"/>{{ $i18n.t('nodes.ADD_NODE') }}
+      </button>
     </div>
 
     <paginator
@@ -130,6 +135,11 @@ export default {
       type: Object,
       required: false,
       default: () => {}
+    },
+    hideHeader: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data () {
@@ -195,6 +205,9 @@ export default {
           fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
         })
       }
+    },
+    showAddNodeModal () {
+      this.$emit('showAddNodeModal')
     }
   }
 }

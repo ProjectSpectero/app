@@ -87,6 +87,7 @@
 
   .split-list {
     width: 250px;
+    margin-right: $pad;
     padding: 12px;
     background: $white;
     border: 1px solid $color-border;
@@ -146,6 +147,12 @@
     }
   }
   .nodes-sidebar {
+    header {
+      padding: 8px;
+      margin-bottom: $pad;
+      padding-bottom: $pad;
+      border-bottom: 1px solid $color-border;
+    }
     .node-group {
       padding: 12px;
       border-radius: 4px;
@@ -171,7 +178,6 @@
   }
   .split-details {
     flex: 1;
-    padding-left: $pad;
 
     &.no-space {
       padding-left: 0;
