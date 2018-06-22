@@ -239,7 +239,9 @@ module.exports = {
     BALANCE_DUE_PAYMENT_POSSIBLE: 'Payment for this order will be automatically deducted on <strong>{dueDate}</strong> using your preferred payment method. You may also make an early payment now if you wish.',
     RESOURCE_HAS_BEEN_CANCELLED: 'Resource has been cancelled',
     MISSING_PAYMENT_INFORMATION: 'Please fill out any missing fields from your payment details.',
-    PAY_SPECIFIC_INVOICE: 'Pay invoice #{invoice}'
+    PAY_SPECIFIC_INVOICE: 'Pay invoice #{invoice}',
+    UNPAYABLE: 'Order Processing',
+    UNPAYABLE_TEXT: 'This order is currently processing. You will be able to make a payment once the order has been fully processed by our verification team.'
   },
 
   orders: {

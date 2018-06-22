@@ -1,30 +1,55 @@
 .message {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 12px 14px;
   color: rgba(0,0,0,0.8);
-  background-color: $white;
-  padding: 16px;
+  background-color: #E9E9E9;
   font-size: 100%;
-  line-height: 130%;
+  line-height: 150%;
   font-weight: $font-semi;
   margin-bottom: 12px;
-  border: 1px solid darken($color-border, 15%);
+  border: 2px solid #E9E9E9;
   border-radius: 4px;
+
+  > div {
+    flex: 1;
+
+    &.actions {
+      flex: none;
+    }
+  }
 
   a {
     color: inherit;
     text-decoration: underline;
   }
+  .button, [class^="button-"] {
+    color: inherit;
+    text-decoration: none;
+    background: rgba(0,0,0,0.075);
+    border: none;
+    border-radius: 4px;
+
+    &:hover {
+      background: rgba(0,0,0,0.15);
+    }
+  }
   p {
+    margin-top: 0.7em;
     font-size: 100%;
+    line-height: 150%;
     font-weight: $font-regular;
+    opacity: 0.8;
   }
   h5 {
-    font-size: 105%;
-    margin-bottom: 0.9em;
-    font-weight: $font-bold;
-
-    [class^="icon-"] {
-      margin-right: 2px;
-    }
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 0;
+  }
+  [class^="icon-"] {
+    font-size: 18px;
+    margin-right: 6px;
   }
   ul {
     padding-left: 22px;
@@ -35,29 +60,62 @@
       padding-left: 4px;
     }
   }
+
+  &:before {
+    @extend [class^="icon-"];
+    @extend .icon-message-square:before;
+    align-self: flex-start;
+    font-size: 18px;
+    margin-right: 8px;
+    opacity: 0.8;
+  }
+
+  &.no-icon:before {
+    display: none;
+  }
+
   &.message-info {
-    color: darken($color-info, 20%);
-    background: lighten($color-info, 53%);
+    color: $white;
+    background: $color-info;
     border-color: $color-info;
+
+    &:before { @extend .icon-info:before; }
   }
   &.message-error, &.message-danger {
-    color: darken($color-danger, 15%);
-    background: lighten($color-danger, 39%);
+    color: $white;
+    background: $color-danger;
     border-color: $color-danger;
+
+    &:before { @extend .icon-alert-circle:before; }
   }
   &.message-success {
-    color: darken($color-success, 20%);
-    background: lighten($color-success, 48%);
+    color: $white;
+    background: $color-success;
     border-color: $color-success;
+
+    &:before { @extend .icon-check-circle:before; }
   }
   &.message-warning {
-    color: darken($color-warning, 25%);
-    background: lighten($color-warning, 45%);
+    color: rgba(0,0,0,0.7);
+    background: $color-warning;
     border-color: $color-warning;
+
+    .button, [class^="button-"] {
+      color: rbga(0,0,0,0.7);
+    }
+    &:before { @extend .icon-alert-triangle:before; }
   }
   &.message-dark {
-    color: darken($color-dark, 25%);
-    background: lighten($color-dark, 75%);
+    color: $white;
+    background: $color-dark;
     border-color: $color-dark;
+
+    .button, [class^="button-"] {
+      background: rgba(0,0,0,0.2);
+
+      &:hover {
+        background: rgba(0,0,0,0.35);
+      }
+    }
   }
 }
