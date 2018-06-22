@@ -39,7 +39,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import { Card, createToken } from 'vue-stripe-elements-plus'
-import paymentAPI from '@/app/api/payment.js'
+import paymentAPI from '@/app/api/payment'
+import invoiceAPI from '@/app/api/invoice'
 
 export default {
   components: {
@@ -55,6 +56,7 @@ export default {
     return {
       status: '',
       error: null,
+      invoice: null,
       paid: false,
       processed: false,
       paymentDetails: [
@@ -79,8 +81,17 @@ export default {
       return (process.env.STRIPE_MODE === 'live') ? process.env.STRIPE_LIVE_PUBLIC_KEY : process.env.STRIPE_SANDBOX_PUBLIC_KEY
     }
   },
-  created () {
-    this.validateUserDetails()
+  async created () {
+    await this.fetchInvoice()
+    console.log(this.invoice)
+    // Is this a valid and payable invoice?
+    // Then we can proceed and validate if user details
+    // are correctly set (we need to send them to Stripe)
+    if (this.invoice && this.invoice.status === 'UNPAID') {
+      this.validateUserDetails()
+    } else {
+      this.fetchFailed()
+    }
   },
   methods: {
     validateUserDetails () {
@@ -113,7 +124,7 @@ export default {
         this.paid = true
 
         // Process stripe payment on our API
-        this.processStripe(this.invoiceId, stripeData)
+        this.processStripe(stripeData)
       }).catch((e) => {
         console.log(e)
         this.redirectToProfile()
@@ -123,16 +134,31 @@ export default {
       this.$toasted.error(this.$i18n.t('errors.INSUFFICIENT_PAYMENT_DETAILS'))
       this.$router.push({ name: 'settings', params: { tab: 'payment', fromInvoice: this.invoiceId } })
     },
-    processStripe (invoiceId, stripeData) {
+    async fetchInvoice () {
+      await invoiceAPI.invoice({
+        data: { id: this.invoiceId },
+        success: response => {
+          this.invoice = response.data.result
+        },
+        fail: (e) => {
+          console.log(e)
+        }
+      })
+    },
+    fetchFailed () {
+      this.$toasted.error(this.$i18n.t('payments.INVOICE_STATUS_MISMATCH'))
+      this.$router.push({ name: 'invoices' })
+    },
+    processStripe (stripeData) {
       paymentAPI.processStripe({
         data: {
-          invoiceId: invoiceId,
+          invoiceId: this.invoiceId,
           stripeToken: stripeData.token.id,
           save: (this.saveCard === '1') || false
         },
         success: async processResponse => {
           this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
-          this.$router.push({ name: 'invoice', params: { id: invoiceId } })
+          this.$router.push({ name: 'invoice', params: { id: this.invoiceId } })
         },
         fail: error => {
           this.$toasted.error(this.errorAPI(error, 'payments'))

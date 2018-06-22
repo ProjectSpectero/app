@@ -80,8 +80,16 @@
 
                     <div class="address">
                       <div class="address-field">{{ user.address_line_1 }}</div>
-                      <div class="address-field">{{ user.address_line_2 }}</div>
-                      <div class="address-field">{{ user.state }}, {{ user.post_code }}</div>
+                      <div
+                        v-if="user.address_line_2"
+                        class="address-field">
+                        {{ user.address_line_2 }}
+                      </div>
+                      <div class="address-field">
+                        <span v-if="user.state">{{ user.state }}</span>
+                        <span v-if="user.state && user.post_code">,</span>
+                        <span v-if="user.post_code">{{ user.post_code }}</span>
+                      </div>
                       <div class="address-field">{{ getCountryById(user.country).name }}</div>
                       <div class="address-field spaced">{{ user.email }}</div>
                     </div>
