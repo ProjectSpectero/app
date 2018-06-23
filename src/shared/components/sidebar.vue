@@ -106,7 +106,9 @@
         </ul>
       </section>
     </div>
-    <div class="menu-items dropdown">
+    <div
+      ref="sidebarDropdown"
+      class="menu-items dropdown">
       <section class="current-user">
         <div
           :class="{ 'active': showAccountDropdown }"
@@ -122,7 +124,9 @@
           class="dropdown">
           <ul>
             <li>
-              <router-link :to="{ name: 'settings' }">
+              <router-link
+                :to="{ name: 'settings' }"
+                @click.native="toggleAccountDropdown">
                 <span class="icon-settings"/>
                 {{ $i18n.t('misc.SETTINGS') }}
               </router-link>
@@ -162,6 +166,10 @@ export default {
   },
   async created () {
     await this.fetchFreshdesk()
+    document.addEventListener('click', this.documentClick)
+  },
+  destroyed () {
+    document.removeEventListener('click', this.documentClick)
   },
   methods: {
     ...mapActions({
@@ -193,6 +201,14 @@ export default {
     },
     toggleAccountDropdown () {
       this.showAccountDropdown = !this.showAccountDropdown
+    },
+    documentClick (e) {
+      let el = this.$refs.sidebarDropdown
+
+      // This will hide the account dropdown when you click outside of it on the document
+      if (el !== e.target && !el.contains(e.target)) {
+        this.showAccountDropdown = false
+      }
     }
   }
 }
