@@ -8,9 +8,15 @@
         class="dropdown-toggle"
         @click="toggleAccountDropdown()">
         <div class="avatar"><span class="icon-user placeholder-icon"/></div>
-        <p>My Account <span
-          :class="{ 'icon-chevron-up': showAccountDropdown }"
-          class="icon-chevron-down toggle-icon"/></p>
+        <div class="toggle">
+          <div class="toggle-text">
+            <p>My Account</p>
+            <p class="balance">{{ currentUser.credit | currency }}</p>
+          </div>
+          <div
+            :class="{ 'icon-chevron-up': showAccountDropdown }"
+            class="icon-chevron-down toggle-icon"/>
+        </div>
       </div>
       <div
         :class="{ 'display': showAccountDropdown }"
@@ -39,13 +45,18 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
     return {
       showAccountDropdown: false
     }
+  },
+  computed: {
+    ...mapGetters({
+      currentUser: 'appAuth/user'
+    })
   },
   created () {
     document.addEventListener('click', this.documentClick)
@@ -114,13 +125,26 @@ export default {
         font-size: 20px;
       }
     }
-    p {
+    .toggle {
       flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    .toggle-text {
+      flex: 1;
+
+      p {
+        line-height: 150%;
+      }
+      .balance {
+        font-size: 90%;
+        opacity: 0.6;
+      }
     }
     .toggle-icon {
-      float: right;
-      position: relative;
-      top: 2px;
+      display: flex;
+      align-items: center;
+      margin-right: 0;
       font-size: 16px;
     }
   }
