@@ -9,11 +9,6 @@ export default {
       errorCode: 400
     }
   },
-  metaInfo () {
-    return {
-      title: 'Order ' + this.orderId + ' Resources'
-    }
-  },
   computed: {
     orderId () {
       return this.$route.params.id ? parseInt(this.$route.params.id) : parseInt(this.order.id)

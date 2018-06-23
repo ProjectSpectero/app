@@ -116,6 +116,11 @@ export default {
     resourcesMixin,
     orderMixin
   ],
+  metaInfo () {
+    return {
+      title: 'Order ' + this.orderId + ' Resources'
+    }
+  },
   data () {
     return {
       order: null,
