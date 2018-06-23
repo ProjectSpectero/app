@@ -48,8 +48,17 @@
               <p>{{ $i18n.t( (cartLocked) ? 'market.CANT_ADD_TO_CART_MSG_LOCKED' : 'market.CANT_ADD_TO_CART_MSG' ) }}</p>
               <p>{{ $i18n.t('market.CHECKOUT_CURRENT_CART') }}</p>
               <p class="actions">
-                <button class="button">{{ $i18n.t('market.CHECKOUT_EXISTING_ITEMS') }}</button>
-                <button class="button right">{{ $i18n.t('market.EMPTY_CART') }}</button>
+                <router-link
+                  :to="{ name: 'cart' }"
+                  class="button"
+                  @click.native="$emit('close')">
+                  {{ $i18n.t('market.CHECKOUT_EXISTING_ITEMS') }}
+                </router-link>
+                <button
+                  class="button right"
+                  @click.stop="clearCart">
+                  {{ $i18n.t('market.EMPTY_CART') }}
+                </button>
               </p>
             </div>
           </div>
@@ -187,7 +196,8 @@ export default {
       addToCart: 'cart/add',
       removeFromCart: 'cart/remove',
       changeTerm: 'cart/changeTerm',
-      refreshCart: 'cart/refresh'
+      refreshCart: 'cart/refresh',
+      clearCart: 'cart/clear'
     }),
     async add () {
       this.showChangeTerm = false
