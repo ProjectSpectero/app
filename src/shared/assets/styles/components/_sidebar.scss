@@ -1,0 +1,69 @@
+.sidebar {
+  width: 230px;
+  height: 100vh;
+  background: #28303A;
+  color: $white;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+
+  ul {
+    list-style: none;
+  }
+  h5 {
+    font-size: 90%;
+    opacity: 0.3;
+    margin: 0 16px 8px 16px;
+    text-transform: uppercase;
+  }
+  .menu-logo {
+    margin: $pad;
+    flex-shrink: 0;
+  }
+  .menu-items {
+    overflow-x: hidden;
+
+    &.middle {
+      flex: 1;
+      overflow-y: auto;
+    }
+    &.dropdown {
+      overflow-x: visible;
+    }
+    a {
+      padding: 14px 16px;
+      display: block;
+      color: #C5D0E1;
+      font-size: 15px;
+      font-weight: $font-semi;
+      text-decoration: none;
+      border-left: 3px solid transparent;
+
+      &:hover {
+        color: $white;
+      }
+    }
+    .active, .router-link-active {
+      color: $white;
+      border-color: $color-brand;
+      background: rgba(0,0,0,.15);
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar {
+      width: 4px;
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $color-brand;
+      border-radius: 4px;
+    }
+  }
+  .nav-section {
+    margin-bottom: 16px;
+  }
+  [class^="icon-"], [class*=" icon-"] {
+    margin-right: 4px;
+  }
+}
