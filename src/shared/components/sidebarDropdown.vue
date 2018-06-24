@@ -158,6 +158,7 @@ export default {
     background: darken(#252930, 4%);
     border-radius: 4px;
     display: none;
+    overflow: hidden;
 
     &.display {
       display: block;
