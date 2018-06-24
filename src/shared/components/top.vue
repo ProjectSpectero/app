@@ -62,6 +62,13 @@ export default {
   .slot-button {
     display: flex;
     align-items: center;
+
+    .button, [class^="button-"], .bp-dropdown {
+      margin-left: 5px;
+    }
+    .help-pullout-trigger {
+      margin-left: 12px;
+    }
   }
 
   h2 {
