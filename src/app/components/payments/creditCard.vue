@@ -11,15 +11,16 @@
         @change="setProcessedStatus($event.complete)"
       />
       <div class="label label-save-cc">
-        <label for="cc-save">
-          <input
-            id="cc-save"
-            v-model="saveCard"
-            type="checkbox"
-            true-value="1"
-            false-value="0">
+        <p-input
+          id="cc-save"
+          v-model="saveCard"
+          class="p-default p-curve"
+          type="checkbox"
+          color="success"
+          true-value="1"
+          false-value="0">
           {{ $i18n.t('payments.CHECK_SAVE_CARD') }}
-        </label>
+        </p-input>
       </div>
 
       <button

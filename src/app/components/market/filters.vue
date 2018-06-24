@@ -37,14 +37,14 @@
         <label>{{ $i18n.t('market.GROUPED_RESULTS') }}</label>
       </div>
       <div class="form-checkbox">
-        <label for="filter-grouped">
-          <input
-            id="filter-grouped"
-            v-model="nodes.grouped"
-            type="checkbox"
-            @change="toggleGrouped">
+        <p-input
+          id="filter-grouped"
+          v-model="nodes.grouped"
+          class="p-default p-curve"
+          type="checkbox"
+          @change="toggleGrouped">
           {{ $i18n.t('market.SHOW_GROUPED_RESULTS') }}
-        </label>
+        </p-input>
       </div>
     </div>
 
@@ -57,14 +57,14 @@
         :for="type"
         :key="type"
         class="form-checkbox">
-        <label :for="type">
-          <input
-            :id="type"
-            :checked="isServiceTypeSelected(type)"
-            type="checkbox"
-            @change="toggleServiceType(type)">
+        <p-input
+          :id="type"
+          :checked="isServiceTypeSelected(type)"
+          type="checkbox"
+          class="p-default p-curve"
+          @change="toggleServiceType(type)">
           {{ type }}
-        </label>
+        </p-input>
       </div>
     </div>
 
