@@ -105,6 +105,7 @@
                     v-for="(item, index) in order.line_items"
                     :key="index"
                     :item="item"
+                    :order="order"
                     type="ENTERPRISE" />
                 </template>
 
@@ -128,6 +129,7 @@
                     v-for="(item, index) in order.line_items"
                     :key="index"
                     :item="item"
+                    :order="order"
                     type="REGULAR"
                     @sortItems="sortItems" />
                 </template>
