@@ -1,6 +1,6 @@
 <template>
   <div
-    class="tooltip-trigger"
+    class="help-pullout-trigger tooltip-trigger"
     @click.stop="toggle">
     <span class="icon-help-circle"/>
   </div>

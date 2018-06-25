@@ -35,10 +35,10 @@
 
 .button, [class^="button-"] {
   display: inline-block;
-  padding: 0 18px;
+  padding: 10px 18px;
   font-family: $font-family;
   font-size: $font-size;
-  line-height: 36px;
+  line-height: 100%;
   font-weight: $font-semi;
   border-radius: 50px;
   color: #626C84;
@@ -73,12 +73,11 @@
   }
 
   // Button sizes
-  &.button-sm {
-    padding: 0 14px;
-    line-height: 31px;
-  }
   &.button-md {
-    line-height: 44px;
+    padding: 14px 20px;
+  }
+  &.button-sm {
+    padding: 8px 14px;
   }
 
   &.button-full {

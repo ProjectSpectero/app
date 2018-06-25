@@ -60,6 +60,11 @@ export default {
       type: Object,
       required: true
     },
+    order: {
+      type: Object,
+      required: false,
+      default: () => {}
+    },
     status: {
       type: String,
       required: true

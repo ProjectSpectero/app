@@ -44,6 +44,7 @@
     <order-item-enterprise
       v-if="type === 'ENTERPRISE'"
       :item="item"
+      :order="order"
       :show-details="showDetails"
       :status="status"
       @toggleDetails="toggleDetails"/>
@@ -51,6 +52,7 @@
     <order-item-regular
       v-else
       :item="item"
+      :order="order"
       :show-details="showDetails"
       :status="status"
       @toggleDetails="toggleDetails"
@@ -71,6 +73,11 @@ export default {
     item: {
       type: Object,
       required: true
+    },
+    order: {
+      type: Object,
+      required: false,
+      default: () => {}
     },
     type: {
       validator: (value) => {

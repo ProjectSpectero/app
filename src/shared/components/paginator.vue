@@ -154,7 +154,7 @@ export default {
     }
   },
   created () {
-    console.log(this.pagination)
+    // console.log(this.pagination)
   },
   methods: {
     toPage (page) {

@@ -34,7 +34,7 @@ module.exports = {
     SETTINGS: 'Settings',
     LOGOUT: 'Logout',
     TYPE: 'Type',
-    NOT_FOUND_TITLE: 'Not found',
+    NOT_FOUND_TITLE: 'Not Found',
     NOT_FOUND: 'We were unable to find any {type}.',
     NOT_FOUND_DEFAULT: 'The resource you requested could not be found.',
     LOADING: 'Loading',
@@ -113,6 +113,7 @@ module.exports = {
     UNAUTHORIZED: 'You are not authorized to do this. Please contact us if the error persists.',
     PAYMENT_FAILED: 'Payment failed',
     INVOICE_ALREADY_PAID: 'This invoice has already been paid!',
+    INVOICE_STATUS_MISMATCH: 'There seems to be a problem processing this invoice. Please try again later and contact our customer support if this issue persists.',
     FIELD_REQUIRED: 'This field is required.',
     FIELD_MAXLENGTH: 'Cannot be longer than {x} characters.',
     FIELD_MINLENGTH: 'Cannot be shorter than {x} characters.',
@@ -120,7 +121,9 @@ module.exports = {
     FIELD_EMAIL: 'Must be a valid email.',
     MISSING_BODY: 'Some required fields are missing or empty.',
     USER_NOT_FOUND: 'Invalid email or password.',
+    INSUFFICIENT_PAYMENT_DETAILS: 'Please complete your billing information before paying!',
     EMAIL_FIELD_UNIQUE: 'This email is already taken.',
+    GATEWAY_DISABLED_FOR_PURPOSE: 'This payment gateway has been disabled. Please contact us if you are unable to pay using a different gateway.',
     EMAIL_VERIFICATION_NEEDED: 'Your acount is pending verification. Please check your email!',
     USER_OBJECT_NOT_FOUND: 'Unable to submit the form without a proper user',
     USER_AUTHKEY_ALREADY_EXISTS: 'Email already in use.',
@@ -145,6 +148,7 @@ module.exports = {
   payments: {
     VALIDATION_FAILED: 'The minimum amount you can purchase is of 5 credits (in $USD).',
     INVOICE_ALREADY_PAID: 'This invoice was already paid!',
+    INVOICE_STATUS_MISMATCH: 'There seems to be a problem processing this invoice. Please try again later and contact our customer support if this issue persists.',
     NO_STORED_CARD: 'Unable to find a card connected to this account.',
     USE_SAVED_CARD: 'You previously saved a credit card ({card}) on our system. Do you want to pay with it?',
     BUTTON_USE_SAVED_CARD_YES: 'Yes, Pay Now',
@@ -196,7 +200,6 @@ module.exports = {
   },
 
   invoices: {
-    BACK: 'Back to Invoices',
     PAY_INVOICE: 'Pay Invoice',
     PAY_TEXT2: 'Please pay the amount due using the options available below.',
     INVOICE_STATUS: {
@@ -209,9 +212,9 @@ module.exports = {
       CANCELLED: 'Cancelled'
     },
     MENU_STATUS: {
-      ALL: 'All invoices',
-      PAID: 'Paid invoices',
-      UNPAID: 'Unpaid invoices'
+      ALL: 'All Invoices',
+      PAID: 'Paid',
+      UNPAID: 'Unpaid'
     },
     NO_INVOICES_TEXT: 'You don\'t have any invoices at the moment. <a href="/downloads">Why don\'t you add some nodes?</a>',
     RESOURCES_NOT_AVAILABLE: 'Resources no longer available',
@@ -235,7 +238,12 @@ module.exports = {
     BALANCE_DUE_TEXT: 'There is an outstanding balance of <strong>{amount}</strong> due for this order.',
     BALANCE_DUE_PLEASE_PAY_NOW: 'Please pay now to avoid late fees.',
     BALANCE_DUE_PAYMENT_POSSIBLE: 'Payment for this order will be automatically deducted on <strong>{dueDate}</strong> using your preferred payment method. You may also make an early payment now if you wish.',
-    RESOURCE_HAS_BEEN_CANCELLED: 'Resource has been cancelled'
+    RESOURCE_HAS_BEEN_CANCELLED: 'Resource has been cancelled',
+    MISSING_PAYMENT_INFORMATION: 'Billing Details Missing',
+    MISSING_PAYMENT_INFORMATION_TEXT: 'Some of your billing details are missing to complete your payment. Please fill out any missing billing fields below then click the button below to complete your payment.',
+    COMPLETE_PAYMENT: 'Complete Payment',
+    UNPAYABLE: 'Order Processing',
+    UNPAYABLE_TEXT: 'This order is currently processing. You will be able to make a payment once the order has been fully processed by our verification team.'
   },
 
   orders: {
@@ -249,9 +257,9 @@ module.exports = {
       ERROR: 'Not Available'
     },
     MENU_STATUS: {
-      ALL: 'All orders',
-      ACTIVE: 'Active orders',
-      CANCELLED: 'Cancelled orders'
+      ALL: 'All Orders',
+      ACTIVE: 'Active',
+      CANCELLED: 'Cancelled'
     },
     SYNC_STATUS: {
       PENDING_SYNC: 'Pending',
@@ -307,10 +315,10 @@ module.exports = {
     VERIFICATION_FAILED_TITLE: 'Something went wrong!',
     VERIFICATION_FAILED: 'Something happened while attempting to verify your node <strong>{name}</strong>. We have sent you an email with further details.',
     UNCATEGORIZED: 'Uncategorized',
-    NO_NODES_TITLE: 'No nodes',
+    NO_NODES_TITLE: 'No Nodes',
     HAS_NODES: 'You cannot delete this group before reassigning its nodes to a different group!',
     RESOURCE_NOT_FOUND: 'We were unable to find that resource.',
-    NO_NODES_TEXT: 'There are no nodes to display at the moment. <a href="/downloads">Why not add some?</a>',
+    NO_NODES_TEXT: 'You don\'t have any nodes linked to your account. Why not add one?',
     EDIT_GROUP: 'Edit Group',
     EDIT_NODE: 'Edit Node',
     GROUP_CREATE_SUCCESS: 'Group created successfully!',
@@ -324,6 +332,7 @@ module.exports = {
     UPDATE_SUCCESS: 'Information updated successfully!',
     GROUP_FROM_NODE_UPDATE_SUCCESS: 'Group changed successfully!',
     CREATE_GROUP: 'Create Node Group',
+    ADD_NODE: 'Add Node',
     HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!',
     ORDERS_EXIST: 'Unable to remove: this node has active orders!',
     GROUP_PRICE_AVAILABILITY: 'Price will only be used for <strong>{model1}</strong> and <strong>{model2}</strong> market models.',
@@ -371,7 +380,7 @@ module.exports = {
       ENTERPRISE: 'Enterprise',
       LISTED_DEDICATED: 'Dedicated'
     },
-    ORDER_PROCESSED: 'Success! Invoice #{invoice} has been issued.',
+    ORDER_PROCESSED: 'Invoice #{invoice} has been issued.',
     ADDED_TO_CART: '{name} was added to your cart.',
     REMOVED_FROM_CART: '{name} was removed from your cart.',
     ITEM_ALREADY_IN_CART: '{name} is already in your cart.',
@@ -384,7 +393,7 @@ module.exports = {
     CLEAR_CART: 'Empty Cart',
     SAVINGS_APPLIED: 'Savings have been applied!',
     ITEM_IS_GROUP_WARNING: 'Purchasing this node group will grant you access to the {count} nodes within it. Click "View Full Details" to see all nodes associated to this group.',
-    PLAN_WARNING: 'Purchasing this node group will also unlock access to {planName}. <a href="{planUrl}" target="_blank">Learn more</a>',
+    PLAN_PURCHASE_MSG: 'Purchasing this node group will also unlock access to {planName}. <a href="{planUrl}" target="_blank">Learn more</a>',
     TERM: {
       MONTHLY: 'Monthly',
       YEARLY: 'Yearly'
@@ -408,7 +417,13 @@ module.exports = {
     SHOW_GROUPED_RESULTS: 'Show grouped results',
     SERVICE_TYPES: 'Service types',
     PRICE_RANGE: 'Price range',
-    MIN_IPS: 'Min. no. of IP addresses'
+    MIN_IPS: 'Min. no. of IP addresses',
+    CANT_ADD_TO_CART_TITLE: 'Can\'t Add To Cart',
+    CANT_ADD_TO_CART_MSG: 'Because this listing has a plan associated to it, you must purchase it separately.',
+    CANT_ADD_TO_CART_MSG_LOCKED: 'Because an item in your cart has a plan associated to it, you must purchase it separately before being able to add more items.',
+    CHECKOUT_CURRENT_CART: 'Please checkout your current cart or empty it before continuing.',
+    CHECKOUT_EXISTING_ITEMS: 'Checkout Existing Items',
+    EMPTY_CART: 'Empty Cart'
   },
 
   users: {

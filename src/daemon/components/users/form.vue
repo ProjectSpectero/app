@@ -43,16 +43,16 @@
               v-for="permission in permissions"
               :key="permission.id"
               :class="{ disabled: permission.disabled }">
-              <input
+              <p-input
                 :id="permission.id"
                 :value="permission.id"
                 :disabled="permission.disabled"
                 v-model="form.roles"
-                type="checkbox">
-              <label :for="permission.id">
+                type="checkbox"
+                class="p-default p-curve">
                 {{ permission.label }}
                 <small v-if="permission.disabled">You don't have permission to set this.</small>
-              </label>
+              </p-input>
             </li>
           </ul>
         </div>

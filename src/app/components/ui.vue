@@ -3,163 +3,60 @@
     <div class="col-12">
       <div class="ui-guide">
         <section>
-          <h2>Buttons</h2>
-          <h3>Regular</h3>
+          <h2>Button</h2>
+          <a class="button">Button</a>
+          <a class="button-dark">Dark</a>
+          <a class="button-info">Info</a>
+          <a class="button-success">Success</a>
+          <a class="button-warning">Warning</a>
+          <a class="button-danger">Danger</a>
           <a
-            href="#"
-            class="button">Button</a>
-          <a
-            href="#"
-            class="button-dark">Dark</a>
-          <a
-            href="#"
-            class="button-info">Info</a>
-          <a
-            href="#"
-            class="button-success">Success</a>
-          <a
-            href="#"
-            class="button-warning">Warning</a>
-          <a
-            href="#"
-            class="button-danger">Danger</a>
-          <a
-            href="#"
             class="button"
             disabled>Disabled</a>
           <br><br>
-          <h3>Medium</h3>
-          <a
-            href="#"
-            class="button-md">Button</a>
-          <a
-            href="#"
-            class="button-md button-dark">Dark</a>
-          <a
-            href="#"
-            class="button-md button-info">Info</a>
-          <a
-            href="#"
-            class="button-md button-success">Success</a>
-          <a
-            href="#"
-            class="button-md button-warning">Warning</a>
-          <a
-            href="#"
-            class="button-md button-danger">Danger</a>
-          <a
-            href="#"
-            class="button-md"
-            disabled>Disabled</a>
+          <h3>Button Sizes</h3>
+          <a class="button-md">Medium</a>
+          <a class="button">Regular</a>
+          <a class="button-sm">Small</a>
+
           <br><br>
-          <h3>Small</h3>
+          <h3>Loading Button</h3>
           <a
-            href="#"
-            class="button-sm">Button</a>
-          <a
-            href="#"
-            class="button-sm button-dark">Dark</a>
-          <a
-            href="#"
-            class="button-sm button-info">Info</a>
-          <a
-            href="#"
-            class="button-sm button-success">Success</a>
-          <a
-            href="#"
-            class="button-sm button-warning">Warning</a>
-          <a
-            href="#"
-            class="button-sm button-danger">Danger</a>
-          <a
-            href="#"
-            class="button-sm"
-            disabled>Disabled</a>
-          <br><br>
-          <h3>Bordered</h3>
-          <a
-            href="#"
-            class="button-bordered">Button</a>
-          <a
-            href="#"
-            class="button-dark button-bordered">Dark</a>
-          <a
-            href="#"
-            class="button-info button-bordered">Info</a>
-          <a
-            href="#"
-            class="button-success button-bordered">Success</a>
-          <a
-            href="#"
-            class="button-warning button-bordered">Warning</a>
-          <a
-            href="#"
-            class="button-danger button-bordered">Danger</a>
-          <a
-            href="#"
-            class="button-bordered"
-            disabled>Disabled</a>
-          <br><br>
-          <h3>Loading</h3>
-          <a
-            href="#"
-            class="button-loading"
-            disabled>Button</a>
-          <a
-            href="#"
-            class="button-dark button-loading"
-            disabled>Dark</a>
-          <a
-            href="#"
             class="button-info button-loading"
-            disabled>Info</a>
-          <a
-            href="#"
-            class="button-success button-loading"
-            disabled>Success</a>
-          <a
-            href="#"
-            class="button-warning button-loading"
-            disabled>Warning</a>
-          <a
-            href="#"
-            class="button-danger button-loading"
-            disabled>Danger</a>
+            disabled>Loading button</a>
           <br><br>
-          <h3>Icons</h3>
+          <h3>Bordered Button</h3>
+          <a class="button-info button-bordered">Bordered Button</a>
           <a
-            href="#"
-            class="button-icon"><span class="icon-bell"/></a>
-          <a
-            href="#"
-            class="button-dark button-icon"><span class="icon-bar-chart"/></a>
-          <a
-            href="#"
-            class="button-info button-icon"><span class="icon-anchor"/></a>
-          <a
-            href="#"
-            class="button-success button-icon"><span class="icon-check"/></a>
-          <a
-            href="#"
-            class="button-warning button-icon"><span class="icon-alert-triangle"/></a>
-          <a
-            href="#"
-            class="button-danger button-icon"><span class="icon-x"/></a>
+            class="button-bordered"
+            disabled>Disabled Bordered Button</a>
+          <br><br>
+          <h3>Icon Only Button</h3>
+          <a class="button-info button-icon"><span class="icon-move"/></a>
         </section>
-        <section>
-          <h2>Messages</h2>
-          <div class="message">Plain message.</div>
-          <div class="message message-dark">Dark message.</div>
-          <div class="message message-info">Info message.</div>
-          <div class="message message-success">Success message.</div>
-          <div class="message message-warning">Warning message.</div>
-          <div class="message message-error">Error message.</div>
-        </section>
-        <section>
-          <h2>Message with title</h2>
-          <div class="message message-info">
-            <h5>Message Title</h5>
-            <p>Info message.</p>
+        <section class="messages">
+          <h2>Message</h2>
+          <div class="col-container">
+            <div class="message col-4">Plain</div>
+            <div class="message col-4 message-dark">Dark</div>
+            <div class="message col-4 message-info">Info</div>
+          </div>
+          <div class="col-container">
+            <div class="message col-4 message-success">Success</div>
+            <div class="message col-4 message-warning">Warning</div>
+            <div class="message col-4 message-error">Error</div>
+          </div>
+          <div class="col-container">
+            <div class="message col-12">
+              <div>
+                <h5>Advanced Message</h5>
+                <p>This is extra optional text you can add to your message.</p>
+              </div>
+              <div class="actions">
+                <button class="button">Action Button</button>
+                <button class="button">Another Action</button>
+              </div>
+            </div>
           </div>
         </section>
         <section>
@@ -229,9 +126,6 @@ section {
   border: 1px solid $color-border;
 
   &:last-child {
-    margin-bottom: 0;
-  }
-  .message:last-child {
     margin-bottom: 0;
   }
 }

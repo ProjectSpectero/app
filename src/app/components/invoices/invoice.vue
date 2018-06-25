@@ -4,13 +4,7 @@
       <div v-if="invoice && user">
         <top title="View Invoice">
           <router-link
-            :to="{ name: 'invoices' }"
-            class="button">
-            {{ $i18n.t('invoices.BACK') }}
-          </router-link>
-
-          <router-link
-            v-if="invoice.type !== 'CREDIT'"
+            v-if="!isCreditInvoice"
             :to="{ name: 'order', params: { id: invoice.order_id } }"
             class="button-info">
             {{ $i18n.t('misc.VIEW') }} {{ $i18n.t('misc.ORDER') }}
@@ -20,7 +14,7 @@
             <print :button-text="'Print Invoice'"/>
 
             <pay
-              v-if="((verified && verificationErrors.length === 0) || invoice.type === 'CREDIT') && invoice.status === 'UNPAID' && canShowDueAmount"
+              v-if="isUnpaid && isPayable"
               :invoice="invoice"
               :due="due"
               classes="button-success"
@@ -35,9 +29,15 @@
                 :error-bag="verificationErrors"
                 :invoice="invoice"
                 @update="fetchInvoice"/>
+
               <alert-outstanding
-                v-else-if="isOutstanding"
+                v-else-if="isOutstanding && isUnpaid && isPayable"
                 :due="due"
+                :invoice="invoice"
+                :order="order"/>
+
+              <alert-unpayable
+                v-else-if="verified && isUnpaid && !isPayable"
                 :invoice="invoice"
                 :order="order"/>
 
@@ -45,8 +45,10 @@
                 <div
                   v-if="invoice.status === 'PAID'"
                   class="message-paid message message-success">
-                  <h5><span class="icon-check-circle"/> {{ $i18n.t('invoices.PAID') }}</h5>
-                  <p>{{ $i18n.t('invoices.THANKS') }}</p>
+                  <div>
+                    <h5>{{ $i18n.t('invoices.PAID') }}</h5>
+                    <p>{{ $i18n.t('invoices.THANKS') }}</p>
+                  </div>
                 </div>
 
                 <div class="header">
@@ -78,8 +80,16 @@
 
                     <div class="address">
                       <div class="address-field">{{ user.address_line_1 }}</div>
-                      <div class="address-field">{{ user.address_line_2 }}</div>
-                      <div class="address-field">{{ user.state }}, {{ user.post_code }}</div>
+                      <div
+                        v-if="user.address_line_2"
+                        class="address-field">
+                        {{ user.address_line_2 }}
+                      </div>
+                      <div class="address-field">
+                        <span v-if="user.state">{{ user.state }}</span>
+                        <span v-if="user.state && user.post_code">,</span>
+                        <span v-if="user.post_code">{{ user.post_code }}</span>
+                      </div>
                       <div class="address-field">{{ getCountryById(user.country).name }}</div>
                       <div class="address-field spaced">{{ user.email }}</div>
                     </div>
@@ -211,6 +221,7 @@ import invoiceAPI from '@/app/api/invoice'
 import orderMixin from '@/app/mixins/order'
 import alertProcessing from './alertProcessing'
 import alertOutstanding from './alertOutstanding'
+import alertUnpayable from './alertUnpayable'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
@@ -223,6 +234,7 @@ export default {
     error,
     alertOutstanding,
     alertProcessing,
+    alertUnpayable,
     loading,
     pay,
     print
@@ -239,7 +251,7 @@ export default {
       valid: false,
       invoice: null,
       engagement: null,
-      due: 0,
+      due: {},
       transactions: null,
       fetchExtras: true,
       reFetch: true,
@@ -273,14 +285,11 @@ export default {
         return 'unknown'
       }
     },
-    isStandardInvoice () {
-      return (this.invoice && this.invoice.order_id && this.invoice.type && this.invoice.type === 'STANDARD')
-    },
     canShowDueAmount () {
       return this.due && this.invoice.status !== 'REFUNDED'
     },
     isOutstanding () {
-      return (this.verified || this.isEnterpriseOrder || this.invoice.type === 'CREDIT') && this.invoice.status === 'UNPAID' && this.canShowDueAmount && this.verificationErrors.length === 0
+      return (this.verified || this.isEnterpriseOrder || this.isCreditInvoice) && this.isUnpaid && this.canShowDueAmount && this.verificationErrors.length === 0
     },
     isProcessing () {
       return (this.verified || this.isEnterpriseOrder) && this.verificationErrors.length > 0 && this.order && this.isFixable
@@ -294,7 +303,7 @@ export default {
       }
 
       // Line items from credit
-      if (this.invoice.type === 'CREDIT') {
+      if (this.isCreditInvoice) {
         lineItems.push({
           id: 0,
           description: 'Add account credit',
@@ -340,8 +349,6 @@ export default {
           if (response.data.result) {
             this.error = false
             this.invoice = response.data.result
-
-            console.warn('Fetched invoice', this.invoice)
 
             // Non-standard invoices (MANUAL/CREDIT) don't have orders
             // associated with them. We can only fetch orders for STANDARD invoices
@@ -438,6 +445,7 @@ export default {
         data: { id: this.invoice.order_id },
         success: response => {
           this.verified = true
+          this.verificationErrors = []
         },
         fail: error => {
           this.verified = true

@@ -10,6 +10,12 @@
       <h3>{{ item.friendly_name }}</h3>
 
       <div
+        v-if="item.plan"
+        class="message message-success">
+        <p v-html="$i18n.t(`market.PLAN_PURCHASE_MSG`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })"/>
+      </div>
+
+      <div
         v-if="item.type === 'NODE_GROUP'"
         class="message message-info message-group-warning"
         v-html="$i18n.t(`market.ITEM_IS_GROUP_WARNING`, { count: item.nodes.length })"/>
@@ -34,52 +40,73 @@
       </div>
 
       <div class="cart">
-        <template v-if="!inCart || showChangeTerm">
-          <div class="addToCart">
-            <h5>
-              {{ showChangeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('market.PURCHASE_ACCESS') }}
-            </h5>
+        <div v-if="!inCart && (cartLocked || (item.plan && cartItemCount !== 0))">
+          <div class="message no-icon">
+            <span class="icon-alert-circle"/>
             <div>
-              <div class="terms">
-                <div
-                  :class="{ active: term === 'MONTHLY' }"
-                  @click="toggleTerm('MONTHLY')">
-                  <label>{{ $i18n.t('market.TERM.MONTHLY') }}</label>
-                  <span class="price">{{ item.price | currency }} {{ $i18n.t('market.PER_MONTH') }}</span>
-                </div>
-                <div
-                  :class="{ active: term === 'YEARLY', unavailable: !item.plan }"
-                  @click="item.plan ? toggleTerm('YEARLY') : false">
-                  <label>{{ $i18n.t('market.TERM.YEARLY') }}</label>
-                  <span class="price">
-                    <template v-if="item.plan">
-                      {{ yearlyPrice | currency }} {{ $i18n.t('market.PER_YEAR') }}
-                    </template>
-                    <template v-else>
-                      {{ $i18n.t('market.UNAVAILABLE') }}
-                    </template>
-                  </span>
-                  <div
-                    v-if="plan && plan['yearly_discount_pct']"
-                    class="savings">
-                    {{ $i18n.t('misc.SAVE') }} {{ plan['yearly_discount_pct'] * 100 }}%
-                  </div>
-                </div>
-              </div>
-              <div>
+              <h5>{{ $i18n.t('market.CANT_ADD_TO_CART_TITLE') }}</h5>
+              <p>{{ $i18n.t( (cartLocked) ? 'market.CANT_ADD_TO_CART_MSG_LOCKED' : 'market.CANT_ADD_TO_CART_MSG' ) }}</p>
+              <p>{{ $i18n.t('market.CHECKOUT_CURRENT_CART') }}</p>
+              <p class="actions">
+                <router-link
+                  :to="{ name: 'cart' }"
+                  class="button"
+                  @click.native="$emit('close')">
+                  {{ $i18n.t('market.CHECKOUT_EXISTING_ITEMS') }}
+                </router-link>
                 <button
-                  class="button-success"
-                  @click.stop="showChangeTerm ? modifyTerm() : add()">
-                  <span class="icon-shopping-cart"/> {{ showChangeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('misc.ADD_TO_CART') }}
+                  class="button right"
+                  @click.stop="clearCart">
+                  {{ $i18n.t('market.EMPTY_CART') }}
                 </button>
-              </div>
+              </p>
             </div>
           </div>
-        </template>
+        </div>
+        <div
+          v-else-if="!inCart || showChangeTerm"
+          class="addToCart">
+          <h5 v-html="showChangeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('market.PURCHASE_ACCESS')" />
+          <div>
+            <div class="terms">
+              <div
+                :class="{ active: term === 'MONTHLY' }"
+                @click="toggleTerm('MONTHLY')">
+                <label>{{ $i18n.t('market.TERM.MONTHLY') }}</label>
+                <span class="price">{{ item.price | currency }} {{ $i18n.t('market.PER_MONTH') }}</span>
+              </div>
+              <div
+                :class="{ active: term === 'YEARLY', unavailable: !item.plan }"
+                @click="item.plan ? toggleTerm('YEARLY') : false">
+                <label>{{ $i18n.t('market.TERM.YEARLY') }}</label>
+                <span class="price">
+                  <template v-if="item.plan">
+                    {{ yearlyPrice | currency }} {{ $i18n.t('market.PER_YEAR') }}
+                  </template>
+                  <template v-else>
+                    {{ $i18n.t('market.UNAVAILABLE') }}
+                  </template>
+                </span>
+                <div
+                  v-if="plan && plan['yearly_discount_pct']"
+                  class="savings">
+                  {{ $i18n.t('misc.SAVE') }} {{ plan['yearly_discount_pct'] * 100 }}%
+                </div>
+              </div>
+            </div>
+            <div>
+              <button
+                class="button-success"
+                @click.stop="showChangeTerm ? modifyTerm() : add()">
+                <span class="icon-shopping-cart"/> {{ showChangeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('misc.ADD_TO_CART') }}
+              </button>
+            </div>
+          </div>
+        </div>
 
         <template v-else>
           <div class="addedToCart">
-            <h5>
+            <h5 class="mb-3">
               <span class="icon-shopping-cart"/> {{ $i18n.t('market.ADDED_TO_YOUR_CART') }}
             </h5>
             <div>
@@ -125,7 +152,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   props: {
@@ -141,6 +168,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      cartItemCount: 'cart/itemCount',
+      cartLocked: 'cart/locked'
+    }),
     inCart () {
       return this.$store.getters['cart/getItem'](this.item.id, this.item.type)
     },
@@ -165,7 +196,8 @@ export default {
       addToCart: 'cart/add',
       removeFromCart: 'cart/remove',
       changeTerm: 'cart/changeTerm',
-      refreshCart: 'cart/refresh'
+      refreshCart: 'cart/refresh',
+      clearCart: 'cart/clear'
     }),
     async add () {
       this.showChangeTerm = false
@@ -228,7 +260,6 @@ export default {
   h5 {
     font-size: 120%;
     line-height: 100%;
-    margin-bottom: 16px;
 
     [class^="icon-"] {
       margin-right: 4px;

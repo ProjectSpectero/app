@@ -20,8 +20,8 @@
       <div class="actions">
         <button
           v-if="!item.error"
-          :class="{'button-danger': item.status === 'ACTIVE'}"
-          :disabled="item.status !== 'ACTIVE' && !(item.status !== 'ACTIVE' && item.error)"
+          :class="{'button-danger': order.status === 'ACTIVE' && item.status === 'ACTIVE'}"
+          :disabled="(order.status !== 'ACTIVE' || item.status !== 'ACTIVE') && !(item.status !== 'ACTIVE' && item.error)"
           class="button-sm"
           @click.stop="cancel()">
           <span class="icon-x-circle"/> Cancel Resource
@@ -45,6 +45,10 @@ export default {
   },
   props: {
     item: {
+      type: Object,
+      required: true
+    },
+    order: {
       type: Object,
       required: true
     },

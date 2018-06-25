@@ -128,7 +128,7 @@ export default {
     },
     switchTab (tab) {
       this.activeTab = tab.id
-      this.$router.push({ name: 'groupEdit', params: { id: this.group.id, tabAction: tab.path } })
+      this.$router.push({ name: 'nodeGroupEdit', params: { id: this.group.id, tabAction: tab.path } })
     }
   }
 }

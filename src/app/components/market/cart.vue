@@ -26,14 +26,12 @@
             <div class="alert-msg-centered">
               <div class="icon-shopping-cart big-icon"/>
               <h1>{{ $i18n.t('market.CART_EMPTY') }}</h1>
-              <p class="spaced">{{ $i18n.t('market.CART_EMPTY_MSG') }}</p>
-              <p>
-                <router-link
-                  :to="{ name: 'market' }"
-                  class="button-info">
-                  {{ $i18n.t('market.SHOP_NOW') }}
-                </router-link>
-              </p>
+              <p>{{ $i18n.t('market.CART_EMPTY_MSG') }}</p>
+              <router-link
+                :to="{ name: 'market' }"
+                class="button-info">
+                {{ $i18n.t('market.SHOP_NOW') }}
+              </router-link>
             </div>
           </div>
         </div>
