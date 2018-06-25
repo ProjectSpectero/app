@@ -241,7 +241,7 @@ export default {
       return this.order.id.toString().padStart(5, '0')
     },
     isOutstanding () {
-      return this.verified && this.verificationErrors.length === 0 && this.invoice.status === 'UNPAID'
+      return this.verified && this.verificationErrors.length === 0 && this.isUnpaid
     },
     isProcessing () {
       return this.verified && this.verificationErrors.length > 0 && this.isFixable

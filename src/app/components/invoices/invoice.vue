@@ -289,7 +289,7 @@ export default {
       return this.due && this.invoice.status !== 'REFUNDED'
     },
     isOutstanding () {
-      return (this.verified || this.isEnterpriseOrder || this.isCreditInvoice) && this.invoice.status === 'UNPAID' && this.canShowDueAmount && this.verificationErrors.length === 0
+      return (this.verified || this.isEnterpriseOrder || this.isCreditInvoice) && this.isUnpaid && this.canShowDueAmount && this.verificationErrors.length === 0
     },
     isProcessing () {
       return (this.verified || this.isEnterpriseOrder) && this.verificationErrors.length > 0 && this.order && this.isFixable

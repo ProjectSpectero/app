@@ -29,7 +29,7 @@ export default {
       return true
     },
     isUnpaid () {
-      return this.invoice.status === 'UNPAID'
+      return this.invoice.status === 'UNPAID' || this.invoice.status === 'PARTIALLY_PAID'
     },
     isPayable () {
       return ((this.verified && this.verificationErrors.length === 0) || this.isCreditInvoice) &&
