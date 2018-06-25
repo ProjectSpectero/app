@@ -141,6 +141,7 @@ export default {
     }),
     async fetchFreshdesk () {
       if (this.user) {
+        console.warn('User found, fetching freshdesk link ...')
         await userAPI.getSupportLink({
           success: response => {
             if (response.data.result.redirect_uri !== undefined) {
@@ -156,7 +157,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

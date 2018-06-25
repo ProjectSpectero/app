@@ -72,9 +72,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import auth from '@/app/api/auth'
-import userAPI from '@/app/api/user'
 
 export default {
   metaInfo: {
@@ -88,12 +87,17 @@ export default {
       formLoading: false
     }
   },
+  computed: {
+    ...mapGetters({
+      isEnterprise: 'appAuth/isEnterprise'
+    })
+  },
   created () {
     this.testAutologin()
   },
   methods: {
     ...mapActions({
-      storeUser: 'appAuth/storeUser'
+      syncCurrentUser: 'appAuth/syncCurrentUser'
     }),
     testAutologin () {
       if (this.$route.query.autologin !== undefined) {
@@ -119,31 +123,22 @@ export default {
           password: this.password
         },
         loginSuccess: async response => {
-          await this.fetchUser()
-        },
-        loginFailed: error => {
-          this.dealWithError(error)
-        }
-      })
-    },
-    async fetchUser () {
-      await userAPI.getMe({
-        success: response => {
-          let userData = response.data.result
-
-          this.formError = null
-          this.storeUser(userData)
+          console.warn('loginSuccess, fetching user ...')
+          await this.syncCurrentUser()
 
           if (this.$route.query.redirect) {
+            console.warn('user is not enterprise')
             this.$router.push({ path: this.$route.query.redirect })
-          } else if (userData.plans.indexOf('enterprise') > -1) {
+          } else if (this.isEnterprise) {
+            console.warn('user is enterprise')
             this.$router.push({ name: 'enterpriseOrders' })
           } else {
+            console.warn('user is not enterprise')
             this.$router.push({ name: 'dashboard' })
           }
         },
-        fail: error => {
-          console.log(error)
+        loginFailed: error => {
+          this.dealWithError(error)
         }
       })
     },
