@@ -30,7 +30,7 @@
           </div>
 
           <div
-            v-if="totals.total > 0 && route !== 'marketMine'"
+            v-if="!storeLoading && totals.total > 0 && route !== 'marketMine'"
             class="cart">
             <div class="info">
               <h4 class="mb-0">
@@ -122,7 +122,7 @@
             </table>
           </div>
           <div
-            v-else
+            v-else-if="!storeLoading"
             class="alert-msg-centered">
             <div class="icon-slash big-icon"/>
             <template v-if="route !== 'marketMine'">
