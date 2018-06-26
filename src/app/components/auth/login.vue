@@ -123,18 +123,12 @@ export default {
           password: this.password
         },
         loginSuccess: async response => {
-          console.warn('loginSuccess, fetching user ...')
           await this.syncCurrentUser()
 
           if (this.$route.query.redirect) {
-            console.warn('user is not enterprise')
             this.$router.push({ path: this.$route.query.redirect })
-          } else if (this.isEnterprise) {
-            console.warn('user is enterprise')
-            this.$router.push({ name: 'enterpriseOrders' })
           } else {
-            console.warn('user is not enterprise')
-            this.$router.push({ name: 'dashboard' })
+            this.$router.push({ name: (this.isEnterprise) ? 'enterpriseOrders' : 'dashboard' })
           }
         },
         loginFailed: error => {

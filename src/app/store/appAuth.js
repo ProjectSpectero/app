@@ -75,7 +75,6 @@ const mutations = {
     // console.log(state.user)
   },
   SET_LOGIN_INFO (state, payload) {
-    console.log('On SET_LOGIN_INFO')
     state.accessToken = payload.accessToken
     state.refreshToken = payload.refreshToken
     state.expiry = payload.expiry
