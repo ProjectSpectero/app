@@ -25,7 +25,7 @@
           class="market-listings split-details">
           <div
             v-if="storeLoading"
-            class="loading-overlay">
+            :class="{ 'loading-overlay': route !== 'marketMine' }">
             <loading/>
           </div>
 
@@ -274,6 +274,7 @@ export default {
   .loading-overlay {
     width: 100%;
     height: 100%;
+    min-height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;

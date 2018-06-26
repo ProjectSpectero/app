@@ -33,6 +33,7 @@ const getters = {
 const actions = {
   async fetch ({ getters, commit }, data) {
     commit('SET_LOADING', true)
+    commit('CLEAR_RESULTS')
 
     await marketAPI.search({
       queryParams: {
@@ -55,6 +56,7 @@ const actions = {
   },
   async fetchMine ({ getters, commit }, data) {
     commit('SET_LOADING', true)
+    commit('CLEAR_RESULTS')
 
     await nodeAPI.myNodes({
       queryParams: {
@@ -105,6 +107,9 @@ const mutations = {
   UPDATE_RESULTS: (state, data) => {
     state.results = data.results
     state.pagination = data.pagination
+  },
+  CLEAR_RESULTS: (state) => {
+    state.results = []
   },
   TOGGLE_BUTTON: (state, status) => {
     state.buttonEnabled = status
