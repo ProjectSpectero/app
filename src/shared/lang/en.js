@@ -166,10 +166,6 @@ module.exports = {
     PAYPAL_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Paypal One Touch™...',
     PAYMENT_INVALID_PARAMETERS: 'The payment data you have supplied seems to be wrong. Please contact us for more details.',
     PAYMENT_PROCESSOR_NOT_ENABLED: 'This payment processor is not enabled. Please contact us for more details.',
-    PAY_WITH_PAYPAL: 'PayPal Checkout',
-    PAY_WITH_STRIPE: 'Credit Card Payment',
-    PAY_WITH_ACCOUNT_CREDIT: 'Use Account Credit',
-    NO_CREDIT: 'No Credit Available',
     REQUEST_FAILED: 'We were unable to start the payment process. Please contact us if this keeps happening.',
     ZERO_CREDIT_BALANCE: 'You don\'t have any balance in your account.',
     UNPAID_CREDIT_INVOICES_ARE_PRESENT: 'Unable to invoice credits: you already have one invoice queued for payment!',
@@ -196,12 +192,32 @@ module.exports = {
         PROMO_CODE_ALREADY_USED: 'This promo code has already been used.',
         REQUEST_FAILED: 'Something went wrong. Please try again later or contact us if this issue persists.'
       }
+    },
+    METHODS: {
+      PAYPAL: {
+        TITLE: 'PayPal',
+        DESCRIPTION: 'Complete your payment through PayPal. Creating an account is not necessary if you choose to pay by credit card.',
+        BUTTON_TEXT: 'PayPal Checkout'
+      },
+      STRIPE: {
+        TITLE: 'Credit Card',
+        DESCRIPTION: 'Make a safe payment using your credit card. Most major card types are accepted.',
+        BUTTON_TEXT: 'Credit Card Payment'
+      },
+      CREDIT: {
+        TITLE: 'Account Credit',
+        DESCRIPTION: 'Apply your account credit to this invoice. You currently have <strong>{balance}</strong> of account credit available to be applied.',
+        BUTTON_TEXT: 'Use Account Credit',
+        DESCRIPTION_NO_BALANCE: 'You currently have no account credit available to pay with.',
+        BUTTON_TEXT_NO_BALANCE: 'No Credit Available'
+      }
     }
   },
 
   invoices: {
     PAY_INVOICE: 'Pay Invoice',
-    PAY_TEXT2: 'Please pay the amount due using the options available below.',
+    PAY_INVOICE_TEXT: 'Your invoice <strong>{invoiceId}</strong> currently has an outstanding balance of <strong>{due}</strong>.',
+    PAY_PLEASE_PAY: 'Please pay the amount due using the options available below.',
     INVOICE_STATUS: {
       PAID: 'Paid',
       UNPAID: 'Unpaid',
