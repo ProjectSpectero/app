@@ -133,11 +133,13 @@ export default {
   },
   async created () {
     await this.fetchFreshdesk()
+    await this.refreshCart()
   },
   methods: {
     ...mapActions({
       appLogout: 'appAuth/logout',
-      daemonLogout: 'daemonAuth/logout'
+      daemonLogout: 'daemonAuth/logout',
+      refreshCart: 'cart/refresh'
     }),
     async fetchFreshdesk () {
       if (this.user) {
