@@ -642,5 +642,21 @@ export default {
   .message-paid, .line-error-msg {
     display: none !important;
   }
+  .divider {
+    margin: 18px 0 !important;
+    background: transparent !important;
+  }
+  .table-styled {
+    border: none;
+
+    td, th {
+      padding: 12px 8px;
+      border: none;
+    }
+    th {
+      background: none;
+      padding-bottom: 14px;
+    }
+  }
 }
 </style>
