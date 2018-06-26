@@ -43,6 +43,25 @@
         </span>
       </div>
 
+      <div class="form-input">
+        <input
+          v-validate="'required|confirmed:password'"
+          v-model="confirmation"
+          :class="{'input-error': errors.has('confirmation')}"
+          :disabled="formLoading"
+          type="password"
+          name="confirmation"
+          placeholder="Repeat password"
+          class="input max-width"
+          data-vv-as="confirmation">
+
+        <span
+          v-show="errors.has('confirmation')"
+          class="input-error-message">
+          {{ errors.first('confirmation') }}
+        </span>
+      </div>
+
       <button
         :class="{ 'button-loading': formLoading }"
         :disabled="formLoading"
@@ -59,7 +78,7 @@
 </template>
 
 <script>
-import auth from '@/app/api/auth.js'
+import auth from '@/app/api/auth'
 
 export default {
   metaInfo: {
@@ -69,6 +88,7 @@ export default {
     return {
       email: null,
       password: null,
+      confirmation: null,
       formError: null,
       formLoading: false
     }
