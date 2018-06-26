@@ -65,7 +65,9 @@
             <router-link :to="{ name: 'cart' }">
               <span class="icon-shopping-cart"/>
               {{ $i18n.t('misc.CART') }}
-              <span v-if="count">({{ count }})</span>
+              <span
+                v-if="count"
+                class="count">{{ count }}</span>
             </router-link>
           </li>
           <li>
