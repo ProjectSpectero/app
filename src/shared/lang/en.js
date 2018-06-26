@@ -423,7 +423,11 @@ module.exports = {
     CANT_ADD_TO_CART_MSG_LOCKED: 'Because an item in your cart has a plan associated to it, you must purchase it separately before being able to add more items.',
     CHECKOUT_CURRENT_CART: 'Please checkout your current cart or empty it before continuing.',
     CHECKOUT_EXISTING_ITEMS: 'Checkout Existing Items',
-    EMPTY_CART: 'Empty Cart'
+    EMPTY_CART: 'Empty Cart',
+    NO_LISTINGS_TITLE: 'No Listings Found',
+    NO_LISTINGS_TEXT: 'There were no market listings found matching your criteria.',
+    NO_LISTINGS_SELF_TITLE: 'No Listings',
+    NO_LISTINGS_SELF_TEXT: 'You haven\'t listed anything. Add a node to list it on the market.'
   },
 
   users: {

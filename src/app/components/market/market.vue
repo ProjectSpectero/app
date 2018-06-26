@@ -47,7 +47,7 @@
           </div>
 
           <div
-            v-if="results"
+            v-if="results.length > 0"
             class="datatable">
             <table>
               <table-header
@@ -92,8 +92,8 @@
                     <template v-if="route === 'marketMine'">
                       <router-link
                         :to="{ name: 'node', params: { action: 'edit', id: item.id } }"
-                        class="button-icon">
-                        <span class="icon-edit-2"/>
+                        class="button-sm">
+                        {{ $i18n.t('misc.EDIT') }}
                       </router-link>
                     </template>
                     <template v-else>
@@ -121,8 +121,27 @@
               </tbody>
             </table>
           </div>
+          <div
+            v-else
+            class="alert-msg-centered">
+            <div class="icon-slash big-icon"/>
+            <template v-if="route !== 'marketMine'">
+              <h1>{{ $i18n.t('market.NO_LISTINGS_TITLE') }}</h1>
+              <p>{{ $i18n.t('market.NO_LISTINGS_TEXT') }}</p>
+            </template>
+            <template v-else>
+              <h1>{{ $i18n.t('market.NO_LISTINGS_SELF_TITLE') }}</h1>
+              <p>{{ $i18n.t('market.NO_LISTINGS_SELF_TEXT') }}</p>
+              <button
+                class="button-success"
+                @click.prevent="showAddNodeModal()">
+                <span class="icon-plus"/>{{ $i18n.t('nodes.ADD_NODE') }}
+              </button>
+            </template>
+          </div>
 
           <paginator
+            v-if="results.length > 0"
             :pagination="pagination"
             @changedPage="search"/>
         </div>
@@ -141,6 +160,7 @@ import paginator from '@/shared/components/paginator'
 import loading from '@/shared/components/loading'
 import tableHeader from '@/shared/components/table/thead'
 import helpButton from '@/shared/components/docs/button'
+import addNodeModal from '../nodes/addNodeModal'
 
 export default {
   components: {
@@ -151,7 +171,8 @@ export default {
     filters,
     addToCart,
     loading,
-    helpButton
+    helpButton,
+    addNodeModal
   },
   metaInfo: {
     title: 'Market'
@@ -200,6 +221,11 @@ export default {
       fetchPlans: 'market/fetchPlans',
       refreshCart: 'cart/refresh'
     }),
+    showAddNodeModal () {
+      this.$modal.show(addNodeModal, {}, {
+        height: 'auto'
+      })
+    },
     switchListing (route, page) {
       this.route = route
       this.search(page || 1, route)
