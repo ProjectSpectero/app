@@ -90,11 +90,10 @@ export default {
     }
   },
   async created () {
-    await this.fetchResources()
+    // Only ACTIVE orders have valid resources
+    if (this.order.status === 'ACTIVE') {
+      await this.fetchResources()
+    }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>
