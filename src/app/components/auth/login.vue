@@ -93,13 +93,13 @@ export default {
     })
   },
   created () {
-    this.testAutologin()
+    // this.autoLogin()
   },
   methods: {
     ...mapActions({
       syncCurrentUser: 'appAuth/syncCurrentUser'
     }),
-    testAutologin () {
+    autoLogin () {
       if (this.$route.query.autologin !== undefined) {
         this.username = 'dev@spectero.com'
         this.password = 'temppass'
