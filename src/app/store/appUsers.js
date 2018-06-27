@@ -27,7 +27,7 @@ const getters = {
         max: 255
       },
       post_code: {
-        max: 255
+        max: 64
       },
       country: {
         max: 255
