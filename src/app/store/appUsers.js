@@ -5,6 +5,7 @@ const getters = {
   editRules: () => {
     return {
       email: {
+        required: true,
         email: true
       },
       password: {
