@@ -385,8 +385,9 @@ module.exports = {
     SERVICES: 'Services',
     PROXIES: 'Proxies',
     CERTIFICATES: 'Certificates',
-    AUTOLOGIN_FAIL: 'Unable to authenticate to daemon. Please try again later or contact us if the problem persists.',
-    NODE_PENDING_VERIFICATION: 'This node is pending verification. Please try again when its status is CONFIRMED.'
+    AUTOLOGIN_FAIL: 'Unable to authenticate to daemon. Please try again later and contact us if the problem persists.',
+    NODE_PENDING_VERIFICATION: 'This node is pending verification. Please try again when its status is CONFIRMED.',
+    NODE_UNREACHABLE: 'We were unable to reach this node. Please try again later and contact us if the problem persists.'
   },
 
   market: {

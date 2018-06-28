@@ -44,7 +44,7 @@ const getters = {
         max: 255
       },
       tax_identification: {
-        min: 2,
+        min: 1,
         max: 255
       },
       organization: {
