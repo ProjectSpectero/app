@@ -16,30 +16,39 @@ const getters = {
         max: 50
       },
       address_line_1: {
+        min: 1,
         max: 255
       },
       address_line_2: {
+        min: 1,
         max: 255
       },
       city: {
+        min: 1,
         max: 255
       },
       state: {
+        min: 1,
         max: 255
       },
       post_code: {
+        min: 1,
         max: 64
       },
       country: {
+        min: 1,
         max: 255
       },
       phone_no: {
+        min: 1,
         max: 255
       },
       tax_identification: {
+        min: 2,
         max: 255
       },
       organization: {
+        min: 1,
         max: 255
       }
     }

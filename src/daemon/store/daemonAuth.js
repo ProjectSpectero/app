@@ -56,13 +56,13 @@ const actions = {
         id: nodeId
       },
       success: response => {
-        console.log('autologin success')
         dispatch('addCookie', response.data.result)
         dispatch('setupEndpoint', response.data.result)
       },
       fail: error => {
-        console.error('autologin error', error)
-        throw new Error('AUTOLOGIN_FAIL')
+        const e = Object.keys(error.errors)[0] || 'AUTOLOGIN_FAIL'
+        console.log('Auto-login failed', error)
+        throw new Error(e)
       }
     })
   },
