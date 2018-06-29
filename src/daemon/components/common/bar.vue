@@ -1,11 +1,11 @@
 <template>
-  <div class="bar">
+  <div>
     <component :is="barComponent"/>
   </div>
 </template>
 
 <script>
-import restartHTTPProxy from '../services/HTTPProxy/restart'
+import restartHTTPProxy from '@/daemon/components/services/HTTPProxy/restart'
 
 export default {
   components: {

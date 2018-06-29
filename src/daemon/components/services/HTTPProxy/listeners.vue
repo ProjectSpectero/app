@@ -96,7 +96,7 @@ export default {
     }
   },
   created () {
-    this.list = JSON.parse(JSON.stringify(this.listeners))
+    this.list = this.listeners.map(a => ({...a}))
   },
   methods: {
     remove (index) {
@@ -111,8 +111,8 @@ export default {
             item2: this.port
           })
 
-          this.reset()
           this.update()
+          this.reset()
         }
       })
     },
@@ -120,6 +120,7 @@ export default {
       this.$emit('update', this.list)
     },
     reset () {
+      this.$validator.reset()
       this.ip = null
       this.port = null
     }

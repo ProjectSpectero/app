@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="config && ips">
     <top title="HTTPProxy Configuration">
       <button
         class="button"
@@ -36,7 +36,7 @@
             <domains
               :proxy="proxy"
               :enabled="proxy === 'ExclusiveAllow'"
-              :domains="config.allowedDomains"
+              :domains="config.allowedDomains || []"
               title="Allowed Domains"
               forbidden-message-key="services.UNABLE_TO_DISPLAY_ALLOWED_DOMAINS"
               @update="updateAllowedDomains"/>
@@ -44,7 +44,7 @@
             <domains
               :proxy="proxy"
               :enabled="proxy === 'Normal'"
-              :domains="config.bannedDomains"
+              :domains="config.bannedDomains || []"
               title="Banned Domains"
               forbidden-message-key="services.UNABLE_TO_DISPLAY_BANNED_DOMAINS"
               @update="updateBannedDomains"/>
@@ -66,6 +66,20 @@
               </template>
             </div>
           </form>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="section padded">
+          <h3>Available IP addresses</h3>
+
+          <ul>
+            <li
+              v-for="(ip, i) in ips"
+              :key="i">
+              {{ ip }}
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -97,7 +111,8 @@ export default {
       proxyTypes: ['Normal', 'ExclusiveAllow'],
       proxy: null,
       formDisable: false,
-      restartNeeded: false
+      restartNeeded: false,
+      ips: []
     }
   },
   computed: {
@@ -119,19 +134,29 @@ export default {
     ...mapActions({
       switchBarComponent: 'settings/switchBarComponent'
     }),
-    setup () {
-      serviceAPI.get({
+    async setup () {
+      await this.fetchService()
+      await this.fetchIps()
+    },
+    async fetchService () {
+      await serviceAPI.get({
         name: this.name,
         success: response => {
           this.config = response.data.result[0]
           this.proxy = this.config.proxyMode
-
-          // Set the top bar to display a notification + button to restart the service
-          localStorage.setItem('specteroBar', 'restartHTTPProxy')
         },
         fail: error => {
           console.log(error)
-          this.$router.push({ name: 'error404' })
+        }
+      })
+    },
+    async fetchIps () {
+      serviceAPI.ips({
+        success: response => {
+          this.ips = response.data.result
+        },
+        fail: error => {
+          console.log(error)
         }
       })
     },
@@ -158,6 +183,7 @@ export default {
         data: this.config,
         success: response => {
           this.$toasted.success(this.$i18n.t('services.UPDATE_SUCCESS'))
+          console.log('updated', response.data.message)
 
           // Append the restart server button if needed
           if (response.data.message && response.data.message === 'SERVICE_RESTART_NEEDED') {

@@ -1,7 +1,12 @@
 <template>
   <div class="spectero daemon">
     <sidebar/>
+
     <div class="content">
+      <bar
+        v-if="barComponent"
+        :bar-component="barComponent"/>
+
       <modals-container/>
       <router-view/>
     </div>
@@ -10,14 +15,17 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import bar from '@/daemon/components/common/bar'
 import sidebar from '@/shared/components/sidebar'
 
 export default {
   components: {
-    sidebar
+    sidebar,
+    bar
   },
   computed: {
     ...mapGetters({
+      barComponent: 'settings/bar',
       user: 'daemonAuth/user'
     })
   },
@@ -25,10 +33,8 @@ export default {
     if (this.$route.params.nodeId) {
       try {
         await this.autologin(this.$route.params.nodeId)
-        console.log(`autologin success (frontend)`)
         await this.syncCurrentUser()
       } catch (e) {
-        console.error(`autologin failed (frontend)`, e)
         this.$toasted.error(this.$i18n.t(`daemon.${e.message}`))
         this.$router.push({ name: 'nodes' })
       }

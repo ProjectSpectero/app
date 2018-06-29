@@ -43,8 +43,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      switchLayout: 'settings/switchLayout',
-      switchBarComponent: 'settings/switchBarComponent'
+      switchLayout: 'settings/switchLayout'
     }),
     init () {
       // If we refresh the page, we need to make sure our layout is set correctly
@@ -52,11 +51,6 @@ export default {
       // any layout changes will be handled by watching vue-router from then on.
       // If there's no specified route.meta.layout, the default 'master' layout will be used.
       this.switchLayout(this.fetchLayoutFromRoute(this.$route))
-
-      // Update bar component if needed
-      if (localStorage.getItem('specteroBar')) {
-        this.switchBarComponent(localStorage.getItem('specteroBar'))
-      }
     },
     fetchLayoutFromRoute: function (route) {
       return route.meta.layout || ''
