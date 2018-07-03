@@ -7,33 +7,32 @@
     <div class="actions">
       <button
         class="button-dark"
-        @click.stop.prevent="restart">Restart Daemon Now</button>
+        @click.stop.prevent="restart">Restart Now</button>
     </div>
   </div>
 </template>
 
 <script>
-// import { mapActions } from 'vuex'
+import { mapActions } from 'vuex'
+import cloudAPI from '@/daemon/api/cloud'
 
 export default {
   methods: {
-    // ...mapActions({
-    //   removeBarComponent: 'settings/removeBarComponent'
-    // }),
-    // restart () {
-    //   serviceAPI.manage({
-    //     name: this.service,
-    //     action: 'restart',
-    //     success: response => {
-    //       this.removeBarComponent()
-    //       this.$toasted.success(this.$i18n.t('services.RESTART_SUCCESS'))
-    //     },
-    //     fail: error => {
-    //       console.error(error)
-    //       this.$toasted.error(this.$i18n.t('services.RESTART_ERROR'))
-    //     }
-    //   })
-    // }
+    ...mapActions({
+      removeBarComponent: 'settings/removeBarComponent'
+    }),
+    restart () {
+      cloudAPI.restartSystem({
+        success: response => {
+          this.removeBarComponent()
+          this.$toasted.success(this.$i18n.t('cloud.RESTART_SUCCESS'))
+        },
+        fail: error => {
+          console.error(error)
+          this.$toasted.error(this.$i18n.t('cloud.RESTART_ERROR'))
+        }
+      })
+    }
   }
 }
 </script>

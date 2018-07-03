@@ -6,5 +6,12 @@ export default {
    */
   remote (options) {
     return api('GET', `/cloud/remote`, options)
+  },
+
+  /**
+  * Forces a system restart.
+  */
+  restartSystem (options) {
+    return api('POST', `/system/restart`, options)
   }
 }

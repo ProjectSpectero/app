@@ -51,7 +51,7 @@ const actions = {
         commit('SET_SPECS', response.data.result)
 
         // Append the restart server button if needed
-        if (response.data.result.app.restartNeeded) {
+        if (!response.data.result.app.restartNeeded) {
           dispatch('settings/switchBarComponent', 'restart', { root: true })
         }
       },
@@ -102,7 +102,7 @@ const mutations = {
     state.user = payload
   },
   SET_SPECS (state, data) {
-    console.log('commited SET_SPECS', data)
+    console.log('System specs:', data)
     state.specs = data
   },
   SETUP_ENDPOINT (state, payload) {

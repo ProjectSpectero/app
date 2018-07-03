@@ -331,6 +331,11 @@ module.exports = {
     PROXY_MODE: 'Proxy Mode'
   },
 
+  cloud: {
+    RESTART_SUCCESS: 'System restarted successfully!',
+    RESTART_ERROR: 'There was an error while trying to restart your system. Please try again later.'
+  },
+
   nodes: {
     VALIDATION_FAILED: 'Something went wrong while trying to update this node. Please correct any errors and try again.',
     VERIFY_NODE: 'Verify node',
