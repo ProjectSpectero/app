@@ -23,14 +23,16 @@ const router = new Router({
 
 // Test authentication before landing on each route request
 router.beforeEach((to, from, next) => {
-  // Check login status by either decoding the cookie or
-  // testing for a token in store (if any)
-
-  store.dispatch('appAuth/checkLogin').then(loggedIn => {
-    // Handle routes requiring authentication
-    // or handle routes that arent view-able by already logged in users (default to /dashboard)
-    // else handles regular routes
-    processRoute(loggedIn, to, from, next)
+  // Hide help sidebar
+  store.dispatch('help/hidePanel').then(() => {
+    // Check login status by either decoding the cookie or
+    // testing for a token in store (if any)
+    store.dispatch('appAuth/checkLogin').then(loggedIn => {
+      // Handle routes requiring authentication
+      // or handle routes that arent view-able by already logged in users (default to /dashboard)
+      // else handles regular routes
+      processRoute(loggedIn, to, from, next)
+    })
   })
 })
 

@@ -65,7 +65,9 @@
             <router-link :to="{ name: 'cart' }">
               <span class="icon-shopping-cart"/>
               {{ $i18n.t('misc.CART') }}
-              <span v-if="count">({{ count }})</span>
+              <span
+                v-if="count"
+                class="count">{{ count }}</span>
             </router-link>
           </li>
           <li>
@@ -133,11 +135,13 @@ export default {
   },
   async created () {
     await this.fetchFreshdesk()
+    await this.refreshCart()
   },
   methods: {
     ...mapActions({
       appLogout: 'appAuth/logout',
-      daemonLogout: 'daemonAuth/logout'
+      daemonLogout: 'daemonAuth/logout',
+      refreshCart: 'cart/refresh'
     }),
     async fetchFreshdesk () {
       if (this.user) {
@@ -156,7 +160,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

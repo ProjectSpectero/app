@@ -13,7 +13,7 @@
               <label for="friendly_name">{{ $i18n.t('misc.FRIENDLY_NAME') }}</label>
             </div>
             <input
-              v-validate="rules['friendly_name']"
+              v-validate="rules.friendly_name"
               id="friendly_name"
               v-model="form.friendly_name"
               :class="{'input-error': errors.has('friendly_name')}"
@@ -38,7 +38,7 @@
               <label for="price">{{ $i18n.t('misc.PRICE') }}</label>
             </div>
             <input
-              v-validate="rules['price']"
+              v-validate="rules.price"
               id="price"
               v-model="form.price"
               :class="{'input-error': errors.has('price')}"
@@ -121,7 +121,12 @@ export default {
         friendly_name: {
           max: 50
         },
+        price: {
+          required: true,
+          min_value: 5
+        },
         market_model: {
+          required: true,
           in: this.marketModels
         }
       }

@@ -61,7 +61,7 @@
               </button>
 
               <router-link
-                :to="{ name: 'manage', params: { nodeId: isDevelopmentEnvironment ? row.id : 101 } }"
+                :to="{ name: 'manage', params: { nodeId: (isDevelopmentEnvironment || isStagingEnvironment) ? 101 : row.id } }"
                 class="button-sm button-info">
                 <span class="icon-sliders"/> Manage
               </router-link>
@@ -153,11 +153,6 @@ export default {
         market_model: 'Market Model',
         actions: ''
       }
-    }
-  },
-  computed: {
-    isDevelopmentEnvironment () {
-      return (process.env.NODE_ENV !== 'development')
     }
   },
   methods: {

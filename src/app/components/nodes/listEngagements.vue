@@ -177,9 +177,15 @@ export default {
       ],
       rules: {
         friendly_name: {
+          required: true,
           max: 50
         },
+        price: {
+          required: true,
+          min_value: 5
+        },
         market_model: {
+          required: true,
           in: this.marketModels
         }
       }

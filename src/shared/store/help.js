@@ -9,8 +9,13 @@ const getters = {
 }
 
 const actions = {
-  togglePanel: ({ commit }) => {
-    commit('TOGGLE_PANEL')
+  togglePanel: ({ commit, state }) => {
+    commit('SWITCH_PANEL_STATUS', !state.showHelp)
+  },
+  hidePanel: ({ commit, state }) => {
+    if (state.showHelp) {
+      commit('SWITCH_PANEL_STATUS', false)
+    }
   },
   setContentsKey: ({ state, commit }, key) => {
     if (state.contentsKey !== key) {
@@ -20,8 +25,8 @@ const actions = {
 }
 
 const mutations = {
-  TOGGLE_PANEL: (state) => {
-    state.showHelp = !state.showHelp
+  SWITCH_PANEL_STATUS: (state, status) => {
+    state.showHelp = status
   },
   SET_CONTENTS_KEY: (state, key) => {
     state.contentsKey = 'help.' + key

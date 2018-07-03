@@ -1,17 +1,22 @@
 <template>
-  <div>
-    <div class="message message-warning">
-      One or more operations require that you restart the {{ service }} service.
+  <div class="col-container mt-3">
+    <div class="message message-warning col-12">
+      <div>
+        <h5>Action required</h5>
+        <p>One or more operations require that you restart the {{ service }} service.</p>
+      </div>
+      <div class="actions">
+        <button
+          class="button-dark"
+          @click.stop.prevent="restart">Restart {{ service }} Now</button>
+      </div>
     </div>
-    <button
-      class="button-dark"
-      @click.stop.prevent="restart">Restart {{ service }} Now</button>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-import serviceAPI from '../../../api/service.js'
+import serviceAPI from '@/daemon/api/service'
 
 export default {
   data () {
@@ -29,7 +34,7 @@ export default {
         action: 'restart',
         success: response => {
           this.removeBarComponent()
-          this.$toasted.show(this.$i18n.t('services.RESTART_SUCCESS'))
+          this.$toasted.success(this.$i18n.t('services.RESTART_SUCCESS'))
         },
         fail: error => {
           console.error(error)

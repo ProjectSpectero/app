@@ -139,7 +139,9 @@ export default {
       await orderAPI.order({
         data: { id: this.orderId },
         success: async response => {
+          console.log('yyy')
           if (response.data.result && response.data.result.status === 'ACTIVE') {
+            console.log('nnnn')
             this.order = response.data.result
             await this.fetchResources()
           } else {

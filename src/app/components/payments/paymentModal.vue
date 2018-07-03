@@ -1,32 +1,40 @@
 <template>
   <div class="modal">
     <div class="modal-header">
-      <h2>
-        {{ $i18n.t('invoices.PAY_INVOICE') }}
-        <small v-if="user.credit > 0">{{ $i18n.t('payments.ACCOUNT_CREDIT', { credit: user.credit }) }}</small>
-      </h2>
+      <h2>{{ $i18n.t('invoices.PAY_INVOICE') }}</h2>
       <button
         class="modal-close"
         @click="$emit('close')"/>
     </div>
     <div class="modal-content">
-      <p class="spaced">
-        Your invoice <strong>{{ invoice.id }}</strong> currently has an outstanding balance of <strong>{{ due.amount | currency }} {{ due.currency }}</strong>.
-      </p>
-      <p class="spaced">
-        {{ $i18n.t('invoices.PAY_TEXT2') }}
-      </p>
-      <div>
-        <button
-          v-for="type in buttons"
-          v-if="canUse(type)"
-          :key="type.route"
-          :class="type.class"
-          :disabled="!type.enabled"
-          class="button"
-          @click="pay(type)">
-          {{ $i18n.t('payments.' + type.label) }}
-        </button>
+      <p
+        class="spaced"
+        v-html="$i18n.t('invoices.PAY_INVOICE_TEXT', {
+          invoiceId: invoice.id,
+          due: $filters.currency(due.amount)
+      })"/>
+
+      <p v-html="$i18n.t('invoices.PAY_PLEASE_PAY')"/>
+
+      <div class="payment-options">
+        <article
+          v-for="method in paymentMethods"
+          v-if="canUse(method)"
+          :key="method.route">
+          <header>
+            <h3 v-html="$i18n.t(method.lang + '.TITLE')"/>
+          </header>
+          <section class="description">
+            <p v-html="$i18n.t(method.lang + '.' + ((method.description) ? method.description : 'DESCRIPTION'), method.descriptionAttributes)"/>
+            <button
+              v-if="method.enabled"
+              :disabled="!method.enabled"
+              :class="method.buttonClass"
+              class="button"
+              @click="pay(method)"
+              v-html="$i18n.t(method.lang + '.' + ((method.buttonText) ? method.buttonText : 'BUTTON_TEXT'))"/>
+          </section>
+        </article>
       </div>
     </div>
   </div>
@@ -50,20 +58,42 @@ export default {
     ...mapGetters({
       user: 'appAuth/user'
     }),
-    buttons () {
-      let btns = [
-        { label: 'PAY_WITH_PAYPAL', route: 'paypal', usage: ['STANDARD', 'MANUAL', 'CREDIT'], enabled: true, class: 'button-info' },
-        { label: 'PAY_WITH_STRIPE', route: 'stripe', usage: ['STANDARD'], enabled: true, class: 'button-info' },
-        { label: 'PAY_WITH_ACCOUNT_CREDIT', route: 'paypalCredit', usage: ['STANDARD'], enabled: true, class: 'button-info' }
-      ]
 
-      if (!this.user.credit) {
-        btns[2].label = 'NO_CREDIT'
-        btns[2].enabled = false
-        btns[2].class = ''
+    paymentMethods () {
+      let methods = {
+        'paypal': {
+          enabled: true,
+          route: 'paypal',
+          usage: ['STANDARD', 'MANUAL', 'CREDIT'],
+          lang: 'payments.METHODS.PAYPAL',
+          buttonClass: 'button-info'
+        },
+        'stripe': {
+          enabled: true,
+          route: 'stripe',
+          usage: ['STANDARD'],
+          lang: 'payments.METHODS.STRIPE',
+          buttonClass: 'button-info'
+        },
+        'credit': {
+          enabled: true,
+          route: 'paypalCredit',
+          usage: ['STANDARD'],
+          lang: 'payments.METHODS.CREDIT',
+          buttonClass: 'button-dark'
+        }
       }
 
-      return btns
+      if (this.user.credit) {
+        methods.credit.descriptionAttributes = { balance: this.$filters.currency(this.user.credit) }
+      } else {
+        methods.credit.enabled = false
+        methods.credit.description = 'DESCRIPTION_NO_BALANCE'
+        methods.credit.buttonText = 'BUTTON_TEXT_NO_BALANCE'
+        methods.credit.buttonClass = ''
+      }
+
+      return methods
     }
   },
   methods: {
@@ -86,7 +116,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h2 > small {
-  font-size: 14px;
+.payment-options {
+  margin-top: $pad;
+
+  > article {
+    margin-bottom: 12px;
+    padding: 16px;
+    border-radius: 4px;
+    border: 1px solid $color-border;
+
+    header {
+      h3 {
+        margin-bottom: 0.7em;
+      }
+    }
+    .description {
+      p {
+        opacity: 0.5;
+      }
+      .button, [class^="button-"] {
+        margin-top: 12px;
+      }
+    }
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
 }
 </style>

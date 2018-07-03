@@ -101,10 +101,6 @@
                         <td>{{ invoice.id }}</td>
                       </tr>
                       <tr>
-                        <td><strong>{{ $i18n.t('invoices.TYPE') }}:</strong></td>
-                        <td>{{ invoice.type }}</td>
-                      </tr>
-                      <tr>
                         <td><strong>{{ $i18n.t('invoices.STATUS') }}:</strong></td>
                         <td><strong :class="statusClass">{{ status }}</strong></td>
                       </tr>
@@ -147,14 +143,15 @@
 
                 <table
                   v-if="lineItems"
-                  class="table-styled">
+                  class="lineitems table-styled">
                   <thead>
                     <tr>
-                      <th>ID</th>
-                      <th class="text-left">Item Description</th>
-                      <th class="text-center">Quantity</th>
-                      <th>Price</th>
-                      <th>Amount</th>
+                      <th class="width-id">Item ID</th>
+                      <th class="text-left">Item Details</th>
+                      <th class="width-sm text-left">Type</th>
+                      <th class="width-sm text-center">Quantity</th>
+                      <th class="width-sm">Price</th>
+                      <th class="width-sm">Amount</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -164,11 +161,31 @@
                       :class="{ 'line-error': item.error }">
                       <td>{{ item.id }}</td>
                       <td class="text-left">
-                        {{ item.description }}
+                        <router-link
+                          v-if="item.type !== 'ENTERPRISE'"
+                          :to="{ name: 'marketView', params: { id: item.resource, type: (item.type === 'NODE_GROUP' || item.type == 'MANAGED') ? 'group' : 'node' } }">
+                          Resource {{ item.resource }}
+                        </router-link>
+                        <span v-else>
+                          Resource {{ item.resource }}
+                        </span>
+
                         <span
                           v-if="item.error"
                           class="line-error-msg">
                           {{ $i18n.t(`invoices.RESOURCE_ERROR.${item.error}`) }}
+                        </span>
+                      </td>
+                      <td class="text-left">
+                        <span class="badge">
+                          <template v-if="item.type === 'ENTERPRISE'">
+                            Enterprise
+                          </template>
+                          <template v-else>
+                            <template v-if="item.type === 'MANAGED'">Managed </template>
+                            Node
+                            <template v-if="item.type === 'NODE_GROUP' || item.type === 'MANAGED'"> Group</template>
+                          </template>
                         </span>
                       </td>
                       <td class="text-center">{{ item.quantity }}</td>
@@ -516,7 +533,7 @@ export default {
   .divider {
     width: 100%;
     height: 1px;
-    margin: 30px 0;
+    margin: 24px 0;
     display: block;
     background: $color-smoke;
   }
@@ -608,10 +625,38 @@ export default {
       top: 1px;
     }
   }
+  .lineitems {
+    .width-sm {
+      width: 20px;
+    }
+    .width-id {
+      width: 90px;
+    }
+  }
 }
 @media print {
+  .invoice {
+    padding: 0;
+    border: none;
+  }
   .message-paid, .line-error-msg {
     display: none !important;
+  }
+  .divider {
+    margin: 18px 0 !important;
+    background: transparent !important;
+  }
+  .table-styled {
+    border: none;
+
+    td, th {
+      padding: 12px 8px;
+      border: none;
+    }
+    th {
+      background: none;
+      padding-bottom: 14px;
+    }
   }
 }
 </style>

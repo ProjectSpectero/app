@@ -31,7 +31,7 @@
           <div class="form-input">
             <float-label>
               <input
-                v-validate="rules['name']"
+                v-validate="rules.name"
                 id="name"
                 v-model="form.name"
                 :class="{'input-error': errors.has('name')}"
@@ -53,7 +53,7 @@
           <div class="form-input">
             <float-label>
               <input
-                v-validate="rules['phone_no']"
+                v-validate="rules.phone_no"
                 id="phone_no"
                 v-model="form.phone_no"
                 :class="{'input-error': errors.has('phone_no')}"
@@ -75,7 +75,7 @@
           <div class="form-input">
             <float-label>
               <input
-                v-validate="rules['organization']"
+                v-validate="rules.organization"
                 id="organization"
                 v-model="form.organization"
                 :class="{'input-error': errors.has('organization')}"
@@ -97,7 +97,7 @@
           <div class="form-input">
             <float-label>
               <input
-                v-validate="rules['address_line_1']"
+                v-validate="rules.address_line_1"
                 id="address_line_1"
                 v-model="form.address_line_1"
                 :class="{'input-error': errors.has('address_line_1')}"
@@ -119,7 +119,7 @@
           <div class="form-input">
             <float-label>
               <input
-                v-validate="rules['address_line_2']"
+                v-validate="rules.address_line_2"
                 id="address_line_2"
                 v-model="form.address_line_2"
                 :class="{'input-error': errors.has('address_line_2')}"
@@ -142,7 +142,7 @@
             <div class="col">
               <float-label>
                 <input
-                  v-validate="rules['city']"
+                  v-validate="rules.city"
                   id="city"
                   v-model="form.city"
                   :class="{'input-error': errors.has('city')}"
@@ -163,7 +163,7 @@
             <div class="col">
               <float-label>
                 <input
-                  v-validate="rules['state']"
+                  v-validate="rules.state"
                   id="state"
                   v-model="form.state"
                   :class="{'input-error': errors.has('state')}"
@@ -187,7 +187,7 @@
             <div class="col">
               <float-label>
                 <input
-                  v-validate="rules['post_code']"
+                  v-validate="rules.post_code"
                   id="post_code"
                   v-model="form.post_code"
                   :class="{'input-error': errors.has('post_code')}"
@@ -224,7 +224,7 @@
           <div class="form-input">
             <float-label>
               <input
-                v-validate="rules['tax_identification']"
+                v-validate="rules.tax_identification"
                 id="tax_identification"
                 v-model="form.tax_identification"
                 :class="{'input-error': errors.has('tax_identification')}"

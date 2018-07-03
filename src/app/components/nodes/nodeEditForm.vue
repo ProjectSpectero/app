@@ -132,10 +132,16 @@ export default {
         city: {
           max: 255
         },
+        price: {
+          required: true,
+          min_value: 5
+        },
         protocols: {
+          required: true,
           in: this.protocols
         },
         market_model: {
+          required: true,
           in: this.marketModels
         },
         access_token: {
@@ -143,10 +149,12 @@ export default {
           regex: /\s*:\s*/
         },
         port: {
+          required: true,
           min_value: 1024,
           max_value: 65535
         },
         ip: {
+          required: true,
           regex: /^(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/
         }
       }

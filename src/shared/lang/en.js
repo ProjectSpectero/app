@@ -166,10 +166,6 @@ module.exports = {
     PAYPAL_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Paypal One Touch™...',
     PAYMENT_INVALID_PARAMETERS: 'The payment data you have supplied seems to be wrong. Please contact us for more details.',
     PAYMENT_PROCESSOR_NOT_ENABLED: 'This payment processor is not enabled. Please contact us for more details.',
-    PAY_WITH_PAYPAL: 'PayPal Checkout',
-    PAY_WITH_STRIPE: 'Credit Card Payment',
-    PAY_WITH_ACCOUNT_CREDIT: 'Use Account Credit',
-    NO_CREDIT: 'No Credit Available',
     REQUEST_FAILED: 'We were unable to start the payment process. Please contact us if this keeps happening.',
     ZERO_CREDIT_BALANCE: 'You don\'t have any balance in your account.',
     UNPAID_CREDIT_INVOICES_ARE_PRESENT: 'Unable to invoice credits: you already have one invoice queued for payment!',
@@ -196,12 +192,32 @@ module.exports = {
         PROMO_CODE_ALREADY_USED: 'This promo code has already been used.',
         REQUEST_FAILED: 'Something went wrong. Please try again later or contact us if this issue persists.'
       }
+    },
+    METHODS: {
+      PAYPAL: {
+        TITLE: 'PayPal',
+        DESCRIPTION: 'Complete your payment through PayPal. Creating an account is not necessary if you choose to pay by credit card.',
+        BUTTON_TEXT: 'PayPal Checkout'
+      },
+      STRIPE: {
+        TITLE: 'Credit Card',
+        DESCRIPTION: 'Make a safe payment using your credit card. Most major card types are accepted.',
+        BUTTON_TEXT: 'Credit Card Payment'
+      },
+      CREDIT: {
+        TITLE: 'Account Credit',
+        DESCRIPTION: 'Apply your account credit to this invoice. You currently have <strong>{balance}</strong> of account credit available to be applied.',
+        BUTTON_TEXT: 'Use Account Credit',
+        DESCRIPTION_NO_BALANCE: 'You currently have no account credit available to pay with.',
+        BUTTON_TEXT_NO_BALANCE: 'No Credit Available'
+      }
     }
   },
 
   invoices: {
     PAY_INVOICE: 'Pay Invoice',
-    PAY_TEXT2: 'Please pay the amount due using the options available below.',
+    PAY_INVOICE_TEXT: 'Your invoice <strong>{invoiceId}</strong> currently has an outstanding balance of <strong>{due}</strong>.',
+    PAY_PLEASE_PAY: 'Please pay the amount due using the options available below.',
     INVOICE_STATUS: {
       PAID: 'Paid',
       UNPAID: 'Unpaid',
@@ -229,8 +245,8 @@ module.exports = {
     THANKS: 'Thank you for your payment, your invoice has been paid in full.',
     BILL_TO: 'Bill to',
     NUMBER: 'Invoice Number',
-    STATUS: 'Invoice Status',
-    TYPE: 'Invoice Type',
+    STATUS: 'Status',
+    TYPE: 'Type',
     DATE: 'Invoice Date',
     PAYMENT_DUE: 'Payment Due',
     AMOUNT_DUE: 'Amount Due',
@@ -311,6 +327,7 @@ module.exports = {
   },
 
   nodes: {
+    VALIDATION_FAILED: 'Something went wrong while trying to update this node. Please correct any errors and try again.',
     VERIFY_NODE: 'Verify node',
     VERIFICATION_FAILED_TITLE: 'Something went wrong!',
     VERIFICATION_FAILED: 'Something happened while attempting to verify your node <strong>{name}</strong>. We have sent you an email with further details.',
@@ -368,7 +385,10 @@ module.exports = {
     SERVICES: 'Services',
     PROXIES: 'Proxies',
     CERTIFICATES: 'Certificates',
-    AUTOLOGIN_FAIL: 'Unable to authenticate to daemon. Please try again later or contact us if the problem persists.'
+    AUTOLOGIN_FAIL: 'Unable to authenticate to daemon. Please try again later and contact us if the problem persists.',
+    NODE_PENDING_VERIFICATION: 'This node is pending verification. Please try again when its status is CONFIRMED.',
+    NODE_UNREACHABLE: 'We were unable to reach this node. Please try again later and contact us if the problem persists.',
+    UNAUTHORIZED: 'You are not authorized to perform this action. Please go back to your node management interface and try again.'
   },
 
   market: {
@@ -423,7 +443,11 @@ module.exports = {
     CANT_ADD_TO_CART_MSG_LOCKED: 'Because an item in your cart has a plan associated to it, you must purchase it separately before being able to add more items.',
     CHECKOUT_CURRENT_CART: 'Please checkout your current cart or empty it before continuing.',
     CHECKOUT_EXISTING_ITEMS: 'Checkout Existing Items',
-    EMPTY_CART: 'Empty Cart'
+    EMPTY_CART: 'Empty Cart',
+    NO_LISTINGS_TITLE: 'No Listings Found',
+    NO_LISTINGS_TEXT: 'There were no market listings found matching your criteria.',
+    NO_LISTINGS_SELF_TITLE: 'No Listings',
+    NO_LISTINGS_SELF_TEXT: 'You haven\'t listed anything. Add a node to list it on the market.'
   },
 
   users: {

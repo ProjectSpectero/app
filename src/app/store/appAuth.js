@@ -51,9 +51,6 @@ const actions = {
 
     return false
   },
-  storeUser ({ commit }, user) {
-    commit('SET_CURRENT_USER', user)
-  },
   addCookie ({ commit }, payload) {
     const data = {
       accessToken: payload.accessToken,
