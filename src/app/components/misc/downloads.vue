@@ -27,14 +27,14 @@
           <template v-else>
             <p>Download and run the latest release of the Spectero Daemon and its CLI by running the following command:</p>
             <p class="cmd">wget -O install.sh {{ downloadLinks[osTab] }} && bash install.sh</p>
+            <p>You may also opt for a non-interactive background installation with all default values by providing the <span class="cmd">--agree --no-prompt</span> flags.</p>
           </template>
         </section>
         <section class="section padded">
           <h5>Step 2</h5>
           <p>Open a CLI shell, then run the following command to add the daemon to the Spectero Cloud:</p>
           <p class="cmd">spectero cli connect {{ (nodeKey !== null) ? nodeKey : '&lt;your node key&gt;' }}</p>
-          <p>You may also opt for a non-interactive background installation with all default values by providing the <span class="cmd">--agree --no-prompt</span> flags.</p>
-          <p v-if="nodeKey === null">Don't have a node key? <router-link :to="{ name: 'login' }">Get one from our cloud panel.</router-link></p>
+          <p v-if="nodeKey === null">Please <router-link :to="{ name: 'login', query: { redirect: '/settings/keys' } }">log in</router-link> or <router-link :to="{ name: 'register' }">register</router-link> to obtain your node key.</p>
         </section>
         <section class="section padded">
           <h5>Step 3</h5>
