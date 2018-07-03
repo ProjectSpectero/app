@@ -4,9 +4,7 @@ import userAPI from '@/daemon/api/user'
 import cloudAPI from '@/daemon/api/cloud'
 
 const state = {
-  app: null,
-  cloud: null,
-  system: null,
+  specs: null,
   initialized: false,
   user: null,
   accessToken: null,
@@ -20,9 +18,7 @@ const state = {
 }
 
 const getters = {
-  app: (state) => state.app,
-  cloud: (state) => state.cloud,
-  system: (state) => state.system,
+  specs: (state) => state.specs,
   initialized: (state) => state.initialized,
   user: (state) => state.user,
   accessToken: (state) => state.accessToken,
@@ -52,7 +48,7 @@ const actions = {
   async connectToRemote ({ commit, dispatch }) {
     await cloudAPI.remote({
       success: response => {
-        commit('SET_CLOUD_DATA', response.data.result)
+        commit('SET_SPECS', response.data.result)
 
         // Append the restart server button if needed
         if (response.data.result.app.restartNeeded) {
@@ -105,11 +101,9 @@ const mutations = {
   SET_CURRENT_USER (state, payload) {
     state.user = payload
   },
-  SET_CLOUD_DATA (state, data) {
-    console.log('commited SET_CLOUD_DATA', data)
-    state.app = data.app
-    state.cloud = data.cloud
-    state.system = data.system
+  SET_SPECS (state, data) {
+    console.log('commited SET_SPECS', data)
+    state.specs = data
   },
   SETUP_ENDPOINT (state, payload) {
     state.initialized = true

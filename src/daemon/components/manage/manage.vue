@@ -2,7 +2,11 @@
   <div>
     <template v-if="!error">
       <div v-if="daemonInitialized">
-        <top title="Remote Management">
+        <top>
+          <template slot="left">
+            <specs/>
+          </template>
+
           <router-link
             :to="{ name: 'nodes' }"
             class="button">
@@ -47,6 +51,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import specs from '@/daemon/components/common/specs'
 import services from '@/daemon/components/services/services'
 import proxies from '@/daemon/components/services/proxies'
 import certificates from '@/daemon/components/users/certificates'
@@ -59,6 +64,7 @@ import error from '@/shared/components/errors/error'
 export default {
   components: {
     top,
+    specs,
     error,
     notFound,
     tabs,
