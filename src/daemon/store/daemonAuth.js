@@ -1,8 +1,12 @@
-import { setCookie, getCookie, removeCookie } from 'tiny-cookie'
-import nodeAPI from '@/app/api/node.js'
-import userAPI from '@/daemon/api/user.js'
+import { setCookie, removeCookie } from 'tiny-cookie'
+import nodeAPI from '@/app/api/node'
+import userAPI from '@/daemon/api/user'
+import cloudAPI from '@/daemon/api/cloud'
 
 const state = {
+  app: null,
+  cloud: null,
+  system: null,
   initialized: false,
   user: null,
   accessToken: null,
@@ -16,6 +20,9 @@ const state = {
 }
 
 const getters = {
+  app: (state) => state.app,
+  cloud: (state) => state.cloud,
+  system: (state) => state.system,
   initialized: (state) => state.initialized,
   user: (state) => state.user,
   accessToken: (state) => state.accessToken,
@@ -39,6 +46,23 @@ const actions = {
       }
     })
   },
+  async connectToCloud ({ commit, dispatch }) {
+    await cloudAPI.remote({
+      success: response => {
+        commit('SET_CLOUD_DATA', response.data.result)
+
+        // Append the restart server button if needed
+        if (response.data.result.app.restart.required) {
+          dispatch('switchBarComponent', 'restart')
+        }
+      },
+      fail: error => {
+        const e = Object.keys(error.errors)[0]
+        console.log('Unable to connect to remote node', error)
+        throw new Error(e)
+      }
+    })
+  },
   async addCookie ({ commit, dispatch }, payload) {
     const data = {
       accessToken: payload.credentials.access.token,
@@ -48,7 +72,6 @@ const actions = {
     }
 
     setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: parseFloat(payload.credentials.access.expires / 1000) + 's' })
-    console.log('Added cookie info for DAEMON_COOKIE', getCookie(process.env.DAEMON_COOKIE))
   },
   async autologin ({ commit, dispatch }, nodeId) {
     await nodeAPI.nodeLogin({
@@ -78,6 +101,11 @@ const actions = {
 const mutations = {
   SET_CURRENT_USER (state, payload) {
     state.user = payload
+  },
+  SET_CLOUD_DATA (state, data) {
+    console.log('commited SET_CLOUD_DATA', data)
+    state.app = data.app
+    state.cloud = data.cloud
   },
   SETUP_ENDPOINT (state, payload) {
     state.initialized = true
