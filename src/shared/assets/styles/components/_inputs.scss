@@ -41,6 +41,11 @@ textarea {
     padding-bottom: 10px;
     line-height: 150%;
     resize: vertical;
+    
+    &[readonly]:focus {
+      border-color: $color-border;
+      box-shadow: none;
+    }
   }
 }
 

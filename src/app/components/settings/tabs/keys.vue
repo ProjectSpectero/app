@@ -5,18 +5,22 @@
         <h2>Node Key</h2>
       </div>
       <div class="col-6">
-        <div class="form-input">
-          <div class="label"><label for="nodeKeyPlaceholder"><strong>Current Node Key</strong></label></div>
-          <textarea
-            id="nodeKeyPlaceholder"
-            :value="nodeKey"
-            type="email"
-            name="nodeKeyPlaceholder"
-            placeholder="Node Key"
-            class="input max-width"
-            disabled/>
+        <div class="node-key">
+          <div class="form-input">
+            <div class="label"><label for="nodeKeyPlaceholder"><strong>Current Node Key</strong></label></div>
+            <textarea
+              id="nodeKeyPlaceholder"
+              :value="nodeKey"
+              type="email"
+              name="nodeKeyPlaceholder"
+              placeholder="Node Key"
+              class="input max-width"
+              readonly/>
+          </div>
+          <copy-to-clipboard
+            :field="nodeKey"
+            button-class="button-sm"/>
         </div>
-        <br>
         <h3>Generate New Key</h3>
         <p>Use the button below to generate a new node key. Your old key will become invalid if you do this.</p><br>
         <button
@@ -32,8 +36,12 @@
 <script>
 import { mapActions } from 'vuex'
 import userAPI from '@/app/api/user.js'
+import copyToClipboard from '@/shared/components/copyToClipboard'
 
 export default {
+  components: {
+    copyToClipboard
+  },
   props: {
     user: {
       type: Object,
@@ -79,5 +87,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.node-key {
+  margin-bottom: $pad;
+}
 </style>
