@@ -1,15 +1,13 @@
 <template>
-  <div class="col-container mt-3">
-    <div class="message message-warning col-12">
-      <div>
-        <h5>Action required</h5>
-        <p>One or more operations require that you restart the daemon.</p>
-      </div>
-      <div class="actions">
-        <button
-          class="button-dark"
-          @click.stop.prevent="restart">Restart Daemon Now</button>
-      </div>
+  <div class="message message-warning">
+    <div>
+      <h5>Action required</h5>
+      <p>One or more operations require that you restart the daemon.</p>
+    </div>
+    <div class="actions">
+      <button
+        class="button-dark"
+        @click.stop.prevent="restart">Restart Daemon Now</button>
     </div>
   </div>
 </template>

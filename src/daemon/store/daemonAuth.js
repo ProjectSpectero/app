@@ -36,24 +36,27 @@ const getters = {
 }
 
 const actions = {
-  async syncCurrentUser ({ commit }) {
+  async syncCurrentUser ({ commit, dispatch }) {
     await userAPI.getMe({
       success: response => {
         commit('SET_CURRENT_USER', response.data.result)
+
+        // Gather remote node details
+        dispatch('connectToRemote')
       },
       fail: error => {
         console.log(error)
       }
     })
   },
-  async connectToCloud ({ commit, dispatch }) {
+  async connectToRemote ({ commit, dispatch }) {
     await cloudAPI.remote({
       success: response => {
         commit('SET_CLOUD_DATA', response.data.result)
 
         // Append the restart server button if needed
-        if (response.data.result.app.restart.required) {
-          dispatch('switchBarComponent', 'restart')
+        if (response.data.result.app.restartNeeded) {
+          dispatch('settings/switchBarComponent', 'restart', { root: true })
         }
       },
       fail: error => {
@@ -106,6 +109,7 @@ const mutations = {
     console.log('commited SET_CLOUD_DATA', data)
     state.app = data.app
     state.cloud = data.cloud
+    state.system = data.system
   },
   SETUP_ENDPOINT (state, payload) {
     state.initialized = true

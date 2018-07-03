@@ -38,8 +38,6 @@ export default {
         this.$toasted.error(this.$i18n.t(`daemon.${e.message}`))
         this.$router.push({ name: 'nodes' })
       }
-
-      await this.connectToCloud()
     } else {
       this.$router.push({ path: '/404' })
     }
@@ -47,8 +45,7 @@ export default {
   methods: {
     ...mapActions({
       autologin: 'daemonAuth/autologin',
-      syncCurrentUser: 'daemonAuth/syncCurrentUser',
-      connectToCloud: 'daemonAuth/connectToCloud'
+      syncCurrentUser: 'daemonAuth/syncCurrentUser'
     })
   }
 }
