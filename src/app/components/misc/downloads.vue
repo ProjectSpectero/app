@@ -26,13 +26,14 @@
           </template>
           <template v-else>
             <p>Download and run the latest release of the Spectero Daemon and its CLI by running the following command:</p>
-            <p class="cmd">wget -q -O - {{ downloadLinks[osTab] }} | bash</p>
+            <p class="cmd">wget -O install.sh {{ downloadLinks[osTab] }} && bash install.sh</p>
           </template>
         </section>
         <section class="section padded">
           <h5>Step 2</h5>
           <p>Open a CLI shell, then run the following command to add the daemon to the Spectero Cloud:</p>
           <p class="cmd">spectero cli connect {{ nodeKey }}</p>
+          <p>You may also opt for a non-interactive background installation with all default values by providing the <span class="cmd">--agree --no-prompt</span> flags.</p>
         </section>
         <section class="section padded">
           <h5>Step 3</h5>
@@ -303,12 +304,19 @@ li > ol {
     }
   }
 }
-p.cmd {
+.cmd {
   padding: 10px 14px;
   display: inline-block;
   color: #26FF6D;
   background: #28303A;
   font-family: monospace;
   word-break: break-all;
+}
+span.cmd {
+  margin: 0 4px;
+  padding: 2px 6px;
+  color: #000;
+  background: rgba(0,0,0,0.05);
+  font-size: 95%;
 }
 </style>
