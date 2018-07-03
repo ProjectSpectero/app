@@ -44,6 +44,7 @@ async function API (project, method, path, data, success, failed) {
       return { error: false, data: response }
     }
   } catch (e) {
+    console.error('API handling failed!', e)
     const errors = (e.response !== undefined && e.response.data !== undefined && e.response.data.errors !== undefined) ? e.response.data.errors : null
     const status = (e.response !== undefined && e.response.status !== undefined) ? e.response.status : null
     const err = new Err(errors, status)

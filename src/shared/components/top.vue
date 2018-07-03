@@ -1,7 +1,11 @@
 <template>
   <div class="top">
     <header>
-      <div class="title">
+      <slot name="left"/>
+
+      <div
+        v-if="title"
+        class="title">
         <h1 class="mb-0">{{ title }}</h1>
         <h2
           v-if="subtitle"
