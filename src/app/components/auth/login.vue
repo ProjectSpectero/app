@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>{{ $i18n.t('misc.LOGIN') }}</h1>
     <form id="form-login">
       <div
         v-if="!formError && this.$route.query.redirect"

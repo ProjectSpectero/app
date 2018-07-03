@@ -1,6 +1,8 @@
 module.exports = {
   lang: 'en',
   misc: {
+    SPECTERO: 'Spectero',
+    HOME: 'Home',
     DASHBOARD: 'Dashboard',
     MARKET: 'Market',
     ORDERS: 'Orders',
@@ -93,7 +95,10 @@ module.exports = {
     TERM: 'Term',
     USERNAME: 'Username',
     PASSWORD: 'Password',
-    LEARN_MORE: 'Learn More'
+    LEARN_MORE: 'Learn More',
+    LOGIN: 'Log In',
+    REGISTER: 'Register',
+    RESET_PASSWORD: 'Reset Password'
   },
 
   errors: {
@@ -460,7 +465,7 @@ module.exports = {
     RESET_PASSWORD_BUTTON: 'Reset your password',
     PLACEHOLDER_EMAIL: 'Email address',
     PLACEHOLDER_PASSWORD: 'Password',
-    PLEASE_LOGIN: 'Please login to continue',
+    PLEASE_LOGIN: 'Please log in to continue.',
     NO_ACCOUNT: 'Don\'t have an account?',
     CREATE_ACCOUNT_NOW: 'Create one now',
     LOGIN_BUTTON: 'Log In',

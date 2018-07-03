@@ -22,15 +22,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.spectero {
-  display: flex;
-  min-width: fit-content;
-}
-.content {
-  height: 100vh;
-  overflow: auto;
-  flex: 1;
-  padding-bottom: 0;
-  position: relative;
-}
+
 </style>

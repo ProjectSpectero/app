@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>{{ $i18n.t('misc.RESET_PASSWORD') }}</h1>
     <form>
       <template v-if="tokenIssued">
         <div class="message message-success">
