@@ -93,7 +93,7 @@ export default {
     }
   },
   created () {
-    this.list = JSON.parse(JSON.stringify(this.domains)) || []
+    this.list = Object.assign({}, this.domains)
   },
   methods: {
     remove (index) {

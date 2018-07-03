@@ -13,34 +13,40 @@ const getters = {
         max: 72
       },
       name: {
+        required: true,
         max: 50
       },
       address_line_1: {
+        required: true,
         max: 255
       },
       address_line_2: {
         max: 255
       },
       city: {
-        max: 255
+        required: true,
+        max: 64
       },
       state: {
-        max: 255
+        required: true,
+        max: 64
       },
       post_code: {
+        required: true,
         max: 64
       },
       country: {
-        max: 255
+        required: true,
+        max: 64
       },
       phone_no: {
-        max: 255
+        max: 64
       },
       tax_identification: {
-        max: 255
+        max: 96
       },
       organization: {
-        max: 255
+        max: 64
       }
     }
   },

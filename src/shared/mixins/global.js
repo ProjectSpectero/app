@@ -8,6 +8,14 @@ function globalMixin (i18n) {
         errorCode: 404
       }
     },
+    computed: {
+      isDevelopmentEnvironment () {
+        return (process.env.NODE_ENV === 'development')
+      },
+      isStagingEnvironment () {
+        return (process.env.NODE_ENV === 'staging')
+      }
+    },
     methods: {
       errorAPI: (error, module) => {
         const keys = Object.keys(error.errors)
