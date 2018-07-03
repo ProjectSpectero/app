@@ -32,8 +32,9 @@
         <section class="section padded">
           <h5>Step 2</h5>
           <p>Open a CLI shell, then run the following command to add the daemon to the Spectero Cloud:</p>
-          <p class="cmd">spectero cli connect {{ nodeKey }}</p>
+          <p class="cmd">spectero cli connect {{ (nodeKey !== null) ? nodeKey : '&lt;your node key&gt;' }}</p>
           <p>You may also opt for a non-interactive background installation with all default values by providing the <span class="cmd">--agree --no-prompt</span> flags.</p>
+          <p v-if="nodeKey === null">Don't have a node key? <router-link :to="{ name: 'login' }">Get one from our cloud panel.</router-link></p>
         </section>
         <section class="section padded">
           <h5>Step 3</h5>
@@ -120,7 +121,7 @@ export default {
       user: 'appAuth/user'
     }),
     nodeKey () {
-      return this.user.node_key
+      return (this.user) ? this.user.node_key : null
     },
     downloadLinks () {
       return {
