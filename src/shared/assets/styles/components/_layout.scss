@@ -1,3 +1,16 @@
+.spectero {
+  display: flex;
+  min-width: fit-content;
+
+  > .content {
+    height: 100vh;
+    overflow: auto;
+    flex: 1;
+    padding-bottom: 0;
+    position: relative;
+  }
+}
+
 .container {
   display: block;
   padding: $pad 0;

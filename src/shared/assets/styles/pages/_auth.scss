@@ -14,11 +14,12 @@
     background: $white;
     border: 1px solid $color-border;
     border-radius: 4px;
-  }
-  .logo-container {
-    width: 100%;
-    margin-bottom: $pad;
-    text-align: center;
+
+    h1 {
+      font-size: 150%;
+      font-weight: $font-semi;
+      text-align: center;
+    }
   }
   .bottom-link {
     display: block;

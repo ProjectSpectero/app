@@ -13,7 +13,7 @@ export default [
   { path: '/ask-for-reset', name: 'resetPassword', component: reset, meta: { antiAuth: true, layout: 'auth' } },
   { path: '/password-reset/:token', name: 'newPassword', component: newPassword, meta: { antiAuth: true, layout: 'auth' } },
   { path: '/tfa', name: 'tfa', component: twoFactorLogin, meta: { antiAuth: true, layout: 'auth' } },
-  { path: '/register_alpha', name: 'register', component: register, meta: { antiAuth: true, layout: 'auth' } },
+  { path: '/register', name: 'register', component: register, meta: { antiAuth: true, layout: 'auth' } },
   { path: '/pending', name: 'pending', component: pending, meta: { antiAuth: true, layout: 'auth' } },
   { path: '/verify/:email/:token', name: 'verify', component: verify, meta: { antiAuth: true, layout: 'auth' } }
 ]

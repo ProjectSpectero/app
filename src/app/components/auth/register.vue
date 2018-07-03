@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>{{ $i18n.t('misc.REGISTER') }}</h1>
     <form id="form-register">
       <div
         v-if="formError"
