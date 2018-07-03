@@ -1,16 +1,24 @@
 <template>
-  <div class="auth">
-    <div class="auth-container">
-      <div class="logo-container">
-        <div class="logo logo-md logo-dark"/>
+  <div class="spectero">
+    <sidebar/>
+    <div class="content">
+      <div class="auth">
+        <div class="auth-container">
+          <router-view/>
+        </div>
       </div>
-      <router-view/>
     </div>
   </div>
 </template>
 
 <script>
+import sidebar from '@/shared/components/sidebar'
 
+export default {
+  components: {
+    sidebar
+  }
+}
 </script>
 
 <style lang="scss" scoped>
