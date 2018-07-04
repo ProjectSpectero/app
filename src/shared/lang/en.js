@@ -53,6 +53,7 @@ module.exports = {
     CONFIGURE: 'Configure',
     VERIFY: 'Verify',
     LISTENERS: 'Listeners',
+    LISTENER: 'Listener',
     PURCHASE: 'Purchase',
     PAY_NOW: 'Pay Now',
     SAVE: 'Save',

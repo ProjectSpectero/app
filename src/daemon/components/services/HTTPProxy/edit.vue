@@ -50,20 +50,15 @@
               @update="updateBannedDomains"/>
 
             <div>
-              <restart
-                v-if="restartNeeded"
-                :service="name"/>
-              <template v-else>
-                <button
-                  :disabled="formDisable"
-                  type="submit"
-                  class="button-info">
-                  {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
-                </button>
-                <button
-                  class="button-light right"
-                  @click.prevent="askBeforeExiting">Cancel</button>
-              </template>
+              <button
+                :disabled="formDisable"
+                type="submit"
+                class="button-info">
+                {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
+              </button>
+              <button
+                class="button-light right"
+                @click.prevent="askBeforeExiting">Cancel</button>
             </div>
           </form>
         </div>
@@ -92,14 +87,12 @@ import serviceAPI from '@/daemon/api/service'
 import top from '@/shared/components/top'
 import listeners from './listeners'
 import domains from './domains'
-import restart from './restart'
 
 export default {
   components: {
     top,
     listeners,
-    domains,
-    restart
+    domains
   },
   metaInfo: {
     title: 'HTTPProxy Configuration'
@@ -111,7 +104,6 @@ export default {
       proxyTypes: ['Normal', 'ExclusiveAllow'],
       proxy: null,
       formDisable: false,
-      restartNeeded: false,
       ips: []
     }
   },
@@ -142,6 +134,7 @@ export default {
       await serviceAPI.get({
         name: this.name,
         success: response => {
+          console.warn(response.data.result)
           this.config = response.data.result[0]
           this.proxy = this.config.proxyMode
         },
