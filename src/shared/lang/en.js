@@ -269,6 +269,7 @@ module.exports = {
   },
 
   orders: {
+    RESOURCES_NOT_FOUND: 'We were unable to find any resources for this order.',
     RESOURCE_NOT_FOUND: 'We were unable to find that order resource.',
     ORDER_STATUS: {
       PENDING: 'Pending',

@@ -19,6 +19,7 @@ export default {
       await orderAPI.resources({
         data: { id: this.orderId },
         success: response => {
+          console.log('fetchResources', response.data.result)
           this.accessor = response.data.result.accessor ? this.parseAccessor(response.data.result.accessor) : ''
           this.buildResourceTree(response.data.result.resources)
           this.error = false
@@ -42,25 +43,31 @@ export default {
       return data
     },
     buildResourceTree (data) {
-      let tree = []
+      console.log('data in buildResourceTree', data)
 
-      data.forEach(item => {
-        let references = this.parseReferences(item.resource.reference) || []
+      if (data.length) {
+        let tree = []
 
-        tree.push({
-          id: item.resource.id,
-          type: item.resource.type,
-          references: references
+        data.forEach(item => {
+          let references = this.parseReferences(item.resource.reference) || []
+
+          tree.push({
+            id: item.resource.id,
+            type: item.resource.type,
+            references: references
+          })
         })
-      })
 
-      this.resources = tree
+        this.resources = tree
 
-      tree.forEach(item => {
-        this.buildResource(item)
-      })
+        tree.forEach(item => {
+          this.buildResource(item)
+        })
 
-      this.selectResource(tree[0])
+        this.selectResource(tree[0])
+      } else {
+        this.resources = []
+      }
     },
     parseReferences (reference) {
       let data = []

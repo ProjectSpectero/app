@@ -75,15 +75,24 @@
               </div>
             </div>
           </div>
+
+          <modal
+            :height="'auto'"
+            name="regenerateAccessorModal">
+            <regenerateAccessor
+              :order-id="orderId"
+              @fetchAccessor="fetchAccessor" />
+          </modal>
         </div>
-        <loading v-else/>
-        <modal
-          :height="'auto'"
-          name="regenerateAccessorModal">
-          <regenerateAccessor
-            :order-id="orderId"
-            @fetchAccessor="fetchAccessor" />
-        </modal>
+        <div
+          v-else
+          class="boxed boxed-centered">
+          <div class="boxed-container boxed-md">
+            <div class="message message-info mb-0">
+              {{ $i18n.t('orders.RESOURCES_NOT_FOUND') }}
+            </div>
+          </div>
+        </div>
       </div>
       <loading v-else/>
     </template>
@@ -139,9 +148,7 @@ export default {
       await orderAPI.order({
         data: { id: this.orderId },
         success: async response => {
-          console.log('yyy')
           if (response.data.result && response.data.result.status === 'ACTIVE') {
-            console.log('nnnn')
             this.order = response.data.result
             await this.fetchResources()
           } else {
