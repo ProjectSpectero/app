@@ -16,7 +16,7 @@
           <div
             v-for="(item, i) in config"
             :key="i"
-            class="section padded">
+            class="col-6 section padded">
             <p-input
               :id="item.allowMultipleConnectionsFromSameClient"
               :value="item.allowMultipleConnectionsFromSameClient"
@@ -76,7 +76,7 @@
 
               <div class="input-float">
                 <input
-                  v-validate="rules.ipAddress"
+                  v-validate="rules.network"
                   id="network"
                   v-model="item.listener.network"
                   :class="{ 'input-error': errors.has('network') }"
@@ -125,6 +125,48 @@
                       {{ protocol }}
                     </option>
                   </select>
+
+                  <tooltip id="services.topics.protocols"/>
+                </div>
+              </div>
+
+              <div
+                v-if="dhcpOptions"
+                class="form-input">
+                <div class="label">
+                  <label :for="item.dhcpOptions">{{ $i18n.t('services.DHCP_OPTION') }}</label>
+                </div>
+                <div class="input-with-tooltip">
+                  <select v-model="item.dhcpOptions">
+                    <option
+                      v-for="option in dhcpOptions"
+                      :key="option"
+                      :value="option">
+                      {{ option }}
+                    </option>
+                  </select>
+
+                  <tooltip id="services.topics.dhcpOptions"/>
+                </div>
+              </div>
+
+              <div
+                v-if="redirectGateway"
+                class="form-input">
+                <div class="label">
+                  <label :for="item.redirectGateway">{{ $i18n.t('services.REDIRECT_GATEWAY') }}</label>
+                </div>
+                <div class="input-with-tooltip">
+                  <select v-model="item.redirectGateway">
+                    <option
+                      v-for="option in redirectGateway"
+                      :key="option"
+                      :value="option">
+                      {{ option }}
+                    </option>
+                  </select>
+
+                  <tooltip id="services.topics.redirectGateway"/>
                 </div>
               </div>
             </div>
@@ -139,7 +181,7 @@
                 type="number"
                 class="input"
                 placeholder="Max. clients"
-                data-vv-as="Max. clients">
+                data-vv-as="maximum clients">
               <div
                 v-show="errors.has('maxClients')"
                 class="input-error-msg">
@@ -169,10 +211,15 @@
 import { mapGetters } from 'vuex'
 import serviceAPI from '@/daemon/api/service'
 import top from '@/shared/components/top'
+import tooltip from '@/shared/components/tooltip'
+import protocols from '@/shared/helpers/protocols'
+import dhcp from '@/shared/helpers/dhcp'
+import gateway from '@/shared/helpers/gateway'
 
 export default {
   components: {
-    top
+    top,
+    tooltip
   },
   metaInfo: {
     title: 'OpenVPN Configuration'
@@ -181,13 +228,23 @@ export default {
     return {
       name: 'OpenVPN',
       config: null,
-      protocols: ['TCP'],
+      protocols: protocols,
+      dhcpOptions: dhcp,
+      redirectGateway: gateway,
       formDisable: false,
       rules: {
         port: {
           required: true,
           min_value: 1024,
           max_value: 65535
+        },
+        maxClients: {
+          min_value: 512,
+          max_value: 2048
+        },
+        network: {
+          required: true,
+          regex: /^\d{1,3}(\.\d{1,3}){3}\/\d{1,2}$/
         },
         ipAddress: {
           required: true,
@@ -206,6 +263,11 @@ export default {
   },
   watch: {
     daemonInitialized: function () {
+      this.setup()
+    }
+  },
+  created () {
+    if (this.daemonInitialized) {
       this.setup()
     }
   },

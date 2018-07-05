@@ -330,7 +330,9 @@ module.exports = {
     UNABLE_TO_DISPLAY_BANNED_DOMAINS: 'Proxy Mode must be set to Normal to edit banned domains.',
     ADD_DOMAIN: 'Add domain',
     ADD_LISTENER: 'Add listener',
-    PROXY_MODE: 'Proxy Mode'
+    PROXY_MODE: 'Proxy Mode',
+    DHCP_OPTION: 'DHCP Option',
+    REDIRECT_GATEWAY: 'Redirect Gateway'
   },
 
   cloud: {
@@ -558,6 +560,36 @@ module.exports = {
         billing: {
           title: 'Billing',
           description: 'Billing works like this: ...'
+        }
+      }
+    },
+    services: {
+      title: 'Services',
+      topics: {
+        protocols: {
+          title: 'Protocols',
+          description:
+             `<p><strong>TCP</strong>: </p>
+              <p><strong>UDP</strong>: </p>`
+        },
+        redirectGateway: {
+          title: 'Redirect gateway',
+          description:
+             `<p><strong>TCP</strong>: </p>
+              <p><strong>UDP</strong>: </p>`
+        },
+        dhcpOptions: {
+          title: 'DHCP Options',
+          description:
+             `<p>This option can be used to set additional TCP/IP properties on the TAP-Win32 adapter, and is particularly useful for configuring an OpenVPN client to access a Samba server across the VPN.</p>
+              <p><strong>DOMAIN name</strong>: Set Connection-specific DNS Suffix.</p>
+              <p><strong>DNS addr</strong>: Set primary domain name server address. Repeat this option to set secondary DNS server addresses.</p>
+              <p><strong>WINS addr</strong>: Set primary WINS server address (NetBIOS over TCP/IP Name Server).</p>
+              <p><strong>NBDD addr </strong>: Set primary NBDD server address (NetBIOS over TCP/IP Datagram Distribution Server).</p>
+              <p><strong>NTP addr</strong>: Set primary NTP server address (Network Time Protocol). Repeat this option to set secondary NTP server addresses.</p>
+              <p><strong>NBT type</strong>: Set NetBIOS over TCP/IP Node type.</p>
+              <p><strong>NBS scope-id</strong>: Set NetBIOS over TCP/IP Scope. A NetBIOS Scope ID provides an extended naming service for the NetBIOS over TCP/IP module.</p>
+              <p><strong>DISABLE-NBT</strong>: Disable Netbios-over-TCP/IP.</p>`
         }
       }
     }
