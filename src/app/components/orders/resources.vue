@@ -9,7 +9,7 @@
             {{ $i18n.t('orders.BACK_TO_ORDER') }}
           </router-link>
         </top>
-        <div v-if="resources && resources.length">
+        <div v-if="resources.length">
           <div class="container">
             <div class="col-12 content-split">
               <div class="split-list nodes-sidebar">

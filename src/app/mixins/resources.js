@@ -21,7 +21,8 @@ export default {
         success: response => {
           console.log('fetchResources', response.data.result)
           this.accessor = response.data.result.accessor ? this.parseAccessor(response.data.result.accessor) : ''
-          this.buildResourceTree(response.data.result.resources)
+          this.buildResourceTree(response.data.result.items)
+
           this.error = false
         },
         fail: (e) => {
@@ -42,52 +43,72 @@ export default {
 
       return data
     },
-    buildResourceTree (data) {
-      console.log('data in buildResourceTree', data)
+    buildResourceTree (items) {
+      console.log('data in buildResourceTree', items)
 
-      if (data.length) {
+      if (items.length) {
         let tree = []
 
-        data.forEach(item => {
-          let references = this.parseReferences(item.resource.reference) || []
+        items.forEach(item => {
+          console.log('foreach item in buildResourceTree', item)
 
-          tree.push({
-            id: item.resource.id,
-            type: item.resource.type,
-            references: references
+          // If we run into a response without references, just silently continue
+          if (item.resource.reference) {
+            let references = this.parseReferences(item.resource.reference) || []
+
+            tree.push({
+              id: item.resource.id,
+              type: item.resource.type,
+              references: references
+            })
+          }
+        })
+
+        // Shouldn't really happen, but if we run into a response without resources,
+        // parsing must be stopped and "no results" should be displayed
+        if (tree.length > 0) {
+          this.resources = tree
+
+          tree.forEach(item => {
+            this.buildResource(item)
           })
-        })
 
-        this.resources = tree
-
-        tree.forEach(item => {
-          this.buildResource(item)
-        })
-
-        this.selectResource(tree[0])
+          this.selectResource(tree[0])
+        } else {
+          // Changing resources from null to empty array = "no resources found"
+          this.resources = []
+        }
       } else {
         this.resources = []
       }
     },
     parseReferences (reference) {
       let data = []
+      console.log('on parseReferences')
 
       reference.forEach(ref => {
-        const r = ref.resource
+        const connector = ref.connector || null
+        console.log('type', ref)
+        console.log('connector', ref.connector)
 
-        data.push({
-          type: ref.type,
-          accessReference: r.accessReference ? r.accessReference.join('\n') : '',
-          accessConfig: r.accessConfig,
-          accessCredentials: (r.accessCredentials === 'SPECTERO_USERNAME_PASSWORD') ? this.$i18n.t('orders.USE_ACCESSOR') : r.accessCredentials
-        })
+        if (connector) {
+          data.push({
+            type: ref.type,
+            accessReference: connector.accessReference ? connector.accessReference.join('\n') : '',
+            accessConfig: connector.accessConfig,
+            accessCredentials: (connector.accessCredentials && connector.accessCredentials === 'SPECTERO_USERNAME_PASSWORD')
+              ? this.$i18n.t('orders.USE_ACCESSOR')
+              : connector.accessCredentials
+          })
+        }
       })
 
       return data
     },
     buildResource (item) {
+      console.log('item on buildResource', item)
       let sortedReferences = {}
-      let selectedType = this.types[0]
+      let selectedType = (this.types && this.types[0]) ? this.types[0] : null
 
       item.references.forEach(r => {
         if (sortedReferences[r.type] === undefined) {
@@ -122,7 +143,7 @@ export default {
       })
     },
     selectResource (item) {
-      if (this.types[0]) {
+      if (this.types && this.types[0]) {
         this.selectedResource = item
         this.selectReference(this.types[0])
       }
