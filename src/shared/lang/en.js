@@ -589,7 +589,8 @@ module.exports = {
               <p><strong>NTP addr</strong>: Set primary NTP server address (Network Time Protocol). Repeat this option to set secondary NTP server addresses.</p>
               <p><strong>NBT type</strong>: Set NetBIOS over TCP/IP Node type.</p>
               <p><strong>NBS scope-id</strong>: Set NetBIOS over TCP/IP Scope. A NetBIOS Scope ID provides an extended naming service for the NetBIOS over TCP/IP module.</p>
-              <p><strong>DISABLE-NBT</strong>: Disable Netbios-over-TCP/IP.</p>`
+              <p><strong>DISABLE-NBT</strong>: Disable Netbios-over-TCP/IP.</p>
+              <p><small>Taken from the <a href="https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html" target="_blank">OpenVPN manual</a></small></p>`
         }
       }
     }
