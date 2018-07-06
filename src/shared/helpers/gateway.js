@@ -1,4 +1,4 @@
 export default [
-  'Local',
-  'Def1'
+  { id: 'Local', label: 'LOCAL' },
+  { id: 'Def1', label: 'DEF1' }
 ]

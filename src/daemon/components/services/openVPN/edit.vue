@@ -18,7 +18,7 @@
             :key="i"
             class="col-6 section padded">
             <p-input
-              :id="item.allowMultipleConnectionsFromSameClient"
+              id="allowMultipleConnections"
               :value="item.allowMultipleConnectionsFromSameClient"
               v-model="item.allowMultipleConnectionsFromSameClient"
               type="checkbox"
@@ -27,7 +27,7 @@
             </p-input>
 
             <p-input
-              :id="item.clientToClient"
+              id="clientToClient"
               :value="item.clientToClient"
               v-model="item.clientToClient"
               type="checkbox"
@@ -119,10 +119,10 @@
                 <div class="input-with-tooltip">
                   <select v-model="item.listener.protocol">
                     <option
-                      v-for="protocol in protocols"
-                      :key="protocol"
-                      :value="protocol">
-                      {{ protocol }}
+                      v-for="(option, i) in protocols"
+                      :key="i"
+                      :value="option.id">
+                      {{ $i18n.t(`cloud.protocols.${option.label}`) }}
                     </option>
                   </select>
 
@@ -135,7 +135,9 @@
                   v-if="dhcpOptions"
                   class="form-input">
                   <div class="label">
-                    <label :for="item.dhcpOptions.Item1">{{ $i18n.t('services.DHCP_OPTION') }}</label>
+                    <label :for="item.dhcpOptions.Item1">
+                      {{ $i18n.t('services.DHCP_OPTION') }}
+                    </label>
                   </div>
                   <div class="input-with-tooltip">
                     <select v-model="item.dhcpOptions.Item1">
@@ -166,20 +168,23 @@
                 v-if="redirectGateway"
                 class="form-input">
                 <div class="label">
-                  <label :for="item.redirectGateway">{{ $i18n.t('services.REDIRECT_GATEWAY') }}</label>
+                  <label :for="item.redirectGateway">
+                    {{ $i18n.t('services.REDIRECT_GATEWAY') }}
+                  </label>
                 </div>
-                <div class="input-with-tooltip">
-                  <select v-model="item.redirectGateway">
-                    <option
-                      v-for="option in redirectGateway"
-                      :key="option"
-                      :value="option">
-                      {{ option }}
-                    </option>
-                  </select>
 
-                  <tooltip id="services.topics.redirectGateway"/>
-                </div>
+                <p-input
+                  v-for="(option, i) in redirectGateway"
+                  :key="i"
+                  :id="`redirectGateway-${option.id}`"
+                  :value="option.id"
+                  v-model="item.redirectGateway[option.id]"
+                  type="checkbox"
+                  class="p-default p-curve">
+                  {{ $i18n.t(`cloud.gateway.${option.label}`) }}
+                </p-input>
+
+                <tooltip id="services.topics.redirectGateway"/>
               </div>
             </div>
 
@@ -261,9 +266,6 @@ export default {
         ipAddress: {
           required: true,
           regex: /^(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/
-        },
-        protocol: {
-          in: this.protocols
         }
       }
     }

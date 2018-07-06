@@ -347,6 +347,14 @@ module.exports = {
       NBT: 'NBT',
       NBS: 'NBS',
       DISABLE_NBT: 'Disable NBT'
+    },
+    gateway: {
+      LOCAL: 'Local',
+      DEF1: 'Def1'
+    },
+    protocols: {
+      TCP: 'TCP',
+      UDP: 'UDP'
     }
   },
 
@@ -580,14 +588,18 @@ module.exports = {
         protocols: {
           title: 'Protocols',
           description:
-             `<p><strong>TCP</strong>: </p>
-              <p><strong>UDP</strong>: </p>`
+             `<p>OpenVPN is designed to operate optimally over UDP, but TCP capability is provided for situations where UDP cannot be used.</p>
+              <p>In comparison with UDP, TCP will usually be somewhat less efficient and less robust when used over unreliable or congested networks.</p>
+              <p>There are certain cases, however, where using TCP may be advantageous from a security and robustness perspective, such as tunneling non-IP or application-level UDP protocols, or tunneling protocols which don't possess a built-in reliability layer.</p>
+              <p><small>Taken from the <a href="https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html" target="_blank">OpenVPN manual</a></small></p>`
         },
         redirectGateway: {
           title: 'Redirect gateway',
           description:
-             `<p><strong>TCP</strong>: </p>
-              <p><strong>UDP</strong>: </p>`
+             `<p><strong>Local</strong>: Add the local flag if both OpenVPN servers are directly connected via a common subnet, such as with wireless.</p>
+              <p><strong>Def1</strong>: Add the def1 flag to override the default gateway by using 0.0.0.0/1 and 128.0.0.0/1 rather than 0.0.0.0/0. This has the benefit of overriding but not wiping out the original default gateway.</p>
+              <p>Using the def1 flag is highly recommended, and is currently planned to become the default by OpenVPN 2.1.</p>
+              <p><small>Taken from the <a href="https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html" target="_blank">OpenVPN manual</a></small></p>`
         },
         dhcpOptions: {
           title: 'DHCP Options',
