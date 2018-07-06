@@ -51,7 +51,7 @@ const actions = {
         commit('SET_SPECS', response.data.result)
 
         // Append the restart server button if needed
-        if (!response.data.result.app.restartNeeded) {
+        if (response.data.result.app.restartNeeded) {
           dispatch('settings/switchBarComponent', 'restart', { root: true })
         }
       },

@@ -337,7 +337,17 @@ module.exports = {
 
   cloud: {
     RESTART_SUCCESS: 'System restarted successfully!',
-    RESTART_ERROR: 'There was an error while trying to restart your system. Please try again later.'
+    RESTART_ERROR: 'There was an error while trying to restart your system. Please try again later.',
+    dhcp: {
+      DOMAIN: 'Domain',
+      DNS: 'DNS',
+      WINS: 'WINS',
+      NBDD: 'NBDD',
+      NTP: 'NTP',
+      NBT: 'NBT',
+      NBS: 'NBS',
+      DISABLE_NBT: 'Disable NBT'
+    }
   },
 
   nodes: {

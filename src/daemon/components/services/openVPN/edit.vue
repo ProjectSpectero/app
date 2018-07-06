@@ -130,23 +130,35 @@
                 </div>
               </div>
 
-              <div
-                v-if="dhcpOptions"
-                class="form-input">
-                <div class="label">
-                  <label :for="item.dhcpOptions">{{ $i18n.t('services.DHCP_OPTION') }}</label>
-                </div>
-                <div class="input-with-tooltip">
-                  <select v-model="item.dhcpOptions">
-                    <option
-                      v-for="option in dhcpOptions"
-                      :key="option"
-                      :value="option">
-                      {{ option }}
-                    </option>
-                  </select>
+              <div>
+                <div
+                  v-if="dhcpOptions"
+                  class="form-input">
+                  <div class="label">
+                    <label :for="item.dhcpOptions.Item1">{{ $i18n.t('services.DHCP_OPTION') }}</label>
+                  </div>
+                  <div class="input-with-tooltip">
+                    <select v-model="item.dhcpOptions.Item1">
+                      <option
+                        v-for="(option, i) in dhcpOptions"
+                        :key="i"
+                        :value="option.id">
+                        {{ $i18n.t(`cloud.dhcp.${option.label}`) }}
+                      </option>
+                    </select>
 
-                  <tooltip id="services.topics.dhcpOptions"/>
+                    <tooltip id="services.topics.dhcpOptions"/>
+                  </div>
+                </div>
+
+                <div class="input-float">
+                  <input
+                    id="dhcp_item2"
+                    v-model="item.dhcpOptions.Item2"
+                    name="dhcp_item2"
+                    type="text"
+                    placeholder="Item 2"
+                    class="input">
                 </div>
               </div>
 
