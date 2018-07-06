@@ -5,6 +5,10 @@
         v-for="(field, j) in selectedReferences"
         :key="j"
         class="details">
+        <h5 v-if="field.nodeId">
+          {{ $i18n.t('misc.NODE') }}
+          {{ field.nodeId }}
+        </h5>
         <div v-if="field.accessReference">
           <div class="label"><label>{{ $i18n.t('orders.ACCESS_REFERENCE') }}</label></div>
           <div class="reference-list">

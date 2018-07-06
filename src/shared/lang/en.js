@@ -373,6 +373,7 @@ module.exports = {
     GO_TO_NODE: 'Go to node',
     GO_TO_NODE_GROUP: 'Go to node group',
     MARKET_MODEL_TOOLTIP: 'There are three types of market model:',
+    NODE_PENDING_VERIFICATION: 'This node is pending verification. Please try again when its status is CONFIRMED.',
     STATUS: {
       ACTIVE: 'Active',
       UNCONFIRMED: 'Unconfirmed',

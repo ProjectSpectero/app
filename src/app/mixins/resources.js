@@ -19,7 +19,6 @@ export default {
       await orderAPI.resources({
         data: { id: this.orderId },
         success: response => {
-          console.log('fetchResources', response.data.result)
           this.accessor = response.data.result.accessor ? this.parseAccessor(response.data.result.accessor) : ''
           this.buildResourceTree(response.data.result.items)
 
@@ -44,17 +43,20 @@ export default {
       return data
     },
     buildResourceTree (items) {
-      console.log('data in buildResourceTree', items)
-
       if (items.length) {
         let tree = []
 
         items.forEach(item => {
-          console.log('foreach item in buildResourceTree', item)
-
           // If we run into a response without references, just silently continue
           if (item.resource.reference) {
-            let references = this.parseReferences(item.resource.reference) || []
+            let references = []
+
+            // Node group references work in a different way:
+            // they hold an extra level (array) because a group is made of
+            // multiple nodes, so we have to iterate on that too
+            references = (item.resource.type === 'NODE_GROUP')
+              ? this.parseGroupReferences(item.resource.reference)
+              : this.parseNodeReferences(item.resource.reference)
 
             tree.push({
               id: item.resource.id,
@@ -82,31 +84,53 @@ export default {
         this.resources = []
       }
     },
-    parseReferences (reference) {
+    parseNodeReferences (reference) {
       let data = []
-      console.log('on parseReferences')
 
       reference.forEach(ref => {
         const connector = ref.connector || null
-        console.log('type', ref)
-        console.log('connector', ref.connector)
 
         if (connector) {
-          data.push({
-            type: ref.type,
-            accessReference: connector.accessReference ? connector.accessReference.join('\n') : '',
-            accessConfig: connector.accessConfig,
-            accessCredentials: (connector.accessCredentials && connector.accessCredentials === 'SPECTERO_USERNAME_PASSWORD')
-              ? this.$i18n.t('orders.USE_ACCESSOR')
-              : connector.accessCredentials
-          })
+          const baseData = {
+            type: ref.type
+          }
+
+          data.push({ ...baseData, ...this.buildConnector(connector) })
         }
       })
 
       return data
     },
+    parseGroupReferences (reference) {
+      let data = []
+
+      reference.forEach(ref => {
+        ref.services.forEach(service => {
+          const connector = service.connector || null
+
+          if (connector) {
+            const baseData = {
+              nodeId: ref.from,
+              type: service.type
+            }
+
+            data.push({ ...baseData, ...this.buildConnector(connector) })
+          }
+        })
+      })
+
+      return data
+    },
+    buildConnector (connector) {
+      return {
+        accessReference: connector.accessReference ? connector.accessReference.join('\n') : '',
+        accessConfig: connector.accessConfig,
+        accessCredentials: (connector.accessCredentials && connector.accessCredentials === 'SPECTERO_USERNAME_PASSWORD')
+          ? this.$i18n.t('orders.USE_ACCESSOR')
+          : connector.accessCredentials
+      }
+    },
     buildResource (item) {
-      console.log('item on buildResource', item)
       let sortedReferences = {}
       let selectedType = (this.types && this.types[0]) ? this.types[0] : null
 
