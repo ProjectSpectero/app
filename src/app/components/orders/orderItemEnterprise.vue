@@ -77,12 +77,19 @@ export default {
   computed: {
     ipListFormatted () {
       let list = ''
+      console.log('ipListFormatted', this.resources)
 
       if (this.resources) {
         this.resources.forEach(r => {
-          r.references.forEach(ref => {
-            list += ref.accessReference
-          })
+          console.log('current resource', r)
+
+          for (var type in r.references) {
+            if (r.references.hasOwnProperty(type)) {
+              r.references[type].forEach(ref => {
+                list += r.references[type].accessReference
+              })
+            }
+          }
         })
       }
 

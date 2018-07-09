@@ -53,6 +53,7 @@ module.exports = {
     CONFIGURE: 'Configure',
     VERIFY: 'Verify',
     LISTENERS: 'Listeners',
+    LISTENER: 'Listener',
     PURCHASE: 'Purchase',
     PAY_NOW: 'Pay Now',
     SAVE: 'Save',
@@ -268,6 +269,7 @@ module.exports = {
   },
 
   orders: {
+    RESOURCES_NOT_FOUND: 'We were unable to find any resources for this order.',
     RESOURCE_NOT_FOUND: 'We were unable to find that order resource.',
     ORDER_STATUS: {
       PENDING: 'Pending',
@@ -328,7 +330,32 @@ module.exports = {
     UNABLE_TO_DISPLAY_BANNED_DOMAINS: 'Proxy Mode must be set to Normal to edit banned domains.',
     ADD_DOMAIN: 'Add domain',
     ADD_LISTENER: 'Add listener',
-    PROXY_MODE: 'Proxy Mode'
+    PROXY_MODE: 'Proxy Mode',
+    DHCP_OPTION: 'DHCP Option',
+    REDIRECT_GATEWAY: 'Redirect Gateway'
+  },
+
+  cloud: {
+    RESTART_SUCCESS: 'System restarted successfully!',
+    RESTART_ERROR: 'There was an error while trying to restart your system. Please try again later.',
+    dhcp: {
+      DOMAIN: 'Domain',
+      DNS: 'DNS',
+      WINS: 'WINS',
+      NBDD: 'NBDD',
+      NTP: 'NTP',
+      NBT: 'NBT',
+      NBS: 'NBS',
+      DISABLE_NBT: 'Disable NBT'
+    },
+    gateway: {
+      LOCAL: 'Local',
+      DEF1: 'Def1'
+    },
+    protocols: {
+      TCP: 'TCP',
+      UDP: 'UDP'
+    }
   },
 
   nodes: {
@@ -364,6 +391,7 @@ module.exports = {
     GO_TO_NODE: 'Go to node',
     GO_TO_NODE_GROUP: 'Go to node group',
     MARKET_MODEL_TOOLTIP: 'There are three types of market model:',
+    NODE_PENDING_VERIFICATION: 'This node is pending verification. Please try again when its status is CONFIRMED.',
     STATUS: {
       ACTIVE: 'Active',
       UNCONFIRMED: 'Unconfirmed',
@@ -551,6 +579,41 @@ module.exports = {
         billing: {
           title: 'Billing',
           description: 'Billing works like this: ...'
+        }
+      }
+    },
+    services: {
+      title: 'Services',
+      topics: {
+        protocols: {
+          title: 'Protocols',
+          description:
+             `<p>OpenVPN is designed to operate optimally over UDP, but TCP capability is provided for situations where UDP cannot be used.</p>
+              <p>In comparison with UDP, TCP will usually be somewhat less efficient and less robust when used over unreliable or congested networks.</p>
+              <p>There are certain cases, however, where using TCP may be advantageous from a security and robustness perspective, such as tunneling non-IP or application-level UDP protocols, or tunneling protocols which don't possess a built-in reliability layer.</p>
+              <p><small>Taken from the <a href="https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html" target="_blank">OpenVPN manual</a></small></p>`
+        },
+        redirectGateway: {
+          title: 'Redirect gateway',
+          description:
+             `<p><strong>Local</strong>: Add the local flag if both OpenVPN servers are directly connected via a common subnet, such as with wireless.</p>
+              <p><strong>Def1</strong>: Add the def1 flag to override the default gateway by using 0.0.0.0/1 and 128.0.0.0/1 rather than 0.0.0.0/0. This has the benefit of overriding but not wiping out the original default gateway.</p>
+              <p>Using the def1 flag is highly recommended, and is currently planned to become the default by OpenVPN 2.1.</p>
+              <p><small>Taken from the <a href="https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html" target="_blank">OpenVPN manual</a></small></p>`
+        },
+        dhcpOptions: {
+          title: 'DHCP Options',
+          description:
+             `<p>This option can be used to set additional TCP/IP properties on the TAP-Win32 adapter, and is particularly useful for configuring an OpenVPN client to access a Samba server across the VPN.</p>
+              <p><strong>DOMAIN name</strong>: Set Connection-specific DNS Suffix.</p>
+              <p><strong>DNS addr</strong>: Set primary domain name server address. Repeat this option to set secondary DNS server addresses.</p>
+              <p><strong>WINS addr</strong>: Set primary WINS server address (NetBIOS over TCP/IP Name Server).</p>
+              <p><strong>NBDD addr </strong>: Set primary NBDD server address (NetBIOS over TCP/IP Datagram Distribution Server).</p>
+              <p><strong>NTP addr</strong>: Set primary NTP server address (Network Time Protocol). Repeat this option to set secondary NTP server addresses.</p>
+              <p><strong>NBT type</strong>: Set NetBIOS over TCP/IP Node type.</p>
+              <p><strong>NBS scope-id</strong>: Set NetBIOS over TCP/IP Scope. A NetBIOS Scope ID provides an extended naming service for the NetBIOS over TCP/IP module.</p>
+              <p><strong>DISABLE-NBT</strong>: Disable Netbios-over-TCP/IP.</p>
+              <p><small>Taken from the <a href="https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html" target="_blank">OpenVPN manual</a></small></p>`
         }
       }
     }

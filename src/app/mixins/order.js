@@ -8,9 +8,7 @@ export default {
     },
     isFixable () {
       if (this.order && !this.isEnterpriseOrder) {
-        const options = ['MANUAL_FRAUD_CHECK', 'AUTOMATED_FRAUD_CHECK', 'PENDING']
-        const status = this.order.status
-        return options.includes(status)
+        return ['MANUAL_FRAUD_CHECK', 'AUTOMATED_FRAUD_CHECK', 'PENDING'].includes(this.order.status)
       }
 
       return false
@@ -22,14 +20,13 @@ export default {
       // STAMDARD invoices must be linked to an order that is
       // either PENDING or ACTIVE in order for users to be able to pay for it
       if (this.isStandardInvoice) {
-        const validOrderStatus = ['PENDING', 'ACTIVE']
-        return validOrderStatus.includes(this.order.status)
+        return ['PENDING', 'ACTIVE'].includes(this.order.status)
       }
 
       return true
     },
     isUnpaid () {
-      return this.invoice.status === 'UNPAID' || this.invoice.status === 'PARTIALLY_PAID'
+      return ['UNPAID', 'PARTIALLY_PAID'].includes(this.invoice.status)
     },
     isPayable () {
       return ((this.verified && this.verificationErrors.length === 0) || this.isCreditInvoice) &&

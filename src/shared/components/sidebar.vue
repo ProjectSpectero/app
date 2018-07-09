@@ -176,8 +176,10 @@ export default {
     })
   },
   async created () {
-    await this.fetchFreshdesk()
-    await this.refreshCart()
+    if (this.user) {
+      await this.fetchFreshdesk()
+      await this.refreshCart()
+    }
   },
   methods: {
     ...mapActions({
@@ -186,18 +188,16 @@ export default {
       refreshCart: 'cart/refresh'
     }),
     async fetchFreshdesk () {
-      if (this.user) {
-        await userAPI.getSupportLink({
-          success: response => {
-            if (response.data.result.redirect_uri !== undefined) {
-              this.supportLink = response.data.result.redirect_uri
-            }
-          },
-          fail: error => {
-            console.log(error)
+      await userAPI.getSupportLink({
+        success: response => {
+          if (response.data.result.redirect_uri !== undefined) {
+            this.supportLink = response.data.result.redirect_uri
           }
-        })
-      }
+        },
+        fail: error => {
+          console.log(error)
+        }
+      })
     }
   }
 }

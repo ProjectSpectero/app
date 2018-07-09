@@ -20,7 +20,8 @@ export default {
         data: { id: this.orderId },
         success: response => {
           this.accessor = response.data.result.accessor ? this.parseAccessor(response.data.result.accessor) : ''
-          this.buildResourceTree(response.data.result.resources)
+          this.buildResourceTree(response.data.result.items)
+
           this.error = false
         },
         fail: (e) => {
@@ -41,46 +42,97 @@ export default {
 
       return data
     },
-    buildResourceTree (data) {
-      let tree = []
+    buildResourceTree (items) {
+      if (items.length) {
+        let tree = []
 
-      data.forEach(item => {
-        let references = this.parseReferences(item.resource.reference) || []
+        items.forEach(item => {
+          // If we run into a response without references, just silently continue
+          if (item.resource.reference) {
+            let references = []
 
-        tree.push({
-          id: item.resource.id,
-          type: item.resource.type,
-          references: references
+            // Node group references work in a different way:
+            // they hold an extra level (array) because a group is made of
+            // multiple nodes, so we have to iterate on that too
+            references = (item.resource.type === 'NODE_GROUP')
+              ? this.parseGroupReferences(item.resource.reference)
+              : this.parseNodeReferences(item.resource.reference)
+
+            tree.push({
+              id: item.resource.id,
+              type: item.resource.type,
+              references: references
+            })
+          }
         })
-      })
 
-      this.resources = tree
+        // Shouldn't really happen, but if we run into a response without resources,
+        // parsing must be stopped and "no results" should be displayed
+        if (tree.length > 0) {
+          this.resources = tree
 
-      tree.forEach(item => {
-        this.buildResource(item)
-      })
+          tree.forEach(item => {
+            this.buildResource(item)
+          })
 
-      this.selectResource(tree[0])
+          this.selectResource(tree[0])
+        } else {
+          // Changing resources from null to empty array = "no resources found"
+          this.resources = []
+        }
+      } else {
+        this.resources = []
+      }
     },
-    parseReferences (reference) {
+    parseNodeReferences (reference) {
       let data = []
 
       reference.forEach(ref => {
-        const r = ref.resource
+        const connector = ref.connector || null
 
-        data.push({
-          type: ref.type,
-          accessReference: r.accessReference ? r.accessReference.join('\n') : '',
-          accessConfig: r.accessConfig,
-          accessCredentials: (r.accessCredentials === 'SPECTERO_USERNAME_PASSWORD') ? this.$i18n.t('orders.USE_ACCESSOR') : r.accessCredentials
+        if (connector) {
+          const baseData = {
+            type: ref.type
+          }
+
+          data.push({ ...baseData, ...this.buildConnector(connector) })
+        }
+      })
+
+      return data
+    },
+    parseGroupReferences (reference) {
+      let data = []
+
+      reference.forEach(ref => {
+        ref.services.forEach(service => {
+          const connector = service.connector || null
+
+          if (connector) {
+            const baseData = {
+              nodeId: ref.from,
+              type: service.type
+            }
+
+            data.push({ ...baseData, ...this.buildConnector(connector) })
+          }
         })
       })
 
       return data
     },
+    buildConnector (connector) {
+      return {
+        accessReference: connector.accessReference ? connector.accessReference.join('\n') : '',
+        accessConfig: connector.accessConfig,
+        accessCredentials: (connector.accessCredentials && connector.accessCredentials === 'SPECTERO_USERNAME_PASSWORD')
+          ? this.$i18n.t('orders.USE_ACCESSOR')
+          : connector.accessCredentials
+      }
+    },
     buildResource (item) {
       let sortedReferences = {}
-      let selectedType = this.types[0]
+      let selectedType = (this.types && this.types[0]) ? this.types[0] : null
 
       item.references.forEach(r => {
         if (sortedReferences[r.type] === undefined) {
@@ -115,7 +167,7 @@ export default {
       })
     },
     selectResource (item) {
-      if (this.types[0]) {
+      if (this.types && this.types[0]) {
         this.selectedResource = item
         this.selectReference(this.types[0])
       }

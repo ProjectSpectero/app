@@ -1,8 +1,10 @@
-import { setCookie, getCookie, removeCookie } from 'tiny-cookie'
-import nodeAPI from '@/app/api/node.js'
-import userAPI from '@/daemon/api/user.js'
+import { setCookie, removeCookie } from 'tiny-cookie'
+import nodeAPI from '@/app/api/node'
+import userAPI from '@/daemon/api/user'
+import cloudAPI from '@/daemon/api/cloud'
 
 const state = {
+  specs: null,
   initialized: false,
   user: null,
   accessToken: null,
@@ -16,6 +18,7 @@ const state = {
 }
 
 const getters = {
+  specs: (state) => state.specs,
   initialized: (state) => state.initialized,
   user: (state) => state.user,
   accessToken: (state) => state.accessToken,
@@ -29,13 +32,33 @@ const getters = {
 }
 
 const actions = {
-  async syncCurrentUser ({ commit }) {
+  async syncCurrentUser ({ commit, dispatch }) {
     await userAPI.getMe({
       success: response => {
         commit('SET_CURRENT_USER', response.data.result)
+
+        // Gather remote node details
+        dispatch('connectToRemote')
       },
       fail: error => {
         console.log(error)
+      }
+    })
+  },
+  async connectToRemote ({ commit, dispatch }) {
+    await cloudAPI.remote({
+      success: response => {
+        commit('SET_SPECS', response.data.result)
+
+        // Append the restart server button if needed
+        if (response.data.result.app.restartNeeded) {
+          dispatch('settings/switchBarComponent', 'restart', { root: true })
+        }
+      },
+      fail: error => {
+        const e = Object.keys(error.errors)[0]
+        console.log('Unable to connect to remote node', error)
+        throw new Error(e)
       }
     })
   },
@@ -48,7 +71,6 @@ const actions = {
     }
 
     setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: parseFloat(payload.credentials.access.expires / 1000) + 's' })
-    console.log('Added cookie info for DAEMON_COOKIE', getCookie(process.env.DAEMON_COOKIE))
   },
   async autologin ({ commit, dispatch }, nodeId) {
     await nodeAPI.nodeLogin({
@@ -78,6 +100,10 @@ const actions = {
 const mutations = {
   SET_CURRENT_USER (state, payload) {
     state.user = payload
+  },
+  SET_SPECS (state, data) {
+    console.log('System specs:', data)
+    state.specs = data
   },
   SETUP_ENDPOINT (state, payload) {
     state.initialized = true

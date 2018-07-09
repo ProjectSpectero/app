@@ -19,7 +19,7 @@ import serviceAPI from '@/daemon/api/service'
 export default {
   data () {
     return {
-      service: 'HTTPProxy'
+      service: 'OpenVPN'
     }
   },
   methods: {

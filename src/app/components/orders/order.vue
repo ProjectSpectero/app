@@ -99,19 +99,12 @@
               <div class="content-section">
                 <template v-if="isEnterpriseOrder">
                   <header>
-                    <h3><span class="icon-server icon-bg-info"/>Enterprise Resources</h3>
+                    <h3><span class="icon-server icon-bg-info"/>Order Items (Enterprise)</h3>
                   </header>
-                  <order-item
-                    v-for="(item, index) in order.line_items"
-                    :key="index"
-                    :item="item"
-                    :order="order"
-                    type="ENTERPRISE" />
                 </template>
-
                 <template v-else>
                   <header>
-                    <h3><span class="icon-server icon-bg-info"/>Order Resources</h3>
+                    <h3><span class="icon-server icon-bg-info"/>Order Items</h3>
                     <div class="filter-bar">
                       <sort-dropdown
                         :button-text="'Sort Resources'"
@@ -124,15 +117,15 @@
                     :error-bag="verificationErrors"
                     :invoice="invoice"
                     @update="fetchOrder"/>
-
-                  <order-item
-                    v-for="(item, index) in order.line_items"
-                    :key="index"
-                    :item="item"
-                    :order="order"
-                    type="REGULAR"
-                    @sortItems="sortItems" />
                 </template>
+
+                <order-item
+                  v-for="(item, index) in order.line_items"
+                  :key="index"
+                  :item="item"
+                  :order="order"
+                  :type="isEnterpriseOrder ? 'ENTERPRISE' : 'REGULAR'"
+                  @sortItems="sortItems" />
               </div>
             </section>
             <section class="col-3">
