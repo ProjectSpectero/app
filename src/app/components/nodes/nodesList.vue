@@ -96,6 +96,7 @@
     </div>
 
     <paginator
+      v-if="tableData.length > 0"
       :pagination="pagination"
       @changedPage="changedPage"/>
   </div>

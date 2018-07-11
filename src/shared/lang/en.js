@@ -360,9 +360,9 @@ module.exports = {
 
   nodes: {
     VALIDATION_FAILED: 'Something went wrong while trying to update this node. Please correct any errors and try again.',
-    VERIFY_NODE: 'Verify node',
+    VERIFY_NODE: 'Verify Node',
     VERIFICATION_FAILED_TITLE: 'Something went wrong!',
-    VERIFICATION_FAILED: 'Something happened while attempting to verify your node <strong>{name}</strong>. We have sent you an email with further details.',
+    VERIFICATION_FAILED: 'Something happened while attempting to verify your node. We have sent you an email with further details.',
     UNCATEGORIZED: 'Uncategorized',
     NO_NODES_TITLE: 'No Nodes',
     HAS_NODES: 'You cannot delete this group before reassigning its nodes to a different group!',

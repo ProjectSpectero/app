@@ -109,7 +109,7 @@ export default {
   data () {
     return {
       perPage: 10,
-      selectedGroup: null,
+      selectedGroup: 0,
       groups: null,
       totalGroups: null,
       processedGroups: 0,

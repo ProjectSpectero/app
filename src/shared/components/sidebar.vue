@@ -175,8 +175,8 @@ export default {
       isEnterprise: 'appAuth/isEnterprise'
     })
   },
-  async created () {
-    if (this.user) {
+  watch: {
+    user: async function (val) {
       await this.fetchFreshdesk()
       await this.refreshCart()
     }
