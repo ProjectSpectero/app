@@ -12,6 +12,6 @@ export default {
   * Forces a system restart.
   */
   restartSystem (options) {
-    return api('POST', `/system/restart`, options)
+    return api('POST', `/system/shutdown`, options)
   }
 }
