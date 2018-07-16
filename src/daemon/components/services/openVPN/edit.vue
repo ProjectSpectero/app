@@ -37,12 +37,12 @@
                 v-if="dhcpOptions"
                 class="form-input">
                 <div class="label">
-                  <label :for="config[0].dhcpOptions.Item1">
+                  <label :for="config[0].dhcpOptions">
                     {{ $i18n.t('services.DHCP_OPTION') }}
                   </label>
                 </div>
                 <div class="input-with-tooltip">
-                  <select v-model="config[0].dhcpOptions.Item1">
+                  <select v-model="config[0].dhcpOptions">
                     <option
                       v-for="(option, i) in dhcpOptions"
                       :key="i"
@@ -55,7 +55,7 @@
 
                   <input
                     id="dhcp_item2"
-                    v-model="config[0].dhcpOptions.Item2"
+                    v-model="config[0].dhcpDescription"
                     name="dhcp_item2"
                     type="text"
                     placeholder="Item 2"
@@ -65,7 +65,7 @@
             </div>
 
             <div
-              v-if="redirectGateway"
+              v-if="gatewayOptions"
               class="form-input">
               <div class="label">
                 <label :for="config[0].redirectGateway">
@@ -74,13 +74,14 @@
               </div>
 
               <p-input
-                v-for="(option, i) in redirectGateway"
+                v-for="(option, i) in gatewayOptions"
                 :key="i"
                 :id="`redirectGateway-${option.id}`"
                 :value="option.id"
                 v-model="config[0].redirectGateway[option.id]"
                 type="checkbox"
-                class="p-default p-curve">
+                class="p-default p-curve"
+                @change="updateGateways($event, option.id)">
                 {{ $i18n.t(`cloud.gateway.${option.label}`) }}
               </p-input>
 
@@ -185,7 +186,7 @@
             </div>
 
             <div
-              v-if="protocols"
+              v-if="protocolOptions"
               class="form-input">
               <div class="label">
                 <label :for="item.listener.protocol">{{ $i18n.t('misc.PROTOCOL') }}</label>
@@ -193,7 +194,7 @@
               <div class="input-with-tooltip">
                 <select v-model="item.listener.protocol">
                   <option
-                    v-for="(option, i) in protocols"
+                    v-for="(option, i) in protocolOptions"
                     :key="i"
                     :value="option.id">
                     {{ $i18n.t(`cloud.protocols.${option.label}`) }}
@@ -243,9 +244,11 @@ export default {
     return {
       name: 'OpenVPN',
       config: null,
-      protocols: protocols,
+      protocolOptions: protocols,
       dhcpOptions: dhcp,
-      redirectGateway: gateway,
+      gatewayOptions: gateway,
+      dhcpDescription: '',
+      redirectGateway: [],
       formDisable: false,
       rules: {
         port: {
@@ -299,7 +302,24 @@ export default {
         }
       })
     },
+    validateCIDR (value) {
+      console.log(value)
+    },
+    updateGateways (value, id) {
+      if (!value) {
+        var i = this.redirectGateway.indexOf(id)
+
+        if (i !== -1) {
+          this.redirectGateway.splice(i, 1)
+        }
+      } else {
+        this.redirectGateway.push(id)
+      }
+    },
     update () {
+      this.$set(this.config[0], 'dhcpDescription', this.dhcpDescription)
+      this.$set(this.config[0], 'redirectGateway', this.redirectGateway)
+
       serviceAPI.update({
         name: this.name,
         data: this.config,
