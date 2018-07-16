@@ -413,8 +413,9 @@ module.exports = {
   },
 
   daemon: {
+    MANAGE_DAEMON: 'Manage Daemon',
     BACK_TO_NODES: 'Back To Nodes',
-    MANAGING_AS: 'Managing daemon as',
+    MANAGING_AS: 'Managing daemon {id} as',
     SERVICES: 'Services',
     PROXIES: 'Proxies',
     CERTIFICATES: 'Certificates',

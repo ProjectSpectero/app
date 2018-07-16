@@ -29,52 +29,52 @@
               </select>
             </div>
 
+            <addresses
+              v-if="ips.length > 0"
+              :ips="ips"
+              @fillAddress="fillAddress"/>
+
             <listeners
+              :ip="addressInput"
               :listeners="config.listeners"
               @update="updateListeners"/>
-
-            <domains
-              :proxy="proxy"
-              :enabled="proxy === 'ExclusiveAllow'"
-              :domains="config.allowedDomains || []"
-              title="Allowed Domains"
-              forbidden-message-key="services.UNABLE_TO_DISPLAY_ALLOWED_DOMAINS"
-              @update="updateAllowedDomains"/>
-
-            <domains
-              :proxy="proxy"
-              :enabled="proxy === 'Normal'"
-              :domains="config.bannedDomains || []"
-              title="Banned Domains"
-              forbidden-message-key="services.UNABLE_TO_DISPLAY_BANNED_DOMAINS"
-              @update="updateBannedDomains"/>
-
-            <div>
-              <button
-                :disabled="formDisable"
-                type="submit"
-                class="button-info">
-                {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
-              </button>
-              <button
-                class="button-light right"
-                @click.prevent="askBeforeExiting">Cancel</button>
-            </div>
           </form>
         </div>
       </div>
 
       <div class="col-6">
         <div class="section padded">
-          <h3>Available IP addresses</h3>
+          <domains
+            :proxy="proxy"
+            :enabled="proxy === 'ExclusiveAllow'"
+            :domains="config.allowedDomains || []"
+            title="Allowed Domains"
+            forbidden-message-key="services.UNABLE_TO_DISPLAY_ALLOWED_DOMAINS"
+            @update="updateAllowedDomains"/>
 
-          <ul>
-            <li
-              v-for="(ip, i) in ips"
-              :key="i">
-              {{ ip }}
-            </li>
-          </ul>
+          <domains
+            :proxy="proxy"
+            :enabled="proxy === 'Normal'"
+            :domains="config.bannedDomains || []"
+            title="Banned Domains"
+            forbidden-message-key="services.UNABLE_TO_DISPLAY_BANNED_DOMAINS"
+            @update="updateBannedDomains"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="container pt-0">
+      <div class="col-12">
+        <div class="section padded">
+          <button
+            :disabled="formDisable"
+            type="submit"
+            class="button-info">
+            {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
+          </button>
+          <button
+            class="button-light right"
+            @click.prevent="askBeforeExiting">Cancel</button>
         </div>
       </div>
     </div>
@@ -87,12 +87,14 @@ import serviceAPI from '@/daemon/api/service'
 import top from '@/shared/components/top'
 import listeners from './listeners'
 import domains from './domains'
+import addresses from './addresses'
 
 export default {
   components: {
     top,
     listeners,
-    domains
+    domains,
+    addresses
   },
   metaInfo: {
     title: 'HTTPProxy Configuration'
@@ -104,7 +106,8 @@ export default {
       proxyTypes: ['Normal', 'ExclusiveAllow'],
       proxy: null,
       formDisable: false,
-      ips: []
+      ips: [],
+      addressInput: ''
     }
   },
   computed: {
@@ -190,6 +193,9 @@ export default {
           this.$toasted.error(this.$i18n.t('services.UPDATE_ERROR'))
         }
       })
+    },
+    fillAddress (address) {
+      this.addressInput = address
     }
   }
 }

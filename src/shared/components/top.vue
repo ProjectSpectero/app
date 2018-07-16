@@ -1,8 +1,6 @@
 <template>
   <div class="top">
     <header>
-      <slot name="left"/>
-
       <div
         v-if="title"
         class="title">
