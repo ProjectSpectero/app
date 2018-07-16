@@ -73,7 +73,7 @@ const actions = {
   },
 
   // Loads given item data from API into store
-  loadItem: ({ commit, state, rootGetters }, item) => {
+  loadItem: ({ commit, state, dispatch, rootGetters }, item) => {
     // Check the store to see if this item has already been loaded previously
     const found = state.cart.find(i => {
       return (i.id === item.id && i.type === item.type)
@@ -116,7 +116,13 @@ const actions = {
         commit('ADD_ITEM', item)
       },
       fail: (e) => {
-        console.error('Error fetching market resource (cart):', e)
+        console.warn(`Error fetching cart item ${item.type} ID ${item.id}:`, e)
+
+        // Remove item from cart if 403 unauthorized or 404 not found
+        if (e.status === 403 || e.status === 404) {
+          console.warn(`Removing cart item ${item.type} ID ${item.id} (${e.status})`)
+          dispatch('remove', item)
+        }
       }
     })
   },
