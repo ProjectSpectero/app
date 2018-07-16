@@ -27,7 +27,7 @@
           <template v-else>
             <p>Download and run the latest release of the Spectero Daemon and its CLI by running the following command:</p>
             <p class="cmd">wget -O install.sh {{ downloadLinks[osTab] }} && bash install.sh</p>
-            <p>You may opt for a non-interactive background installation with default values by providing the <span class="cmd">--agree --no-prompt</span> arguments.</p>
+            <p>You may opt for a non-interactive background installation with default values by providing the <span class="cmd">--agree --install</span> arguments.</p>
             <p>
               A full list of installer arguments is <a
                 target="_blank"
