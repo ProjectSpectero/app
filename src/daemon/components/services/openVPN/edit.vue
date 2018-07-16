@@ -34,17 +34,17 @@
 
             <div>
               <div
-                v-if="dhcpOptions"
+                v-if="dhcp"
                 class="form-input">
                 <div class="label">
-                  <label :for="config[0].dhcpOptions">
+                  <label :for="config[0].dhcpOptions.Item1">
                     {{ $i18n.t('services.DHCP_OPTION') }}
                   </label>
                 </div>
                 <div class="input-with-tooltip">
-                  <select v-model="config[0].dhcpOptions">
+                  <select v-model="config[0].dhcpOptions.Item1">
                     <option
-                      v-for="(option, i) in dhcpOptions"
+                      v-for="(option, i) in dhcp"
                       :key="i"
                       :value="option.id">
                       {{ $i18n.t(`cloud.dhcp.${option.label}`) }}
@@ -55,7 +55,7 @@
 
                   <input
                     id="dhcp_item2"
-                    v-model="config[0].dhcpDescription"
+                    v-model="config[0].dhcpOptions.Item2"
                     name="dhcp_item2"
                     type="text"
                     placeholder="Item 2"
@@ -245,9 +245,9 @@ export default {
       name: 'OpenVPN',
       config: null,
       protocolOptions: protocols,
-      dhcpOptions: dhcp,
+      dhcp: dhcp,
+      dhcpOptions: [],
       gatewayOptions: gateway,
-      dhcpDescription: '',
       redirectGateway: [],
       formDisable: false,
       rules: {
@@ -296,6 +296,11 @@ export default {
         success: response => {
           console.warn(response.data.result)
           this.config = response.data.result
+
+          if (this.config.length) {
+            this.dhcpOptions = this.config[0].dhcpOptions
+            this.redirectGateway = this.config[0].redirectGateway
+          }
         },
         fail: error => {
           console.log(error)
@@ -316,9 +321,22 @@ export default {
         this.redirectGateway.push(id)
       }
     },
+    updateDhcpOptions (value, id) {
+      if (!value) {
+        var i = this.redirectGateway.indexOf(id)
+
+        if (i !== -1) {
+          this.redirectGateway.splice(i, 1)
+        }
+      } else {
+        this.redirectGateway.push(id)
+      }
+    },
     update () {
-      this.$set(this.config[0], 'dhcpDescription', this.dhcpDescription)
+      this.$set(this.config[0], 'dhcpOptions', this.dhcpOptions)
       this.$set(this.config[0], 'redirectGateway', this.redirectGateway)
+
+      console.log('Updating with config', this.config)
 
       serviceAPI.update({
         name: this.name,
