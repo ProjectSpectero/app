@@ -27,8 +27,25 @@
           <template v-else>
             <p>Download and run the latest release of the Spectero Daemon and its CLI by running the following command:</p>
             <p class="cmd">wget -O install.sh {{ downloadLinks[osTab] }} && bash install.sh</p>
-            <p>You may also opt for a non-interactive background installation with all default values by providing the <span class="cmd">--agree --no-prompt</span> flags.</p>
+            <p>You may opt for a non-interactive background installation with default values by providing the <span class="cmd">--agree --no-prompt</span> arguments.</p>
+            <p>
+              A full list of installer arguments is <a
+                target="_blank"
+                href="https://spectero.atlassian.net/wiki/spaces/docs/pages/3244075/Linux+macOS+Installer+Arguments">
+                available here.
+              </a>
+            </p>
           </template>
+        </section>
+        <section class="section padded">
+          <h5>Installation Help</h5>
+          <p>If you face any problems during installation, please refer to our documentation by clicking the link below:</p>
+          <a
+            target="_blank"
+            href="https://spectero.atlassian.net/wiki/spaces/docs/pages/491552"
+            class="button">
+            <span class="icon-help-circle" /> Installation Documentation
+          </a>
         </section>
         <section class="section padded">
           <h5>Step 2</h5>
@@ -126,8 +143,8 @@ export default {
     downloadLinks () {
       return {
         'Windows': process.env.DOWNLOAD_LINK_WINDOWS,
-        'Linux': process.env.DOWNLOAD_LINK_LINUX,
-        'MacOS': process.env.DOWNLOAD_LINK_MACOS
+        'Linux': process.env.DOWNLOAD_LINK_LINUX
+        // 'MacOS': process.env.DOWNLOAD_LINK_MACOS
       }
     }
   },
