@@ -13,7 +13,12 @@
       flex: 1;
     }
     .tooltip-trigger {
-      margin-left: 12px;
+      margin-left: 8px;
+    }
+    &.tooltip-space {
+      .tooltip-trigger {
+        margin-right: 12px;
+      }
     }
   }
 }

@@ -8,25 +8,30 @@
       </button>
     </top>
 
-    <div class="container">
+    <div
+      v-if="config"
+      class="container">
       <div class="col-6">
         <div class="section padded">
-          <form
-            v-if="config"
-            @submit.prevent.stop="update">
+          <form>
             <div class="section">
               <h2>{{ $i18n.t('services.PROXY_MODE') }}</h2>
-              <select
-                v-model="proxy"
-                required
-                @change="proxyChanged">
-                <option
-                  v-for="option in proxyTypes"
-                  :value="option"
-                  :key="option">
-                  {{ option }}
-                </option>
-              </select>
+              <div class="form-input">
+                <div class="input-with-tooltip">
+                  <select
+                    v-model="proxy"
+                    required
+                    @change="proxyChanged">
+                    <option
+                      v-for="option in proxyTypes"
+                      :value="option"
+                      :key="option">
+                      {{ option }}
+                    </option>
+                  </select>
+                  <tooltip id="services.topics.proxyModes"/>
+                </div>
+              </div>
             </div>
 
             <addresses
@@ -69,7 +74,8 @@
           <button
             :disabled="formDisable"
             type="submit"
-            class="button-info">
+            class="button-info"
+            @click.prevent="update">
             {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
           </button>
           <button
@@ -85,6 +91,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import serviceAPI from '@/daemon/api/service'
 import top from '@/shared/components/top'
+import tooltip from '@/shared/components/tooltip'
 import listeners from './listeners'
 import domains from './domains'
 import addresses from './addresses'
@@ -92,6 +99,7 @@ import addresses from './addresses'
 export default {
   components: {
     top,
+    tooltip,
     listeners,
     domains,
     addresses

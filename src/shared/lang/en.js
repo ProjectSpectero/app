@@ -623,6 +623,14 @@ module.exports = {
               <p><strong>NBS scope-id</strong>: Set NetBIOS over TCP/IP Scope. A NetBIOS Scope ID provides an extended naming service for the NetBIOS over TCP/IP module.</p>
               <p><strong>DISABLE-NBT</strong>: Disable Netbios-over-TCP/IP.</p>
               <p><small>Taken from the <a href="https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html" target="_blank">OpenVPN manual</a></small></p>`
+        },
+        proxyModes: {
+          title: 'Proxy Modes',
+          description:
+           `<p>The following modes of filtering are supported:</p>
+            <p><strong>Normal Mode</strong><br>In normal mode, the proxy provides a blacklist that the users can use to ban any number of URLs from being visited. Blocked requests will be redirected to BlockedRedirectUri.</p>
+            <p><strong>ExclusiveAllow Mode</strong><br>In exclusive-allow mode (or whitelist only mode), the proxy only connects to a list of pre-determined hosts. This is handy in corporate environments where browsing privileges are restricted.</p>
+            <p><a href="https://spectero.atlassian.net/wiki/spaces/docs/pages/1048633/HTTP+Proxy" target="_blank">View Full Documentation</a></p>`
         }
       }
     }
