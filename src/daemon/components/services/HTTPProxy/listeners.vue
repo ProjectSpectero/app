@@ -47,24 +47,25 @@
         {{ $i18n.t('services.ADD_LISTENER') }}
       </button>
     </div>
-
-    <ul
+    <div
       v-if="list.length > 0"
       class="ip-list">
-      <li
-        v-for="(listener, index) in list"
-        :key="index"
-        class="list-item">
-        <div class="ip-label">
-          <strong>{{ listener.item1 }}</strong>:{{ listener.item2 }}
-        </div>
-        <button
-          class="button-sm button-bordered button-danger"
-          @click.prevent="remove(index)">
-          {{ $i18n.t('misc.REMOVE') }}
-        </button>
-      </li>
-    </ul>
+      <ul>
+        <li
+          v-for="(listener, index) in list"
+          :key="index"
+          class="list-item">
+          <div class="ip-label">
+            <strong>{{ listener.item1 }}</strong>:{{ listener.item2 }}
+          </div>
+          <button
+            class="button-sm button-icon"
+            @click.prevent="remove(index)">
+            <span class="icon-x"/>
+          </button>
+        </li>
+      </ul>
+    </div>
     <span v-else>No listeners added yet.</span>
   </div>
 </template>
@@ -75,12 +76,16 @@ export default {
     listeners: {
       type: Array,
       required: true
+    },
+    ip: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   data () {
     return {
       list: [],
-      ip: null,
       port: null,
       rules: {
         port: {
@@ -133,17 +138,21 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: $pad;
-  padding-bottom: $pad;
-  border-bottom: 1px solid $color-border;
 }
 .input-float {
   flex: 1;
   margin-right: 12px;
 }
 .ip-list {
-  list-style: none;
+  margin-top: $pad;
+  padding-top: $pad;
+  border-top: 1px solid $color-border;
 
+  ul {
+    max-height: 490px;
+    overflow-y: auto;
+    list-style: none;
+  }
   li {
     padding: 8px 8px 8px 12px;
     display: flex;

@@ -1,36 +1,44 @@
 <template>
   <div>
     <h2>Services</h2>
-    <div v-if="daemonInitialized">
+    <div
+      v-if="daemonInitialized"
+      class="col-container">
       <div
         v-for="(status, service) in services"
         :key="service"
-        class="service">
-        <h3>{{ service }}</h3>
-        <p class="status">
-          {{ $i18n.t('misc.STATUS') }}: <span class="badge badge-dark">{{ status }}</span>
-        </p>
-        <div class="buttonActions">
-          <button
-            :disabled="status === 'Running'"
-            :class="{ 'button-success': status !== 'Running' }"
-            class="button"
-            @click="start(service)">
-            <span class="icon-play-circle"/> {{ $i18n.t('misc.START') }}
-          </button>
-          <button
-            :disabled="status !== 'Running'"
-            :class="{ 'button-danger': status === 'Running' }"
-            class="button"
-            @click="stop(service)">
-            <span class="icon-stop-circle"/> {{ $i18n.t('misc.STOP') }}
-          </button>
-
+        class="service section padded col-6">
+        <h3>
+          {{ service }}
+          <span
+            :class="{ 'badge-success': status === 'Running', 'badge-error': status === 'Halted' }"
+            class="badge">
+            {{ status }}
+          </span>
+        </h3>
+        <div class="actions">
           <router-link
             :to="{ name: 'service.' + service }"
-            class="button-dark right">
+            class="button-info">
             <span class="icon-sliders"/> {{ $i18n.t('misc.CONFIGURE') }}
           </router-link>
+
+          <div class="right">
+            <button
+              :disabled="status === 'Running'"
+              :class="{ 'button-success': status !== 'Running' }"
+              class="button"
+              @click="start(service)">
+              <span class="icon-play"/> {{ $i18n.t('misc.START') }}
+            </button>
+            <button
+              :disabled="status !== 'Running'"
+              :class="{ 'button-danger': status === 'Running' }"
+              class="button"
+              @click="stop(service)">
+              <span class="icon-x-circle"/> {{ $i18n.t('misc.STOP') }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -82,14 +90,20 @@ export default {
 
 <style lang="scss" scoped>
 .service {
-  max-width: 800px;
-  margin-bottom: $pad;
-  padding: $pad;
-  border: 1px solid $color-border;
-  border-radius: 4px;
+  margin-bottom: 0;
 
-  p.status {
-    margin-bottom: 12px;
+  h3 {
+    .badge {
+      position: relative;
+      top: -2px;
+      margin-left: 4px;
+    }
   }
+  .actions {
+    margin-top: $pad;
+  }
+}
+.col-container {
+  margin-left: -$pad;
 }
 </style>
