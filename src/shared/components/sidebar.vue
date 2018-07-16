@@ -178,6 +178,7 @@ export default {
   watch: {
     user: async function (val) {
       await this.fetchFreshdesk()
+      await this.fetchPlans()
       await this.refreshCart()
     }
   },
@@ -185,6 +186,7 @@ export default {
     ...mapActions({
       appLogout: 'appAuth/logout',
       daemonLogout: 'daemonAuth/logout',
+      fetchPlans: 'market/fetchPlans',
       refreshCart: 'cart/refresh'
     }),
     async fetchFreshdesk () {
