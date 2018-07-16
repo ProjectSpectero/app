@@ -63,6 +63,7 @@
                   :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
                   :table-data="(selectedGroup === 0) ? uncategorized.result : nodes"
                   :hide-header="groups && groups.length === 0"
+                  @refetch="handleSelection"
                   @changedPage="changedPage"
                   @sortByColumn="sortByColumn"
                   @showAddNodeModal="showAddNodeModal"/>
