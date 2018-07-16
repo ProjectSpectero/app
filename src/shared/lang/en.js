@@ -99,7 +99,8 @@ module.exports = {
     LEARN_MORE: 'Learn More',
     LOGIN: 'Log In',
     REGISTER: 'Register',
-    RESET_PASSWORD: 'Reset Password'
+    RESET_PASSWORD: 'Reset Password',
+    SERVICES: 'Services'
   },
 
   errors: {
