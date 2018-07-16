@@ -16,9 +16,7 @@
           v-model="saveCard"
           class="p-default p-curve"
           type="checkbox"
-          color="success"
-          true-value="1"
-          false-value="0">
+          color="success">
           {{ $i18n.t('payments.CHECK_SAVE_CARD') }}
         </p-input>
       </div>
@@ -68,7 +66,7 @@ export default {
         'post_code',
         'country'
       ],
-      saveCard: false,
+      saveCard: true,
       stripeOptions: {
         // https://stripe.com/docs/stripe.js#element-options
       }
@@ -155,7 +153,7 @@ export default {
         data: {
           invoiceId: this.invoiceId,
           stripeToken: stripeData.token.id,
-          save: (this.saveCard === '1') || false
+          save: this.saveCard
         },
         success: async processResponse => {
           this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
