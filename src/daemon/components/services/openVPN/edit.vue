@@ -7,30 +7,37 @@
         {{ $i18n.t('misc.CANCEL') }}
       </button>
     </top>
-    <div class="container">
+    <div
+      v-if="config"
+      class="container">
       <div class="col-12">
-        <form
-          v-if="config"
-          @submit.prevent.stop="update">
+        <form>
+          <div class="section padded">
+            <div>
+              <h5>Connection Settings</h5>
 
-          <div class="col-12 section padded">
-            <p-input
-              id="allowMultipleConnections"
-              :value="config[0].allowMultipleConnectionsFromSameClient"
-              v-model="config[0].allowMultipleConnectionsFromSameClient"
-              type="checkbox"
-              class="p-default p-curve">
-              Allow multiple connections from the same client?
-            </p-input>
+              <div class="form-checkbox">
+                <p-input
+                  id="allowMultipleConnections"
+                  :value="config[0].allowMultipleConnectionsFromSameClient"
+                  v-model="config[0].allowMultipleConnectionsFromSameClient"
+                  type="checkbox"
+                  class="p-default p-curve">
+                  Allow multiple connections from same client
+                </p-input>
+              </div>
 
-            <p-input
-              id="clientToClient"
-              :value="config[0].clientToClient"
-              v-model="config[0].clientToClient"
-              type="checkbox"
-              class="p-default p-curve">
-              Client To Client?
-            </p-input>
+              <div class="form-checkbox">
+                <p-input
+                  id="clientToClient"
+                  :value="config[0].clientToClient"
+                  v-model="config[0].clientToClient"
+                  type="checkbox"
+                  class="p-default p-curve">
+                  Allow client-to-client connections
+                </p-input>
+              </div>
+            </div>
 
             <div>
               <div
@@ -204,19 +211,24 @@
               </div>
             </div>
           </div>
-
-          <div>
-            <button
-              :disabled="formDisable"
-              type="submit"
-              class="button-info">
-              {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
-            </button>
-            <button
-              class="button-light right"
-              @click.prevent="askBeforeExiting">Cancel</button>
-          </div>
         </form>
+      </div>
+    </div>
+
+    <div class="container pt-0">
+      <div class="col-12">
+        <div class="section padded">
+          <button
+            :disabled="formDisable"
+            type="submit"
+            class="button-info"
+            @click.prevent="update">
+            {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
+          </button>
+          <button
+            class="button-light right"
+            @click.prevent="askBeforeExiting">Cancel</button>
+        </div>
       </div>
     </div>
   </div>
