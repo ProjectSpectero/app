@@ -39,12 +39,18 @@
         </section>
         <section class="section padded">
           <h5>Installation Help</h5>
-          <p>If you face any problems during installation, please refer to our documentation by clicking the link below:</p>
+          <p>If you face any problems during installation, please refer to our documentation or GitHub repository by clicking the link below:</p>
           <a
             target="_blank"
             href="https://spectero.atlassian.net/wiki/spaces/docs/pages/491552"
             class="button">
             <span class="icon-help-circle" /> Installation Documentation
+          </a>
+          <a
+            target="_blank"
+            href="https://github.com/ProjectSpectero/"
+            class="button-dark">
+            <span class="icon-github" /> GitHub Repository
           </a>
         </section>
         <section class="section padded">

@@ -99,7 +99,8 @@ module.exports = {
     LEARN_MORE: 'Learn More',
     LOGIN: 'Log In',
     REGISTER: 'Register',
-    RESET_PASSWORD: 'Reset Password'
+    RESET_PASSWORD: 'Reset Password',
+    SERVICES: 'Services'
   },
 
   errors: {
@@ -413,8 +414,9 @@ module.exports = {
   },
 
   daemon: {
+    MANAGE_DAEMON: 'Manage Daemon',
     BACK_TO_NODES: 'Back To Nodes',
-    MANAGING_AS: 'Managing daemon as',
+    MANAGING_AS: 'Managing daemon {id} as',
     SERVICES: 'Services',
     PROXIES: 'Proxies',
     CERTIFICATES: 'Certificates',
@@ -507,6 +509,13 @@ module.exports = {
 
   settings: {
     EMAIL_CHANGE_NOTICE: 'Your current email is <strong>{email}</strong>. If your new email is invalid we will not be able to reach you and your account will be locked.'
+  },
+
+  welcome: {
+    TITLE: 'Welcome!',
+    TEXT_THANK_YOU: 'Thank you for signing up to a Spectero account!',
+    TEXT_BODY: 'We sent an email with a verification link. Click the link in the email to verify your account and login.',
+    BACK_TO_LOGIN: 'Back to Login'
   },
 
   help: {

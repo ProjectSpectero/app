@@ -1,23 +1,17 @@
 <template>
-  <div
-    v-if="specs"
-    class="specs">
-    <div class="daemon">
-      <h2>Resource #{{ $route.params.nodeId }}</h2>
+  <div v-if="specs">
+    <div
+      v-if="specs.system.data.CPU.Model || specs.system.data.CPU.Cores"
+      class="line">
+      <span class="icon-cpu"/> <strong>CPU:</strong>
+      <span v-if="specs.system.data.CPU.Model">{{ specs.system.data.CPU.Model }}</span>
+      <span v-if="specs.system.data.CPU.Cores">({{ specs.system.data.CPU.Cores }} cores)</span>
+    </div>
 
-      <div>
-        <div>
-          <strong>CPU:</strong>
-          <span v-if="specs.system.data.CPU.Model">{{ specs.system.data.CPU.Model }}</span>
-          <span v-if="specs.system.data.CPU.Cores">({{ specs.system.data.CPU.Cores }} cores)</span>
-        </div>
-
-        <div>
-          <strong>Memory:</strong>
-          <span v-if="memoryUsed">{{ memoryUsed }}</span>
-          <span v-else>-</span>
-        </div>
-      </div>
+    <div class="line">
+      <span class="icon-activity"/> <strong>Memory:</strong>
+      <span v-if="memoryUsed">{{ memoryUsed }}</span>
+      <span v-else>-</span>
     </div>
   </div>
 </template>
@@ -54,7 +48,5 @@ function humanMemory (bytes) {
 </script>
 
 <style lang="scss" scoped>
-.specs {
 
-}
 </style>

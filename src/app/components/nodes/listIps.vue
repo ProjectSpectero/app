@@ -1,5 +1,5 @@
 <template>
-  <div class="col-12">
+  <div>
     <div
       v-if="ips && ips.length"
       class="list section padded">

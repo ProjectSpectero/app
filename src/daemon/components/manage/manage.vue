@@ -2,11 +2,7 @@
   <div>
     <template v-if="!error">
       <div v-if="daemonInitialized">
-        <top>
-          <template slot="left">
-            <specs/>
-          </template>
-
+        <top :title="$i18n.t('daemon.MANAGE_DAEMON')">
           <router-link
             :to="{ name: 'nodes' }"
             class="button">
@@ -14,11 +10,16 @@
           </router-link>
 
           <div
-            v-if="user && activeTab !== 'notFound'"
+            v-if="activeTab !== 'notFound'"
             slot="sub"
-            class="managing-user">
-            <div class="avatar"><span>{{ initials }}</span></div>
-            <p>{{ $i18n.t('daemon.MANAGING_AS') }}: <strong>{{ displayName }}</strong></p>
+            class="daemon-details">
+            <div
+              v-if="user"
+              class="managing-user line">
+              <span class="icon-user" /> <strong>User:</strong>
+              <span>{{ $i18n.t('daemon.MANAGING_AS', { id: $route.params.nodeId }) }} {{ displayName }}</span>
+            </div>
+            <specs/>
           </div>
 
           <tabs
@@ -127,14 +128,6 @@ export default {
 
 <style lang="scss" scoped>
 .managing-user {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: $pad 0;
-  margin: 0 $pad;
-  background: $white;
-  border-top: 1px solid $color-border;
-
   > p {
     flex: 1;
     color: $color-light;
@@ -142,20 +135,6 @@ export default {
     > strong {
       color: $color-primary;
     }
-  }
-  .avatar {
-    width: 28px;
-    height: 28px;
-    margin-right: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: $color-primary;
-    background: $color-brand;
-    font-size: 100%;
-    line-height: 100%;
-    font-weight: $font-bold;
-    border-radius: 24px;
   }
 }
 </style>

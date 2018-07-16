@@ -171,7 +171,7 @@ export default {
           },
           success: response => {
             this.$emit('refetch')
-            this.$toasted.show(this.$i18n.t('nodes.DELETE_SUCCESS'))
+            this.$toasted.success(this.$i18n.t('nodes.DELETE_SUCCESS'))
           },
           fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
         })

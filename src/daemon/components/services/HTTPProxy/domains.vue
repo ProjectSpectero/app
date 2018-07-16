@@ -35,22 +35,26 @@
       {{ forbiddenMessage }}
     </div>
 
-    <ul class="ip-list">
-      <li
-        v-for="(item, index) in list"
-        :key="index"
-        class="list-item">
-        <div class="ip-label">
-          <strong>{{ item }}</strong>
-        </div>
-        <button
-          :disabled="!enabled"
-          class="button-sm button-bordered button-danger"
-          @click.prevent="remove">
-          {{ $i18n.t('misc.REMOVE') }}
-        </button>
-      </li>
-    </ul>
+    <div
+      v-if="list.length > 0"
+      class="ip-list">
+      <ul>
+        <li
+          v-for="(item, index) in list"
+          :key="index"
+          class="list-item">
+          <div class="ip-label">
+            <strong>{{ item }}</strong>
+          </div>
+          <button
+            :disabled="!enabled"
+            class="button-sm button-bordered button-danger"
+            @click.prevent="remove">
+            {{ $i18n.t('misc.REMOVE') }}
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -93,7 +97,7 @@ export default {
     }
   },
   created () {
-    this.list = Object.assign({}, this.domains)
+    this.list = this.domains
   },
   methods: {
     remove (index) {
@@ -124,17 +128,21 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: $pad;
-  padding-bottom: $pad;
-  border-bottom: 1px solid $color-border;
 }
 .input-float {
   flex: 1;
   margin-right: 12px;
 }
 .ip-list {
-  list-style: none;
+  margin-top: $pad;
+  padding-top: $pad;
+  border-top: 1px solid $color-border;
 
+  ul {
+    max-height: 480px;
+    overflow-y: auto;
+    list-style: none;
+  }
   li {
     padding: 8px 8px 8px 12px;
     display: flex;

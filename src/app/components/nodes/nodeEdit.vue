@@ -57,9 +57,11 @@
         :engagements="engagements"
         :node="node"
         @updateEngagements="updateEngagements"/>
-      <list-ips
+      <div
         v-else-if="activeTab === 'ips'"
-        :ips="ips"/>
+        class="col-12">
+        <list-ips :ips="ips"/>
+      </div>
       <list-system
         v-else-if="activeTab === 'system'"
         :node="node"/>

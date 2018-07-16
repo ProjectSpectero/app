@@ -1,7 +1,7 @@
 <template>
-  <div class="message message-warning">
+  <div class="message message-warning message-top">
     <div>
-      <h5>Action required</h5>
+      <h5>Action Required</h5>
       <p>One or more operations require that you restart the {{ service }} service.</p>
     </div>
     <div class="actions">

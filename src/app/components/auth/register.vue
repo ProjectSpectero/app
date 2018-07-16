@@ -120,7 +120,7 @@ export default {
     },
     dealWithSuccess () {
       this.formError = null
-      this.$router.push({ name: 'pending' })
+      this.$router.push({ name: 'welcome' })
     },
     dealWithError (err) {
       this.formLoading = false
