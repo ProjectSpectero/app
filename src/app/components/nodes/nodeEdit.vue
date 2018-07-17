@@ -5,7 +5,9 @@
         slot="sub"
         class="sub">
         <div class="col-info">
-          <div class="info-box">
+          <div
+            v-if="node.friendly_name"
+            class="info-box">
             <h5>Name</h5>
             <p>{{ node.friendly_name }}</p>
           </div>
