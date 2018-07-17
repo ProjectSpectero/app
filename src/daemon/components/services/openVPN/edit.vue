@@ -92,19 +92,19 @@
             <float-label>
               <input
                 v-validate="rules.ipAddress"
-                id="ipAddress"
+                :id="`ipAddress-${i}`"
                 v-model="item.listener.ipAddress"
-                :class="{ 'input-error': errors.has('ipAddress') }"
-                name="ipAddress"
+                :class="{ 'input-error': errors.has(`ipAddress-${i}`) }"
+                :name="`ipAddress-${i}`"
                 type="text"
                 class="input"
                 placeholder="IP Address"
                 data-vv-as="IP address">
             </float-label>
             <div
-              v-show="errors.has('ipAddress')"
+              v-show="errors.has(`ipAddress-${i}`)"
               class="input-error-msg">
-              {{ errors.first('ipAddress') }}
+              {{ errors.first(`ipAddress-${i}`) }}
             </div>
           </div>
 
@@ -112,19 +112,19 @@
             <float-label>
               <input
                 v-validate="rules.port"
-                id="managementPort"
+                :id="`managementPort-${i}`"
                 v-model="item.listener.managementPort"
-                :class="{ 'input-error': errors.has('managementPort') }"
-                name="managementPort"
+                :class="{ 'input-error': errors.has(`managementPort-${i}`) }"
+                :name="`managementPort-${i}`"
                 type="number"
                 class="input"
                 placeholder="Management Port"
                 data-vv-as="managementPort">
             </float-label>
             <div
-              v-show="errors.has('managementPort')"
+              v-show="errors.has(`managementPort-${i}`)"
               class="input-error-msg">
-              {{ errors.first('managementPort') }}
+              {{ errors.first(`managementPort-${i}`) }}
             </div>
           </div>
 
@@ -132,19 +132,19 @@
             <float-label>
               <input
                 v-validate="rules.network"
-                id="network"
+                :id="`network-${i}`"
                 v-model="item.listener.network"
-                :class="{ 'input-error': errors.has('network') }"
-                name="network"
+                :class="{ 'input-error': errors.has(`network-${i}`) }"
+                :name="`network-${i}`"
                 type="text"
                 class="input"
                 placeholder="Network"
                 data-vv-as="network">
             </float-label>
             <div
-              v-show="errors.has('network')"
+              v-show="errors.has(`network-${i}`)"
               class="input-error-msg">
-              {{ errors.first('network') }}
+              {{ errors.first(`network-${i}`) }}
             </div>
           </div>
 
@@ -152,19 +152,19 @@
             <float-label>
               <input
                 v-validate="rules.port"
-                id="port"
+                :id="`port-${i}`"
                 v-model="item.listener.port"
-                :class="{ 'input-error': errors.has('port') }"
-                name="port"
+                :class="{ 'input-error': errors.has(`port-${i}`) }"
+                :name="`port-${i}`"
                 type="number"
                 class="input"
                 placeholder="Port"
                 data-vv-as="port">
             </float-label>
             <div
-              v-show="errors.has('port')"
+              v-show="errors.has(`port-${i}`)"
               class="input-error-msg">
-              {{ errors.first('port') }}
+              {{ errors.first(`port-${i}`) }}
             </div>
           </div>
 
