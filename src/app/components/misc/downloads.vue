@@ -148,14 +148,14 @@ export default {
     },
     downloadLinks () {
       return {
-        'Windows': process.env.DOWNLOAD_LINK_WINDOWS,
-        'Linux': process.env.DOWNLOAD_LINK_LINUX
+        'Linux': process.env.DOWNLOAD_LINK_LINUX,
+        'Windows': process.env.DOWNLOAD_LINK_WINDOWS
         // 'MacOS': process.env.DOWNLOAD_LINK_MACOS
       }
     }
   },
   created () {
-    this.osTab = 'Windows'
+    this.osTab = 'Linux'
     this.fetchMatrices()
     // this.fetchDownloadInfo()
   },
