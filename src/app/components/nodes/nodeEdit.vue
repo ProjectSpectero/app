@@ -5,7 +5,9 @@
         slot="sub"
         class="sub">
         <div class="col-info">
-          <div class="info-box">
+          <div
+            v-if="node.friendly_name"
+            class="info-box">
             <h5>Name</h5>
             <p>{{ node.friendly_name }}</p>
           </div>
@@ -57,9 +59,11 @@
         :engagements="engagements"
         :node="node"
         @updateEngagements="updateEngagements"/>
-      <list-ips
+      <div
         v-else-if="activeTab === 'ips'"
-        :ips="ips"/>
+        class="col-12">
+        <list-ips :ips="ips"/>
+      </div>
       <list-system
         v-else-if="activeTab === 'system'"
         :node="node"/>

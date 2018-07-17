@@ -39,12 +39,18 @@
         </section>
         <section class="section padded">
           <h5>Installation Help</h5>
-          <p>If you face any problems during installation, please refer to our documentation by clicking the link below:</p>
+          <p>If you face any problems during installation, please refer to our documentation or GitHub repository by clicking the link below:</p>
           <a
             target="_blank"
             href="https://spectero.atlassian.net/wiki/spaces/docs/pages/491552"
             class="button">
             <span class="icon-help-circle" /> Installation Documentation
+          </a>
+          <a
+            target="_blank"
+            href="https://github.com/ProjectSpectero/"
+            class="button-dark">
+            <span class="icon-github" /> GitHub Repository
           </a>
         </section>
         <section class="section padded">
@@ -142,14 +148,14 @@ export default {
     },
     downloadLinks () {
       return {
-        'Windows': process.env.DOWNLOAD_LINK_WINDOWS,
-        'Linux': process.env.DOWNLOAD_LINK_LINUX
+        'Linux': process.env.DOWNLOAD_LINK_LINUX,
+        'Windows': process.env.DOWNLOAD_LINK_WINDOWS
         // 'MacOS': process.env.DOWNLOAD_LINK_MACOS
       }
     }
   },
   created () {
-    this.osTab = 'Windows'
+    this.osTab = 'Linux'
     this.fetchMatrices()
     // this.fetchDownloadInfo()
   },

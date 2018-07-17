@@ -31,6 +31,15 @@
                 class="badge badge-brand badge-plan">{{ item.plan }}</div>
             </div>
           </div>
+          <div
+            v-if="item.services.length > 0"
+            class="info-box">
+            <h5>{{ $i18n.t('misc.SERVICES') }}</h5>
+            <div
+              v-for="service in item.services"
+              :key="service"
+              class="badge">{{ service }}</div>
+          </div>
           <div class="info-box">
             <h5>{{ $i18n.t('misc.IP_COUNT') }}</h5>
             <p v-if="item.ip_addresses">{{ item.ip_addresses.length }}</p>

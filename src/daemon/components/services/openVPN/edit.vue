@@ -7,87 +7,60 @@
         {{ $i18n.t('misc.CANCEL') }}
       </button>
     </top>
-    <div class="container">
-      <div class="col-12">
-        <form
-          v-if="config"
-          @submit.prevent.stop="update">
+    <form v-if="config">
+      <div class="container">
+        <div class="col-12">
+          <div class="section padded openvpn-settings">
+            <div>
+              <h5>Connection Settings</h5>
+              <div class="form-checkbox">
+                <p-input
+                  id="allowMultipleConnections"
+                  :value="config[0].allowMultipleConnectionsFromSameClient"
+                  v-model="config[0].allowMultipleConnectionsFromSameClient"
+                  type="checkbox"
+                  class="p-default p-curve">
+                  Allow multiple connections from same client
+                </p-input>
+              </div>
+              <div class="form-checkbox">
+                <p-input
+                  id="clientToClient"
+                  :value="config[0].clientToClient"
+                  v-model="config[0].clientToClient"
+                  type="checkbox"
+                  class="p-default p-curve">
+                  Allow client-to-client connections
+                </p-input>
+              </div>
+            </div>
 
-          <div class="col-12 section padded">
-            <p-input
-              id="allowMultipleConnections"
-              :value="config[0].allowMultipleConnectionsFromSameClient"
-              v-model="config[0].allowMultipleConnectionsFromSameClient"
-              type="checkbox"
-              class="p-default p-curve">
-              Allow multiple connections from the same client?
-            </p-input>
+            <dhcp
+              :dhcp-items="dhcpOptions"
+              @update="updateDhcp"/>
 
-            <p-input
-              id="clientToClient"
-              :value="config[0].clientToClient"
-              v-model="config[0].clientToClient"
-              type="checkbox"
-              class="p-default p-curve">
-              Client To Client?
-            </p-input>
+            <div v-if="gatewayOptions">
+              <h5>Redirect Gateway <tooltip id="services.topics.redirectGateway"/></h5>
+
+              <div
+                v-for="(option, i) in gatewayOptions"
+                :key="i"
+                class="form-checkbox">
+                <p-input
+                  :id="`redirectGateway-${option.id}`"
+                  :value="option.id"
+                  v-model="config[0].redirectGateway[option.id]"
+                  type="checkbox"
+                  class="p-default p-curve"
+                  @change="updateGateways($event, option.id)">
+                  {{ $i18n.t(`cloud.gateway.${option.label}`) }}
+                </p-input>
+              </div>
+            </div>
 
             <div>
-              <div
-                v-if="dhcpOptions"
-                class="form-input">
-                <div class="label">
-                  <label :for="config[0].dhcpOptions.Item1">
-                    {{ $i18n.t('services.DHCP_OPTION') }}
-                  </label>
-                </div>
-                <div class="input-with-tooltip">
-                  <select v-model="config[0].dhcpOptions.Item1">
-                    <option
-                      v-for="(option, i) in dhcpOptions"
-                      :key="i"
-                      :value="option.id">
-                      {{ $i18n.t(`cloud.dhcp.${option.label}`) }}
-                    </option>
-                  </select>
+              <h5>Maximum Clients</h5>
 
-                  <tooltip id="services.topics.dhcpOptions"/>
-
-                  <input
-                    id="dhcp_item2"
-                    v-model="config[0].dhcpOptions.Item2"
-                    name="dhcp_item2"
-                    type="text"
-                    placeholder="Item 2"
-                    class="input">
-                </div>
-              </div>
-            </div>
-
-            <div
-              v-if="redirectGateway"
-              class="form-input">
-              <div class="label">
-                <label :for="config[0].redirectGateway">
-                  {{ $i18n.t('services.REDIRECT_GATEWAY') }}
-                </label>
-              </div>
-
-              <p-input
-                v-for="(option, i) in redirectGateway"
-                :key="i"
-                :id="`redirectGateway-${option.id}`"
-                :value="option.id"
-                v-model="config[0].redirectGateway[option.id]"
-                type="checkbox"
-                class="p-default p-curve">
-                {{ $i18n.t(`cloud.gateway.${option.label}`) }}
-              </p-input>
-
-              <tooltip id="services.topics.redirectGateway"/>
-            </div>
-
-            <div class="input-float">
               <input
                 v-validate="rules.maxClients"
                 id="maxClients"
@@ -106,117 +79,132 @@
             </div>
           </div>
 
-          <div
-            v-for="(item, i) in config"
-            :key="i"
-            class="col-6 section padded">
-            <h2>{{ $i18n.t('misc.LISTENER') + ' #' + (i+1) }}</h2>
+        </div>
+      </div>
+      <div class="container pt-0 pb-0">
+        <div
+          v-for="(item, i) in config"
+          :key="i"
+          class="col-6 section padded">
+          <h2>{{ $i18n.t('misc.LISTENER') + ' #' + (i+1) }}</h2>
 
-            <div class="input-float">
+          <div class="form-input">
+            <float-label>
               <input
                 v-validate="rules.ipAddress"
-                id="ipAddress"
+                :id="`ipAddress-${i}`"
                 v-model="item.listener.ipAddress"
-                :class="{ 'input-error': errors.has('ipAddress') }"
-                name="ipAddress"
+                :class="{ 'input-error': errors.has(`ipAddress-${i}`) }"
+                :name="`ipAddress-${i}`"
                 type="text"
                 class="input"
                 placeholder="IP Address"
                 data-vv-as="IP address">
-              <div
-                v-show="errors.has('ipAddress')"
-                class="input-error-msg">
-                {{ errors.first('ipAddress') }}
-              </div>
+            </float-label>
+            <div
+              v-show="errors.has(`ipAddress-${i}`)"
+              class="input-error-msg">
+              {{ errors.first(`ipAddress-${i}`) }}
             </div>
+          </div>
 
-            <div class="input-float">
+          <div class="form-input">
+            <float-label>
               <input
                 v-validate="rules.port"
-                id="managementPort"
+                :id="`managementPort-${i}`"
                 v-model="item.listener.managementPort"
-                :class="{ 'input-error': errors.has('managementPort') }"
-                name="managementPort"
+                :class="{ 'input-error': errors.has(`managementPort-${i}`) }"
+                :name="`managementPort-${i}`"
                 type="number"
                 class="input"
-                placeholder="managementPort"
+                placeholder="Management Port"
                 data-vv-as="managementPort">
-              <div
-                v-show="errors.has('managementPort')"
-                class="input-error-msg">
-                {{ errors.first('managementPort') }}
-              </div>
+            </float-label>
+            <div
+              v-show="errors.has(`managementPort-${i}`)"
+              class="input-error-msg">
+              {{ errors.first(`managementPort-${i}`) }}
             </div>
+          </div>
 
-            <div class="input-float">
+          <div class="form-input">
+            <float-label>
               <input
                 v-validate="rules.network"
-                id="network"
+                :id="`network-${i}`"
                 v-model="item.listener.network"
-                :class="{ 'input-error': errors.has('network') }"
-                name="network"
+                :class="{ 'input-error': errors.has(`network-${i}`) }"
+                :name="`network-${i}`"
                 type="text"
                 class="input"
-                placeholder="network"
+                placeholder="Network"
                 data-vv-as="network">
-              <div
-                v-show="errors.has('network')"
-                class="input-error-msg">
-                {{ errors.first('network') }}
-              </div>
+            </float-label>
+            <div
+              v-show="errors.has(`network-${i}`)"
+              class="input-error-msg">
+              {{ errors.first(`network-${i}`) }}
             </div>
+          </div>
 
-            <div class="input-float">
+          <div class="form-input">
+            <float-label>
               <input
                 v-validate="rules.port"
-                id="port"
+                :id="`port-${i}`"
                 v-model="item.listener.port"
-                :class="{ 'input-error': errors.has('port') }"
-                name="port"
+                :class="{ 'input-error': errors.has(`port-${i}`) }"
+                :name="`port-${i}`"
                 type="number"
                 class="input"
                 placeholder="Port"
                 data-vv-as="port">
-              <div
-                v-show="errors.has('port')"
-                class="input-error-msg">
-                {{ errors.first('port') }}
-              </div>
-            </div>
-
+            </float-label>
             <div
-              v-if="protocols"
-              class="form-input">
-              <div class="label">
-                <label :for="item.listener.protocol">{{ $i18n.t('misc.PROTOCOL') }}</label>
-              </div>
-              <div class="input-with-tooltip">
-                <select v-model="item.listener.protocol">
-                  <option
-                    v-for="(option, i) in protocols"
-                    :key="i"
-                    :value="option.id">
-                    {{ $i18n.t(`cloud.protocols.${option.label}`) }}
-                  </option>
-                </select>
-
-                <tooltip id="services.topics.protocols"/>
-              </div>
+              v-show="errors.has(`port-${i}`)"
+              class="input-error-msg">
+              {{ errors.first(`port-${i}`) }}
             </div>
           </div>
 
-          <div>
-            <button
-              :disabled="formDisable"
-              type="submit"
-              class="button-info">
-              {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
-            </button>
-            <button
-              class="button-light right"
-              @click.prevent="askBeforeExiting">Cancel</button>
+          <div
+            v-if="protocolOptions"
+            class="form-input">
+            <div class="label">
+              <label :for="item.listener.protocol">{{ $i18n.t('misc.PROTOCOL') }}</label>
+            </div>
+            <div class="input-with-tooltip">
+              <select v-model="item.listener.protocol">
+                <option
+                  v-for="(option, i) in protocolOptions"
+                  :key="i"
+                  :value="option.id">
+                  {{ $i18n.t(`cloud.protocols.${option.label}`) }}
+                </option>
+              </select>
+
+              <tooltip id="services.topics.protocols"/>
+            </div>
           </div>
-        </form>
+        </div>
+      </div>
+    </form>
+
+    <div class="container pt-0">
+      <div class="col-12">
+        <div class="section padded">
+          <button
+            :disabled="formDisable"
+            type="submit"
+            class="button-info"
+            @click.prevent="update">
+            {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
+          </button>
+          <button
+            class="button-light right"
+            @click.prevent="askBeforeExiting">Cancel</button>
+        </div>
       </div>
     </div>
   </div>
@@ -228,13 +216,14 @@ import serviceAPI from '@/daemon/api/service'
 import top from '@/shared/components/top'
 import tooltip from '@/shared/components/tooltip'
 import protocols from '@/shared/helpers/protocols'
-import dhcp from '@/shared/helpers/dhcp'
 import gateway from '@/shared/helpers/gateway'
+import dhcp from './dhcp'
 
 export default {
   components: {
     top,
-    tooltip
+    tooltip,
+    dhcp
   },
   metaInfo: {
     title: 'OpenVPN Configuration'
@@ -243,9 +232,10 @@ export default {
     return {
       name: 'OpenVPN',
       config: null,
-      protocols: protocols,
-      dhcpOptions: dhcp,
-      redirectGateway: gateway,
+      protocolOptions: protocols,
+      dhcpOptions: [],
+      gatewayOptions: gateway,
+      redirectGateway: [],
       formDisable: false,
       rules: {
         port: {
@@ -293,13 +283,51 @@ export default {
         success: response => {
           console.warn(response.data.result)
           this.config = response.data.result
+
+          if (this.config.length) {
+            this.dhcpOptions = this.config[0].dhcpOptions
+            this.redirectGateway = this.config[0].redirectGateway
+          }
         },
         fail: error => {
           console.log(error)
         }
       })
     },
+    validateCIDR (value) {
+      console.log(value)
+    },
+    updateGateways (value, id) {
+      if (!value) {
+        var i = this.redirectGateway.indexOf(id)
+
+        if (i !== -1) {
+          this.redirectGateway.splice(i, 1)
+        }
+      } else {
+        this.redirectGateway.push(id)
+      }
+    },
+    updateDhcpOptions (value, id) {
+      if (!value) {
+        var i = this.redirectGateway.indexOf(id)
+
+        if (i !== -1) {
+          this.redirectGateway.splice(i, 1)
+        }
+      } else {
+        this.redirectGateway.push(id)
+      }
+    },
+    updateDhcp (dhcp) {
+      this.dhcpOptions = dhcp
+    },
     update () {
+      this.$set(this.config[0], 'dhcpOptions', this.dhcpOptions)
+      this.$set(this.config[0], 'redirectGateway', this.redirectGateway)
+
+      console.log('Updating with config', this.config)
+
       serviceAPI.update({
         name: this.name,
         data: this.config,
@@ -328,3 +356,23 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.openvpn-settings {
+  > div {
+    margin-bottom: $pad;
+    padding-bottom: $pad;
+    display: block;
+    border-bottom: 1px dashed $color-border;
+
+    .form-input:last-child, .form-checkbox:last-child {
+      margin-bottom: 0;
+    }
+    &:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border: none;
+    }
+  }
+}
+</style>

@@ -4,16 +4,20 @@
   justify-content: space-between;
   flex-direction: column;
   margin-bottom: 14px;
+}
+.input-with-tooltip {
+  display: flex;
+  align-items: center;
 
-  .input-with-tooltip {
-    display: flex;
-    align-items: center;
-
-    input, select {
-      flex: 1;
-    }
+  input, select {
+    flex: 1;
+  }
+  .tooltip-trigger {
+    margin-left: 8px;
+  }
+  &.tooltip-space {
     .tooltip-trigger {
-      margin-left: 12px;
+      margin-right: 8px;
     }
   }
 }
