@@ -35,36 +35,9 @@
               </div>
             </div>
 
-            <div v-if="dhcpOptions">
-              <h5>DHCP Settings</h5>
-              <div class="form-input">
-                <div class="label">
-                  <label :for="config[0].dhcpOptions.Item1">
-                    {{ $i18n.t('services.DHCP_OPTION') }}
-                  </label>
-                </div>
-                <div class="input-with-tooltip tooltip-space">
-                  <select v-model="config[0].dhcpOptions.Item1">
-                    <option
-                      v-for="(option, i) in dhcp"
-                      :key="i"
-                      :value="option.id">
-                      {{ $i18n.t(`cloud.dhcp.${option.label}`) }}
-                    </option>
-                  </select>
-
-                  <tooltip id="services.topics.dhcpOptions"/>
-
-                  <input
-                    id="dhcp_item2"
-                    v-model="config[0].dhcpOptions.Item2"
-                    name="dhcp_item2"
-                    type="text"
-                    placeholder="DHCP Item 2"
-                    class="input">
-                </div>
-              </div>
-            </div>
+            <dhcp
+              :dhcp-items="dhcpOptions"
+              @update="updateDhcp"/>
 
             <div v-if="gatewayOptions">
               <h5>Redirect Gateway <tooltip id="services.topics.redirectGateway"/></h5>
@@ -243,13 +216,14 @@ import serviceAPI from '@/daemon/api/service'
 import top from '@/shared/components/top'
 import tooltip from '@/shared/components/tooltip'
 import protocols from '@/shared/helpers/protocols'
-import dhcp from '@/shared/helpers/dhcp'
 import gateway from '@/shared/helpers/gateway'
+import dhcp from './dhcp'
 
 export default {
   components: {
     top,
-    tooltip
+    tooltip,
+    dhcp
   },
   metaInfo: {
     title: 'OpenVPN Configuration'
@@ -259,7 +233,6 @@ export default {
       name: 'OpenVPN',
       config: null,
       protocolOptions: protocols,
-      dhcp: dhcp,
       dhcpOptions: [],
       gatewayOptions: gateway,
       redirectGateway: [],
@@ -345,6 +318,9 @@ export default {
       } else {
         this.redirectGateway.push(id)
       }
+    },
+    updateDhcp (dhcp) {
+      this.dhcpOptions = dhcp
     },
     update () {
       this.$set(this.config[0], 'dhcpOptions', this.dhcpOptions)
