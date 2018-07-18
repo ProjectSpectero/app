@@ -7,7 +7,9 @@
       v-if="user.card.last4 !== null"
       class="cc-inner">
       <div class="cc-card">
-        <div class="cc-info col">
+        <div
+          v-if="user.card"
+          class="cc-info col">
           <p><strong>{{ user.card.brand }}</strong> ending in <strong>{{ user.card.last4 }}</strong></p>
           <p class="small">Expires {{ user.card.expires }}</p>
         </div>

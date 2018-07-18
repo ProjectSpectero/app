@@ -2,6 +2,9 @@ module.exports = {
   lang: 'en',
   misc: {
     SPECTERO: 'Spectero',
+    IMPERSONATE: 'Impersonate',
+    USERS: 'Users',
+    ADMIN: 'Admin',
     HOME: 'Home',
     DASHBOARD: 'Dashboard',
     MARKET: 'Market',
@@ -486,6 +489,7 @@ module.exports = {
   },
 
   users: {
+    IMPERSONATING: 'You are currently impersonating {name}.',
     FORGOT_PASSWORD: 'Forgot your password?',
     RESET_TOKEN_ISSUED: 'We have sent an email with a validation link to {email}. Please check your inbox!',
     RESET_TOKEN_ERROR: 'An error has ocurred while trying to issue a token for reset. Please try again!',

@@ -3,7 +3,7 @@
     <h5>DHCP Settings</h5>
     <div class="add">
       <div class="input-float input-with-tooltip tooltip-space">
-        <select v-model="item1">
+        <select v-model="Item1">
           <option
             v-for="(option, i) in dhcp"
             :key="i"
@@ -15,16 +15,16 @@
       </div>
       <div class="input-float">
         <input
-          id="dhcp_item2"
-          v-model="item2"
-          name="dhcp_item2"
+          id="dhcp_Item2"
+          v-model="Item2"
+          name="dhcp_Item2"
           type="text"
           placeholder="DHCP Item 2"
           class="input">
         <div
-          v-show="errors.has('dhcp_item2')"
+          v-show="errors.has('dhcp_Item2')"
           class="input-error-msg">
-          {{ errors.first('dhcp_item2') }}
+          {{ errors.first('dhcp_Item2') }}
         </div>
       </div>
       <button
@@ -42,7 +42,7 @@
           :key="index"
           class="list-item">
           <div class="ip-label">
-            <strong>{{ listener.item1 }}</strong>{{ (listener.item2) ? ` - ${listener.item2}` : `` }}
+            <strong>{{ listener.Item1 }}</strong>{{ (listener.Item2) ? ` - ${listener.Item2}` : `` }}
           </div>
           <button
             class="button-sm button-icon"
@@ -77,8 +77,8 @@ export default {
     return {
       list: [],
       dhcp: dhcp,
-      item1: dhcp[0].id,
-      item2: ''
+      Item1: dhcp[0].id,
+      Item2: ''
     }
   },
   methods: {
@@ -90,8 +90,8 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.list.push({
-            item1: this.item1,
-            item2: this.item2
+            Item1: this.Item1,
+            Item2: this.Item2
           })
 
           this.update()
@@ -104,8 +104,8 @@ export default {
     },
     reset () {
       this.$validator.reset()
-      this.item1 = this.dhcp[0].id
-      this.item2 = null
+      this.Item1 = this.dhcp[0].id
+      this.Item2 = null
     }
   }
 }

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import marketAPI from '@/app/api/market.js'
+import marketAPI from '@/app/api/market'
 
 const state = {
   cart: [],

@@ -51,10 +51,12 @@ async function API (project, method, path, data, success, failed) {
 
     // Gracefully handling timeout errors
     if (e.code === 'ECONNABORTED') {
-      failed(new Err(['ECONNABORTED'], 598))
       Vue.prototype.$Progress.fail()
+      failed(new Err(['ECONNABORTED'], 598))
       return
     }
+
+    console.log(project)
 
     // Remove authorization cookie if 401 returned by any API call.
     if (status === 401 && getCookie(project.cookieName) !== null) {

@@ -61,5 +61,14 @@ export default {
    */
   validatePasswordReset (options) {
     return api('GET', `/password-reset/${options.data.token}`, options)
+  },
+
+  /**
+   * Impersonate a user at given id.
+   *
+   * @param {Integer} id User id to delete.
+   */
+  impersonate (options) {
+    return api('POST', `/auth/impersonate/${options.data.id}`, options)
   }
 }
