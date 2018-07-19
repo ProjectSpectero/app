@@ -3,7 +3,7 @@
     <h5>DHCP Settings</h5>
     <div class="add">
       <div class="input-float input-with-tooltip tooltip-space">
-        <select v-model="Item1">
+        <select v-model="item1">
           <option
             v-for="(option, i) in dhcp"
             :key="i"
@@ -15,16 +15,16 @@
       </div>
       <div class="input-float">
         <input
-          id="dhcp_Item2"
-          v-model="Item2"
-          name="dhcp_Item2"
+          id="dhcp_item2"
+          v-model="item2"
+          name="dhcp_item2"
           type="text"
           placeholder="DHCP Item 2"
           class="input">
         <div
-          v-show="errors.has('dhcp_Item2')"
+          v-show="errors.has('dhcp_item2')"
           class="input-error-msg">
-          {{ errors.first('dhcp_Item2') }}
+          {{ errors.first('dhcp_item2') }}
         </div>
       </div>
       <button
@@ -34,19 +34,19 @@
       </button>
     </div>
     <div
-      v-if="list.length > 0"
+      v-if="list"
       class="ip-list">
       <ul>
         <li
-          v-for="(listener, index) in list"
-          :key="index"
+          v-for="(listener, i) in list"
+          :key="i"
           class="list-item">
           <div class="ip-label">
-            <strong>{{ listener.Item1 }}</strong>{{ (listener.Item2) ? ` - ${listener.Item2}` : `` }}
+            <strong>{{ listener.item1 }}</strong>{{ (listener.item1) ? ` - ${listener.item1}` : `` }}
           </div>
           <button
             class="button-sm button-icon"
-            @click.prevent="remove(index)">
+            @click.prevent="remove(i)">
             <span class="icon-x"/>
           </button>
         </li>
@@ -67,7 +67,7 @@ export default {
     tooltip
   },
   props: {
-    dhcpItems: {
+    currentDhcp: {
       type: Array,
       required: false,
       default: () => []
@@ -77,9 +77,13 @@ export default {
     return {
       list: [],
       dhcp: dhcp,
-      Item1: dhcp[0].id,
-      Item2: ''
+      item1: dhcp[0].id,
+      item2: ''
     }
+  },
+  created () {
+    this.list = this.currentDhcp
+    console.log(this.list)
   },
   methods: {
     remove (index) {
@@ -90,8 +94,8 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.list.push({
-            Item1: this.Item1,
-            Item2: this.Item2
+            item1: this.item1,
+            item2: this.item2
           })
 
           this.update()
@@ -104,8 +108,8 @@ export default {
     },
     reset () {
       this.$validator.reset()
-      this.Item1 = this.dhcp[0].id
-      this.Item2 = null
+      this.item1 = this.dhcp[0].id
+      this.item2 = null
     }
   }
 }

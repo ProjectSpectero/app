@@ -36,7 +36,7 @@
             </div>
 
             <dhcp
-              :dhcp-items="dhcpOptions"
+              :current-dhcp="dhcpOptions"
               @update="updateDhcp"/>
 
             <gateways
