@@ -39,24 +39,9 @@
               :dhcp-items="dhcpOptions"
               @update="updateDhcp"/>
 
-            <div v-if="gatewayOptions">
-              <h5>Redirect Gateway <tooltip id="services.topics.redirectGateway"/></h5>
-
-              <div
-                v-for="(option, i) in gatewayOptions"
-                :key="i"
-                class="form-checkbox">
-                <p-input
-                  :id="`redirectGateway-${option.id}`"
-                  :value="option.id"
-                  v-model="config[0].redirectGateway[option.id]"
-                  type="checkbox"
-                  class="p-default p-curve"
-                  @change="updateGateways($event, option.id)">
-                  {{ $i18n.t(`cloud.gateway.${option.label}`) }}
-                </p-input>
-              </div>
-            </div>
+            <gateways
+              :current-gateways="redirectGateway"
+              @update="updateGateways"/>
 
             <div>
               <h5>Maximum Clients</h5>
@@ -216,13 +201,14 @@ import serviceAPI from '@/daemon/api/service'
 import top from '@/shared/components/top'
 import tooltip from '@/shared/components/tooltip'
 import protocols from '@/shared/helpers/protocols'
-import gateway from '@/shared/helpers/gateway'
 import dhcp from './dhcp'
+import gateways from './gateways'
 
 export default {
   components: {
     top,
     tooltip,
+    gateways,
     dhcp
   },
   metaInfo: {
@@ -234,7 +220,6 @@ export default {
       config: null,
       protocolOptions: protocols,
       dhcpOptions: [],
-      gatewayOptions: gateway,
       redirectGateway: [],
       formDisable: false,
       rules: {
@@ -300,27 +285,8 @@ export default {
     validateCIDR (value) {
       console.log(value)
     },
-    updateGateways (value, id) {
-      if (!value) {
-        var i = this.redirectGateway.indexOf(id)
-
-        if (i !== -1) {
-          this.redirectGateway.splice(i, 1)
-        }
-      } else {
-        this.redirectGateway.push(id)
-      }
-    },
-    updateDhcpOptions (value, id) {
-      if (!value) {
-        var i = this.redirectGateway.indexOf(id)
-
-        if (i !== -1) {
-          this.redirectGateway.splice(i, 1)
-        }
-      } else {
-        this.redirectGateway.push(id)
-      }
+    updateGateways (gateways) {
+      this.redirectGateway = gateways
     },
     updateDhcp (dhcp) {
       this.dhcpOptions = dhcp
@@ -396,6 +362,14 @@ export default {
       if (confirm(this.$i18n.t('misc.LEAVE_CONFIRM_DIALOG'))) {
         this.$router.push({ name: 'manage', params: { nodeId: this.$route.params.nodeId, action: 'services' } })
       }
+    },
+    findGatewayKey (option) {
+      const k = Object.keys(this.config[0].redirectGateway).find(key => {
+        console.log('trying', this.config[0].redirectGateway[key], 'vs', option.id)
+        console.log(this.config[0].redirectGateway[key] === option.id)
+        return this.config[0].redirectGateway[key] === option.id
+      })
+      console.log(k)
     }
   }
 }
