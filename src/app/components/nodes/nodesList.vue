@@ -61,7 +61,8 @@
               </button>
 
               <router-link
-                :to="{ name: 'manage', params: { nodeId: (isDevelopmentEnvironment || isStagingEnvironment) ? 101 : row.id } }"
+                v-if="row.status === 'CONFIRMED'"
+                :to="{ name: 'manage', params: { nodeId: row.id } }"
                 class="button-sm button-info">
                 <span class="icon-sliders"/> Manage
               </router-link>
