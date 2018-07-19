@@ -42,7 +42,7 @@
           :key="i"
           class="list-item">
           <div class="ip-label">
-            <strong>{{ listener.item1 }}</strong>{{ (listener.item1) ? ` - ${listener.item1}` : `` }}
+            <strong>{{ listener.item1 }}</strong>{{ (listener.item2) ? ` - ${listener.item2}` : `` }}
           </div>
           <button
             class="button-sm button-icon"
