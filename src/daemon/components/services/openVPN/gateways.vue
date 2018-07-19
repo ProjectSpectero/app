@@ -6,12 +6,9 @@
       v-for="(option, i) in allGateways"
       :key="i"
       class="form-checkbox">
-      list[i]: {{ list[i] }}
-      list: {{ list }}
-      list[option.id] {{ list[option.id] }}
       <p-input
         :id="`redirectGateway-${option.id}`"
-        :value="option.id"
+        :checked="list.includes(option.id) ? true : false"
         v-model="list[option.id]"
         type="checkbox"
         class="p-default p-curve"
@@ -45,7 +42,6 @@ export default {
   },
   created () {
     this.list = this.currentGateways
-    console.log('set list to currentGateways values', this.list)
   },
   methods: {
     toggle (value, option) {
@@ -53,16 +49,13 @@ export default {
         const i = this.list.indexOf(option.id)
 
         if (i !== -1) {
-          console.log('Toggled to false and found this item (' + option.id + '), removing it')
           this.list.splice(i, 1)
         }
       } else {
-        console.log('Toggled to true and item is new (' + option.id + '), adding it')
         this.list.push(option.id)
       }
 
       this.update()
-      console.log('updated gateways list', this.list)
     },
     update () {
       this.$emit('update', this.list)
