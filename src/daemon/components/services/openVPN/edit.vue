@@ -211,7 +211,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import serviceAPI from '@/daemon/api/service'
 import top from '@/shared/components/top'
 import tooltip from '@/shared/components/tooltip'
@@ -274,6 +274,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      switchBarComponent: 'settings/switchBarComponent'
+    }),
     async setup () {
       await this.fetchService()
     },
@@ -322,18 +325,59 @@ export default {
     updateDhcp (dhcp) {
       this.dhcpOptions = dhcp
     },
+    buildObject () {
+      let obj = {}
+      let listeners = []
+      const fields = [
+        'allowMultipleConnectionsFromSameClient',
+        'clientToClient',
+        'dhcpOptions',
+        'maxClients',
+        'pushedNetworks',
+        'redirectGateway'
+      ]
+
+      // Attach base fields from config[0]
+      for (let i = 0; i < fields.length; i++) {
+        if (this.config[0].hasOwnProperty(fields[i])) {
+          obj[fields[i]] = this.config[0][fields[i]]
+        }
+      }
+
+      // Attach listeners and convert ports to int
+      this.config.forEach(c => {
+        if (c.listener) {
+          let data = {
+            ipAddress: c.listener.ipAddress,
+            managementPort: parseInt(c.listener.managementPort),
+            network: c.listener.network,
+            port: parseInt(c.listener.port),
+            protocol: c.listener.protocol
+          }
+
+          listeners.push(data)
+        }
+      })
+
+      obj.listeners = listeners
+
+      return obj
+    },
     update () {
+      let obj = null
+
       this.$set(this.config[0], 'dhcpOptions', this.dhcpOptions)
       this.$set(this.config[0], 'redirectGateway', this.redirectGateway)
 
-      console.log('Updating with config', this.config)
+      obj = this.buildObject()
+
+      console.log('Updating with config', obj)
 
       serviceAPI.update({
         name: this.name,
-        data: this.config,
+        data: obj,
         success: response => {
           this.$toasted.success(this.$i18n.t('services.UPDATE_SUCCESS'))
-          console.log('updated', response.data.message)
 
           // Append the restart server button if needed
           if (response.data.message && response.data.message === 'SERVICE_RESTART_NEEDED') {
