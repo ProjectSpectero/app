@@ -140,7 +140,6 @@ export default {
   created () {
     // Populate form object
     this.form = this.group ? Object.assign({}, this.group) : {}
-    this.form.status = 'ACTIVE'
 
     this.formFields = [
       { name: 'friendly_name', label: 'Friendly name', placeholder: 'Name for this node', type: 'text' },
