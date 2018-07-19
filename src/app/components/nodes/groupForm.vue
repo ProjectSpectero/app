@@ -140,7 +140,6 @@ export default {
   created () {
     // Populate form object
     this.form = this.group ? Object.assign({}, this.group) : {}
-    this.form.user_id = this.user.id
     this.form.status = 'ACTIVE'
 
     this.formFields = [
