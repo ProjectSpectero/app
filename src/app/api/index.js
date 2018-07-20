@@ -11,9 +11,12 @@ async function API (method, path, data, success, failed) {
   // 2.3) If a port is specified and numeric, that will be used as expected
 
   const cookieName = process.env['APP_COOKIE']
+  const cookie = getCookie(cookieName)
+
+  console.log('On api, cookie is', JSON.parse(cookie))
   let project = {
     cookieName: cookieName,
-    cookie: (getCookie(cookieName) !== null) ? JSON.parse(getCookie(cookieName)) : null,
+    cookie: (cookie !== null) ? JSON.parse(cookie) : null,
     protocol: process.env['APP_HTTPS'] ? 'https://' : location.protocol + '//',
     port: location.port ? ':' + location.port : '',
     endpoint: process.env['APP_ENDPOINT'] ? process.env['APP_ENDPOINT'] : location.hostname,
