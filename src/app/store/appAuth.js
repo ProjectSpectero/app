@@ -36,6 +36,7 @@ const actions = {
     await userAPI.get({
       data: { id: id },
       success: response => {
+        console.warn('syncImpersonatedUser: setting current user as ', response.data.result.name, response.data.result)
         commit('SET_CURRENT_USER', response.data.result)
       },
       fail: error => {
@@ -58,7 +59,7 @@ const actions = {
       // If no data is set we're first-landing the page and
       // we'll need to decode the cookie,retrieve the current user
       if (data) {
-        commit('SET_LOGIN_INFO', data)
+        await dispatch('setLoginInfo', data)
         await dispatch('syncCurrentUser')
         return true
       }
@@ -78,6 +79,9 @@ const actions = {
     // (default cookie for login)
     if (payload.cookieName !== undefined && payload.cookieName) {
       cookieName = payload.cookieName
+      console.warn('addCookie (backing up real user data)', data)
+    } else {
+      console.warn('addCookie (faking new user)', data)
     }
 
     setCookie(cookieName, JSON.stringify(data), { expires: payload.expiry + 's' })
@@ -88,6 +92,7 @@ const actions = {
     commit('CLEAR_LOGIN_INFO')
   },
   setLoginInfo ({ commit, dispatch }, payload) {
+    console.warn('setLoginInfo', payload)
     commit('SET_LOGIN_INFO', payload)
   },
   async impersonate ({ dispatch, commit, getters }, userId) {
