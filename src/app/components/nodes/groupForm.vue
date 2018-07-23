@@ -30,7 +30,6 @@
               {{ errors.first('friendly_name') }}
             </span>
           </div>
-          <pre>{{ form }}</pre>
           <div
             v-if="form.market_model !== 'UNLISTED'"
             class="form-input">
@@ -48,9 +47,6 @@
               placeholder="Price"
               class="input max-width"
               data-vv-as="price">
-            <p
-              class="input-note"
-              v-html="$i18n.t('nodes.GROUP_PRICE_AVAILABILITY', { model1: marketModels[1], model2: marketModels[2] })"/>
 
             <span
               v-show="errors.has('price')"
@@ -62,9 +58,7 @@
           <div class="form-input">
             <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.MARKET_MODEL') }}</label></div>
             <div class="input-with-tooltip">
-              <select
-                v-model="form.market_model"
-                @change="updateMarketModel(form.market_model)">
+              <select v-model="form.market_model">
                 <option
                   v-for="model in marketModels"
                   :key="model"
@@ -111,7 +105,7 @@ export default {
       formError: null,
       formFields: null,
       formLoading: false,
-      form: null,
+      form: {},
       marketModels: [
         'UNLISTED',
         'LISTED_SHARED',
@@ -146,7 +140,7 @@ export default {
 
     // Set default market model if none set
     if (!this.form.market_model) {
-      this.form.market_model = this.marketModels[0]
+      this.$set(this.form, 'market_model', this.marketModels[0])
     }
 
     this.formFields = [
@@ -156,7 +150,16 @@ export default {
     ]
   },
   methods: {
-    async submit () {
+    submit () {
+      this.$validator.validateAll().then(result => {
+        if (!result) {
+          this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
+        } else {
+          this.processSubmit()
+        }
+      })
+    },
+    async processSubmit () {
       this.formLoading = true
 
       // Editing or creating?
@@ -185,10 +188,6 @@ export default {
           }
         })
       }
-    },
-    updateMarketModel (val) {
-      this.$set(this.form, 'market_model', val)
-      console.log(this.form.market_model)
     }
   }
 }
