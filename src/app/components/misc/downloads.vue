@@ -41,9 +41,18 @@
         <section
           v-if="osTab === 'Windows'"
           class="section padded">
-          <h5>Windows 10 users</h5>
+          <h5>Windows 10 Users</h5>
           <p>Microsoft .NET Framework v3.5 may be required as an installation dependency if you are running Windows 10.</p>
           <p>If you are prompted to install .NET Framework v3.5 upon launching the installer, please <strong>re-run the installer after the installation completes</strong> to finish the installation process.</p>
+        </section>
+
+        <section
+          v-else
+          class="section padded">
+          <h5>Deployments on Cloud Providers</h5>
+          <p>Planning to deploy Spectero to a cloud provider such as DigitalOcean or Vultr? Please review our <a
+            target="_blank"
+            href="https://spectero.atlassian.net/wiki/spaces/docs/pages/5275651/Cloud+Provider+Advisories">Cloud Provider Advisories</a> document first.</p>
         </section>
 
         <section class="section padded">
