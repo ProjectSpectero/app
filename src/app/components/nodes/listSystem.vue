@@ -1,10 +1,10 @@
 <template>
   <div class="col-12">
     <div
-      v-if="system"
+      v-if="node.system_data"
       class="spec-list section padded">
       <div
-        v-for="(spec, i) in system"
+        v-for="(spec, i) in node.system_data"
         :key="i"
         class="spec">
         <list-system-spec :spec="spec"/>
@@ -30,13 +30,6 @@ export default {
     node: {
       type: Object,
       required: true
-    }
-  },
-  computed: {
-    system () {
-      if (this.node.system_data) {
-        return JSON.parse(this.node.system_data)
-      }
     }
   }
 }
