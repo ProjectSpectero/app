@@ -22,8 +22,9 @@
                       v-for="object in field.object"
                       :key="object.id"
                       :value="field.objectKey ? object[field.objectKey] : object">
-                      <span v-if="field.objectKey">{{ object[field.objectKey] }}</span>
-                      <span v-else>{{ object }}</span>
+                      <template v-if="field.labelKey">{{ object[field.labelKey] }}</template>
+                      <template v-else-if="field.objectKey">{{ object[field.objectKey] }}</template>
+                      <template v-else>{{ object }}</template>
                     </option>
                   </select>
                 </div>
@@ -44,6 +45,28 @@
                     </select>
                     <tooltip id="nodes.topics.marketModels"/>
                   </div>
+                </div>
+              </template>
+              <template v-else-if="field.type === 'price'">
+                <div class="form-input">
+                  <div class="label"><label :for="field.name">{{ field.label }}</label></div>
+                  <money
+                    v-validate="rules[field.name]"
+                    :type="field.type"
+                    v-model="form[field.name]"
+                    :name="field.name"
+                    :id="field.name"
+                    :placeholder="field.placeholder"
+                    :class="{'input-error': errors.has(field.name)}"
+                    :disabled="formLoading"
+                    :data-vv-as="field.name"
+                    class="input max-width" />
+
+                  <span
+                    v-show="errors.has(field.name)"
+                    class="input-error-message">
+                    {{ errors.first(field.name) }}
+                  </span>
                 </div>
               </template>
               <template v-else>
@@ -160,20 +183,86 @@ export default {
       }
     }
   },
+  computed: {
+    formattedGroupList () {
+      let groups = []
+
+      for (let index in this.groups) {
+        let group = this.groups[index]
+        groups.push({
+          id: group.id,
+          label: group.friendly_name
+        })
+      }
+
+      return groups
+    }
+  },
   async created () {
     this.form = Object.assign({}, this.node)
     await this.fetchGroups()
 
     this.formFields = [
-      { name: 'friendly_name', label: this.$i18n.t('misc.FRIENDLY_NAME'), placeholder: this.$i18n.t('misc.FRIENDLY_NAME'), type: 'text' },
-      { name: 'ip', label: this.$i18n.t('misc.IP'), placeholder: this.$i18n.t('misc.IP'), type: 'text' },
-      { name: 'port', label: this.$i18n.t('misc.PORT_NUMBER'), placeholder: this.$i18n.t('misc.PORT_NUMBER'), type: 'number' },
-      { name: 'city', label: this.$i18n.t('misc.CITY'), placeholder: this.$i18n.t('misc.CITY'), type: 'text' },
-      { name: 'access_token', label: this.$i18n.t('misc.ACCESS_TOKEN'), placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'), type: 'text' },
-      { name: 'protocol', label: this.$i18n.t('misc.PROTOCOL'), placeholder: this.$i18n.t('misc.PROTOCOL'), type: 'select', object: this.protocols, objectKey: null },
-      { name: 'market_model', label: this.$i18n.t('misc.MARKET_MODEL'), placeholder: this.$i18n.t('misc.MARKET_MODEL'), type: 'model', object: this.marketModels, objectKey: null },
-      { name: 'price', label: this.$i18n.t('misc.PRICE'), placeholder: this.$i18n.t('misc.PRICE'), type: 'number' },
-      { name: 'group_id', label: this.$i18n.t('misc.NODE_GROUP'), type: 'select', object: this.groups, objectKey: 'id' }
+      {
+        name: 'friendly_name',
+        label: this.$i18n.t('misc.FRIENDLY_NAME'),
+        placeholder: this.$i18n.t('misc.FRIENDLY_NAME'),
+        type: 'text'
+      },
+      {
+        name: 'ip',
+        label: this.$i18n.t('misc.IP'),
+        placeholder: this.$i18n.t('misc.IP'),
+        type: 'text'
+      },
+      {
+        name: 'port',
+        label: this.$i18n.t('misc.PORT_NUMBER'),
+        placeholder: this.$i18n.t('misc.PORT_NUMBER'),
+        type: 'number'
+      },
+      {
+        name: 'city',
+        label: this.$i18n.t('misc.CITY'),
+        placeholder: this.$i18n.t('misc.CITY'),
+        type: 'text'
+      },
+      {
+        name: 'access_token',
+        label: this.$i18n.t('misc.ACCESS_TOKEN'),
+        placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'),
+        type: 'text'
+      },
+      {
+        name: 'protocol',
+        label: this.$i18n.t('misc.PROTOCOL'),
+        placeholder: this.$i18n.t('misc.PROTOCOL'),
+        type: 'select',
+        object: this.protocols,
+        objectKey: null
+      },
+      {
+        name: 'market_model',
+        label: this.$i18n.t('misc.MARKET_MODEL'),
+        placeholder: this.$i18n.t('misc.MARKET_MODEL'),
+        type: 'model',
+        object: this.marketModels,
+        objectKey: null
+      },
+      {
+        name: 'price',
+        label: this.$i18n.t('misc.PRICE'),
+        placeholder: this.$i18n.t('misc.PRICE'),
+        type: 'price'
+      },
+      {
+        name: 'group_id',
+        label: this.$i18n.t('misc.NODE_GROUP'),
+        type: 'select',
+        object: this.formattedGroupList,
+        objectKey: 'id',
+        labelKey: 'label'
+      }
     ]
   },
   methods: {
