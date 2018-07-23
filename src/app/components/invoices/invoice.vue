@@ -161,14 +161,19 @@
                       :class="{ 'line-error': item.error }">
                       <td>{{ item.id }}</td>
                       <td class="text-left">
-                        <router-link
-                          v-if="item.type !== 'ENTERPRISE'"
-                          :to="{ name: 'marketView', params: { id: item.resource, type: (item.type === 'NODE_GROUP' || item.type == 'MANAGED') ? 'group' : 'node' } }">
-                          Resource {{ item.resource }}
-                        </router-link>
-                        <span v-else>
-                          Resource {{ item.resource }}
-                        </span>
+                        <template v-if="item.isAddCredit">
+                          <span>Add account credit</span>
+                        </template>
+                        <template v-else>
+                          <router-link
+                            v-if="item.type !== 'ENTERPRISE'"
+                            :to="{ name: 'marketView', params: { id: item.resource, type: (item.type === 'NODE_GROUP' || item.type == 'MANAGED') ? 'group' : 'node' } }">
+                            Resource {{ item.resource }}
+                          </router-link>
+                          <span v-else>
+                            Resource {{ item.resource }}
+                          </span>
+                        </template>
 
                         <span
                           v-if="item.error"
@@ -180,6 +185,9 @@
                         <span class="badge">
                           <template v-if="item.type === 'ENTERPRISE'">
                             Enterprise
+                          </template>
+                          <template v-else-if="item.isAddCredit">
+                            Credit
                           </template>
                           <template v-else>
                             <template v-if="item.type === 'MANAGED'">Managed </template>
@@ -322,10 +330,10 @@ export default {
       // Line items from credit
       if (this.isCreditInvoice) {
         lineItems.push({
-          id: 0,
-          description: 'Add account credit',
+          id: 'CREDIT',
           quantity: 1,
-          amount: this.invoice.amount
+          amount: this.invoice.amount,
+          isAddCredit: true
         })
       }
 

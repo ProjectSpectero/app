@@ -58,9 +58,10 @@ export default {
     watchMaxValue () {
       if (this.amount > this.max) {
         this.amount = this.max
-      } else if (this.amount === '' || parseInt(this.amount) < 5) {
-        this.amount = 5
       }
+      // else if (this.amount === '' || parseInt(this.amount) < 5) {
+      //   this.amount = 5
+      // }
     },
     fetchMax () {
       paymentAPI.getMaxCredit({
