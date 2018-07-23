@@ -15,7 +15,7 @@
             slot-scope="props">
             <button
               class="button"
-              @click.stop="impersonate(props.row.id)">
+              @click.stop="triggerImpersonation(props.row.id)">
               {{ $i18n.t('misc.IMPERSONATE') }}
             </button>
           </template>
@@ -27,7 +27,9 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { getCookie } from 'tiny-cookie'
 import userAPI from '@/app/api/user'
+import authAPI from '@/app/api/auth'
 import top from '@/shared/components/top'
 
 export default {
@@ -73,8 +75,44 @@ export default {
   },
   methods: {
     ...mapActions({
-      impersonate: 'appAuth/impersonate'
+      addCookie: 'appAuth/addCookie',
+      setLoginInfo: 'appAuth/setLoginInfo',
+      syncImpersonatedUser: 'appAuth/syncImpersonatedUser',
+      startImpersonating: 'appAuth/startImpersonating'
     }),
+    async triggerImpersonation (id) {
+      const loginCookie = getCookie(process.env.APP_COOKIE)
+
+      if (loginCookie) {
+        let realCookie = JSON.parse(loginCookie)
+        realCookie.cookieName = process.env.IMPERSONATE_COOKIE
+
+        await authAPI.impersonate({
+          data: { id: id },
+          success: async response => {
+            const impersonationData = response.data.result
+
+            // Store the "real" login information in process.env.IMPERSONATE_COOKIE
+            // so we can switch back to it later
+            this.addCookie(Object.assign({}, realCookie, { cookieName: process.env.IMPERSONATE_COOKIE }))
+
+            // Set our current login information as if we were the target user:
+            // First we add the new info to process.env.APP_COOKIE,
+            // then we clear all user data from the store,
+            // then we act as if we had just logged in with the "fake" user
+            this.addCookie(impersonationData)
+            this.setLoginInfo(impersonationData)
+            await this.syncImpersonatedUser(id)
+            this.startImpersonating()
+
+            this.$router.push({ name: 'nodes' })
+          },
+          fail: error => {
+            console.log(error)
+          }
+        })
+      }
+    },
     async fetchList () {
       await userAPI.list({
         queryParams: {

@@ -29,6 +29,7 @@ async function API (project, method, path, data, success, failed) {
     })
 
     if (response) {
+      console.log('on api response of path', path)
       Vue.prototype.$Progress.finish()
 
       // Main api callback
@@ -55,8 +56,6 @@ async function API (project, method, path, data, success, failed) {
       failed(new Err(['ECONNABORTED'], 598))
       return
     }
-
-    console.log(project)
 
     // Remove authorization cookie if 401 returned by any API call.
     if (status === 401 && getCookie(project.cookieName) !== null) {
