@@ -39,7 +39,7 @@
           <ul>
             <li>
               <router-link :to="{ name: 'enterpriseOrders' }">
-                <span class="icon-hard-drive"/>
+                <span class="icon-server"/>
                 {{ $i18n.t('misc.ENTERPRISE') }}
               </router-link>
             </li>
