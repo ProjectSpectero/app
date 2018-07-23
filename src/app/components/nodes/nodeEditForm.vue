@@ -11,6 +11,7 @@
 
             <div
               v-for="field in formFields"
+              v-if="field.show !== false"
               :key="field.name">
               <template v-if="field.type === 'select'">
                 <div
@@ -140,9 +141,8 @@ export default {
       groupsPage: 1,
       formError: null,
       formLoading: false,
-      form: null,
+      form: {},
       protocols: ['http', 'https'],
-      formFields: null,
       marketModels: [
         'UNLISTED',
         'LISTED_SHARED',
@@ -196,77 +196,88 @@ export default {
       }
 
       return groups
+    },
+    formFields () {
+      return [
+        {
+          name: 'friendly_name',
+          label: this.$i18n.t('misc.FRIENDLY_NAME'),
+          placeholder: this.$i18n.t('misc.FRIENDLY_NAME'),
+          type: 'text'
+        },
+        {
+          name: 'ip',
+          label: this.$i18n.t('misc.IP'),
+          placeholder: this.$i18n.t('misc.IP'),
+          type: 'text'
+        },
+        {
+          name: 'port',
+          label: this.$i18n.t('misc.PORT_NUMBER'),
+          placeholder: this.$i18n.t('misc.PORT_NUMBER'),
+          type: 'number'
+        },
+        {
+          name: 'city',
+          label: this.$i18n.t('misc.CITY'),
+          placeholder: this.$i18n.t('misc.CITY'),
+          type: 'text'
+        },
+        {
+          name: 'access_token',
+          label: this.$i18n.t('misc.ACCESS_TOKEN'),
+          placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'),
+          type: 'text'
+        },
+        {
+          name: 'protocol',
+          label: this.$i18n.t('misc.PROTOCOL'),
+          placeholder: this.$i18n.t('misc.PROTOCOL'),
+          type: 'select',
+          object: this.protocols,
+          objectKey: null
+        },
+        {
+          name: 'market_model',
+          label: this.$i18n.t('misc.MARKET_MODEL'),
+          placeholder: this.$i18n.t('misc.MARKET_MODEL'),
+          type: 'model',
+          object: this.marketModels,
+          objectKey: null
+        },
+        {
+          name: 'price',
+          label: this.$i18n.t('misc.PRICE'),
+          placeholder: this.$i18n.t('misc.PRICE'),
+          type: 'price',
+          show: this.form.market_model !== 'UNLISTED'
+        },
+        {
+          name: 'group_id',
+          label: this.$i18n.t('misc.NODE_GROUP'),
+          type: 'select',
+          object: this.formattedGroupList,
+          objectKey: 'id',
+          labelKey: 'label'
+        }
+      ]
     }
   },
   async created () {
     this.form = Object.assign({}, this.node)
     await this.fetchGroups()
-
-    this.formFields = [
-      {
-        name: 'friendly_name',
-        label: this.$i18n.t('misc.FRIENDLY_NAME'),
-        placeholder: this.$i18n.t('misc.FRIENDLY_NAME'),
-        type: 'text'
-      },
-      {
-        name: 'ip',
-        label: this.$i18n.t('misc.IP'),
-        placeholder: this.$i18n.t('misc.IP'),
-        type: 'text'
-      },
-      {
-        name: 'port',
-        label: this.$i18n.t('misc.PORT_NUMBER'),
-        placeholder: this.$i18n.t('misc.PORT_NUMBER'),
-        type: 'number'
-      },
-      {
-        name: 'city',
-        label: this.$i18n.t('misc.CITY'),
-        placeholder: this.$i18n.t('misc.CITY'),
-        type: 'text'
-      },
-      {
-        name: 'access_token',
-        label: this.$i18n.t('misc.ACCESS_TOKEN'),
-        placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'),
-        type: 'text'
-      },
-      {
-        name: 'protocol',
-        label: this.$i18n.t('misc.PROTOCOL'),
-        placeholder: this.$i18n.t('misc.PROTOCOL'),
-        type: 'select',
-        object: this.protocols,
-        objectKey: null
-      },
-      {
-        name: 'market_model',
-        label: this.$i18n.t('misc.MARKET_MODEL'),
-        placeholder: this.$i18n.t('misc.MARKET_MODEL'),
-        type: 'model',
-        object: this.marketModels,
-        objectKey: null
-      },
-      {
-        name: 'price',
-        label: this.$i18n.t('misc.PRICE'),
-        placeholder: this.$i18n.t('misc.PRICE'),
-        type: 'price'
-      },
-      {
-        name: 'group_id',
-        label: this.$i18n.t('misc.NODE_GROUP'),
-        type: 'select',
-        object: this.formattedGroupList,
-        objectKey: 'id',
-        labelKey: 'label'
-      }
-    ]
   },
   methods: {
-    async submit () {
+    submit () {
+      this.$validator.validateAll().then(result => {
+        if (!result) {
+          this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
+        } else {
+          this.processSubmit()
+        }
+      })
+    },
+    async processSubmit () {
       this.formLoading = true
 
       await nodeAPI.edit({

@@ -1,12 +1,14 @@
 <template>
   <div class="col-12">
     <div
-      v-if="system"
+      v-if="node.system_data"
       class="spec-list section padded">
+      <h2>System</h2>
       <div
-        v-for="(spec, i) in system"
+        v-for="(spec, i) in node.system_data"
         :key="i"
         class="spec">
+        <h5>{{ i }}</h5>
         <list-system-spec :spec="spec"/>
       </div>
     </div>
@@ -31,13 +33,6 @@ export default {
       type: Object,
       required: true
     }
-  },
-  computed: {
-    system () {
-      if (this.node.system_data) {
-        return JSON.parse(this.node.system_data)
-      }
-    }
   }
 }
 </script>
@@ -45,10 +40,14 @@ export default {
 <style lang="scss" scoped>
 .spec-list {
   > .spec {
-    margin-bottom: $pad;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px dashed $color-border;
 
-    &:last-child {
-      margin-bottom: 0;
+    &:first-child {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
     }
   }
 }
