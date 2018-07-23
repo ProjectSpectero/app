@@ -85,7 +85,7 @@
   }
 
   // Icons within buttons
-  [class^="icon-"] {
+  [class^="icon-"]:before {
     margin-right: 5px;
     position: relative;
     top: 1px;

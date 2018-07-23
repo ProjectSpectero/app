@@ -186,7 +186,7 @@ export default {
       return Math.floor(price) // floor the price for marketing purposes
     }
   },
-  created: function () {
+  created () {
     if (this.inCart) {
       this.term = this.inCart.term
     }

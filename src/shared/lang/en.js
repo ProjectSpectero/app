@@ -204,22 +204,29 @@ module.exports = {
       }
     },
     METHODS: {
+      CRYPTO: {
+        TITLE: 'Cryptocurrency',
+        DESCRIPTION: 'Make a secure payment using cryptocurrency. Payments processed through Coinbase Commerce.',
+        BUTTON_TEXT: 'Cryptocurrency Payment',
+        NOT_AVAILABLE: 'Cryptocurrency payments aren\'t available for this transaction.'
+      },
       PAYPAL: {
         TITLE: 'PayPal',
-        DESCRIPTION: 'Complete your payment through PayPal. Creating an account is not necessary if you choose to pay by credit card.',
-        BUTTON_TEXT: 'PayPal Checkout'
+        DESCRIPTION: 'Complete your payment through PayPal.',
+        BUTTON_TEXT: 'PayPal Checkout',
+        NOT_AVAILABLE: 'PayPal payments aren\'t available for this transaction.'
       },
       STRIPE: {
         TITLE: 'Credit Card',
-        DESCRIPTION: 'Make a safe payment using your credit card. Most major card types are accepted.',
-        BUTTON_TEXT: 'Credit Card Payment'
+        DESCRIPTION: 'Make a secure payment using your credit card. Most major card types are accepted.',
+        BUTTON_TEXT: 'Credit Card Payment',
+        NOT_AVAILABLE: 'Credit card payments aren\'t available for this transaction.'
       },
       CREDIT: {
         TITLE: 'Account Credit',
         DESCRIPTION: 'Apply your account credit to this invoice. You currently have <strong>{balance}</strong> of account credit available to be applied.',
         BUTTON_TEXT: 'Use Account Credit',
-        DESCRIPTION_NO_BALANCE: 'You currently have no account credit available to pay with.',
-        BUTTON_TEXT_NO_BALANCE: 'No Credit Available'
+        NO_BALANCE: 'You have no account credit available to pay with.'
       }
     }
   },
@@ -228,6 +235,8 @@ module.exports = {
     PAY_INVOICE: 'Pay Invoice',
     PAY_INVOICE_TEXT: 'Your invoice <strong>{invoiceId}</strong> currently has an outstanding balance of <strong>{due}</strong>.',
     PAY_PLEASE_PAY: 'Please pay the amount due using the options available below.',
+    GATEWAY_LOADING_FAILED_TITLE: 'Error',
+    GATEWAY_LOADING_FAILED_TEXT: 'Sorry, we were unable to load your available payment options at this time.<br>Please try again later or contact our support team if this persists.',
     INVOICE_STATUS: {
       PAID: 'Paid',
       UNPAID: 'Unpaid',

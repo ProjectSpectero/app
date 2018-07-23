@@ -1,8 +1,8 @@
 <template>
   <div class="alert-msg-centered">
     <div class="icon-alert-circle big-icon"/>
-    <h1>{{ header }}</h1>
-    <p>{{ msg }}</p>
+    <h1 v-html="header" />
+    <p v-html="msg" />
   </div>
 </template>
 
