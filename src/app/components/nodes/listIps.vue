@@ -21,11 +21,6 @@
             {{ getCountryById(props.row.cc).name }}
           </template>
         </template>
-        <template
-          slot="created_at"
-          slot-scope="props">
-          {{ props.row.created_at | moment('MMM D, YYYY HH:mm:ss') }}
-        </template>
       </v-client-table>
     </div>
     <not-found
@@ -62,8 +57,7 @@ export default {
         ip: 'IP Address',
         asn: 'ASN',
         cc: 'Country',
-        city: 'City',
-        created_at: 'Creation Date'
+        city: 'City'
       },
       options: {}
     }
@@ -101,7 +95,7 @@ export default {
   },
   methods: {
     setColumns () {
-      const columns = this.showAddresses ? ['ip', 'asn', 'cc', 'city', 'created_at'] : ['asn', 'cc', 'city', 'created_at']
+      const columns = this.showAddresses ? ['ip', 'asn', 'cc', 'city'] : ['asn', 'cc', 'city']
       this.columns = columns
       this.sortableColumns = columns
       this.filterableColumns = columns
