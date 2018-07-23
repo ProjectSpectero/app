@@ -61,10 +61,7 @@
         </section>
         <section class="section padded">
           <h5>Step 3</h5>
-          <p>Once you've connected the daemon to Spectero Cloud, visit our nodes management view to complete the setup process.</p>
-          <router-link
-            :to="{ name: 'nodes' }"
-            class="button-success"><span class="icon-check"/> Complete Setup</router-link>
+          <p>Once you've ran the connect command to link the daemon to Spectero Cloud, check your email inbox to complete the setup process.</p>
         </section>
         <section
           v-if="matrices"
