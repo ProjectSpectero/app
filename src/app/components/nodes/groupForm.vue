@@ -2,7 +2,6 @@
   <form @submit.prevent.stop="submit">
     <div class="col-6 section padded">
       <div class="col">
-        <h2>{{ $i18n.t('misc.GENERAL_INFO') }}</h2>
         <div
           v-if="formError"
           class="message message-error">{{ formError }}</div>
@@ -12,6 +11,7 @@
             <div class="label">
               <label for="friendly_name">{{ $i18n.t('misc.FRIENDLY_NAME') }}</label>
             </div>
+
             <input
               v-validate="rules.friendly_name"
               id="friendly_name"
@@ -20,9 +20,9 @@
               :disabled="formLoading"
               type="text"
               name="friendly_name"
-              placeholder="Please add a name for this node group"
+              placeholder="Name this node group"
               class="input max-width"
-              data-vv-as="friendly_name">
+              data-vv-as="friendly name">
 
             <span
               v-show="errors.has('friendly_name')"
@@ -30,9 +30,9 @@
               {{ errors.first('friendly_name') }}
             </span>
           </div>
-
+          <pre>{{ form }}</pre>
           <div
-            v-if="marketModels"
+            v-if="form.market_model !== 'UNLISTED'"
             class="form-input">
             <div class="label">
               <label for="price">{{ $i18n.t('misc.PRICE') }}</label>
@@ -59,12 +59,12 @@
             </span>
           </div>
 
-          <div
-            v-if="marketModels"
-            class="form-input">
+          <div class="form-input">
             <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.MARKET_MODEL') }}</label></div>
             <div class="input-with-tooltip">
-              <select v-model="form.market_model">
+              <select
+                v-model="form.market_model"
+                @change="updateMarketModel(form.market_model)">
                 <option
                   v-for="model in marketModels"
                   :key="model"
@@ -83,7 +83,7 @@
           :disabled="formLoading"
           type="submit"
           class="button-info button-md max-width">
-          {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
+          {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE_GROUP') }}
         </button>
       </div>
     </div>
@@ -116,9 +116,17 @@ export default {
         'UNLISTED',
         'LISTED_SHARED',
         'LISTED_DEDICATED'
-      ],
-      rules: {
+      ]
+    }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'appAuth/user'
+    }),
+    rules () {
+      return {
         friendly_name: {
+          required: true,
           max: 50
         },
         price: {
@@ -132,14 +140,14 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapGetters({
-      user: 'appAuth/user'
-    })
-  },
   created () {
     // Populate form object
     this.form = this.group ? Object.assign({}, this.group) : {}
+
+    // Set default market model if none set
+    if (!this.form.market_model) {
+      this.form.market_model = this.marketModels[0]
+    }
 
     this.formFields = [
       { name: 'friendly_name', label: 'Friendly name', placeholder: 'Name for this node', type: 'text' },
@@ -177,6 +185,10 @@ export default {
           }
         })
       }
+    },
+    updateMarketModel (val) {
+      this.$set(this.form, 'market_model', val)
+      console.log(this.form.market_model)
     }
   }
 }

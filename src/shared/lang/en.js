@@ -103,7 +103,8 @@ module.exports = {
     LOGIN: 'Log In',
     REGISTER: 'Register',
     RESET_PASSWORD: 'Reset Password',
-    SERVICES: 'Services'
+    SERVICES: 'Services',
+    SAVE_GROUP: 'Save Group'
   },
 
   errors: {
