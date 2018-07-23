@@ -37,6 +37,15 @@
             </p>
           </template>
         </section>
+
+        <section
+          v-if="osTab === 'Windows'"
+          class="section padded">
+          <h5>Windows 10 users</h5>
+          <p>Microsoft .NET Framework v3.5 may be required as an installation dependency if you are running Windows 10.</p>
+          <p>If you are prompted to install .NET Framework v3.5 upon launching the installer, please <strong>re-run the installer after the installation completes</strong> to finish the installation process.</p>
+        </section>
+
         <section class="section padded">
           <h5>Installation Help</h5>
           <p>If you face any problems during installation, please refer to our documentation or GitHub repository by clicking the link below:</p>
