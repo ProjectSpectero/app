@@ -20,6 +20,14 @@ export default {
   },
 
   /**
+   * Processes a Coinbase Commerce payment.
+   * @param {Integer} invoiceId The invoice id.
+   */
+  processCrypto (options) {
+    return api('POST', `/payment/crypto/process/${options.data.invoiceId}`, options)
+  },
+
+  /**
    * Processes a direct account credit payment.
    *
    * @param {Integer} invoiceId The invoice id.

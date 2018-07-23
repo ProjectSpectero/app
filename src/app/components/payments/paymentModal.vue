@@ -114,10 +114,6 @@ export default {
         methods.credit.description = 'NO_BALANCE'
       }
 
-      // Manually disable crypto payments during implementation (CF-513)
-      methods.crypto.enabled = false
-      methods.crypto.description = 'NOT_AVAILABLE'
-
       // Disable any unavailable gateways + display "this gateway is not available" messages
       for (let key in methods) {
         if ((this.allowedGateways.find(u => u === key) || false) === false) {
@@ -153,6 +149,7 @@ export default {
       })
     },
     pay (method) {
+      console.warn(method.route)
       this.$router.push({
         name: method.route,
         params: {
