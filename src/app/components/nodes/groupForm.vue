@@ -36,17 +36,17 @@
             <div class="label">
               <label for="price">{{ $i18n.t('misc.PRICE') }}</label>
             </div>
-            <input
+
+            <money
               v-validate="rules.price"
               id="price"
               v-model="form.price"
               :class="{'input-error': errors.has('price')}"
               :disabled="formLoading"
-              type="number"
               name="price"
               placeholder="Price"
               class="input max-width"
-              data-vv-as="price">
+              data-vv-as="price" />
 
             <span
               v-show="errors.has('price')"

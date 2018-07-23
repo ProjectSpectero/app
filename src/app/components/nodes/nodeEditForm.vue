@@ -46,6 +46,28 @@
                   </div>
                 </div>
               </template>
+              <template v-else-if="field.type === 'price'">
+                <div class="form-input">
+                  <div class="label"><label :for="field.name">{{ field.label }}</label></div>
+                  <money
+                    v-validate="rules[field.name]"
+                    :type="field.type"
+                    v-model="form[field.name]"
+                    :name="field.name"
+                    :id="field.name"
+                    :placeholder="field.placeholder"
+                    :class="{'input-error': errors.has(field.name)}"
+                    :disabled="formLoading"
+                    :data-vv-as="field.name"
+                    class="input max-width" />
+
+                  <span
+                    v-show="errors.has(field.name)"
+                    class="input-error-message">
+                    {{ errors.first(field.name) }}
+                  </span>
+                </div>
+              </template>
               <template v-else>
                 <div class="form-input">
                   <div class="label"><label :for="field.name">{{ field.label }}</label></div>
@@ -172,7 +194,7 @@ export default {
       { name: 'access_token', label: this.$i18n.t('misc.ACCESS_TOKEN'), placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'), type: 'text' },
       { name: 'protocol', label: this.$i18n.t('misc.PROTOCOL'), placeholder: this.$i18n.t('misc.PROTOCOL'), type: 'select', object: this.protocols, objectKey: null },
       { name: 'market_model', label: this.$i18n.t('misc.MARKET_MODEL'), placeholder: this.$i18n.t('misc.MARKET_MODEL'), type: 'model', object: this.marketModels, objectKey: null },
-      { name: 'price', label: this.$i18n.t('misc.PRICE'), placeholder: this.$i18n.t('misc.PRICE'), type: 'number' },
+      { name: 'price', label: this.$i18n.t('misc.PRICE'), placeholder: this.$i18n.t('misc.PRICE'), type: 'price' },
       { name: 'group_id', label: this.$i18n.t('misc.NODE_GROUP'), type: 'select', object: this.groups, objectKey: 'id' }
     ]
   },
