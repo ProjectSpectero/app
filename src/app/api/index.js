@@ -13,7 +13,6 @@ async function API (method, path, data, success, failed) {
   const cookieName = process.env['APP_COOKIE']
   const cookie = getCookie(cookieName)
 
-  console.log('On api, cookie is', JSON.parse(cookie))
   let project = {
     cookieName: cookieName,
     cookie: (cookie !== null) ? JSON.parse(cookie) : null,
@@ -28,6 +27,7 @@ async function API (method, path, data, success, failed) {
     project.port = process.env['APP_PORT'] ? ':' + process.env['APP_PORT'] : ''
   }
 
+  console.log('awaiting requestAPI for path', path)
   await requestAPI(project, method, path, data, success, failed)
 }
 

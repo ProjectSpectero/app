@@ -9,7 +9,7 @@
     <div class="actions">
       <button
         class="button-dark"
-        @click.stop.prevent="stopImpersonating">Stop impersonating</button>
+        @click.stop.prevent="stopImpersonation">Stop impersonating</button>
     </div>
   </div>
 </template>
@@ -31,11 +31,31 @@ export default {
   methods: {
     ...mapActions({
       startImpersonating: 'appAuth/startImpersonating',
-      stopImpersonating: 'appAuth/stopImpersonating'
+      stopImpersonating: 'appAuth/stopImpersonating',
+      addCookie: 'appAuth/addCookie',
+      setLoginInfo: 'appAuth/setLoginInfo',
+      syncCurrentUser: 'appAuth/syncCurrentUser'
     }),
     testImpersonation () {
       if (getCookie(process.env.IMPERSONATE_COOKIE) !== null) {
         this.startImpersonating()
+      }
+    },
+    async stopImpersonation () {
+      const loginCookie = getCookie(process.env.IMPERSONATE_COOKIE)
+
+      if (loginCookie) {
+        let realCookie = JSON.parse(loginCookie)
+        console.log('found real login cookie', realCookie)
+
+        this.addCookie(realCookie)
+        this.setLoginInfo(realCookie)
+        await this.syncCurrentUser()
+
+        console.log('stopping impersonation on store')
+        this.stopImpersonating()
+
+        this.$router.push({ name: 'users-list' })
       }
     }
   }

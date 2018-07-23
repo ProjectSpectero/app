@@ -1,5 +1,4 @@
 import userAPI from '@/app/api/user'
-import authAPI from '@/app/api/auth'
 import { getCookie, setCookie, removeCookie } from 'tiny-cookie'
 
 const state = {
@@ -25,6 +24,7 @@ const actions = {
   async syncCurrentUser ({ commit }) {
     await userAPI.getMe({
       success: response => {
+        console.log('syncCurrentUser: adding real user')
         commit('SET_CURRENT_USER', response.data.result)
       },
       fail: error => {
@@ -36,7 +36,7 @@ const actions = {
     await userAPI.get({
       data: { id: id },
       success: response => {
-        console.warn('syncImpersonatedUser: setting current user as ', response.data.result.name, response.data.result)
+        console.warn('syncImpersonatedUser: setting current user as ', response.data.result.name)
         commit('SET_CURRENT_USER', response.data.result)
       },
       fail: error => {
@@ -44,7 +44,7 @@ const actions = {
       }
     })
   },
-  async checkLogin ({ commit, getters, dispatch }) {
+  async checkLogin ({ getters, dispatch }) {
     const cookie = getCookie(process.env.APP_COOKIE)
     let data = null
 
@@ -95,55 +95,13 @@ const actions = {
     console.warn('setLoginInfo', payload)
     commit('SET_LOGIN_INFO', payload)
   },
-  async impersonate ({ dispatch, commit, getters }, userId) {
-    const loginCookie = getCookie(process.env.APP_COOKIE)
-
-    if (loginCookie) {
-      let realCookie = JSON.parse(loginCookie)
-      realCookie.cookieName = process.env.IMPERSONATE_COOKIE
-
-      await authAPI.impersonate({
-        data: { id: userId },
-        success: async response => {
-          const impersonationData = response.data.result
-
-          // Store the "real" login information in process.env.IMPERSONATE_COOKIE
-          // so we can switch back to it later
-          dispatch('addCookie', Object.assign({}, realCookie, { cookieName: process.env.IMPERSONATE_COOKIE }))
-
-          // Set our current login information as if we were the target user:
-          // First we add the new info to process.env.APP_COOKIE,
-          // then we clear all user data from the store,
-          // then we act as if we had just logged in with the "fake" user
-          await dispatch('addCookie', impersonationData)
-          await dispatch('setLoginInfo', impersonationData)
-          await dispatch('syncImpersonatedUser', userId)
-          dispatch('startImpersonating')
-        },
-        fail: error => {
-          console.log(error)
-        }
-      })
-    }
-  },
   async startImpersonating ({ commit }) {
     commit('START_IMPERSONATION')
   },
-  async stopImpersonating ({ commit, dispatch }) {
-    const loginCookie = getCookie(process.env.IMPERSONATE_COOKIE)
-
-    if (loginCookie) {
-      let realCookie = JSON.parse(loginCookie)
-
-      // Revert back to the "real" user by setting
-      await dispatch('addCookie', realCookie)
-      await dispatch('setLoginInfo', realCookie)
-      await dispatch('syncCurrentUser')
-
-      // Remove impersonation cookie (we don't need it and
-      // it acts as a validator for being impersonating or not)
-      commit('STOP_IMPERSONATION')
-    }
+  async stopImpersonating ({ commit }) {
+    // Remove impersonation cookie (we don't need it and
+    // it acts as a validator for being impersonating or not)
+    commit('STOP_IMPERSONATION')
   }
 }
 
