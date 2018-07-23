@@ -167,7 +167,7 @@ module.exports = {
     CHECK_SAVE_CARD: 'Save card for future orders',
     PAYMENT_SUCCESS: 'Payment processed successfully!',
     PAYMENT_PROCESSING: 'Payment in process, please wait...',
-    PAYMENT_ACCEPTED: 'Your order has been accepted! We are now processing your payment, please check this invoice in a few minutes.',
+    PAYMENT_ACCEPTED: 'Your payment has been accepted and we are now processing it. Please check this invoice in a few minutes.',
     PAY_HEADER: 'Payment for invoice #{invoiceId}',
     PAY_DESCRIPTION: 'Use the form below to pay for your order. Once we recieve your payment, you\'ll gain access to the services associated to the invoice.',
     PAY_SECURE: 'Your payment is secure.',
