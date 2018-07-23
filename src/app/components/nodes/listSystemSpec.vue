@@ -4,15 +4,14 @@
       <div
         v-for="(subspec, j) in spec"
         :key="j">
-        <div class="title">{{ j }}</div>
-
         <div class="subspec">
+          <span class="title">{{ j }}</span>
           <spec :spec="subspec"/>
         </div>
       </div>
     </template>
     <template v-else>
-      {{ spec }}
+      {{ spec ? spec : 'N/A' }}
     </template>
   </div>
 </template>
@@ -31,17 +30,34 @@ export default {
 
 <style lang="scss" scoped>
 .spec {
-  padding: 16px;
-  margin-bottom: 0;
-  border: 1px solid $color-border;
+  font-family: monospace;
 
-  .subspec {
-    margin-bottom: 12px;
+  .title {
+    width: 100px;
+    margin-right: 12px;
+    font-weight: $font-bold;
   }
-}
+  .subspec {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 12px;
+    border: 1px solid $color-border;
+    text-transform: capitalize;
 
-.title {
-  font-weight: $font-bold;
-  margin-bottom: 8px;
+    .spec {
+      flex: 1;
+    }
+    > .spec .title {
+      font-weight: $font-semi;
+      opacity: 0.75;
+    }
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+  }
 }
 </style>
