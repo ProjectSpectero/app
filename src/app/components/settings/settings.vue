@@ -145,7 +145,11 @@ export default {
           console.log(inputErrors)
           for (let errorKey in inputErrors) {
             if (inputErrors.hasOwnProperty(errorKey)) {
-              this.$validator.errors.add(inputName, this.$i18n.t(`errors.${errorKey}`, null, { x: inputErrors[errorKey] }))
+              this.$validator.errors.add({
+                id: `${inputName}_${errorKey}`,
+                field: inputName,
+                msg: this.$i18n.t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
+              })
             }
           }
         }

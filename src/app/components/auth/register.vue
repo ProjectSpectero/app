@@ -12,11 +12,12 @@
           v-model="email"
           :class="{'input-error': errors.has('email')}"
           :disabled="formLoading"
-          type="text"
+          type="email"
           name="email"
           placeholder="Email address"
           class="input max-width"
-          data-vv-as="email">
+          data-vv-as="email"
+          @keyup="$validator.errors.removeById('email_FIELD_UNIQUE')">
 
         <span
           v-show="errors.has('email')"
@@ -140,7 +141,11 @@ export default {
 
           for (let errorKey in inputErrors) {
             if (inputErrors.hasOwnProperty(errorKey)) {
-              this.$validator.errors.add(inputName, this.$i18n.t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] }))
+              this.$validator.errors.add({
+                id: `${inputName}_${errorKey}`,
+                field: inputName,
+                msg: this.$i18n.t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
+              })
             }
           }
         }
