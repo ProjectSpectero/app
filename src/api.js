@@ -20,7 +20,7 @@ async function API (project, method, path, data, success, failed) {
     const response = await axios({
       method: method,
       baseURL: project.protocol + project.endpoint + project.port + '/' + project.version,
-      timeout: 10000,
+      timeout: project.timeout,
       headers: {
         Authorization: project.cookie ? `Bearer ${project.cookie.accessToken}` : null
       },
@@ -29,7 +29,6 @@ async function API (project, method, path, data, success, failed) {
     })
 
     if (response) {
-      console.log('on api response of path', path)
       Vue.prototype.$Progress.finish()
 
       // Main api callback
@@ -53,7 +52,14 @@ async function API (project, method, path, data, success, failed) {
     // Gracefully handling timeout errors
     if (e.code === 'ECONNABORTED') {
       Vue.prototype.$Progress.fail()
-      failed(new Err(['ECONNABORTED'], 598))
+      Vue.toasted.error('Connection timed out!')
+
+      if (failed !== undefined && typeof failed === 'function') {
+        failed(err, 598)
+      } else {
+        data.fail(err)
+      }
+
       return
     }
 

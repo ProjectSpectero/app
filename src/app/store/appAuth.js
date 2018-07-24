@@ -33,7 +33,7 @@ const actions = {
     })
   },
   async syncImpersonatedUser ({ commit }, id) {
-    await userAPI.get({
+    await userAPI.getMe({
       data: { id: id },
       success: response => {
         console.warn('syncImpersonatedUser: setting current user as ', response.data.result.name)

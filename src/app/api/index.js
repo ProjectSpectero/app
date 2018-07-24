@@ -10,24 +10,24 @@ async function API (method, path, data, success, failed) {
   // 2.2) If a port is specified on our config BUT that port is '', we'll run the app using only the ip address
   // 2.3) If a port is specified and numeric, that will be used as expected
 
-  const cookieName = process.env['APP_COOKIE']
+  const cookieName = process.env.APP_COOKIE
   const cookie = getCookie(cookieName)
 
   let project = {
     cookieName: cookieName,
     cookie: (cookie !== null) ? JSON.parse(cookie) : null,
-    protocol: process.env['APP_HTTPS'] ? 'https://' : location.protocol + '//',
+    protocol: process.env.APP_HTTPS ? 'https://' : location.protocol + '//',
     port: location.port ? ':' + location.port : '',
-    endpoint: process.env['APP_ENDPOINT'] ? process.env['APP_ENDPOINT'] : location.hostname,
-    version: process.env['APP_VERSION']
+    endpoint: process.env.APP_ENDPOINT ? process.env.APP_ENDPOINT : location.hostname,
+    version: process.env.APP_VERSION,
+    timeout: 10000
   }
 
   // Allowing a default empty port to be specified
-  if (process.env['APP_PORT'] !== undefined) {
-    project.port = process.env['APP_PORT'] ? ':' + process.env['APP_PORT'] : ''
+  if (process.env.APP_PORT !== undefined) {
+    project.port = process.env.APP_PORT ? ':' + process.env.APP_PORT : ''
   }
 
-  console.log('awaiting requestAPI for path', path)
   await requestAPI(project, method, path, data, success, failed)
 }
 
