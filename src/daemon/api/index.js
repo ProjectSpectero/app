@@ -14,7 +14,7 @@ async function API (method, path, data, success, failed) {
     port: store.getters['daemonAuth/port'] ? ':' + store.getters['daemonAuth/port'] : '',
     endpoint: store.getters['daemonAuth/ip'] ? store.getters['daemonAuth/ip'] : location.hostname,
     version: store.getters['daemonAuth/version'],
-    timeout: 5000
+    timeout: 20
   }
 
   await requestAPI(project, method, path, data, success, failed)

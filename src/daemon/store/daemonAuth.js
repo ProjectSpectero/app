@@ -35,6 +35,7 @@ const actions = {
   async syncCurrentUser ({ commit, dispatch }) {
     await userAPI.getMe({
       success: response => {
+        console.log('syncCurrentUser successful on daemon', response.data.result)
         commit('SET_CURRENT_USER', response.data.result)
 
         // Gather remote node details
@@ -48,6 +49,7 @@ const actions = {
   async connectToRemote ({ commit, dispatch }) {
     await cloudAPI.remote({
       success: response => {
+        console.log('Finished connectToRemote')
         commit('SET_SPECS', response.data.result)
 
         // Append the restart server button if needed
@@ -77,13 +79,15 @@ const actions = {
       data: {
         id: nodeId
       },
-      success: response => {
+      success: async response => {
+        console.log('Auto-login started, setting up daemon data', response)
         dispatch('addCookie', response.data.result)
         dispatch('setupEndpoint', response.data.result)
+        await dispatch('syncCurrentUser')
       },
       fail: error => {
-        const e = Object.keys(error.errors)[0] || 'AUTOLOGIN_FAIL'
         console.log('Auto-login failed', error)
+        const e = Object.keys(error.errors)[0] || 'AUTOLOGIN_FAIL'
         throw new Error(e)
       }
     })

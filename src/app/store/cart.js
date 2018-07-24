@@ -58,7 +58,7 @@ const getters = {
 
 const actions = {
   // Parse items from localCart and fetch updated data from API
-  refresh: ({ commit, state, dispatch }) => {
+  refresh: ({ commit, dispatch }) => {
     let localCart = getLocalData().cart
 
     // Parse items from localCart and fetch updated data from API

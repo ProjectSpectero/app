@@ -2,7 +2,7 @@
   <div>
     <h2>Services</h2>
     <div
-      v-if="daemonInitialized"
+      v-if="daemonInitialized && services"
       class="col-container">
       <div
         v-for="(status, service) in services"
