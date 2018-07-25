@@ -37,15 +37,21 @@
               <label for="price">{{ $i18n.t('misc.PRICE') }}</label>
             </div>
 
-            <money
+            <vue-numeric
               v-validate="rules.price"
               id="price"
               v-model="form.price"
               :class="{'input-error': errors.has('price')}"
               :disabled="formLoading"
+              :min="0"
+              :precision="2"
+              :empty-value="0"
               name="price"
-              placeholder="Price"
+              type="price"
               class="input max-width"
+              currency="USD $"
+              separator=","
+              output-type="Number"
               data-vv-as="price" />
 
             <span
@@ -125,7 +131,9 @@ export default {
         },
         price: {
           required: true,
-          min_value: 5
+          numeric: true,
+          min_value: 5,
+          max_value: 9999
         },
         market_model: {
           required: true,
