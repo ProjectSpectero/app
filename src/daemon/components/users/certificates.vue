@@ -5,36 +5,49 @@
     <div
       v-if="user"
       class="container">
-      <div class="item">
+
+      <div
+        v-if="user.authKey"
+        class="item">
         <div class="label"><label for="authKey">Username</label></div>
+
         <textarea
           id="authKey"
           v-model="user.authKey"
           class="input font-mono"
           readonly/>
+
         <copy-to-clipboard
           :field="user.authKey"
           button-class="button-sm"/>
       </div>
-      <div class="item">
+      <div
+        v-if="user.cert"
+        class="item">
         <div class="label"><label for="certificate">Certificate</label></div>
+
         <textarea
           id="certificate"
           v-model="user.cert"
           class="input font-mono"
           readonly/>
+
         <download
           :content="user.cert"
           :file="'spectero-user-certificate.pfx'"
           button-class="button-sm"/>
       </div>
-      <div class="item">
+      <div
+        v-if="user.certKey"
+        class="item">
         <div class="label"><label for="key">Certificate Key</label></div>
+
         <textarea
           id="key"
           v-model="user.certKey"
           class="input font-mono"
           readonly/>
+
         <copy-to-clipboard
           :field="user.certKey"
           button-class="button-sm"/>
