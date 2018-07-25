@@ -338,7 +338,7 @@ module.exports = {
   },
 
   pro: {
-    MAIN_TITLE: 'Purchase Spectero Pro',
+    MAIN_TITLE: 'Purchase Spectero Pro'
   },
 
   services: {
