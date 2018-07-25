@@ -337,6 +337,10 @@ module.exports = {
     CONTACT_ACCOUNT_REPRESENTATIVE: 'Please contact your account representative to perform this action.'
   },
 
+  pro: {
+    MAIN_TITLE: 'Purchase Spectero Pro',
+  },
+
   services: {
     UPDATE_SUCCESS: 'Service configuration has been updated.',
     UPDATE_ERROR: 'Something went wrong. Please try again!',
