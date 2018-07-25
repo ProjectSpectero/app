@@ -3,6 +3,7 @@
     <sidebar/>
 
     <div class="content">
+      <impersonation-bar/>
       <bar
         v-if="barComponent"
         :bar-component="barComponent"/>
@@ -17,11 +18,13 @@
 import { mapActions, mapGetters } from 'vuex'
 import bar from '@/daemon/components/common/bar'
 import sidebar from '@/shared/components/sidebar'
+import impersonationBar from '@/shared/components/impersonating'
 
 export default {
   components: {
     sidebar,
-    bar
+    bar,
+    impersonationBar
   },
   computed: {
     ...mapGetters({
