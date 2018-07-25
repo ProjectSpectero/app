@@ -120,7 +120,8 @@ export default {
         pagination: {},
         result: []
       },
-      errorItem: 'nodes'
+      errorItem: 'nodes',
+      fetchSuccessful: false
     }
   },
   computed: {
@@ -136,8 +137,8 @@ export default {
     }
   },
   async created () {
-    await this.fetchGroups()
     await this.fetchUncategorized(this.currentPage)
+    await this.fetchGroups()
     this.handleSelection()
   },
   methods: {
@@ -271,6 +272,7 @@ export default {
         success: response => {
           this.uncategorized = response.data
           this.loading = false
+          this.fetchSuccessful = true
         },
         fail: e => {
           console.log(e)
@@ -280,22 +282,24 @@ export default {
     async fetchGroups () {
       // Group fetching is paged in chunks of 10, so we need to keep
       // fetching until we reach the total amount (received in pagination)
-      while (this.totalGroups === null || this.totalGroups !== this.processedGroups) {
-        await nodeAPI.groups({
-          perPage: 10,
-          groupsPage: this.groupsPage,
-          success: response => {
-            const pagination = response.data.pagination
-            this.totalGroups = pagination.total
-            this.processedGroups = this.processedGroups + response.data.result.length
-            this.groupsPage++
-            this.groups = this.groups ? [...this.groups, ...response.data.result] : response.data.result
-            this.error = false
-          },
-          fail: e => {
-            console.log(e)
-          }
-        })
+      if (this.fetchSuccessful) {
+        while (this.totalGroups === null || this.totalGroups !== this.processedGroups) {
+          await nodeAPI.groups({
+            perPage: 10,
+            groupsPage: this.groupsPage,
+            success: response => {
+              const pagination = response.data.pagination
+              this.totalGroups = pagination.total
+              this.processedGroups = this.processedGroups + response.data.result.length
+              this.groupsPage++
+              this.groups = this.groups ? [...this.groups, ...response.data.result] : response.data.result
+              this.error = false
+            },
+            fail: e => {
+              console.log(e)
+            }
+          })
+        }
       }
     },
     showAddNodeModal () {
