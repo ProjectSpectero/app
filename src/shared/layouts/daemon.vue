@@ -25,15 +25,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      barComponent: 'settings/bar',
-      user: 'daemonAuth/user'
+      barComponent: 'settings/bar'
     })
   },
   async created () {
     if (this.$route.params.nodeId) {
       try {
         await this.autologin(this.$route.params.nodeId)
-        await this.syncCurrentUser()
+        console.log('autologin finished')
       } catch (e) {
         this.$toasted.error(this.$i18n.t(`daemon.${e.message}`))
         this.$router.push({ name: 'nodes' })
@@ -44,13 +43,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      autologin: 'daemonAuth/autologin',
-      syncCurrentUser: 'daemonAuth/syncCurrentUser'
+      autologin: 'daemonAuth/autologin'
     })
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

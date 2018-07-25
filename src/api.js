@@ -14,12 +14,14 @@ import router from '@/router'
  * @param {Function} failed  Callback to be called on method fail
  */
 async function API (project, method, path, data, success, failed) {
+  const baseURL = project.protocol + project.endpoint + project.port + '/' + project.version
+
   Vue.prototype.$Progress.start()
 
   try {
     const response = await axios({
       method: method,
-      baseURL: project.protocol + project.endpoint + project.port + '/' + project.version,
+      baseURL: baseURL,
       timeout: project.timeout,
       headers: {
         Authorization: project.cookie ? `Bearer ${project.cookie.accessToken}` : null
@@ -51,8 +53,10 @@ async function API (project, method, path, data, success, failed) {
 
     // Gracefully handling timeout errors
     if (e.code === 'ECONNABORTED') {
+      const str = (process.env.NODE_ENV !== 'production') ? 'Connection to ' + baseURL + path + ' timed out!' : 'Connection timed out!'
+
       Vue.prototype.$Progress.fail()
-      Vue.toasted.error('Connection timed out!')
+      Vue.toasted.error(str)
 
       if (failed !== undefined && typeof failed === 'function') {
         failed(err, 598)
@@ -60,6 +64,7 @@ async function API (project, method, path, data, success, failed) {
         data.fail(err)
       }
 
+      router.go(-2)
       return
     }
 

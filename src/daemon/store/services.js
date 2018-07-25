@@ -9,9 +9,10 @@ const getters = {
 }
 
 const actions = {
-  fetch: ({ commit }) => {
-    serviceAPI.list({
+  async fetch ({ commit }) {
+    await serviceAPI.list({
       success: response => {
+        console.log('Fetched services')
         commit('UPDATE_SERVICES_LIST', response.data.result)
       },
       fail: error => {
