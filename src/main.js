@@ -18,7 +18,7 @@ import VueFloatLabel from 'vue-float-label'
 import VueTooltip from 'vue-directive-tooltip'
 import FlagIcon from 'vue-flag-icon'
 import PrettyCheckbox from 'pretty-checkbox-vue'
-import money from 'v-money'
+import VueNumeric from 'vue-numeric'
 
 import globalMixin from '@/shared/mixins/global'
 
@@ -67,12 +67,7 @@ Vue.use(Toasted, {
   singleton: false
 })
 
-Vue.use(money, {
-  prefix: '$ ',
-  suffix: ' USD',
-  precision: 2,
-  masked: false
-})
+Vue.use(VueNumeric)
 
 if (process.env.NODE_ENV !== 'development') {
   Vue.use(VueAnalytics, {

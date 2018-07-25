@@ -167,6 +167,7 @@ export default {
         } else {
           // Disable form while HTTP request being made
           this.formDisable = true
+          this.formError = null
 
           // Handle submission according to chosen action
           if (this.action === 'create') {

@@ -48,17 +48,23 @@
           <template v-else-if="field.type === 'price'">
             <div class="form-input">
               <div class="label"><label :for="field.name">{{ field.label }}</label></div>
-              <money
+
+              <vue-numeric
                 v-validate="rules[field.name]"
-                :type="field.type"
                 v-model="form[field.name]"
+                :type="field.type"
                 :name="field.name"
                 :id="field.name"
-                :placeholder="field.placeholder"
                 :class="{'input-error': errors.has(field.name)}"
                 :disabled="formLoading"
                 :data-vv-as="field.name"
-                class="input max-width" />
+                :min="0"
+                :precision="2"
+                :empty-value="0"
+                class="input max-width"
+                currency="USD $"
+                separator=","
+                output-type="Number" />
 
               <span
                 v-show="errors.has(field.name)"
@@ -205,7 +211,9 @@ export default {
         },
         price: {
           required: true,
-          min_value: 5
+          numeric: true,
+          min_value: 5,
+          max_value: 9999
         },
         market_model: {
           required: true,
@@ -279,6 +287,7 @@ export default {
         if (!result) {
           this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
         } else {
+          this.formError = null
           this.processSubmit()
         }
       })

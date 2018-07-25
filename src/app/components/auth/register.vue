@@ -103,6 +103,7 @@ export default {
         } else {
           // Disable form while HTTP request being made
           this.formLoading = true
+          this.formError = null
 
           auth.register({
             data: {

@@ -110,6 +110,8 @@ export default {
         }
       }
 
+      this.formError = null
+
       userAPI.edit({
         data: data,
         success: response => {
