@@ -8,7 +8,9 @@
       <span v-if="specs.system.data.CPU.Cores">({{ specs.system.data.CPU.Cores }} cores)</span>
     </div>
 
-    <div class="line">
+    <div
+      v-if="memoryUsed"
+      class="line">
       <span class="icon-activity"/> <strong>Memory:</strong>
       <span v-if="memoryUsed">{{ memoryUsed }}</span>
       <span v-else>-</span>
@@ -32,7 +34,7 @@ export default {
         return humanMemory(used) + '/' + humanMemory(total) + ' (' + percentage + '%)'
       }
 
-      return '-'
+      return null
     }
   }
 }
@@ -44,9 +46,4 @@ function humanMemory (bytes) {
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
-
 </script>
-
-<style lang="scss" scoped>
-
-</style>
