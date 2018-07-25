@@ -35,6 +35,7 @@ Vue.use(VueClipboard)
 Vue.use(VueFloatLabel)
 Vue.use(FlagIcon)
 Vue.use(PrettyCheckbox)
+Vue.use(VueNumeric)
 
 Vue.use(VueTooltip, {
   delay: 0,
@@ -66,8 +67,6 @@ Vue.use(Toasted, {
   duration: 5000,
   singleton: false
 })
-
-Vue.use(VueNumeric)
 
 if (process.env.NODE_ENV !== 'development') {
   Vue.use(VueAnalytics, {
