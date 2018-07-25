@@ -72,6 +72,7 @@ export default {
           this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
         } else {
           this.formLoading = true
+          this.formError = null
           this.reset()
         }
       })
