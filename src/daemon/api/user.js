@@ -63,5 +63,24 @@ export default {
    */
   delete (options) {
     return api('DELETE', `/user/${options.data.id}`, options)
+  },
+
+  /**
+   * Returns all services details.
+   *
+   * @param {Integer} id ID pertaining to user being requested.
+   */
+  getServices (options) {
+    return api('GET', `/user/${options.data.id}/service-resources`, options)
+  },
+
+  /**
+   * Returns one service details.
+   *
+   * @param {Integer} id ID pertaining to user being requested.
+   * @param {String} service Name of the service we want to fetch info from.
+   */
+  getService (options) {
+    return api('GET', `/user/${options.data.id}/service-resources/${options.data.service}`, options)
   }
 }

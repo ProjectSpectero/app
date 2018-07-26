@@ -434,6 +434,7 @@ module.exports = {
   daemon: {
     RESOURCE_NOT_FOUND: 'We were unable to find that node. Please try again later and contact us if the problem persists.',
     MANAGE_DAEMON: 'Manage Daemon',
+    RESOURCES: 'My resources',
     BACK_TO_NODES: 'Back To Nodes',
     MANAGING_AS: 'Managing daemon {id} as',
     SERVICES: 'Services',

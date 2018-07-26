@@ -16,6 +16,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import nodeAPI from '@/app/api/node'
 import bar from '@/daemon/components/common/bar'
 import sidebar from '@/shared/components/sidebar'
 import impersonationBar from '@/shared/components/impersonating'
@@ -46,8 +47,31 @@ export default {
   },
   methods: {
     ...mapActions({
-      autologin: 'daemonAuth/autologin'
-    })
+      addCookie: 'daemonAuth/addCookie',
+      setupEndpoint: 'daemonAuth/setupEndpoint',
+      syncCurrentUser: 'daemonAuth/syncCurrentUser'
+    }),
+    async autologin (nodeId) {
+      await nodeAPI.nodeLogin({
+        data: {
+          id: nodeId
+        },
+        success: async response => {
+          console.log('Auto-login started, setting up daemon data', response)
+          await this.setup(response.data.result)
+        },
+        fail: error => {
+          console.log('Auto-login failed', error)
+          const e = Object.keys(error.errors)[0] || 'AUTOLOGIN_FAIL'
+          throw new Error(e)
+        }
+      })
+    },
+    async setup (data) {
+      await this.addCookie(data)
+      await this.setupEndpoint(data)
+      await this.syncCurrentUser()
+    }
   }
 }
 </script>

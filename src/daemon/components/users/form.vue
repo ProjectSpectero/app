@@ -75,7 +75,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import userAPI from '../../api/user.js'
+import userAPI from '@/daemon/api/user'
 
 export default {
   props: {
