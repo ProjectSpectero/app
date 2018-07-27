@@ -400,6 +400,7 @@ export default {
         fail: (e) => {
           console.log(e)
           this.error = true
+          this.reFetch = false
         }
       })
     },
