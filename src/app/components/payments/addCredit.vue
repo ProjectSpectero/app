@@ -13,13 +13,17 @@
         <div class="label">
           <label for="creditAddAmount">{{ $i18n.t('payments.ADD_CREDIT_FORM_LABEL') }}</label>
         </div>
-        <input
+        <vue-numeric
           id="creditAddAmount"
           v-model="amount"
-          :placeholder="$i18n.t('payments.ADD_CREDIT_PLACEHOLDER')"
-          type="number"
+          :min="0"
+          :max="max"
+          :precision="2"
+          :empty-value="0"
           class="input"
-          @keyup="watchMaxValue">
+          currency="USD $"
+          separator=","
+          output-type="Number" />
       </div>
       <button
         class="button-md button-success button-full"
@@ -55,14 +59,6 @@ export default {
     await this.fetchMax()
   },
   methods: {
-    watchMaxValue () {
-      if (this.amount > this.max) {
-        this.amount = this.max
-      }
-      // else if (this.amount === '' || parseInt(this.amount) < 5) {
-      //   this.amount = 5
-      // }
-    },
     fetchMax () {
       paymentAPI.getMaxCredit({
         success: response => {
