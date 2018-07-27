@@ -279,8 +279,6 @@ export default {
       due: {},
       transactions: null,
       fetchExtras: true,
-      reFetch: true,
-      interval: null,
       verified: false,
       verificationErrors: [],
       errorItem: 'invoice',
@@ -343,30 +341,11 @@ export default {
   async created () {
     await this.syncCurrentUser()
     await this.fetchInvoice()
-
-    // Keep refreshing the invoice while its status is PROCESSING
-    if (this.reFetch) {
-      this.refreshInvoice()
-    }
-  },
-  beforeDestroy () {
-    clearInterval(this.interval)
   },
   methods: {
     ...mapActions({
       syncCurrentUser: 'appAuth/syncCurrentUser'
     }),
-    refreshInvoice () {
-      // Refetch invoice every process.env.PROCESSING_INVOICE_REFRESH_TIMER
-      // if status === PROCESSING
-      this.interval = setInterval(() => {
-        if (this.reFetch) {
-          this.fetchInvoice()
-        } else {
-          clearInterval(this.interval)
-        }
-      }, process.env.PROCESSING_INVOICE_REFRESH_TIMER || 15000)
-    },
     async fetchInvoice () {
       await invoiceAPI.invoice({
         data: { id: this.$route.params.id },
@@ -388,12 +367,6 @@ export default {
             if (this.fetchExtras) {
               this.fetchDue()
               this.fetchTransactions()
-            }
-
-            // Stop invoice re-fetch timer: we only need it
-            // while invoices are being processed
-            if (this.invoice.status !== 'PROCESSING') {
-              this.reFetch = false
             }
           }
         },
