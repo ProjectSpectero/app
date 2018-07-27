@@ -2,7 +2,7 @@
   <div
     v-if="tableData && !dataLoading"
     class="section padded">
-    <header v-if="!hideHeader">
+    <header v-if="!hideHeader && selectedGroupInformation">
       <h2 class="mb-0">{{ selectedGroupInformation.friendly_name }}</h2>
       <div
         v-if="selectedGroupInformation.id !== 0"
@@ -34,7 +34,9 @@
             v-for="row in tableData"
             :key="row.id">
             <td>
-              <div>{{ row.friendly_name }}</div>
+              <div>
+                {{ row.friendly_name ? row.friendly_name : row.id }}
+              </div>
               <div class="ip">{{ row.ip }}</div>
             </td>
             <td>
@@ -61,7 +63,8 @@
               </button>
 
               <router-link
-                :to="{ name: 'manage', params: { nodeId: (isDevelopmentEnvironment || isStagingEnvironment) ? 101 : row.id } }"
+                v-if="row.status === 'CONFIRMED'"
+                :to="{ name: 'manage', params: { nodeId: row.id } }"
                 class="button-sm button-info">
                 <span class="icon-sliders"/> Manage
               </router-link>
@@ -163,9 +166,9 @@ export default {
     changedPage (page) {
       this.$emit('changedPage', page)
     },
-    removeNode (id) {
+    async removeNode (id) {
       if (confirm(this.$i18n.t('misc.DELETE_CONFIRM_DIALOG', { object: 'node' }))) {
-        nodeAPI.delete({
+        await nodeAPI.delete({
           data: {
             id: id
           },
@@ -182,7 +185,7 @@ export default {
         data: { id: node.id },
         success: async response => {
           this.$emit('refetch')
-          this.$toasted.success(this.$i18n.t('nodes.NODE_VERIFY_SUCCESS', { node: node.friendly_name }))
+          this.$toasted.success(this.$i18n.t('nodes.NODE_VERIFY_SUCCESS', { node: node.friendly_name ? node.friendly_name : node.id }))
         },
         fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
       })

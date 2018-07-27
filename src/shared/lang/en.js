@@ -2,6 +2,9 @@ module.exports = {
   lang: 'en',
   misc: {
     SPECTERO: 'Spectero',
+    IMPERSONATE: 'Impersonate',
+    USERS: 'Users',
+    ADMIN: 'Admin',
     HOME: 'Home',
     DASHBOARD: 'Dashboard',
     MARKET: 'Market',
@@ -100,7 +103,8 @@ module.exports = {
     LOGIN: 'Log In',
     REGISTER: 'Register',
     RESET_PASSWORD: 'Reset Password',
-    SERVICES: 'Services'
+    SERVICES: 'Services',
+    SAVE_GROUP: 'Save Group'
   },
 
   errors: {
@@ -118,7 +122,7 @@ module.exports = {
     RESOURCE_NOT_FOUND: 'We could not find that resource. Please contact us if the error persists.',
     REQUEST_FAILED: 'The request failed. Please contact us if the error persists.',
     UNAUTHORIZED: 'You are not authorized to do this. Please contact us if the error persists.',
-    PAYMENT_FAILED: 'Payment failed',
+    PAYMENT_FAILED: 'Payment failed. Please try again in a minute and contact us if the error persists.',
     INVOICE_ALREADY_PAID: 'This invoice has already been paid!',
     INVOICE_STATUS_MISMATCH: 'There seems to be a problem processing this invoice. Please try again later and contact our customer support if this issue persists.',
     FIELD_REQUIRED: 'This field is required.',
@@ -164,13 +168,15 @@ module.exports = {
     CHECK_SAVE_CARD: 'Save card for future orders',
     PAYMENT_SUCCESS: 'Payment processed successfully!',
     PAYMENT_PROCESSING: 'Payment in process, please wait...',
-    PAYMENT_ACCEPTED: 'Your order has been accepted! We are now processing your payment, please check this invoice in a few minutes.',
+    PAYMENT_ACCEPTED: 'Your payment has been accepted and we are now processing it. Please check this invoice in a few minutes.',
     PAY_HEADER: 'Payment for invoice #{invoiceId}',
     PAY_DESCRIPTION: 'Use the form below to pay for your order. Once we recieve your payment, you\'ll gain access to the services associated to the invoice.',
     PAY_SECURE: 'Your payment is secure.',
     PAY_SECURE_DETAILS: 'Your credit card data never touches our server. We operate solely based on tokens with our payment partner Stripe who are leaders in the credit card processing industry.',
     PAYPAL_CONNECT_HEADER: 'Connecting to Paypal',
-    PAYPAL_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Paypal One Touch™...',
+    PAYPAL_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Paypal One Touch™ to complete your payment.',
+    CRYPTO_CONNECT_HEADER: 'Connecting to Coinbase',
+    CRYPTO_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Coinbase Commerce to complete your payment.',
     PAYMENT_INVALID_PARAMETERS: 'The payment data you have supplied seems to be wrong. Please contact us for more details.',
     PAYMENT_PROCESSOR_NOT_ENABLED: 'This payment processor is not enabled. Please contact us for more details.',
     REQUEST_FAILED: 'We were unable to start the payment process. Please contact us if this keeps happening.',
@@ -201,22 +207,29 @@ module.exports = {
       }
     },
     METHODS: {
+      CRYPTO: {
+        TITLE: 'Cryptocurrency',
+        DESCRIPTION: 'Make a secure payment using cryptocurrency. Payments processed through Coinbase Commerce.',
+        BUTTON_TEXT: 'Cryptocurrency Payment',
+        NOT_AVAILABLE: 'Cryptocurrency payments aren\'t available for this transaction.'
+      },
       PAYPAL: {
         TITLE: 'PayPal',
-        DESCRIPTION: 'Complete your payment through PayPal. Creating an account is not necessary if you choose to pay by credit card.',
-        BUTTON_TEXT: 'PayPal Checkout'
+        DESCRIPTION: 'Complete your payment through PayPal.',
+        BUTTON_TEXT: 'PayPal Checkout',
+        NOT_AVAILABLE: 'PayPal payments aren\'t available for this transaction.'
       },
       STRIPE: {
         TITLE: 'Credit Card',
-        DESCRIPTION: 'Make a safe payment using your credit card. Most major card types are accepted.',
-        BUTTON_TEXT: 'Credit Card Payment'
+        DESCRIPTION: 'Make a secure payment using your credit card. Most major card types are accepted.',
+        BUTTON_TEXT: 'Credit Card Payment',
+        NOT_AVAILABLE: 'Credit card payments aren\'t available for this transaction.'
       },
       CREDIT: {
         TITLE: 'Account Credit',
         DESCRIPTION: 'Apply your account credit to this invoice. You currently have <strong>{balance}</strong> of account credit available to be applied.',
         BUTTON_TEXT: 'Use Account Credit',
-        DESCRIPTION_NO_BALANCE: 'You currently have no account credit available to pay with.',
-        BUTTON_TEXT_NO_BALANCE: 'No Credit Available'
+        NO_BALANCE: 'You have no account credit available to pay with.'
       }
     }
   },
@@ -225,6 +238,8 @@ module.exports = {
     PAY_INVOICE: 'Pay Invoice',
     PAY_INVOICE_TEXT: 'Your invoice <strong>{invoiceId}</strong> currently has an outstanding balance of <strong>{due}</strong>.',
     PAY_PLEASE_PAY: 'Please pay the amount due using the options available below.',
+    GATEWAY_LOADING_FAILED_TITLE: 'Error',
+    GATEWAY_LOADING_FAILED_TEXT: 'Sorry, we were unable to load your available payment options at this time.<br>Please try again later or contact our support team if this persists.',
     INVOICE_STATUS: {
       PAID: 'Paid',
       UNPAID: 'Unpaid',
@@ -322,6 +337,10 @@ module.exports = {
     CONTACT_ACCOUNT_REPRESENTATIVE: 'Please contact your account representative to perform this action.'
   },
 
+  pro: {
+    MAIN_TITLE: 'Purchase Spectero Pro'
+  },
+
   services: {
     UPDATE_SUCCESS: 'Service configuration has been updated.',
     UPDATE_ERROR: 'Something went wrong. Please try again!',
@@ -385,7 +404,6 @@ module.exports = {
     ADD_NODE: 'Add Node',
     HAS_ACTIVE_ORDERS: 'Unable to change market model (this node has active orders)!',
     ORDERS_EXIST: 'Unable to remove: this node has active orders!',
-    GROUP_PRICE_AVAILABILITY: 'Price will only be used for <strong>{model1}</strong> and <strong>{model2}</strong> market models.',
     DELETE_ENGAGEMENT_CONFIRM_DIALOG: 'Are you sure you want to cancel this engagement?',
     ENGAGEMENT_DELETE_SUCCESS: 'Engagement cancelled.',
     ORDER_NOT_ACTIVE_YET: 'Unable to cancel engagement: This order isn\'t active yet!',
@@ -414,7 +432,10 @@ module.exports = {
   },
 
   daemon: {
+    RESOURCE_NOT_FOUND: 'We were unable to find that node. Please try again later and contact us if the problem persists.',
     MANAGE_DAEMON: 'Manage Daemon',
+    INVALID_NETWORK: 'Please add a valid network address.',
+    RESOURCES: 'My resources',
     BACK_TO_NODES: 'Back To Nodes',
     MANAGING_AS: 'Managing daemon {id} as',
     SERVICES: 'Services',
@@ -486,6 +507,7 @@ module.exports = {
   },
 
   users: {
+    IMPERSONATING: 'You are currently impersonating {name}.',
     FORGOT_PASSWORD: 'Forgot your password?',
     RESET_TOKEN_ISSUED: 'We have sent an email with a validation link to {email}. Please check your inbox!',
     RESET_TOKEN_ERROR: 'An error has ocurred while trying to issue a token for reset. Please try again!',
@@ -631,6 +653,10 @@ module.exports = {
             <p><strong>Normal Mode</strong><br>In normal mode, the proxy provides a blacklist that the users can use to ban any number of URLs from being visited. Blocked requests will be redirected to BlockedRedirectUri.</p>
             <p><strong>ExclusiveAllow Mode</strong><br>In exclusive-allow mode (or whitelist only mode), the proxy only connects to a list of pre-determined hosts. This is handy in corporate environments where browsing privileges are restricted.</p>
             <p><a href="https://spectero.atlassian.net/wiki/spaces/docs/pages/1048633/HTTP+Proxy" target="_blank">View Full Documentation</a></p>`
+        },
+        pushedNetworks: {
+          title: 'Pushed Networks',
+          description: ''
         }
       }
     }

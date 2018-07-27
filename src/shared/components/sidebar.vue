@@ -3,7 +3,7 @@
     <div class="menu-logo">
       <router-link :to="{ name: 'dashboard' }">
         <div
-          :class="{ 'logo-pro': user && user.plans.indexOf('pro') > -1 }"
+          :class="{ 'logo-pro': isPro }"
           class="logo logo-sm"/>
       </router-link>
     </div>
@@ -20,13 +20,26 @@
           </ul>
         </section> -->
         <section
+          v-if="isAdmin"
+          class="nav-section">
+          <h5>{{ $i18n.t('misc.ADMIN') }}</h5>
+          <ul>
+            <li>
+              <router-link :to="{ name: 'users-list' }">
+                <span class="icon-pie-chart"/>
+                {{ $i18n.t('misc.USERS') }}
+              </router-link>
+            </li>
+          </ul>
+        </section>
+        <section
           v-if="isEnterprise"
           class="nav-section">
           <h5>{{ $i18n.t('misc.ENTERPRISE') }}</h5>
           <ul>
             <li>
               <router-link :to="{ name: 'enterpriseOrders' }">
-                <span class="icon-hard-drive"/>
+                <span class="icon-server"/>
                 {{ $i18n.t('misc.ENTERPRISE') }}
               </router-link>
             </li>
@@ -172,14 +185,18 @@ export default {
     ...mapGetters({
       count: 'cart/itemCount',
       user: 'appAuth/user',
-      isEnterprise: 'appAuth/isEnterprise'
+      isEnterprise: 'appAuth/isEnterprise',
+      isPro: 'appAuth/isPro',
+      isAdmin: 'appAuth/isAdmin'
     })
   },
   watch: {
-    user: async function (val) {
-      await this.fetchFreshdesk()
-      await this.fetchPlans()
-      await this.refreshCart()
+    user: async function (u) {
+      if (u) {
+        await this.fetchFreshdesk()
+        await this.fetchPlans()
+        await this.refreshCart()
+      }
     }
   },
   methods: {

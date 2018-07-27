@@ -1,11 +1,12 @@
 import api from './index.js'
+import helpers from './helpers'
 
 export default {
   /**
    * List all users.
    */
   list (options) {
-    return api('GET', `/user`, options)
+    return api('GET', helpers.appendQuery(`/user`, options.queryParams), options)
   },
 
   /**

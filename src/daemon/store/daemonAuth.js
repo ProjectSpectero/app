@@ -1,5 +1,4 @@
 import { setCookie, removeCookie } from 'tiny-cookie'
-import nodeAPI from '@/app/api/node'
 import userAPI from '@/daemon/api/user'
 import cloudAPI from '@/daemon/api/cloud'
 
@@ -34,11 +33,12 @@ const getters = {
 const actions = {
   async syncCurrentUser ({ commit, dispatch }) {
     await userAPI.getMe({
-      success: response => {
+      success: async response => {
+        console.log('syncCurrentUser successful on daemon', response.data.result)
         commit('SET_CURRENT_USER', response.data.result)
 
         // Gather remote node details
-        dispatch('connectToRemote')
+        await dispatch('connectToRemote')
       },
       fail: error => {
         console.log(error)
@@ -48,6 +48,7 @@ const actions = {
   async connectToRemote ({ commit, dispatch }) {
     await cloudAPI.remote({
       success: response => {
+        console.log('Finished connectToRemote')
         commit('SET_SPECS', response.data.result)
 
         // Append the restart server button if needed
@@ -71,22 +72,6 @@ const actions = {
     }
 
     setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: parseFloat(payload.credentials.access.expires / 1000) + 's' })
-  },
-  async autologin ({ commit, dispatch }, nodeId) {
-    await nodeAPI.nodeLogin({
-      data: {
-        id: nodeId
-      },
-      success: response => {
-        dispatch('addCookie', response.data.result)
-        dispatch('setupEndpoint', response.data.result)
-      },
-      fail: error => {
-        const e = Object.keys(error.errors)[0] || 'AUTOLOGIN_FAIL'
-        console.log('Auto-login failed', error)
-        throw new Error(e)
-      }
-    })
   },
   setupEndpoint ({ commit }, payload) {
     commit('SETUP_ENDPOINT', payload)

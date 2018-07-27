@@ -1,48 +1,45 @@
 <template>
   <div>
-    <h5>DHCP Settings</h5>
+    <h5>Pushed Networks</h5>
+
     <div class="add">
-      <div class="input-float input-with-tooltip tooltip-space">
-        <select v-model="item1">
-          <option
-            v-for="(option, i) in dhcp"
-            :key="i"
-            :value="option.id">
-            {{ $i18n.t(`cloud.dhcp.${option.label}`) }}
-          </option>
-        </select>
-        <tooltip id="services.topics.dhcpOptions"/>
-      </div>
       <div class="input-float">
         <input
-          id="dhcp_item2"
-          v-model="item2"
-          name="dhcp_item2"
+          id="network"
+          v-model="network"
+          name="network"
           type="text"
-          placeholder="DHCP Item 2"
+          placeholder="Network"
           class="input">
         <div
-          v-show="errors.has('dhcp_item2')"
+          v-show="errors.has('network')"
           class="input-error-msg">
-          {{ errors.first('dhcp_item2') }}
+          {{ errors.first('network') }}
         </div>
       </div>
       <button
         class="button-md button-success"
-        @click.prevent="add">
-        Add DHCP Item
+        @click.prevent="add(network)">
+        Add Network
       </button>
     </div>
+
+    <div
+      v-show="networkError"
+      class="input-error-msg">
+      {{ $i18n.t('daemon.INVALID_NETWORK') }}
+    </div>
+
     <div
       v-if="list"
       class="ip-list">
       <ul>
         <li
-          v-for="(listener, i) in list"
+          v-for="(item, i) in list"
           :key="i"
           class="list-item">
           <div class="ip-label">
-            <strong>{{ listener.item1 }}</strong>{{ (listener.item2) ? ` - ${listener.item2}` : `` }}
+            <strong>{{ item }}</strong>
           </div>
           <button
             class="button-sm button-icon"
@@ -54,20 +51,16 @@
     </div>
     <p
       v-else
-      class="none">No DHCP options added yet.</p>
+      class="none">No networks added yet.</p>
   </div>
 </template>
 
 <script>
-import tooltip from '@/shared/components/tooltip'
-import dhcp from '@/shared/helpers/dhcp'
+import CIDR from 'cidr-js'
 
 export default {
-  components: {
-    tooltip
-  },
   props: {
-    currentDhcp: {
+    pushedNetworks: {
       type: Array,
       required: false,
       default: () => []
@@ -75,14 +68,15 @@ export default {
   },
   data () {
     return {
-      list: [],
-      dhcp: dhcp,
-      item1: dhcp[0].id,
-      item2: ''
+      network: null,
+      networkError: false,
+      cidr: null,
+      list: []
     }
   },
   created () {
-    this.list = this.currentDhcp
+    this.cidr = new CIDR()
+    this.list = this.pushedNetworks
     console.log(this.list)
   },
   methods: {
@@ -90,26 +84,34 @@ export default {
       this.list.splice(index, 1)
       this.update()
     },
-    add () {
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          this.list.push({
-            item1: this.item1,
-            item2: this.item2
-          })
+    add (network) {
+      if (this.isValidCIDR(network)) {
+        this.list.push(network)
 
-          this.update()
-          this.reset()
-        }
-      })
+        this.update()
+        this.reset()
+      } else {
+        this.networkError = true
+      }
     },
     update () {
       this.$emit('update', this.list)
     },
     reset () {
       this.$validator.reset()
-      this.item1 = this.dhcp[0].id
-      this.item2 = null
+      this.networkError = false
+      this.network = null
+    },
+    isValidCIDR (network) {
+      let test = null
+
+      try {
+        test = this.cidr.range(network)
+      } catch (e) {
+        console.log(e)
+      }
+
+      return test || false
     }
   }
 }

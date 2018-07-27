@@ -34,8 +34,7 @@
           <div class="col-12">
             <div class="section padded">
               <services v-if="activeTab === 'services'"/>
-              <proxies v-else-if="activeTab === 'proxies'"/>
-              <certificates v-else-if="activeTab === 'certificates'"/>
+              <resources v-else-if="activeTab === 'resources'"/>
               <not-found v-else/>
             </div>
           </div>
@@ -54,8 +53,7 @@
 import { mapGetters } from 'vuex'
 import specs from '@/daemon/components/common/specs'
 import services from '@/daemon/components/services/services'
-import proxies from '@/daemon/components/services/proxies'
-import certificates from '@/daemon/components/users/certificates'
+import resources from '@/daemon/components/users/resources'
 import tabs from './tabs'
 import top from '@/shared/components/top'
 import loading from '@/shared/components/loading'
@@ -70,8 +68,7 @@ export default {
     notFound,
     tabs,
     services,
-    proxies,
-    certificates,
+    resources,
     loading
   },
   data () {
@@ -79,8 +76,7 @@ export default {
       activeTab: '',
       tabs: [
         { id: 'services', path: 'services', 'label': this.$i18n.t('daemon.SERVICES') },
-        { id: 'certificates', path: 'certificates', 'label': this.$i18n.t('daemon.CERTIFICATES') }
-        // { id: 'proxies', path: 'proxies', 'label': this.$i18n.t('daemon.PROXIES') }
+        { id: 'resources', path: 'resources', 'label': this.$i18n.t('daemon.RESOURCES') }
       ]
     }
   },

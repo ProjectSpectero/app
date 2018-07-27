@@ -2,7 +2,6 @@
   <form @submit.prevent.stop="submit">
     <div class="col-6 section padded">
       <div class="col">
-        <h2>{{ $i18n.t('misc.GENERAL_INFO') }}</h2>
         <div
           v-if="formError"
           class="message message-error">{{ formError }}</div>
@@ -12,6 +11,7 @@
             <div class="label">
               <label for="friendly_name">{{ $i18n.t('misc.FRIENDLY_NAME') }}</label>
             </div>
+
             <input
               v-validate="rules.friendly_name"
               id="friendly_name"
@@ -20,9 +20,9 @@
               :disabled="formLoading"
               type="text"
               name="friendly_name"
-              placeholder="Please add a name for this node group"
+              placeholder="Name this node group"
               class="input max-width"
-              data-vv-as="friendly_name">
+              data-vv-as="friendly name">
 
             <span
               v-show="errors.has('friendly_name')"
@@ -30,27 +30,29 @@
               {{ errors.first('friendly_name') }}
             </span>
           </div>
-
           <div
-            v-if="marketModels"
+            v-if="form.market_model !== 'UNLISTED'"
             class="form-input">
             <div class="label">
               <label for="price">{{ $i18n.t('misc.PRICE') }}</label>
             </div>
-            <input
+
+            <vue-numeric
               v-validate="rules.price"
               id="price"
               v-model="form.price"
               :class="{'input-error': errors.has('price')}"
               :disabled="formLoading"
-              type="number"
+              :min="0"
+              :precision="2"
+              :empty-value="0"
               name="price"
-              placeholder="Price"
+              type="price"
               class="input max-width"
-              data-vv-as="price">
-            <p
-              class="input-note"
-              v-html="$i18n.t('nodes.GROUP_PRICE_AVAILABILITY', { model1: marketModels[1], model2: marketModels[2] })"/>
+              currency="USD $"
+              separator=","
+              output-type="Number"
+              data-vv-as="price" />
 
             <span
               v-show="errors.has('price')"
@@ -59,9 +61,7 @@
             </span>
           </div>
 
-          <div
-            v-if="marketModels"
-            class="form-input">
+          <div class="form-input">
             <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.MARKET_MODEL') }}</label></div>
             <div class="input-with-tooltip">
               <select v-model="form.market_model">
@@ -83,7 +83,7 @@
           :disabled="formLoading"
           type="submit"
           class="button-info button-md max-width">
-          {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
+          {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE_GROUP') }}
         </button>
       </div>
     </div>
@@ -111,19 +111,29 @@ export default {
       formError: null,
       formFields: null,
       formLoading: false,
-      form: null,
+      form: {},
       marketModels: [
         'UNLISTED',
         'LISTED_SHARED',
         'LISTED_DEDICATED'
-      ],
-      rules: {
+      ]
+    }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'appAuth/user'
+    }),
+    rules () {
+      return {
         friendly_name: {
+          required: true,
           max: 50
         },
         price: {
           required: true,
-          min_value: 5
+          numeric: true,
+          min_value: 5,
+          max_value: 9999
         },
         market_model: {
           required: true,
@@ -132,16 +142,14 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapGetters({
-      user: 'appAuth/user'
-    })
-  },
   created () {
     // Populate form object
     this.form = this.group ? Object.assign({}, this.group) : {}
-    this.form.user_id = this.user.id
-    this.form.status = 'ACTIVE'
+
+    // Set default market model if none set
+    if (!this.form.market_model) {
+      this.$set(this.form, 'market_model', this.marketModels[0])
+    }
 
     this.formFields = [
       { name: 'friendly_name', label: 'Friendly name', placeholder: 'Name for this node', type: 'text' },
@@ -150,7 +158,17 @@ export default {
     ]
   },
   methods: {
-    async submit () {
+    submit () {
+      this.$validator.validateAll().then(result => {
+        if (!result) {
+          this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
+        } else {
+          this.formError = null
+          this.processSubmit()
+        }
+      })
+    },
+    async processSubmit () {
       this.formLoading = true
 
       // Editing or creating?

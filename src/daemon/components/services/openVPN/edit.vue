@@ -36,27 +36,16 @@
             </div>
 
             <dhcp
-              :dhcp-items="dhcpOptions"
+              :current-dhcp="dhcpOptions"
               @update="updateDhcp"/>
 
-            <div v-if="gatewayOptions">
-              <h5>Redirect Gateway <tooltip id="services.topics.redirectGateway"/></h5>
+            <gateways
+              :current-gateways="redirectGateway"
+              @update="updateGateways"/>
 
-              <div
-                v-for="(option, i) in gatewayOptions"
-                :key="i"
-                class="form-checkbox">
-                <p-input
-                  :id="`redirectGateway-${option.id}`"
-                  :value="option.id"
-                  v-model="config[0].redirectGateway[option.id]"
-                  type="checkbox"
-                  class="p-default p-curve"
-                  @change="updateGateways($event, option.id)">
-                  {{ $i18n.t(`cloud.gateway.${option.label}`) }}
-                </p-input>
-              </div>
-            </div>
+            <cidr
+              :pushed-networks="pushedNetworks"
+              @update="updatePushedNetworks"/>
 
             <div>
               <h5>Maximum Clients</h5>
@@ -211,19 +200,22 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import serviceAPI from '@/daemon/api/service'
 import top from '@/shared/components/top'
 import tooltip from '@/shared/components/tooltip'
 import protocols from '@/shared/helpers/protocols'
-import gateway from '@/shared/helpers/gateway'
 import dhcp from './dhcp'
+import gateways from './gateways'
+import cidr from './cidr'
 
 export default {
   components: {
     top,
     tooltip,
-    dhcp
+    gateways,
+    dhcp,
+    cidr
   },
   metaInfo: {
     title: 'OpenVPN Configuration'
@@ -234,8 +226,8 @@ export default {
       config: null,
       protocolOptions: protocols,
       dhcpOptions: [],
-      gatewayOptions: gateway,
       redirectGateway: [],
+      pushedNetworks: [],
       formDisable: false,
       rules: {
         port: {
@@ -274,6 +266,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      switchBarComponent: 'settings/switchBarComponent'
+    }),
     async setup () {
       await this.fetchService()
     },
@@ -286,6 +281,7 @@ export default {
 
           if (this.config.length) {
             this.dhcpOptions = this.config[0].dhcpOptions
+            this.pushedNetworks = this.config[0].pushedNetworks
             this.redirectGateway = this.config[0].redirectGateway
           }
         },
@@ -294,46 +290,70 @@ export default {
         }
       })
     },
-    validateCIDR (value) {
-      console.log(value)
+    updatePushedNetworks (networks) {
+      this.pushedNetworks = networks
+      console.log('updated pushed networks to', this.pushedNetworks)
     },
-    updateGateways (value, id) {
-      if (!value) {
-        var i = this.redirectGateway.indexOf(id)
-
-        if (i !== -1) {
-          this.redirectGateway.splice(i, 1)
-        }
-      } else {
-        this.redirectGateway.push(id)
-      }
-    },
-    updateDhcpOptions (value, id) {
-      if (!value) {
-        var i = this.redirectGateway.indexOf(id)
-
-        if (i !== -1) {
-          this.redirectGateway.splice(i, 1)
-        }
-      } else {
-        this.redirectGateway.push(id)
-      }
+    updateGateways (gateways) {
+      this.redirectGateway = gateways
     },
     updateDhcp (dhcp) {
       this.dhcpOptions = dhcp
     },
+    buildObject () {
+      let obj = {}
+      let listeners = []
+      const fields = [
+        'allowMultipleConnectionsFromSameClient',
+        'clientToClient',
+        'dhcpOptions',
+        'maxClients',
+        'pushedNetworks',
+        'redirectGateway'
+      ]
+
+      // Attach base fields from config[0]
+      for (let i = 0; i < fields.length; i++) {
+        if (this.config[0].hasOwnProperty(fields[i])) {
+          obj[fields[i]] = this.config[0][fields[i]]
+        }
+      }
+
+      // Attach listeners and convert ports to int
+      this.config.forEach(c => {
+        if (c.listener) {
+          let data = {
+            ipAddress: c.listener.ipAddress,
+            managementPort: parseInt(c.listener.managementPort),
+            network: c.listener.network,
+            port: parseInt(c.listener.port),
+            protocol: c.listener.protocol
+          }
+
+          listeners.push(data)
+        }
+      })
+
+      obj.listeners = listeners
+
+      return obj
+    },
     update () {
+      let obj = null
+
       this.$set(this.config[0], 'dhcpOptions', this.dhcpOptions)
       this.$set(this.config[0], 'redirectGateway', this.redirectGateway)
+      this.$set(this.config[0], 'pushedNetworks', this.pushedNetworks)
 
-      console.log('Updating with config', this.config)
+      obj = this.buildObject()
+
+      console.log('Updating with config', obj)
 
       serviceAPI.update({
         name: this.name,
-        data: this.config,
+        data: obj,
         success: response => {
           this.$toasted.success(this.$i18n.t('services.UPDATE_SUCCESS'))
-          console.log('updated', response.data.message)
 
           // Append the restart server button if needed
           if (response.data.message && response.data.message === 'SERVICE_RESTART_NEEDED') {
@@ -352,6 +372,14 @@ export default {
       if (confirm(this.$i18n.t('misc.LEAVE_CONFIRM_DIALOG'))) {
         this.$router.push({ name: 'manage', params: { nodeId: this.$route.params.nodeId, action: 'services' } })
       }
+    },
+    findGatewayKey (option) {
+      const k = Object.keys(this.config[0].redirectGateway).find(key => {
+        console.log('trying', this.config[0].redirectGateway[key], 'vs', option.id)
+        console.log(this.config[0].redirectGateway[key] === option.id)
+        return this.config[0].redirectGateway[key] === option.id
+      })
+      console.log(k)
     }
   }
 }

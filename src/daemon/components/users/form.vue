@@ -75,7 +75,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import userAPI from '../../api/user.js'
+import userAPI from '@/daemon/api/user'
 
 export default {
   props: {
@@ -167,6 +167,7 @@ export default {
         } else {
           // Disable form while HTTP request being made
           this.formDisable = true
+          this.formError = null
 
           // Handle submission according to chosen action
           if (this.action === 'create') {
@@ -239,7 +240,11 @@ export default {
 
           for (let errorKey in inputErrors) {
             if (inputErrors.hasOwnProperty(errorKey)) {
-              this.$validator.errors.add(inputName, this.$i18n.t(`errors.${errorKey}`, null, { x: inputErrors[errorKey] }))
+              this.$validator.errors.add({
+                id: `${inputName}_${errorKey}`,
+                field: inputName,
+                msg: this.$i18n.t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
+              })
             }
           }
         }

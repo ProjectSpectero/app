@@ -11,6 +11,7 @@
 
             <div
               v-for="field in formFields"
+              v-if="field.show !== false"
               :key="field.name">
               <template v-if="field.type === 'select'">
                 <div
@@ -22,8 +23,9 @@
                       v-for="object in field.object"
                       :key="object.id"
                       :value="field.objectKey ? object[field.objectKey] : object">
-                      <span v-if="field.objectKey">{{ object[field.objectKey] }}</span>
-                      <span v-else>{{ object }}</span>
+                      <template v-if="field.labelKey">{{ object[field.labelKey] }}</template>
+                      <template v-else-if="field.objectKey">{{ object[field.objectKey] }}</template>
+                      <template v-else>{{ object }}</template>
                     </option>
                   </select>
                 </div>
@@ -44,6 +46,33 @@
                     </select>
                     <tooltip id="nodes.topics.marketModels"/>
                   </div>
+                </div>
+              </template>
+              <template v-else-if="field.type === 'price'">
+                <div class="form-input">
+                  <div class="label"><label :for="field.name">{{ field.label }}</label></div>
+                  <vue-numeric
+                    v-validate="rules[field.name]"
+                    v-model="form[field.name]"
+                    :type="field.type"
+                    :name="field.name"
+                    :id="field.name"
+                    :class="{'input-error': errors.has(field.name)}"
+                    :disabled="formLoading"
+                    :data-vv-as="field.name"
+                    :min="0"
+                    :precision="2"
+                    :empty-value="0"
+                    class="input max-width"
+                    currency="USD $"
+                    separator=","
+                    output-type="Number" />
+
+                  <span
+                    v-show="errors.has(field.name)"
+                    class="input-error-message">
+                    {{ errors.first(field.name) }}
+                  </span>
                 </div>
               </template>
               <template v-else>
@@ -117,9 +146,8 @@ export default {
       groupsPage: 1,
       formError: null,
       formLoading: false,
-      form: null,
+      form: {},
       protocols: ['http', 'https'],
-      formFields: null,
       marketModels: [
         'UNLISTED',
         'LISTED_SHARED',
@@ -134,7 +162,9 @@ export default {
         },
         price: {
           required: true,
-          min_value: 5
+          numeric: true,
+          min_value: 5,
+          max_value: 9999
         },
         protocols: {
           required: true,
@@ -160,24 +190,102 @@ export default {
       }
     }
   },
+  computed: {
+    formattedGroupList () {
+      let groups = []
+
+      for (let index in this.groups) {
+        let group = this.groups[index]
+        groups.push({
+          id: group.id,
+          label: group.friendly_name
+        })
+      }
+
+      return groups
+    },
+    formFields () {
+      return [
+        {
+          name: 'friendly_name',
+          label: this.$i18n.t('misc.FRIENDLY_NAME'),
+          placeholder: this.$i18n.t('misc.FRIENDLY_NAME'),
+          type: 'text'
+        },
+        {
+          name: 'ip',
+          label: this.$i18n.t('misc.IP'),
+          placeholder: this.$i18n.t('misc.IP'),
+          type: 'text'
+        },
+        {
+          name: 'port',
+          label: this.$i18n.t('misc.PORT_NUMBER'),
+          placeholder: this.$i18n.t('misc.PORT_NUMBER'),
+          type: 'number'
+        },
+        {
+          name: 'city',
+          label: this.$i18n.t('misc.CITY'),
+          placeholder: this.$i18n.t('misc.CITY'),
+          type: 'text'
+        },
+        {
+          name: 'access_token',
+          label: this.$i18n.t('misc.ACCESS_TOKEN'),
+          placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'),
+          type: 'text'
+        },
+        {
+          name: 'protocol',
+          label: this.$i18n.t('misc.PROTOCOL'),
+          placeholder: this.$i18n.t('misc.PROTOCOL'),
+          type: 'select',
+          object: this.protocols,
+          objectKey: null
+        },
+        {
+          name: 'market_model',
+          label: this.$i18n.t('misc.MARKET_MODEL'),
+          placeholder: this.$i18n.t('misc.MARKET_MODEL'),
+          type: 'model',
+          object: this.marketModels,
+          objectKey: null
+        },
+        {
+          name: 'price',
+          label: this.$i18n.t('misc.PRICE'),
+          placeholder: this.$i18n.t('misc.PRICE'),
+          type: 'price',
+          show: this.form.market_model !== 'UNLISTED'
+        },
+        {
+          name: 'group_id',
+          label: this.$i18n.t('misc.NODE_GROUP'),
+          type: 'select',
+          object: this.formattedGroupList,
+          objectKey: 'id',
+          labelKey: 'label'
+        }
+      ]
+    }
+  },
   async created () {
     this.form = Object.assign({}, this.node)
     await this.fetchGroups()
-
-    this.formFields = [
-      { name: 'friendly_name', label: this.$i18n.t('misc.FRIENDLY_NAME'), placeholder: this.$i18n.t('misc.FRIENDLY_NAME'), type: 'text' },
-      { name: 'ip', label: this.$i18n.t('misc.IP'), placeholder: this.$i18n.t('misc.IP'), type: 'text' },
-      { name: 'port', label: this.$i18n.t('misc.PORT_NUMBER'), placeholder: this.$i18n.t('misc.PORT_NUMBER'), type: 'number' },
-      { name: 'city', label: this.$i18n.t('misc.CITY'), placeholder: this.$i18n.t('misc.CITY'), type: 'text' },
-      { name: 'access_token', label: this.$i18n.t('misc.ACCESS_TOKEN'), placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'), type: 'text' },
-      { name: 'protocol', label: this.$i18n.t('misc.PROTOCOL'), placeholder: this.$i18n.t('misc.PROTOCOL'), type: 'select', object: this.protocols, objectKey: null },
-      { name: 'market_model', label: this.$i18n.t('misc.MARKET_MODEL'), placeholder: this.$i18n.t('misc.MARKET_MODEL'), type: 'model', object: this.marketModels, objectKey: null },
-      { name: 'price', label: this.$i18n.t('misc.PRICE'), placeholder: this.$i18n.t('misc.PRICE'), type: 'number' },
-      { name: 'group_id', label: this.$i18n.t('misc.NODE_GROUP'), type: 'select', object: this.groups, objectKey: 'id' }
-    ]
   },
   methods: {
-    async submit () {
+    submit () {
+      this.$validator.validateAll().then(result => {
+        if (!result) {
+          this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
+        } else {
+          this.formError = null
+          this.processSubmit()
+        }
+      })
+    },
+    async processSubmit () {
       this.formLoading = true
 
       await nodeAPI.edit({

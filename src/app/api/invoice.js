@@ -41,6 +41,14 @@ export default {
   },
 
   /**
+   * Returns the available payment gateways for an invoice.
+   * @param {Integer} id Invoice id.
+   */
+  gateways (options) {
+    return api('GET', `/invoice/${options.data.id}/gateways`, options)
+  },
+
+  /**
    * Returns the invoices list for the logged in user.
    */
   myInvoices (options) {

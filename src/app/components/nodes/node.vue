@@ -39,7 +39,7 @@ export default {
       component: null,
       node: null,
       group: null,
-      engagements: null,
+      engagements: [],
       ips: [],
       tabs: [
         { id: 'general', path: 'general', label: 'GENERAL_INFO' },

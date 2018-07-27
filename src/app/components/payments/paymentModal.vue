@@ -7,43 +7,58 @@
         @click="$emit('close')"/>
     </div>
     <div class="modal-content">
-      <p
-        class="spaced"
-        v-html="$i18n.t('invoices.PAY_INVOICE_TEXT', {
-          invoiceId: invoice.id,
-          due: $filters.currency(due.amount)
-      })"/>
+      <template v-if="!loading">
+        <error
+          v-if="error"
+          :header="$i18n.t('invoices.GATEWAY_LOADING_FAILED_TITLE')"
+          :msg="$i18n.t('invoices.GATEWAY_LOADING_FAILED_TEXT')" />
+        <template v-else>
+          <p
+            class="spaced"
+            v-html="$i18n.t('invoices.PAY_INVOICE_TEXT', {
+              invoiceId: invoice.id,
+              due: $filters.currency(due.amount)
+          })"/>
 
-      <p v-html="$i18n.t('invoices.PAY_PLEASE_PAY')"/>
+          <p v-html="$i18n.t('invoices.PAY_PLEASE_PAY')"/>
 
-      <div class="payment-options">
-        <article
-          v-for="method in paymentMethods"
-          v-if="canUse(method)"
-          :key="method.route">
-          <header>
-            <h3 v-html="$i18n.t(method.lang + '.TITLE')"/>
-          </header>
-          <section class="description">
-            <p v-html="$i18n.t(method.lang + '.' + ((method.description) ? method.description : 'DESCRIPTION'), method.descriptionAttributes)"/>
-            <button
-              v-if="method.enabled"
-              :disabled="!method.enabled"
-              :class="method.buttonClass"
-              class="button"
-              @click="pay(method)"
-              v-html="$i18n.t(method.lang + '.' + ((method.buttonText) ? method.buttonText : 'BUTTON_TEXT'))"/>
-          </section>
-        </article>
-      </div>
+          <div class="payment-options">
+            <article
+              v-for="(method) in paymentMethods"
+              :key="method.route">
+              <header>
+                <h3 v-html="$i18n.t(method.lang + '.TITLE')"/>
+              </header>
+              <section class="description">
+                <p v-html="$i18n.t(method.lang + '.' + ((method.description) ? method.description : 'DESCRIPTION'), method.descriptionAttributes)"/>
+                <button
+                  v-if="method.enabled"
+                  :disabled="!method.enabled"
+                  :class="method.buttonClass"
+                  class="button"
+                  @click="pay(method)"
+                  v-html="$i18n.t(method.lang + '.' + ((method.buttonText) ? method.buttonText : 'BUTTON_TEXT'))"/>
+              </section>
+            </article>
+          </div>
+        </template>
+      </template>
+      <loading v-else/>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import invoiceAPI from '@/app/api/invoice'
+import loading from '@/shared/components/loading'
+import error from '@/shared/components/error'
 
 export default {
+  components: {
+    loading,
+    error
+  },
   props: {
     invoice: {
       type: Object,
@@ -54,31 +69,39 @@ export default {
       required: true
     }
   },
+  data () {
+    return {
+      loading: true,
+      allowedGateways: ['credit'] // Credit is always an available gateway
+    }
+  },
   computed: {
     ...mapGetters({
       user: 'appAuth/user'
     }),
-
     paymentMethods () {
       let methods = {
+        'crypto': {
+          enabled: true,
+          route: 'crypto',
+          lang: 'payments.METHODS.CRYPTO',
+          buttonClass: 'button-info'
+        },
         'paypal': {
           enabled: true,
           route: 'paypal',
-          usage: ['STANDARD', 'MANUAL', 'CREDIT'],
           lang: 'payments.METHODS.PAYPAL',
           buttonClass: 'button-info'
         },
         'stripe': {
           enabled: true,
           route: 'stripe',
-          usage: ['STANDARD'],
           lang: 'payments.METHODS.STRIPE',
           buttonClass: 'button-info'
         },
         'credit': {
           enabled: true,
           route: 'paypalCredit',
-          usage: ['STANDARD'],
           lang: 'payments.METHODS.CREDIT',
           buttonClass: 'button-dark'
         }
@@ -88,20 +111,45 @@ export default {
         methods.credit.descriptionAttributes = { balance: this.$filters.currency(this.user.credit) }
       } else {
         methods.credit.enabled = false
-        methods.credit.description = 'DESCRIPTION_NO_BALANCE'
-        methods.credit.buttonText = 'BUTTON_TEXT_NO_BALANCE'
-        methods.credit.buttonClass = ''
+        methods.credit.description = 'NO_BALANCE'
+      }
+
+      // Disable any unavailable gateways + display "this gateway is not available" messages
+      for (let key in methods) {
+        if ((this.allowedGateways.find(u => u === key) || false) === false) {
+          methods[key].enabled = false
+          methods[key].description = 'NOT_AVAILABLE'
+        }
       }
 
       return methods
     }
   },
+  async created () {
+    await this.fetchGateways()
+  },
   methods: {
-    canUse (type) {
-      const found = type.usage.find(u => u === this.invoice.type)
-      return found || false
+    async fetchGateways () {
+      await invoiceAPI.gateways({
+        data: {
+          id: this.invoice.id
+        },
+        success: response => {
+          if (response.data.result) {
+            this.error = false
+            this.loading = false
+            this.allowedGateways = this.allowedGateways.concat(response.data.result)
+          }
+        },
+        fail: e => {
+          console.error(e)
+          this.error = true
+          this.loading = false
+        }
+      })
     },
     pay (method) {
+      console.warn(method.route)
       this.$router.push({
         name: method.route,
         params: {

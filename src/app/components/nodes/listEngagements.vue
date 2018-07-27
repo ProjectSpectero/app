@@ -9,6 +9,7 @@
 
         <div
           v-for="field in formFields"
+          v-if="field.show !== false"
           :key="field.name">
           <template v-if="field.type === 'select'">
             <div
@@ -42,6 +43,34 @@
                 </select>
                 <tooltip id="nodes.topics.marketModels"/>
               </div>
+            </div>
+          </template>
+          <template v-else-if="field.type === 'price'">
+            <div class="form-input">
+              <div class="label"><label :for="field.name">{{ field.label }}</label></div>
+
+              <vue-numeric
+                v-validate="rules[field.name]"
+                v-model="form[field.name]"
+                :type="field.type"
+                :name="field.name"
+                :id="field.name"
+                :class="{'input-error': errors.has(field.name)}"
+                :disabled="formLoading"
+                :data-vv-as="field.name"
+                :min="0"
+                :precision="2"
+                :empty-value="0"
+                class="input max-width"
+                currency="USD $"
+                separator=","
+                output-type="Number" />
+
+              <span
+                v-show="errors.has(field.name)"
+                class="input-error-message">
+                {{ errors.first(field.name) }}
+              </span>
             </div>
           </template>
           <template v-else>
@@ -169,7 +198,7 @@ export default {
       },
       formError: null,
       formLoading: false,
-      formFields: [],
+      form: {},
       marketModels: [
         'UNLISTED',
         'LISTED_SHARED',
@@ -182,7 +211,9 @@ export default {
         },
         price: {
           required: true,
-          min_value: 5
+          numeric: true,
+          min_value: 5,
+          max_value: 9999
         },
         market_model: {
           required: true,
@@ -191,8 +222,40 @@ export default {
       }
     }
   },
+  computed: {
+    formFields () {
+      return [
+        {
+          name: 'friendly_name',
+          label: this.$i18n.t('misc.FRIENDLY_NAME'),
+          placeholder: this.$i18n.t('misc.FRIENDLY_NAME'),
+          type: 'text'
+        },
+        {
+          name: 'market_model',
+          label: this.$i18n.t('misc.MARKET_MODEL'),
+          placeholder: this.$i18n.t('misc.MARKET_MODEL'),
+          type: 'model',
+          object: this.marketModels,
+          objectKey: null
+        },
+        {
+          name: 'price',
+          label: this.$i18n.t('misc.PRICE'),
+          placeholder: this.$i18n.t('misc.PRICE'),
+          type: 'price',
+          show: this.form.market_model !== 'UNLISTED'
+        }
+      ]
+    }
+  },
   created () {
-    this.form = Object.assign({}, this.node ? this.node : this.group)
+    let item = this.node ? this.node : this.group
+    let fields = ['id', 'friendly_name', 'market_model', 'price', 'ip', 'port', 'protocol']
+
+    for (let field in fields) {
+      this.$set(this.form, fields[field], item[fields[field]])
+    }
 
     this.options = {
       skin: '',
@@ -217,15 +280,19 @@ export default {
       sortable: this.sortableColumns,
       filterable: this.filterableColumns
     }
-
-    this.formFields = [
-      { name: 'friendly_name', label: this.$i18n.t('misc.FRIENDLY_NAME'), placeholder: this.$i18n.t('misc.FRIENDLY_NAME'), type: 'text' },
-      { name: 'market_model', label: this.$i18n.t('misc.MARKET_MODEL'), placeholder: this.$i18n.t('misc.MARKET_MODEL'), type: 'model', object: this.marketModels, objectKey: null },
-      { name: 'price', label: this.$i18n.t('misc.PRICE'), placeholder: this.$i18n.t('misc.PRICE'), type: 'number' }
-    ]
   },
   methods: {
-    async submit () {
+    submit () {
+      this.$validator.validateAll().then(result => {
+        if (!result) {
+          this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
+        } else {
+          this.formError = null
+          this.processSubmit()
+        }
+      })
+    },
+    async processSubmit () {
       this.formLoading = true
       const method = this.node ? nodeAPI['edit'] : nodeAPI['editGroup']
 

@@ -18,6 +18,7 @@ import VueFloatLabel from 'vue-float-label'
 import VueTooltip from 'vue-directive-tooltip'
 import FlagIcon from 'vue-flag-icon'
 import PrettyCheckbox from 'pretty-checkbox-vue'
+import VueNumeric from 'vue-numeric'
 
 import globalMixin from '@/shared/mixins/global'
 
@@ -65,6 +66,8 @@ Vue.use(Toasted, {
   duration: 5000,
   singleton: false
 })
+
+Vue.use(VueNumeric)
 
 if (process.env.NODE_ENV !== 'development') {
   Vue.use(VueAnalytics, {

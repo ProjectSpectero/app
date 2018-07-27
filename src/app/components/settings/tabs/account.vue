@@ -231,6 +231,7 @@ export default {
         if (!result) {
           this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
         } else {
+          this.formError = null
           this.$emit('processForm', this.form)
         }
       })
