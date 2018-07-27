@@ -7,11 +7,13 @@
 <script>
 import restart from '@/daemon/components/common/restart'
 import restartHTTPProxy from '@/daemon/components/services/HTTPProxy/restart'
+import restartOpenVPN from '@/daemon/components/services/openVPN/restart'
 
 export default {
   components: {
     restart,
-    restartHTTPProxy
+    restartHTTPProxy,
+    restartOpenVPN
   },
   props: {
     barComponent: {
@@ -21,7 +23,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

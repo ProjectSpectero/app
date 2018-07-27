@@ -434,6 +434,7 @@ module.exports = {
   daemon: {
     RESOURCE_NOT_FOUND: 'We were unable to find that node. Please try again later and contact us if the problem persists.',
     MANAGE_DAEMON: 'Manage Daemon',
+    INVALID_NETWORK: 'Please add a valid network address.',
     RESOURCES: 'My resources',
     BACK_TO_NODES: 'Back To Nodes',
     MANAGING_AS: 'Managing daemon {id} as',
@@ -652,6 +653,10 @@ module.exports = {
             <p><strong>Normal Mode</strong><br>In normal mode, the proxy provides a blacklist that the users can use to ban any number of URLs from being visited. Blocked requests will be redirected to BlockedRedirectUri.</p>
             <p><strong>ExclusiveAllow Mode</strong><br>In exclusive-allow mode (or whitelist only mode), the proxy only connects to a list of pre-determined hosts. This is handy in corporate environments where browsing privileges are restricted.</p>
             <p><a href="https://spectero.atlassian.net/wiki/spaces/docs/pages/1048633/HTTP+Proxy" target="_blank">View Full Documentation</a></p>`
+        },
+        pushedNetworks: {
+          title: 'Pushed Networks',
+          description: ''
         }
       }
     }

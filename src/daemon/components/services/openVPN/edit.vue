@@ -43,6 +43,10 @@
               :current-gateways="redirectGateway"
               @update="updateGateways"/>
 
+            <cidr
+              :pushed-networks="pushedNetworks"
+              @update="updatePushedNetworks"/>
+
             <div>
               <h5>Maximum Clients</h5>
 
@@ -203,13 +207,15 @@ import tooltip from '@/shared/components/tooltip'
 import protocols from '@/shared/helpers/protocols'
 import dhcp from './dhcp'
 import gateways from './gateways'
+import cidr from './cidr'
 
 export default {
   components: {
     top,
     tooltip,
     gateways,
-    dhcp
+    dhcp,
+    cidr
   },
   metaInfo: {
     title: 'OpenVPN Configuration'
@@ -221,6 +227,7 @@ export default {
       protocolOptions: protocols,
       dhcpOptions: [],
       redirectGateway: [],
+      pushedNetworks: [],
       formDisable: false,
       rules: {
         port: {
@@ -274,6 +281,7 @@ export default {
 
           if (this.config.length) {
             this.dhcpOptions = this.config[0].dhcpOptions
+            this.pushedNetworks = this.config[0].pushedNetworks
             this.redirectGateway = this.config[0].redirectGateway
           }
         },
@@ -282,8 +290,9 @@ export default {
         }
       })
     },
-    validateCIDR (value) {
-      console.log(value)
+    updatePushedNetworks (networks) {
+      this.pushedNetworks = networks
+      console.log('updated pushed networks to', this.pushedNetworks)
     },
     updateGateways (gateways) {
       this.redirectGateway = gateways
@@ -334,6 +343,7 @@ export default {
 
       this.$set(this.config[0], 'dhcpOptions', this.dhcpOptions)
       this.$set(this.config[0], 'redirectGateway', this.redirectGateway)
+      this.$set(this.config[0], 'pushedNetworks', this.pushedNetworks)
 
       obj = this.buildObject()
 
