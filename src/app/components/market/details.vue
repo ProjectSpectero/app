@@ -32,7 +32,7 @@
             </div>
           </div>
           <div
-            v-if="item.services.length > 0"
+            v-if="item.type === 'NODE' && item.services.length > 0"
             class="info-box">
             <h5>{{ $i18n.t('misc.SERVICES') }}</h5>
             <div
