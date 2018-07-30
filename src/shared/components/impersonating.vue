@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="user && isImpersonating"
-    class="message message-info message-top">
+    class="impersonating message message-info message-top">
     <div>
       <h5>This isn't you!</h5>
       <p>{{ $i18n.t('users.IMPERSONATING', { name: user.name }) }}</p>
@@ -61,3 +61,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@media print {
+  .impersonating {
+    display: none !important;
+  }
+}
+</style>
