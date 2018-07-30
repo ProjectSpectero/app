@@ -2,26 +2,40 @@
   <div>
     <top :title="$i18n.t('misc.USERS')"/>
 
-    <div class="container centered">
-      <div class="col-12">
-        <v-client-table
-          v-if="list"
-          :data="list"
-          :columns="columns"
-          :options="options">
-
-          <template
-            slot="actions"
-            slot-scope="props">
-            <button
-              class="button"
-              @click.stop="triggerImpersonation(props.row.id)">
-              {{ $i18n.t('misc.IMPERSONATE') }}
-            </button>
-          </template>
-        </v-client-table>
+    <template v-if="tableData">
+      <div class="container">
+        <div class="col-12 datatable">
+          <table>
+            <table-header
+              :columns="columns"
+              :headings="headings"
+              :sortable="sortable"/>
+            <tbody>
+              <tr
+                v-for="row in tableData"
+                :key="row.id">
+                <td>{{ row.id }}</td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.email }}</td>
+                <td>{{ row.status }}</td>
+                <td>{{ row.created_at | moment('MMM D, YYYY') }}</td>
+                <td class="table-actions">
+                  <button
+                    class="button"
+                    @click.stop="triggerImpersonation(row.id)">
+                    {{ $i18n.t('misc.IMPERSONATE') }}
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+
+      <paginator
+        :pagination="pagination"
+        @changedPage="changedPage"/>
+    </template>
   </div>
 </template>
 
@@ -31,47 +45,34 @@ import { getCookie } from 'tiny-cookie'
 import userAPI from '@/app/api/user'
 import authAPI from '@/app/api/auth'
 import top from '@/shared/components/top'
+import paginator from '@/shared/components/paginator'
+import tableHeader from '@/shared/components/table/thead'
 
 export default {
   components: {
-    top
+    top,
+    paginator,
+    tableHeader
   },
   data () {
     return {
-      list: null,
+      tableData: null,
+      pagination: null,
+      perPage: 10,
       columns: ['id', 'name', 'email', 'status', 'created_at', 'actions'],
-      options: {},
+      sortable: [],
       headings: {
-        name: 'Name'
+        id: 'ID',
+        name: 'Name',
+        email: 'Email',
+        status: 'Status',
+        created_at: 'Created at',
+        actions: ''
       }
     }
   },
   async created () {
-    await this.fetchList()
-
-    this.options = {
-      skin: '',
-      texts: {
-        count: 'Showing {from} to {to} of {count} users|{count} users|One user',
-        filter: '',
-        filterPlaceholder: 'Search users',
-        limit: 'Users:',
-        page: 'Page:',
-        noresult: 'This item has no users yet.',
-        filterBy: 'Filter by {column}',
-        loading: 'Loading...',
-        defaultOption: 'Select {column}',
-        columns: 'Columns'
-      },
-      columnsClasses: {
-        actions: 'table-actions'
-      },
-      perPage: 10,
-      pagination: true,
-      headings: this.headings,
-      sortable: this.columns,
-      filterable: this.columns
-    }
+    await this.fetchUsers(this.$route.params.page || 1)
   },
   methods: {
     ...mapActions({
@@ -108,22 +109,27 @@ export default {
             this.$router.push({ name: 'nodes' })
           },
           fail: error => {
-            console.log(error)
+            console.error(error)
           }
         })
       }
     },
-    async fetchList () {
+    async changedPage (page) {
+      this.$router.push({ name: 'users-list', params: { page: page } })
+      await this.fetchUsers(page)
+    },
+    async fetchUsers (page) {
       await userAPI.list({
         queryParams: {
-          page: 1,
-          perPage: 100
+          page: page || 1,
+          perPage: this.perPage || 10
         },
         success: response => {
-          this.list = response.data.result
+          this.pagination = response.data.pagination
+          this.tableData = response.data.result
         },
-        fail: error => {
-          console.log(error)
+        fail: e => {
+          console.error(e)
           this.$router.push({ name: 'settings' })
         }
       })
@@ -131,7 +137,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>
