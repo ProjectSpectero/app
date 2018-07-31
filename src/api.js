@@ -68,8 +68,8 @@ async function API (project, method, path, data, success, failed) {
       return
     }
 
-    // Remove authorization cookie if 401 (unauthorized) or 403 (email verification needed is returned by any API call
-    if ([401, 403].includes(status) && getCookie(project.cookieName) !== null) {
+    // Remove authorization cookie if 401 (unauthorized / email verification needed) is returned by the API call
+    if (status === 401 && getCookie(project.cookieName) !== null) {
       removeCookie(project.cookieName)
       router.push({ name: 'login', query: { redirect: location.pathname + location.search } })
     }

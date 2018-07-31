@@ -191,10 +191,12 @@ export default {
     })
   },
   watch: {
-    user: async function (val) {
-      await this.fetchFreshdesk()
-      await this.fetchPlans()
-      await this.refreshCart()
+    user: async function (u) {
+      if (u) {
+        await this.fetchFreshdesk()
+        await this.fetchPlans()
+        await this.refreshCart()
+      }
     }
   },
   methods: {

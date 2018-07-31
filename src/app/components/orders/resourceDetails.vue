@@ -147,6 +147,7 @@ export default {
   color: $color-dark;
   font-weight: $font-semi;
 }
+
 .reference-list {
   padding: 12px;
   display: block;
@@ -162,6 +163,7 @@ export default {
     white-space: pre-wrap;
   }
 }
+
 textarea, .reference-list {
   margin-bottom: 12px;
 }

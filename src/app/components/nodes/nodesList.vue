@@ -166,9 +166,9 @@ export default {
     changedPage (page) {
       this.$emit('changedPage', page)
     },
-    removeNode (id) {
+    async removeNode (id) {
       if (confirm(this.$i18n.t('misc.DELETE_CONFIRM_DIALOG', { object: 'node' }))) {
-        nodeAPI.delete({
+        await nodeAPI.delete({
           data: {
             id: id
           },
