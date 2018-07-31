@@ -338,7 +338,8 @@ module.exports = {
   },
 
   pro: {
-    MAIN_TITLE: 'Purchase Spectero Pro'
+    MAIN_TITLE: 'Purchase Spectero Pro',
+    ORDER_CREATE_FAILED: 'Sorry, we were unable to process your Spectero Pro order at this time. Please try again or contact our support team if this persists.'
   },
 
   services: {

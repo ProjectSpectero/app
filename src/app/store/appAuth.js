@@ -111,7 +111,7 @@ const mutations = {
   },
   SET_LOGIN_INFO (state, payload) {
     state.accessToken = payload.accessToken
-    state.refreshToken = payload.refreshToken
+    state.refreshToken = payload.refreshToken || null
     state.expiry = payload.expiry
   },
   CLEAR_LOGIN_INFO (state) {

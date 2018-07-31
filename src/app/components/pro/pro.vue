@@ -2,7 +2,8 @@
   <div>
     <template>
       <top :title="$i18n.t('pro.MAIN_TITLE')"/>
-      <div>
+      <loading v-if="loading"/>
+      <div v-else>
         <div class="container">
           <div class="col-12">
             <form>
@@ -10,35 +11,79 @@
                 v-if="formError"
                 class="message message-error">{{ formError }}</div>
 
-              <div class="form-input">
-                <float-label>
-                  <input
-                    v-validate="'required|email'"
-                    v-model="email"
-                    :class="{'input-error': errors.has('email')}"
-                    :disabled="formLoading"
-                    type="email"
-                    name="email"
-                    class="input"
-                    placeholder="Your email address"
-                    data-vv-as="email"
-                    @keyup="$validator.errors.removeById('email_FIELD_UNIQUE')">
-                </float-label>
+              <template v-if="planFetched">
+                <div class="select-plan">
+                  <div class="plans">
+                    <article
+                      v-for="(plan, id) in plans"
+                      :key="id"
+                      :class="{
+                        'active': selectedPlan === id,
+                        'best-deal': plan.bestDeal
+                      }"
+                      class="plan"
+                      @click.stop="selectPlan(id)">
+                      <div
+                        v-if="plan.bestDeal"
+                        class="most-popular-badge">
+                        Most Popular
+                      </div>
+                      <div class="name">{{ plan.name }}</div>
+                      <div class="amount">
+                        <div
+                          v-if="plan.oldPrice"
+                          class="price old">
+                          {{ plan.oldPrice | currency }}
+                        </div>
+                        <div class="price">{{ plan.price | currency }}</div>
+                        <div class="per">per {{ plan.termLabel }}</div>
+                      </div>
+                      <div class="billing-terms">
+                        <p>Billed {{ plan.price | currency }} every {{ plan.termLabel }}</p>
+                      </div>
+                      <div
+                        v-if="plan.discountPercent"
+                        class="savings">
+                        Save {{ plan.discountPercent }}%
+                      </div>
+                    </article>
 
-                <span
-                  v-show="errors.has('email')"
-                  class="input-error-message">
-                  {{ errors.first('email') }}
-                </span>
-              </div>
-              <button
-                :class="{ 'button-loading': formLoading }"
-                :disabled="formLoading"
-                class="button-info button-md max-width"
-                @click.prevent="submit"
-                @keyup.enter="submit">
-                {{ $i18n.t('misc.CONTINUE') }}
-              </button>
+                  </div>
+                </div>
+
+                <template v-if="!user">
+                  <div class="form-input">
+                    <float-label>
+                      <input
+                        v-validate="'required|email'"
+                        v-model="email"
+                        :class="{'input-error': errors.has('email')}"
+                        :disabled="formLoading"
+                        type="email"
+                        name="email"
+                        class="input"
+                        placeholder="Your email address"
+                        data-vv-as="email"
+                        @keyup="$validator.errors.removeById('email_FIELD_UNIQUE')">
+                    </float-label>
+
+                    <span
+                      v-show="errors.has('email')"
+                      class="input-error-message">
+                      {{ errors.first('email') }}
+                    </span>
+                  </div>
+                </template>
+
+                <button
+                  :class="{ 'button-loading': formLoading }"
+                  :disabled="formLoading"
+                  class="button-info button-md max-width"
+                  @click.prevent="submit"
+                  @keyup.enter="submit">
+                  {{ $i18n.t('misc.CONTINUE') }}
+                </button>
+              </template>
             </form>
           </div>
         </div>
@@ -48,12 +93,17 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+import orderAPI from '@/app/api/order'
+import marketAPI from '@/app/api/market'
 import auth from '@/app/api/auth'
 import top from '@/shared/components/top'
+import loading from '@/shared/components/loading'
 
 export default {
   components: {
-    top
+    top,
+    loading
   },
   metaInfo: {
     title: 'Spectero Pro'
@@ -62,12 +112,126 @@ export default {
     return {
       email: null,
       formError: null,
-      formLoading: false
+      formLoading: false,
+      plan: null,
+      selectedPlan: 'yearly',
+      planFetched: false,
+      plans: {
+        monthly: {
+          name: '1 Month',
+          price: 0,
+          termLabel: 'month'
+        },
+        yearly: {
+          name: '1 Year',
+          price: 0,
+          termLabel: 'year',
+          bestDeal: true
+        }
+      }
     }
   },
+  computed: {
+    ...mapGetters({
+      user: 'appAuth/user'
+    })
+  },
+  async created () {
+    await this.fetchProPlan()
+  },
   methods: {
-    submit () {
-      console.log(this.$validator)
+    ...mapActions({
+      syncCurrentUser: 'appAuth/syncCurrentUser'
+    }),
+    selectPlan (id) {
+      this.selectedPlan = id
+    },
+    async fetchProPlan () {
+      this.loading = true
+      this.formError = null
+
+      await orderAPI.plan({
+        data: {
+          id: 'pro'
+        },
+        success: async response => {
+          const result = response.data.result
+
+          this.plan = result
+
+          // Get pricing from API
+          await marketAPI.fetch({
+            data: {
+              id: this.plan.resources[0].id,
+              type: this.plan.resources[0].type === 'NODE_GROUP' ? 'group' : 'node'
+            },
+            success: response => {
+              let result = response.data.result
+              result.price = parseFloat(result.price)
+
+              this.loading = false
+              this.planFetched = true
+
+              this.plans.monthly.price = result.price
+              this.plans.yearly.price = (result.price / 30) * 365
+
+              // Apply discount to yearly plan
+              if (this.plan.yearly_discount_pct > 0) {
+                const yearlyPlan = this.plans.yearly
+                let yearlySavings = yearlyPlan.price * this.plan.yearly_discount_pct
+
+                this.plans.yearly.oldPrice = yearlyPlan.price
+                this.plans.yearly.price = Math.floor(yearlyPlan.price - yearlySavings) // floor the price for marketing purposes
+                this.plans.yearly.discountPercent = this.plan.yearly_discount_pct * 100
+              }
+            },
+            fail: error => {
+              this.loading = false
+              this.formError = this.$i18n.t('misc.UNKNOWN_ERROR')
+              console.error('Error while getting pro plan resource', error)
+            }
+          })
+        },
+        fail: error => {
+          this.loading = false
+          this.formError = this.$i18n.t('misc.UNKNOWN_ERROR')
+          console.error('Error while getting pro plan', error)
+        }
+      })
+    },
+    async submit () {
+      if (!this.user) {
+        await this.easyRegister()
+      } else {
+        await this.createProOrder()
+      }
+    },
+    createProOrder () {
+      this.loading = true
+      this.formError = null
+
+      marketAPI.order({
+        data: {
+          items: [{
+            id: this.plan.resources[0].id,
+            type: this.plan.resources[0].type
+          }],
+          meta: {
+            'term': (this.selectedPlan === 'yearly') ? 365 : 30
+          }
+        },
+        success: response => {
+          const result = response.data.result
+          this.$router.push({ name: 'checkout', params: { id: result.last_invoice_id } })
+        },
+        fail: error => {
+          this.loading = false
+          this.formError = this.$i18n.t('pro.ORDER_CREATE_FAILED')
+          console.error('Unable to create pro order', error)
+        }
+      })
+    },
+    easyRegister () {
       this.$validator.validateAll().then((result) => {
         if (!result) {
           this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
@@ -80,22 +244,21 @@ export default {
             data: {
               email: this.email
             },
-            registerSuccess: response => {
-              this.dealWithSuccess(response)
+            registerSuccess: async response => {
+              await this.syncCurrentUser()
+
+              this.formError = null
+              this.createProOrder()
             },
             registerFailed: error => {
-              this.dealWithError(error)
+              this.easyRegisterError(error)
               console.error('Pro login failed', error)
             }
           })
         }
       })
     },
-    dealWithSuccess (response) {
-      this.formError = null
-      console.log(`Pro login complete`, response)
-    },
-    dealWithError (err) {
+    easyRegisterError (err) {
       this.formLoading = false
 
       // Get first error key to display main error msg
@@ -126,3 +289,92 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.select-plan {
+  .plans {
+    display: flex;
+    flex-direction: row;
+
+    article {
+      flex-basis: 100px;
+      flex-grow: 1;
+      margin-right: 8px;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      text-align: center;
+      background: $white;
+      border: 4px solid $color-border;
+      cursor: pointer;
+
+      &.active {
+        background: lighten($color-success, 50%);
+        border: 4px solid $color-success;
+        cursor: default;
+      }
+      &.best-deal {
+        .amount .price,
+        .amount .per,
+        .savings {
+          color: $color-success;
+        }
+      }
+      .name {
+        margin-bottom: 14px;
+        font-size: 22px;
+        line-height: 100%;
+        font-weight: $font-bold;
+      }
+      .amount {
+        .price {
+          font-size: 38px;
+          line-height: 110%;
+          font-weight: $font-bold;
+          color: lighten($color-primary, 45%);
+
+          &.old {
+            margin-bottom: 4px;
+            font-size: 20px;
+            text-decoration: line-through;
+            color: lighten($color-primary, 75%);
+            font-weight: $font-semi;
+          }
+        }
+        .per {
+          font-size: 13px;
+          line-height: 100%;
+        }
+      }
+      .billing-terms {
+        margin-top: 18px;
+        padding-top: 16px;
+        color: lighten($color-primary, 45%);
+        border-top: 1px solid $color-border;
+      }
+      .savings {
+        margin-top: 8px;
+        font-size: 20px;
+        line-height: 100%;
+        font-weight: $font-bold;
+      }
+      .most-popular-badge {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        padding: 5px 5px 3px 5px;
+        color: $white;
+        font-size: 12px;
+        line-height: 100%;
+        font-weight: $font-bold;
+        text-transform: uppercase;
+        background: $color-success;
+        border-radius: 3px;
+      }
+    }
+  }
+}
+</style>
