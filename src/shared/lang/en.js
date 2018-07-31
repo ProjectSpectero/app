@@ -59,6 +59,7 @@ module.exports = {
     LISTENER: 'Listener',
     PURCHASE: 'Purchase',
     PAY_NOW: 'Pay Now',
+    VIEW_INVOICE: 'View Invoice',
     SAVE: 'Save',
     REMOVE: 'Remove',
     MARKET_INFO: 'Market Information',
@@ -104,7 +105,8 @@ module.exports = {
     REGISTER: 'Register',
     RESET_PASSWORD: 'Reset Password',
     SERVICES: 'Services',
-    SAVE_GROUP: 'Save Group'
+    SAVE_GROUP: 'Save Group',
+    UNKNOWN_ERROR: 'An unknown error occurred. Please try again later or contact our support team if this issue persists.'
   },
 
   errors: {
@@ -161,24 +163,22 @@ module.exports = {
     INVOICE_ALREADY_PAID: 'This invoice was already paid!',
     INVOICE_STATUS_MISMATCH: 'There seems to be a problem processing this invoice. Please try again later and contact our customer support if this issue persists.',
     NO_STORED_CARD: 'Unable to find a card connected to this account.',
-    USE_SAVED_CARD: 'You previously saved a credit card ({card}) on our system. Do you want to pay with it?',
+    USE_SAVED_CARD: 'You previously saved a credit card with our payment processor. Do you want to pay with it?',
     BUTTON_USE_SAVED_CARD_YES: 'Yes, Pay Now',
     BUTTON_USE_SAVED_CARD_NO: 'No, Use Different Card',
-    BUTTON_PROCESS_PAYMENT: 'Process Payment',
+    BUTTON_PAY_NOW: 'Pay Now',
+    STRIPE_ERROR: 'There was an issue processing your card: {msg}',
     CHECK_SAVE_CARD: 'Save card for future orders',
     PAYMENT_SUCCESS: 'Payment processed successfully!',
     PAYMENT_PROCESSING: 'Payment in process, please wait...',
     PAYMENT_ACCEPTED: 'Your payment has been accepted and we are now processing it. Please check this invoice in a few minutes.',
-    PAY_HEADER: 'Payment for invoice #{invoiceId}',
-    PAY_DESCRIPTION: 'Use the form below to pay for your order. Once we recieve your payment, you\'ll gain access to the services associated to the invoice.',
     PAY_SECURE: 'Your payment is secure.',
     PAY_SECURE_DETAILS: 'Your credit card data never touches our server. We operate solely based on tokens with our payment partner Stripe who are leaders in the credit card processing industry.',
     PAYPAL_CONNECT_HEADER: 'Connecting to Paypal',
     PAYPAL_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Paypal One Touch™ to complete your payment.',
-    CRYPTO_CONNECT_HEADER: 'Connecting to Coinbase',
-    CRYPTO_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Coinbase Commerce to complete your payment.',
     PAYMENT_INVALID_PARAMETERS: 'The payment data you have supplied seems to be wrong. Please contact us for more details.',
     PAYMENT_PROCESSOR_NOT_ENABLED: 'This payment processor is not enabled. Please contact us for more details.',
+    ACCOUNT_CREDIT_PAYMENT_FAILED: 'We\'re sorry, we were unable to process your account credit payment. Please try again and contact our support team if this persists.',
     REQUEST_FAILED: 'We were unable to start the payment process. Please contact us if this keeps happening.',
     ZERO_CREDIT_BALANCE: 'You don\'t have any balance in your account.',
     UNPAID_CREDIT_INVOICES_ARE_PRESENT: 'Unable to invoice credits: you already have one invoice queued for payment!',
@@ -186,7 +186,7 @@ module.exports = {
     ADD_CREDIT_TITLE: 'Add Credit',
     ADD_CREDIT_DESC: 'Use the form below to add credit to your account for making payments in the future.',
     ADD_CREDIT_MAX_WARNING: 'You may add up to <span>$</span>{remaining} {currency} more credit to this account.',
-    ADD_CREDIT_FORM_LABEL: 'Enter amount of credit (in $USD) you\'d like to purchase:',
+    ADD_CREDIT_FORM_LABEL: 'Enter amount of credit you\'d like to add to your account:',
     CREDIT_INVOICED: '{amount} {currency} worth of credit invoiced!',
     ADD_CREDIT_PLACEHOLDER: 'Enter amount of credit you wish to purchase',
     NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.',
@@ -194,7 +194,7 @@ module.exports = {
     COUNT_ACCOUNT_CREDIT: 'You currently have <strong><span>$</span>{credit} USD</strong> of credit in your account.',
     ACCOUNT_CREDIT: '(You have {credit} credits in your account)',
     ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!',
-    INVALID_STRIPE_TOKEN: 'We were unable to process your credit card at this time. This is probably our fault. Please try again!',
+    INVALID_STRIPE_TOKEN: 'We were unable to process your credit card at this time. Please contact our support team if this persists.',
     PROMO: {
       APPLY_MSG: 'Have a promo code? Apply it to your account here.',
       ENTER_PROMO_CODE_HERE: 'Enter promo code here',
@@ -209,27 +209,26 @@ module.exports = {
     METHODS: {
       CRYPTO: {
         TITLE: 'Cryptocurrency',
-        DESCRIPTION: 'Make a secure payment using cryptocurrency. Payments processed through Coinbase Commerce.',
-        BUTTON_TEXT: 'Cryptocurrency Payment',
-        NOT_AVAILABLE: 'Cryptocurrency payments aren\'t available for this transaction.'
+        DESCRIPTION: 'Make a secure payment using cryptocurrency through Coinbase.',
+        PAY_BUTTON: 'Continue to Coinbase',
+        REDIRECT_TEXT: 'Please wait while we redirect you to Coinbase to complete your payment.'
       },
       PAYPAL: {
         TITLE: 'PayPal',
         DESCRIPTION: 'Complete your payment through PayPal.',
-        BUTTON_TEXT: 'PayPal Checkout',
-        NOT_AVAILABLE: 'PayPal payments aren\'t available for this transaction.'
+        PAY_BUTTON: 'Continue to PayPal',
+        REDIRECT_TEXT: 'Please wait while we redirect you to PayPal to complete your payment.'
       },
       STRIPE: {
         TITLE: 'Credit Card',
-        DESCRIPTION: 'Make a secure payment using your credit card. Most major card types are accepted.',
-        BUTTON_TEXT: 'Credit Card Payment',
-        NOT_AVAILABLE: 'Credit card payments aren\'t available for this transaction.'
+        DESCRIPTION: 'Make a secure payment using your credit card. Most major card types are accepted.'
       },
-      CREDIT: {
+      ACCOUNT_CREDIT: {
         TITLE: 'Account Credit',
-        DESCRIPTION: 'Apply your account credit to this invoice. You currently have <strong>{balance}</strong> of account credit available to be applied.',
-        BUTTON_TEXT: 'Use Account Credit',
-        NO_BALANCE: 'You have no account credit available to pay with.'
+        DESCRIPTION: 'Apply your account credit to this invoice. You currently have <strong>{balance}</strong> of account credit available to be applied to this order.',
+        PAY_BUTTON: 'Use Account Credit',
+        APPLY_TEXT: 'You have enough credit to cover the full amount of <strong>{due}</strong> for this order. You won\'t have a remaining balance to pay after your credit is applied.',
+        APPLY_TEXT_PARTIAL: 'You have enough credit to cover a partial amount of <strong>{balance}</strong> for this order. You will have a remaining balance of <strong>{remaining}</strong> to pay on this invoice.'
       }
     }
   },
@@ -279,6 +278,7 @@ module.exports = {
     RESOURCE_HAS_BEEN_CANCELLED: 'Resource has been cancelled',
     MISSING_PAYMENT_INFORMATION: 'Billing Details Missing',
     MISSING_PAYMENT_INFORMATION_TEXT: 'Some of your billing details are missing to complete your payment. Please fill out any missing billing fields below then click the button below to complete your payment.',
+    BILLING_ADDRESS_CONTINUE_PAYMENT: 'Please update your billing address to continue with checkout. You will be returned to checkout once you\'ve finished updating your address.',
     COMPLETE_PAYMENT: 'Complete Payment',
     UNPAYABLE: 'Order Processing',
     UNPAYABLE_TEXT: 'This order is currently processing. You will be able to make a payment once the order has been fully processed by our verification team.'
