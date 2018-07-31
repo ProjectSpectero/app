@@ -4,7 +4,7 @@
     <div class="content">
       <div class="auth">
         <div class="auth-container">
-          <router-view/>
+          <router-view :key="$route.fullPath" />
         </div>
       </div>
     </div>
@@ -20,7 +20,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-// Defined in assets/styles/pages/_auth.scss
-</style>
