@@ -504,6 +504,11 @@ export default {
   .invoice {
     padding: 0;
     border: none;
+
+    .details .info-table tr.invert {
+      color: $color-primary;
+      background: none;
+    }
   }
   .message-paid, .line-error-msg {
     display: none !important;
@@ -523,6 +528,15 @@ export default {
       background: none;
       padding-bottom: 14px;
     }
+  }
+  .badge, [class^="badge-"] {
+    margin: 0;
+    padding: 0;
+    color: $color-primary;
+    font-size: 100%;
+    font-weight: $font-regular;
+    text-transform: capitalize;
+    background: none;
   }
 }
 </style>
