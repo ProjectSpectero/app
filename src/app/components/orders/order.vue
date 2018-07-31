@@ -90,7 +90,7 @@
                 :show-invoice-link="true"/>
 
               <alert-unpayable
-                v-else-if="isUnpaid && !isPayable"
+                v-else-if="isUnpaid && !isPayable && !isProcessing"
                 :invoice="invoice"
                 :order="order"/>
             </section>
@@ -251,6 +251,7 @@ export default {
           if (response.data.result) {
             this.order = response.data.result
             this.invoice = this.order.last_invoice
+            this.invoiceId = this.invoice.id
 
             for (let key in this.order.line_items) {
               this.order.line_items[key].error = null

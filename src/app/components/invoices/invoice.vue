@@ -24,6 +24,15 @@
         <div v-if="!loading">
           <div class="container centered">
             <div class="col-12 invoice-col">
+              <div
+                v-if="'unpayable' in this.$route.query"
+                class="message">
+                <div>
+                  <h5>Checkout unavailable</h5>
+                  <p>We're sorry, checkout is currently unavailable for this invoice. Please check for any errors below or contact our support team if this persists.</p>
+                </div>
+              </div>
+
               <alert-processing
                 v-if="isProcessing"
                 :error-bag="verificationErrors"
@@ -241,8 +250,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import orderAPI from '@/app/api/order'
-import invoiceAPI from '@/app/api/invoice'
 import orderMixin from '@/app/mixins/order'
 import alertProcessing from './alertProcessing'
 import alertOutstanding from './alertOutstanding'
@@ -272,17 +279,9 @@ export default {
   ],
   data () {
     return {
-      order: null,
-      valid: false,
-      invoice: null,
-      engagement: null,
-      due: {},
-      transactions: null,
-      fetchExtras: true,
-      verified: false,
-      verificationErrors: [],
       errorItem: 'invoice',
-      errorCode: 404
+      errorCode: 404,
+      getTransactions: true
     }
   },
   computed: {
@@ -345,121 +344,7 @@ export default {
   methods: {
     ...mapActions({
       syncCurrentUser: 'appAuth/syncCurrentUser'
-    }),
-    async fetchInvoice () {
-      await invoiceAPI.invoice({
-        data: { id: this.$route.params.id },
-        success: response => {
-          if (response.data.result) {
-            this.error = false
-            this.invoice = response.data.result
-
-            // Non-standard invoices (MANUAL/CREDIT) don't have orders
-            // associated with them. We can only fetch orders for STANDARD invoices
-            if (this.isStandardInvoice) {
-              this.fetchOrder()
-            } else {
-              this.loading = false
-            }
-
-            // Fetch extra info: total due amount and list of transactions
-            // We don't need to fetch these when status checking
-            if (this.fetchExtras) {
-              this.fetchDue()
-              this.fetchTransactions()
-            }
-          }
-        },
-        fail: (e) => {
-          console.log(e)
-          this.error = true
-        }
-      })
-    },
-    async fetchOrder () {
-      await orderAPI.order({
-        data: { id: this.invoice.order_id },
-        success: async response => {
-          if (response.data.result) {
-            this.valid = true
-            this.loading = false
-            this.error = false
-            this.order = response.data.result
-
-            // Test if this order is fixable (only certain status need the verify + fix combo)
-            // for invalid resources
-            if (this.isFixable) {
-              await this.verify()
-            } else {
-              this.verified = true
-            }
-          }
-        },
-        fail: (e) => {
-          console.log(e)
-          this.error = true
-        }
-      })
-    },
-    async fetchDue () {
-      await invoiceAPI.due({
-        data: {
-          id: this.$route.params.id
-        },
-        success: response => {
-          if (response.data.result) {
-            this.error = false
-            this.due = response.data.result
-          }
-        },
-        fail: e => {
-          console.log(e)
-          this.error = true
-        }
-      })
-    },
-    async fetchTransactions () {
-      await invoiceAPI.transactions({
-        data: {
-          id: this.$route.params.id
-        },
-        success: response => {
-          if (response.data.result) {
-            this.error = false
-            this.transactions = response.data.result
-
-            // "Close" extras fetching now that we have them
-            this.fetchExtras = false
-          }
-        },
-        fail: e => {
-          console.log(e)
-          this.error = true
-        }
-      })
-    },
-    async verify () {
-      await orderAPI.verify({
-        data: { id: this.invoice.order_id },
-        success: response => {
-          this.verified = true
-          this.verificationErrors = []
-        },
-        fail: error => {
-          this.verified = true
-
-          if (typeof error.errors === 'object') {
-            for (let key in error.errors) {
-              let e = error.errors[key]
-              this.verificationErrors.push(e)
-              this.lineItems[this.lineItems.findIndex(i => i.id === e.id)].error = e.reason
-            }
-          } else {
-            this.$toasted.error(this.errorAPI(error, 'orders'))
-          }
-        }
-      })
-    }
+    })
   }
 }
 </script>
