@@ -5,5 +5,5 @@ import settings from '@/app/components/settings/settings'
 export default [
   { path: '/', name: 'dashboard', component: dashboard, meta: { auth: true } },
   { path: '/users/list', name: 'users-list', component: usersList, meta: { auth: true } },
-  { path: '/settings/:tab?/:fromInvoice?', name: 'settings', component: settings, meta: { auth: true } }
+  { path: '/settings/:tab?', name: 'settings', component: settings, meta: { auth: true } }
 ]

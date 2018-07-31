@@ -34,19 +34,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import userAPI from '@/app/api/user.js'
 import copyToClipboard from '@/shared/components/copyToClipboard'
 
 export default {
   components: {
     copyToClipboard
-  },
-  props: {
-    user: {
-      type: Object,
-      required: true
-    }
   },
   metaInfo: {
     title: 'Node Key'
@@ -56,6 +50,11 @@ export default {
       nodeKey: null,
       formLoading: false
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'appAuth/user'
+    })
   },
   created () {
     this.form = Object.assign({}, this.user)

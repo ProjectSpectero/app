@@ -33,7 +33,7 @@ const getters = {
       },
       post_code: {
         required: true,
-        max: 64
+        max: 10
       },
       country: {
         required: true,
