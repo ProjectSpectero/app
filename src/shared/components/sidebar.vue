@@ -93,7 +93,7 @@
             <li>
               <router-link
                 :to="{ name: 'invoices' }"
-                :class="{'router-link-active': ['invoice'].includes($route.name)}">
+                :class="{'router-link-active': ['invoice', 'checkout'].includes($route.name)}">
                 <span class="icon-dollar-sign"/>
                 {{ $i18n.t('misc.INVOICES') }}
               </router-link>

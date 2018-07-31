@@ -82,5 +82,12 @@ export default {
    */
   applyPromoCode (options) {
     return api('POST', `/promo/code/apply`, options)
+  },
+
+  /**
+   * Gets the current users billing profile.
+   */
+  getBillingProfile (options) {
+    return api('GET', `/payment/profile`, options)
   }
 }
