@@ -13,26 +13,24 @@
           v-html="$i18n.t('invoices.BALANCE_DUE_PLEASE_PAY_NOW')"/>
       </p>
       <p class="actions">
-        <pay
-          :invoice="invoice"
-          :due="due"
-          classes="button-info"/>
+        <router-link
+          :to="{ name: 'checkout', params: { id: invoice.id } }"
+          class="button">
+          <span class="icon-dollar-sign"/>{{ $i18n.t('misc.PAY_NOW') }}
+        </router-link>
         <router-link
           v-if="showInvoiceLink"
           :to="{ name: 'invoice', params: { id: invoice.id } }"
-          class="button">View Invoice</router-link>
+          class="button">
+          {{ $i18n.t('misc.VIEW_INVOICE') }}
+        </router-link>
       </p>
     </div>
   </div>
 </template>
 
 <script>
-import pay from './pay'
-
 export default {
-  components: {
-    pay
-  },
   props: {
     invoice: {
       type: Object,

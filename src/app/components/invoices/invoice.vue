@@ -12,13 +12,12 @@
 
           <template v-if="!loading">
             <print :button-text="'Print Invoice'"/>
-
-            <pay
+            <router-link
               v-if="isUnpaid && isPayable"
-              :invoice="invoice"
-              :due="due"
-              classes="button-success"
-              @update="fetchInvoice"/>
+              :to="{ name: 'checkout', params: { id: invoice.id } }"
+              class="button-success">
+              <span class="icon-dollar-sign"/>{{ $i18n.t('misc.PAY_NOW') }}
+            </router-link>
           </template>
         </top>
         <div v-if="!loading">
@@ -257,7 +256,6 @@ import alertUnpayable from './alertUnpayable'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
-import pay from './pay'
 import print from '@/shared/components/print'
 
 export default {
@@ -268,7 +266,6 @@ export default {
     alertProcessing,
     alertUnpayable,
     loading,
-    pay,
     print
   },
   metaInfo: {
