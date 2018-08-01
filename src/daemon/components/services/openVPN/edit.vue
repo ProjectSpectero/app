@@ -71,6 +71,11 @@
         </div>
       </div>
       <div class="container pt-0 pb-0">
+        <div>
+          <h3>Listeners</h3>
+          <button @click.prevent.stop="addItem">Add item</button>
+        </div>
+
         <div
           v-for="(item, i) in config"
           :key="i"
@@ -228,6 +233,21 @@ export default {
       dhcpOptions: [],
       redirectGateway: [],
       pushedNetworks: [],
+      blankItem: {
+        allowMultipleConnectionsFromSameClient: false,
+        clientToClient: false,
+        dhcpOptions: [],
+        maxClients: 1024,
+        pushedNetworks: [],
+        redirectGateway: [],
+        listener: {
+          ipAddress: null,
+          managementPort: null,
+          network: null,
+          port: null,
+          protocol: null
+        }
+      },
       formDisable: false,
       rules: {
         port: {
@@ -276,7 +296,6 @@ export default {
       await serviceAPI.get({
         name: 'OpenVPN',
         success: response => {
-          console.warn(response.data.result)
           this.config = response.data.result
 
           if (this.config.length) {
@@ -286,13 +305,30 @@ export default {
           }
         },
         fail: error => {
-          console.log(error)
+          console.error(error)
         }
       })
     },
+    addItem () {
+      const newItem = Object.assign({}, this.blankItem)
+
+      if (this.config[0]) {
+        const c = this.config[0]
+        newItem.allowMultipleConnectionsFromSameClient = c.allowMultipleConnectionsFromSameClient
+        newItem.clientToClient = c.clientToClient
+        newItem.dhcpOptions = c.dhcpOptions
+        newItem.maxClients = c.maxClients
+        newItem.pushedNetworks = c.pushedNetworks
+        newItem.redirectGateway = c.redirectGateway
+      }
+
+      this.config.push(newItem)
+    },
+    removeItem (index) {
+      this.config.splice(index, 1)
+    },
     updatePushedNetworks (networks) {
       this.pushedNetworks = networks
-      console.log('updated pushed networks to', this.pushedNetworks)
     },
     updateGateways (gateways) {
       this.redirectGateway = gateways
@@ -363,7 +399,7 @@ export default {
           }
         },
         fail: error => {
-          console.log(error)
+          console.error(error)
           this.$toasted.error(this.$i18n.t('services.UPDATE_ERROR'))
         }
       })
@@ -372,14 +408,6 @@ export default {
       if (confirm(this.$i18n.t('misc.LEAVE_CONFIRM_DIALOG'))) {
         this.$router.push({ name: 'manage', params: { nodeId: this.$route.params.nodeId, action: 'services' } })
       }
-    },
-    findGatewayKey (option) {
-      const k = Object.keys(this.config[0].redirectGateway).find(key => {
-        console.log('trying', this.config[0].redirectGateway[key], 'vs', option.id)
-        console.log(this.config[0].redirectGateway[key] === option.id)
-        return this.config[0].redirectGateway[key] === option.id
-      })
-      console.log(k)
     }
   }
 }
