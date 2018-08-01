@@ -70,115 +70,133 @@
 
         </div>
       </div>
-      <div class="container pt-0 pb-0">
-        <div>
-          <h3>Listeners</h3>
-          <button @click.prevent.stop="addItem">Add item</button>
-        </div>
 
-        <div
-          v-for="(item, i) in config"
-          :key="i"
-          class="col-6 section padded">
-          <h2>{{ $i18n.t('misc.LISTENER') + ' #' + (i+1) }}</h2>
+      <div class="container">
+        <div class="col-12">
+          <div class="section padded p-0">
+            <div class="container">
+              <div class="add col-12 mb-4">
+                <h2>Listeners</h2>
+                <button
+                  class="button-md button-success"
+                  @click.prevent.stop="addItem">
+                  Add Item
+                </button>
+              </div>
 
-          <div class="form-input">
-            <float-label>
-              <input
-                v-validate="rules.ipAddress"
-                :id="`ipAddress-${i}`"
-                v-model="item.listener.ipAddress"
-                :class="{ 'input-error': errors.has(`ipAddress-${i}`) }"
-                :name="`ipAddress-${i}`"
-                type="text"
-                class="input"
-                placeholder="IP Address"
-                data-vv-as="IP address">
-            </float-label>
-            <div
-              v-show="errors.has(`ipAddress-${i}`)"
-              class="input-error-msg">
-              {{ errors.first(`ipAddress-${i}`) }}
-            </div>
-          </div>
+              <div
+                v-for="(item, i) in config"
+                :key="i"
+                class="col-6 section padded">
+                <div class="add mb-5">
+                  <h3>{{ $i18n.t('misc.LISTENER') + ' #' + (i+1) }}</h3>
+                  <button
+                    class="button-sm button-icon"
+                    @click.prevent.stop="removeItem(i)">
+                    <span class="icon-x"/>
+                  </button>
+                </div>
 
-          <div class="form-input">
-            <float-label>
-              <input
-                v-validate="rules.port"
-                :id="`managementPort-${i}`"
-                v-model="item.listener.managementPort"
-                :class="{ 'input-error': errors.has(`managementPort-${i}`) }"
-                :name="`managementPort-${i}`"
-                type="number"
-                class="input"
-                placeholder="Management Port"
-                data-vv-as="managementPort">
-            </float-label>
-            <div
-              v-show="errors.has(`managementPort-${i}`)"
-              class="input-error-msg">
-              {{ errors.first(`managementPort-${i}`) }}
-            </div>
-          </div>
+                <div class="form-input">
+                  <float-label>
+                    <input
+                      v-validate="rules.ipAddress"
+                      :id="`ipAddress-${i}`"
+                      v-model="item.listener.ipAddress"
+                      :class="{ 'input-error': errors.has(`ipAddress-${i}`) }"
+                      :name="`ipAddress-${i}`"
+                      type="text"
+                      class="input"
+                      placeholder="IP Address"
+                      data-vv-as="IP address">
+                  </float-label>
+                  <div
+                    v-show="errors.has(`ipAddress-${i}`)"
+                    class="input-error-msg">
+                    {{ errors.first(`ipAddress-${i}`) }}
+                  </div>
+                </div>
 
-          <div class="form-input">
-            <float-label>
-              <input
-                v-validate="rules.network"
-                :id="`network-${i}`"
-                v-model="item.listener.network"
-                :class="{ 'input-error': errors.has(`network-${i}`) }"
-                :name="`network-${i}`"
-                type="text"
-                class="input"
-                placeholder="Network"
-                data-vv-as="network">
-            </float-label>
-            <div
-              v-show="errors.has(`network-${i}`)"
-              class="input-error-msg">
-              {{ errors.first(`network-${i}`) }}
-            </div>
-          </div>
+                <div class="form-input">
+                  <float-label>
+                    <input
+                      v-validate="rules.port"
+                      :id="`managementPort-${i}`"
+                      v-model="item.listener.managementPort"
+                      :class="{ 'input-error': errors.has(`managementPort-${i}`) }"
+                      :name="`managementPort-${i}`"
+                      type="number"
+                      class="input"
+                      placeholder="Management Port"
+                      data-vv-as="managementPort">
+                  </float-label>
+                  <div
+                    v-show="errors.has(`managementPort-${i}`)"
+                    class="input-error-msg">
+                    {{ errors.first(`managementPort-${i}`) }}
+                  </div>
+                </div>
 
-          <div class="form-input">
-            <float-label>
-              <input
-                v-validate="rules.port"
-                :id="`port-${i}`"
-                v-model="item.listener.port"
-                :class="{ 'input-error': errors.has(`port-${i}`) }"
-                :name="`port-${i}`"
-                type="number"
-                class="input"
-                placeholder="Port"
-                data-vv-as="port">
-            </float-label>
-            <div
-              v-show="errors.has(`port-${i}`)"
-              class="input-error-msg">
-              {{ errors.first(`port-${i}`) }}
-            </div>
-          </div>
+                <div class="form-input">
+                  <float-label>
+                    <input
+                      v-validate="rules.network"
+                      :id="`network-${i}`"
+                      v-model="item.listener.network"
+                      :class="{ 'input-error': errors.has(`network-${i}`) }"
+                      :name="`network-${i}`"
+                      type="text"
+                      class="input"
+                      placeholder="Network"
+                      data-vv-as="network">
+                  </float-label>
+                  <div
+                    v-show="errors.has(`network-${i}`)"
+                    class="input-error-msg">
+                    {{ errors.first(`network-${i}`) }}
+                  </div>
+                </div>
 
-          <div
-            v-if="protocolOptions"
-            class="form-input">
-            <div class="label">
-              <label :for="item.listener.protocol">{{ $i18n.t('misc.PROTOCOL') }}</label>
-            </div>
-            <div class="input-with-tooltip">
-              <select v-model="item.listener.protocol">
-                <option
-                  v-for="(option, i) in protocolOptions"
-                  :key="i"
-                  :value="option.id">
-                  {{ $i18n.t(`cloud.protocols.${option.label}`) }}
-                </option>
-              </select>
+                <div class="form-input">
+                  <float-label>
+                    <input
+                      v-validate="rules.port"
+                      :id="`port-${i}`"
+                      v-model="item.listener.port"
+                      :class="{ 'input-error': errors.has(`port-${i}`) }"
+                      :name="`port-${i}`"
+                      type="number"
+                      class="input"
+                      placeholder="Port"
+                      data-vv-as="port">
+                  </float-label>
+                  <div
+                    v-show="errors.has(`port-${i}`)"
+                    class="input-error-msg">
+                    {{ errors.first(`port-${i}`) }}
+                  </div>
+                </div>
 
-              <tooltip id="services.topics.protocols"/>
+                <div
+                  v-if="protocolOptions"
+                  class="form-input">
+                  <div class="label">
+                    <label :for="item.listener.protocol">{{ $i18n.t('misc.PROTOCOL') }}</label>
+                  </div>
+                  <div class="input-with-tooltip">
+                    <select v-model="item.listener.protocol">
+                      <option
+                        v-for="(option, i) in protocolOptions"
+                        :key="i"
+                        :value="option.id">
+                        {{ $i18n.t(`cloud.protocols.${option.label}`) }}
+                      </option>
+                    </select>
+
+                    <tooltip id="services.topics.protocols"/>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -310,7 +328,7 @@ export default {
       })
     },
     addItem () {
-      const newItem = Object.assign({}, this.blankItem)
+      let newItem = JSON.parse(JSON.stringify(this.blankItem))
 
       if (this.config[0]) {
         const c = this.config[0]
@@ -429,6 +447,16 @@ export default {
       padding-bottom: 0;
       border: none;
     }
+  }
+}
+
+.add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  > h2, h3 {
+    margin: 0;
   }
 }
 </style>
