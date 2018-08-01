@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="tableData && !dataLoading"
+    v-if="tableData"
     class="section padded">
     <header v-if="!hideHeader && selectedGroupInformation">
       <h2 class="mb-0">{{ selectedGroupInformation.friendly_name }}</h2>
@@ -120,11 +120,6 @@ export default {
       type: String,
       required: false,
       default: null
-    },
-    dataLoading: {
-      type: Boolean,
-      required: false,
-      default: false
     },
     pagination: {
       type: Object,
