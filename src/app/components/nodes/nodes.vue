@@ -240,6 +240,7 @@ export default {
               await this.fetchNodes(page)
             } else {
               await this.fetchUncategorized(page)
+              this.loadingNodes = false
             }
           },
           fail: e => {
@@ -254,6 +255,7 @@ export default {
           await this.fetchNodes(page)
         } else {
           await this.fetchUncategorized(page)
+          this.loadingNodes = false
         }
       }
     },
@@ -292,6 +294,7 @@ export default {
         },
         success: response => {
           this.uncategorized = response.data
+          console.log('Loaded uncategorized')
           this.loadingUncategorized = false
           this.fetchSuccessful = true
         },
