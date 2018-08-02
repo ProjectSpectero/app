@@ -216,7 +216,9 @@ export default {
 
               this.loading = false
 
-              callbackDone()
+              if (typeof callbackDone === 'function') {
+                callbackDone()
+              }
             }
           }
         },

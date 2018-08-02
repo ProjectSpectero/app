@@ -98,7 +98,11 @@
                         <span v-if="user.state && user.post_code">,</span>
                         <span v-if="user.post_code">{{ user.post_code }}</span>
                       </div>
-                      <div class="address-field">{{ getCountryById(user.country).name }}</div>
+                      <div
+                        v-if="user.country"
+                        class="address-field">
+                        {{ getCountryById(user.country).name }}
+                      </div>
                       <div class="address-field spaced">{{ user.email }}</div>
                     </div>
                   </div>
@@ -237,6 +241,7 @@
             </div>
           </div>
         </div>
+        <loading v-else/>
       </div>
       <loading v-else/>
     </template>
