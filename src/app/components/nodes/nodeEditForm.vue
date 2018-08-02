@@ -9,6 +9,8 @@
               v-if="formError"
               class="message message-error">{{ formError }}</div>
 
+            <form-errors :form-errors="formErrors" />
+
             <div
               v-for="field in formFields"
               v-if="field.show !== false"
@@ -109,7 +111,9 @@
           </div>
         </form>
       </div>
-      <loading v-else/>
+      <loading
+        v-else
+        text="Loading node information ..."/>
     </template>
     <error
       v-else
@@ -123,11 +127,13 @@ import nodeAPI from '@/app/api/node'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
 import tooltip from '@/shared/components/tooltip'
+import formErrors from '@/shared/components/formErrors'
 
 export default {
   components: {
     loading,
     error,
+    formErrors,
     tooltip
   },
   props: {
@@ -145,6 +151,7 @@ export default {
       processedGroups: 0,
       groupsPage: 1,
       formError: null,
+      formErrors: [],
       formLoading: false,
       form: {},
       protocols: ['http'],
@@ -157,9 +164,6 @@ export default {
         friendly_name: {
           max: 50,
           regex: /^[a-z\d\-_\s]+$/i
-        },
-        city: {
-          max: 255
         },
         price: {
           required: true,
@@ -195,12 +199,22 @@ export default {
     formattedGroupList () {
       let groups = []
 
+      // Add a "fake" uncategorized option
+      groups.push({
+        id: 0,
+        label: this.$i18n.t('nodes.UNCATEGORIZED')
+      })
+
       for (let index in this.groups) {
         let group = this.groups[index]
         groups.push({
           id: group.id,
           label: group.friendly_name
         })
+      }
+
+      if (this.form.group_id === null) {
+        this.$set(this.form, 'group_id', 0)
       }
 
       return groups
@@ -224,12 +238,6 @@ export default {
           label: this.$i18n.t('misc.PORT_NUMBER'),
           placeholder: this.$i18n.t('misc.PORT_NUMBER'),
           type: 'number'
-        },
-        {
-          name: 'city',
-          label: this.$i18n.t('misc.CITY'),
-          placeholder: this.$i18n.t('misc.CITY'),
-          type: 'text'
         },
         {
           name: 'access_token',
@@ -294,6 +302,7 @@ export default {
         success: async response => {
           if (response.data.result) {
             this.formLoading = false
+            this.formErrors = []
             this.$toasted.success(this.$i18n.t('nodes.UPDATE_SUCCESS'))
 
             // Updating the group requires a different API call
@@ -303,7 +312,19 @@ export default {
           }
         },
         fail: error => {
-          this.$toasted.error(this.errorAPI(error, 'nodes'))
+          if (error.fields) {
+            Object.keys(error.fields).forEach(k => {
+              if (Object.keys(error.fields[k])[0] !== undefined) {
+                this.formErrors.push({
+                  key: k,
+                  text: this.$i18n.t('errors.' + Object.keys(error.fields[k])[0])
+                })
+              }
+            })
+          } else {
+            this.$toasted.error(this.errorAPI(error, 'nodes'))
+          }
+
           this.formLoading = false
         }
       })

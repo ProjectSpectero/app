@@ -131,6 +131,7 @@ module.exports = {
     FIELD_MAXLENGTH: 'Cannot be longer than {x} characters.',
     FIELD_MINLENGTH: 'Cannot be shorter than {x} characters.',
     FIELD_REGEX_MATCH: 'Invalid input format provided.',
+    FIELD_ALPHADASHSPACES: 'This field can only include alpha-numeric characters, dashes or spaces.',
     FIELD_EMAIL: 'Must be a valid email.',
     MISSING_BODY: 'Some required fields are missing or empty.',
     USER_NOT_FOUND: 'Invalid email or password.',
