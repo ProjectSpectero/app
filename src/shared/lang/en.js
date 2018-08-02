@@ -2,6 +2,7 @@ module.exports = {
   lang: 'en',
   misc: {
     SPECTERO: 'Spectero',
+    PRO: 'Pro',
     IMPERSONATE: 'Impersonate',
     USERS: 'Users',
     ADMIN: 'Admin',
@@ -121,10 +122,10 @@ module.exports = {
     VALIDATION_FAILED: 'Please correct any errors and try again.',
     OBJECT_PERSIST_FAILED: 'Something went wrong, please try again later.',
     RESOURCE_CREATION_FAILED: 'Unable to create resource, please try again later.',
-    RESOURCE_NOT_FOUND: 'We could not find that resource. Please contact us if the error persists.',
-    REQUEST_FAILED: 'The request failed. Please contact us if the error persists.',
-    UNAUTHORIZED: 'You are not authorized to do this. Please contact us if the error persists.',
-    PAYMENT_FAILED: 'Payment failed. Please try again in a minute and contact us if the error persists.',
+    RESOURCE_NOT_FOUND: 'We could not find that resource. Please try again and contact our support team if the error persists.',
+    REQUEST_FAILED: 'The request failed. Please try again and contact our support team if the error persists.',
+    UNAUTHORIZED: 'You are not authorized to do this. Please try again and contact our support team if the error persists.',
+    PAYMENT_FAILED: 'Payment failed. Please try again and contact our support team if the error persists.',
     INVOICE_ALREADY_PAID: 'This invoice has already been paid!',
     INVOICE_STATUS_MISMATCH: 'There seems to be a problem processing this invoice. Please try again later and contact our customer support if this issue persists.',
     FIELD_REQUIRED: 'This field is required.',
@@ -196,6 +197,7 @@ module.exports = {
     ACCOUNT_CREDIT: '(You have {credit} credits in your account)',
     ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!',
     INVALID_STRIPE_TOKEN: 'We were unable to process your credit card at this time. Please contact our support team if this persists.',
+    PAYMENT_FAILED: 'Payment failed. Please try again and contact our support team if the error persists.',
     PROMO: {
       APPLY_MSG: 'Have a promo code? Apply it to your account here.',
       ENTER_PROMO_CODE_HERE: 'Enter promo code here',
@@ -339,8 +341,9 @@ module.exports = {
   },
 
   pro: {
-    MAIN_TITLE: 'Purchase Spectero Pro',
-    ORDER_CREATE_FAILED: 'Sorry, we were unable to process your Spectero Pro order at this time. Please try again or contact our support team if this persists.'
+    ORDER_CREATE_FAILED: 'Sorry, we were unable to process your Spectero Pro order at this time. Please try again or contact our support team if this persists.',
+    ALREADY_SUBSCRIBED: 'Already Subscribed',
+    ALREADY_SUBSCRIBED_TEXT: 'You\'ve already purchased Spectero Pro and it\'s currently active on your account.'
   },
 
   services: {
@@ -386,10 +389,11 @@ module.exports = {
     VERIFICATION_FAILED_TITLE: 'Something went wrong!',
     VERIFICATION_FAILED: 'Something happened while attempting to verify your node. We have sent you an email with further details.',
     UNCATEGORIZED: 'Uncategorized',
-    NO_NODES_TITLE: 'No Nodes',
     HAS_NODES: 'You cannot delete this group before reassigning its nodes to a different group!',
     RESOURCE_NOT_FOUND: 'We were unable to find that resource.',
-    NO_NODES_TEXT: 'You don\'t have any nodes linked to your account. Why not add one?',
+    NO_NODES_TITLE: 'No Nodes',
+    NO_NODES_TEXT: 'You don\'t have any nodes linked to this group. Why not add one?',
+    NO_NODES_TEXT_ACCOUNT: 'You don\'t have any nodes linked to your account. Why not add one?',
     EDIT_GROUP: 'Edit Group',
     EDIT_NODE: 'Edit Node',
     GROUP_CREATE_SUCCESS: 'Group created successfully!',
@@ -397,7 +401,7 @@ module.exports = {
     DELETE_SUCCESS: 'Node removed successfully!',
     GROUP_DELETE_SUCCESS: 'Group removed successfully!',
     DELETE_ERROR: 'An error ocurred while trying to delete your node. Please try again later.',
-    REQUEST_FAILED: 'The request failed. Please contact us if the error persists.',
+    REQUEST_FAILED: 'The request failed. Please try again and contact our support team if the error persists.',
     NODE_VERIFY_SUCCESS: 'Your node {node} is now queued for verification. We\'ll send you an email as soon as this is finished.',
     GROUP_UPDATE_SUCCESS: 'Node group updated successfully!',
     UPDATE_SUCCESS: 'Information updated successfully!',

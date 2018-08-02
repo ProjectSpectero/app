@@ -1,5 +1,6 @@
 import invoiceAPI from '@/app/api/invoice'
 import orderAPI from '@/app/api/order'
+import marketAPI from '@/app/api/market'
 
 export default {
   data () {
@@ -13,7 +14,8 @@ export default {
       getTransactions: false,
       transactions: null,
       showCheckout: false,
-      loading: true
+      loading: true,
+      easyCheckout: false
     }
   },
   created () {
@@ -101,13 +103,42 @@ export default {
         },
         success: async response => {
           if (response.data.result) {
-            this.loading = false
+            // this.loading = false
             this.error = false
             this.order = response.data.result
           }
         },
         fail: (e) => {
           this.error = true
+          this.loading = false
+          console.error('Error while fetching order', e)
+        }
+      })
+    },
+    async checkEasyCheckout () {
+      // This bit of code checks if the first item in the order is associated to a plan
+      // (ie: Pro) - this is to be revamped in the future with a proper response from the
+      // GET order endpoint.
+      await marketAPI.fetch({
+        data: {
+          id: this.order.line_items[0].resource,
+          type: this.order.line_items[0].type === 'NODE_GROUP' ? 'group' : 'node'
+        },
+        success: async response => {
+          if (response.data.result) {
+            // this.loading = false
+            this.error = false
+
+            let result = response.data.result
+
+            if (result.plan === 'pro') {
+              this.easyCheckout = true
+            }
+          }
+        },
+        fail: (e) => {
+          this.error = true
+          this.loading = false
           console.error('Error while fetching order', e)
         }
       })
@@ -147,7 +178,7 @@ export default {
         }
       })
     },
-    async fetchInvoice () {
+    async fetchInvoice (callbackDone) {
       await invoiceAPI.invoice({
         data: {
           id: this.invoiceId
@@ -161,6 +192,7 @@ export default {
             // Otherwise we skip fetching the order if order.type !== STANDARD
             if (this.invoice.type === 'STANDARD') {
               await this.fetchOrder()
+              await this.checkEasyCheckout()
 
               // Test if this order is fixable (only certain status need the verify + fix combo) for invalid resources
               if (this.isFixable) {
@@ -169,8 +201,6 @@ export default {
                 this.verified = true
               }
             }
-
-            this.loading = false
 
             // If user is on checkout, redirect back to invoice if it's unpayable
             if (this.$route.name === 'checkout' && !this.isPayable) {
@@ -182,6 +212,12 @@ export default {
 
               if (this.getTransactions) {
                 await this.fetchTransactions()
+              }
+
+              this.loading = false
+
+              if (typeof callbackDone === 'function') {
+                callbackDone()
               }
             }
           }

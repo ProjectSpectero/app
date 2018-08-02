@@ -43,7 +43,6 @@
               </div>
 
               <div
-                v-if="uncategorized && uncategorized.result.length"
                 :class="selectedGroup === 0 ? 'active' : ''"
                 class="node-group"
                 @click.stop="selectUncategorized">
@@ -62,6 +61,7 @@
                 :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
                 :table-data="(selectedGroup === 0) ? uncategorized.result : nodes"
                 :hide-header="groups && groups.length === 0"
+                :groups="groups"
                 @refetch="setup"
                 @changedPage="changedPage"
                 @sortByColumn="sortByColumn"

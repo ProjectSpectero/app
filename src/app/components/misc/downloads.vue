@@ -14,9 +14,13 @@
 
     <div class="container">
       <div class="col-12">
-        <section class="section padded">
+        <section class="step section padded">
           <h2>{{ osTab }} Instructions</h2>
-          <h5>Step 1</h5>
+          <div class="step-1">
+            <div class="details">
+              <h5 class="mb-0">Download Spectero Daemon</h5>
+            </div>
+          </div>
           <template v-if="osTab === 'Windows'">
             <p>Download the latest release of the Spectero Daemon and its CLI, then run it.</p>
             <a
@@ -27,9 +31,8 @@
           <template v-else>
             <p>Download and run the latest release of the Spectero Daemon and its CLI by running the following command:</p>
             <p class="cmd">wget -O install.sh {{ downloadLinks[osTab] }} && bash install.sh</p>
-            <p>You may opt for a non-interactive background installation with default values by providing the <span class="cmd">--agree --install</span> arguments.</p>
             <p>
-              A full list of installer arguments is <a
+              You may opt for a non-interactive background installation with default values by providing the <span class="cmd">--agree --install</span> arguments. Full list of installer arguments is <a
                 target="_blank"
                 href="https://spectero.atlassian.net/wiki/spaces/docs/pages/3244075/Linux+macOS+Installer+Arguments">
                 available here.
@@ -38,21 +41,24 @@
           </template>
         </section>
 
-        <section
-          v-if="osTab === 'Windows'"
-          class="section padded">
-          <h5>Windows 10 Users</h5>
-          <p>Microsoft .NET Framework v3.5 may be required as an installation dependency if you are running Windows 10.</p>
-          <p>If you are prompted to install .NET Framework v3.5 upon launching the installer, please <strong>re-run the installer after the installation completes</strong> to finish the installation process.</p>
+        <section class="step section padded">
+          <div class="step-2">
+            <div class="details">
+              <h5 class="mb-0">Connect to Spectero Cloud</h5>
+            </div>
+          </div>
+          <p>Open a CLI shell, then run the following command to add the daemon to the Spectero Cloud:</p>
+          <p class="cmd">spectero cli connect {{ (nodeKey !== null) ? nodeKey : '&lt;your node key&gt;' }}</p>
+          <p v-if="nodeKey === null">Please <router-link :to="{ name: 'login', query: { redirect: '/settings/keys' } }">log in</router-link> or <router-link :to="{ name: 'register' }">register</router-link> to obtain your node key.</p>
         </section>
 
-        <section
-          v-else
-          class="section padded">
-          <h5>Deployments on Cloud Providers</h5>
-          <p>Planning to deploy Spectero to a cloud provider such as DigitalOcean or Vultr? Please review our <a
-            target="_blank"
-            href="https://spectero.atlassian.net/wiki/spaces/docs/pages/5275651/Cloud+Provider+Advisories">Cloud Provider Advisories</a> document first.</p>
+        <section class="step section padded">
+          <div class="step-3">
+            <div class="details">
+              <h5 class="mb-0">You're done!</h5>
+            </div>
+          </div>
+          <p>Once you've ran the connect command to link the daemon to Spectero Cloud, check your email inbox to complete the setup process.</p>
         </section>
 
         <section class="section padded">
@@ -70,58 +76,63 @@
             class="button-dark">
             <span class="icon-github" /> GitHub Repository
           </a>
-        </section>
-        <section class="section padded">
-          <h5>Step 2</h5>
-          <p>Open a CLI shell, then run the following command to add the daemon to the Spectero Cloud:</p>
-          <p class="cmd">spectero cli connect {{ (nodeKey !== null) ? nodeKey : '&lt;your node key&gt;' }}</p>
-          <p v-if="nodeKey === null">Please <router-link :to="{ name: 'login', query: { redirect: '/settings/keys' } }">log in</router-link> or <router-link :to="{ name: 'register' }">register</router-link> to obtain your node key.</p>
-        </section>
-        <section class="section padded">
-          <h5>Step 3</h5>
-          <p>Once you've ran the connect command to link the daemon to Spectero Cloud, check your email inbox to complete the setup process.</p>
-        </section>
-        <section
-          v-if="matrices"
-          class="section padded">
-          <h5>Compatibility</h5>
-          <p>The Spectero Daemon is currently compatible with the following {{ osTab }} {{ osTab === 'Linux' ? 'distributions' : 'versions' }}:</p>
-          <div class="compatibility">
-            <div class="matrices">
-              <div
-                v-for="(os, j) in matrices[osTab]"
-                :key="j"
-                class="matrix">
-                <template v-if="os.Distributions">
-                  <h6 class="title-distro">{{ j }}</h6>
-                  <div
-                    v-for="(distro, k) in os.Distributions"
-                    :key="k"
-                    class="os-item">
-                    <p>{{ k }}</p>
-                    <span
-                      v-if="distro.tested !== undefined"
-                      :class="{ 'compatible': distro.tested === true }"
-                      class="compatibility-icon"><p>{{ (distro.tested === true) ? 'Tested' : 'Untested' }}</p></span>
-                  </div>
-                </template>
 
-                <template v-else>
-                  <h6 class="title-distro">{{ j }}</h6>
-                  <div
-                    v-for="(distro, k) in os"
-                    :key="k"
-                    class="os-item">
-                    <p>{{ k }}</p>
-                    <span
-                      v-if="distro.tested !== undefined"
-                      :class="{ 'compatible': distro.tested === true }"
-                      class="compatibility-icon"><p>{{ (distro.tested === true) ? 'Tested' : 'Untested' }}</p></span>
-                  </div>
-                </template>
+          <div class="separator"/>
+
+          <section v-if="osTab === 'Windows'">
+            <h5>Windows 10 Users</h5>
+            <p>Microsoft .NET Framework v3.5 may be required as an installation dependency if you are running Windows 10.</p>
+            <p>If you are prompted to install .NET Framework v3.5 upon launching the installer, please <strong>re-run the installer after the installation completes</strong> to finish the installation process.</p>
+          </section>
+          <section v-else>
+            <h5>Deployments on Cloud Providers</h5>
+            <p>Planning to deploy Spectero to a cloud provider such as DigitalOcean or Vultr? Please review our <a
+              target="_blank"
+              href="https://spectero.atlassian.net/wiki/spaces/docs/pages/5275651/Cloud+Provider+Advisories">Cloud Provider Advisories</a> document first.</p>
+          </section>
+
+          <div class="separator"/>
+
+          <section v-if="matrices">
+            <h5>Compatibility</h5>
+            <p>The Spectero Daemon is currently compatible with the following {{ osTab }} {{ osTab === 'Linux' ? 'distributions' : 'versions' }}:</p>
+            <div class="compatibility">
+              <div class="matrices">
+                <div
+                  v-for="(os, j) in matrices[osTab]"
+                  :key="j"
+                  class="matrix">
+                  <template v-if="os.Distributions">
+                    <h6 class="title-distro">{{ j }}</h6>
+                    <div
+                      v-for="(distro, k) in os.Distributions"
+                      :key="k"
+                      class="os-item">
+                      <p>{{ k }}</p>
+                      <span
+                        v-if="distro.tested !== undefined"
+                        :class="{ 'compatible': distro.tested === true }"
+                        class="compatibility-icon"><p>{{ (distro.tested === true) ? 'Tested' : 'Untested' }}</p></span>
+                    </div>
+                  </template>
+
+                  <template v-else>
+                    <h6 class="title-distro">{{ j }}</h6>
+                    <div
+                      v-for="(distro, k) in os"
+                      :key="k"
+                      class="os-item">
+                      <p>{{ k }}</p>
+                      <span
+                        v-if="distro.tested !== undefined"
+                        :class="{ 'compatible': distro.tested === true }"
+                        class="compatibility-icon"><p>{{ (distro.tested === true) ? 'Tested' : 'Untested' }}</p></span>
+                    </div>
+                  </template>
+                </div>
               </div>
             </div>
-          </div>
+          </section>
         </section>
       </div>
     </div>
@@ -231,12 +242,7 @@ section {
     }
   }
 }
-h5 {
-  margin-bottom: 12px;
-  color: $color-light;
-  font-size: 14px;
-  text-transform: uppercase;
-}
+
 ol {
   margin-left: 20px;
   line-height: 140%;
@@ -257,10 +263,6 @@ li > ol {
   li {
     margin-bottom: 6px;
   }
-}
-.details {
-  display: block;
-  margin-top: $pad;
 }
 
 .compatibility {

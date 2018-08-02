@@ -41,7 +41,7 @@
   .paid {
     text-align: center;
   
-    .icon-check-circle {
+    [class^="icon-"] {
       font-size: 56px;
       color: $color-success;
     }

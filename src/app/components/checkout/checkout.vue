@@ -160,9 +160,15 @@ export default {
     }
 
     await this.syncCurrentUser()
-    await this.fetchInvoice()
-    await this.getBillingProfile()
-    await this.fetchGateways()
+    await this.fetchInvoice(async () => {
+      this.loading = true
+
+      if (!this.easyCheckout) {
+        await this.getBillingProfile()
+      }
+
+      await this.fetchGateways()
+    })
   },
   methods: {
     ...mapActions({

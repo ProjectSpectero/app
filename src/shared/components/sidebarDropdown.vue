@@ -4,14 +4,16 @@
     class="menu-items dropdown">
     <section class="current-user">
       <div
-        :class="{ 'active': showAccountDropdown }"
+        :class="{ 'active': showAccountDropdown, 'impersonating': isImpersonating }"
         class="dropdown-toggle"
         @click="toggleAccountDropdown()">
-        <div class="avatar"><span class="icon-user placeholder-icon"/></div>
+        <div class="avatar">
+          <span>{{ initials }}</span>
+        </div>
         <div class="toggle">
           <div class="toggle-text">
             <p>My Account</p>
-            <p class="balance">{{ currentUser.credit | currency }}</p>
+            <p class="balance">{{ user.credit | currency }}</p>
           </div>
           <div
             :class="{ 'icon-chevron-up': showAccountDropdown }"
@@ -55,8 +57,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      currentUser: 'appAuth/user'
-    })
+      user: 'appAuth/user',
+      isImpersonating: 'appAuth/isImpersonating'
+    }),
+    initials () {
+      let displayName = (this.user.name) ? this.user.name : this.user.email
+      const initials = displayName.match(/\b\w/g) || []
+      return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase()
+    }
   },
   created () {
     document.addEventListener('click', this.documentClick)
@@ -112,18 +120,24 @@ export default {
     .avatar {
       width: 32px;
       height: 32px;
+      padding-top: 3px;
       display: flex;
       margin-right: 12px;
+      font-size: 16px;
+      line-height: 100%;
+      font-weight: $font-bold;
       color: $color-primary;
       background: $color-brand;
       border-radius: 4px;
       align-items: center;
       justify-content: center;
 
-      .placeholder-icon {
-        margin-right: 0;
-        font-size: 20px;
+      .icon-impersonating {
+        display: block;
       }
+    }
+    &.impersonating .avatar {
+      background: $color-warning;
     }
     .toggle {
       flex: 1;
