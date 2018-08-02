@@ -147,7 +147,7 @@ export default {
       formError: null,
       formLoading: false,
       form: {},
-      protocols: ['http', 'https'],
+      protocols: ['http'],
       marketModels: [
         'UNLISTED',
         'LISTED_SHARED',
