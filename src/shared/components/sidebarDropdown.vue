@@ -4,10 +4,12 @@
     class="menu-items dropdown">
     <section class="current-user">
       <div
-        :class="{ 'active': showAccountDropdown }"
+        :class="{ 'active': showAccountDropdown, 'impersonating': isImpersonating }"
         class="dropdown-toggle"
         @click="toggleAccountDropdown()">
-        <div class="avatar">{{ initials }}</div>
+        <div class="avatar">
+          <span>{{ initials }}</span>
+        </div>
         <div class="toggle">
           <div class="toggle-text">
             <p>My Account</p>
@@ -55,7 +57,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'appAuth/user'
+      user: 'appAuth/user',
+      isImpersonating: 'appAuth/isImpersonating'
     }),
     initials () {
       let displayName = (this.user.name) ? this.user.name : this.user.email
@@ -128,6 +131,13 @@ export default {
       border-radius: 4px;
       align-items: center;
       justify-content: center;
+
+      .icon-impersonating {
+        display: block;
+      }
+    }
+    &.impersonating .avatar {
+      background: $color-warning;
     }
     .toggle {
       flex: 1;
