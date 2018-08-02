@@ -80,7 +80,7 @@
                 <button
                   class="button-md button-success"
                   @click.prevent.stop="addItem">
-                  Add Item
+                  Add Listener
                 </button>
               </div>
 
