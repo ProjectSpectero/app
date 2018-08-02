@@ -127,6 +127,7 @@ export default {
       return {
         friendly_name: {
           required: true,
+          regex: /^[a-z\d\-_\s]+$/i,
           max: 50
         },
         price: {
