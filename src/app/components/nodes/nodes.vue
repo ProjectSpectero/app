@@ -196,6 +196,9 @@ export default {
 
         if (!found && this.groups.length > 0) {
           this.selectGroup(this.groups[0], false)
+        } else {
+          // No groups found? Stop loading nodes and show the not found screen
+          this.loadingNodes = false
         }
       }
     },
