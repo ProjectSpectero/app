@@ -56,7 +56,6 @@
                   </div>
                 </div>
 
-
                 <div
                   v-if="!user"
                   class="step section padded">
