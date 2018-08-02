@@ -32,6 +32,16 @@
             </li>
           </ul>
         </section>
+        <section class="nav-section">
+          <ul>
+            <li>
+              <router-link :to="{ name: 'pro' }">
+                <span class="icon-zap"/>
+                {{ $i18n.t('misc.PRO') }}
+              </router-link>
+            </li>
+          </ul>
+        </section>
         <section
           v-if="isEnterprise"
           class="nav-section">
@@ -128,6 +138,12 @@
                 <span class="icon-home"/>
                 {{ $i18n.t('misc.HOME') }}
               </a>
+            </li>
+            <li>
+              <router-link :to="{ name: 'pro' }">
+                <span class="icon-zap"/>
+                {{ $i18n.t('misc.PRO') }}
+              </router-link>
             </li>
           </ul>
         </section>

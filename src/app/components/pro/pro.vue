@@ -12,7 +12,13 @@
                 class="message message-error">{{ formError }}</div>
 
               <template v-if="planFetched">
-                <div class="select-plan">
+                <div class="step section padded select-plan">
+                  <div class="step-1">
+                    <div class="details">
+                      <h5>Select your plan</h5>
+                      <p>Please select the billing term you'd like to subscribe to.</p>
+                    </div>
+                  </div>
                   <div class="plans">
                     <article
                       v-for="(plan, id) in plans"
@@ -47,12 +53,20 @@
                         Save {{ plan.discountPercent }}%
                       </div>
                     </article>
-
                   </div>
                 </div>
 
-                <template v-if="!user">
-                  <div class="form-input">
+
+                <div
+                  v-if="!user"
+                  class="step section padded">
+                  <div class="step-2">
+                    <div class="details">
+                      <h5>Enter your email address</h5>
+                      <p>We'll create an account associated to this email and send your order details here. We hate spam as much as you do.</p>
+                    </div>
+                  </div>
+                  <div class="form-input mb-0">
                     <float-label>
                       <input
                         v-validate="'required|email'"
@@ -73,16 +87,26 @@
                       {{ errors.first('email') }}
                     </span>
                   </div>
-                </template>
+                </div>
 
-                <button
-                  :class="{ 'button-loading': formLoading }"
-                  :disabled="formLoading"
-                  class="button-info button-md max-width"
-                  @click.prevent="submit"
-                  @keyup.enter="submit">
-                  {{ $i18n.t('misc.CONTINUE') }}
-                </button>
+                <div class="step section padded">
+                  <div :class="`step-${ (user) ? 2 : 3 }`">
+                    <div class="details">
+                      <h5>Continue to payment</h5>
+                      <p>Once you've selected your plan<template v-if="!user"> and entered your email</template>, click to continue below.</p>
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      :class="{ 'button-loading': formLoading }"
+                      :disabled="formLoading"
+                      class="button-info button-md"
+                      @click.prevent="submit"
+                      @keyup.enter="submit">
+                      <span class="icon-check"/> {{ $i18n.t('misc.CONTINUE') }}
+                    </button>
+                  </div>
+                </div>
               </template>
             </form>
           </div>
@@ -114,6 +138,7 @@ export default {
       formError: null,
       formLoading: false,
       plan: null,
+      resource: null,
       selectedPlan: 'yearly',
       planFetched: false,
       plans: {
@@ -157,40 +182,25 @@ export default {
         success: async response => {
           const result = response.data.result
 
+          this.loading = false
+          this.planFetched = true
           this.plan = result
+          this.resource = result.resources[0]
 
-          // Get pricing from API
-          await marketAPI.fetch({
-            data: {
-              id: this.plan.resources[0].id,
-              type: this.plan.resources[0].type === 'NODE_GROUP' ? 'group' : 'node'
-            },
-            success: response => {
-              let result = response.data.result
-              result.price = parseFloat(result.price)
+          result.price = parseFloat(this.resource.price)
 
-              this.loading = false
-              this.planFetched = true
+          this.plans.monthly.price = result.price
+          this.plans.yearly.price = (result.price / 30) * 365
 
-              this.plans.monthly.price = result.price
-              this.plans.yearly.price = (result.price / 30) * 365
+          // Apply discount to yearly plan
+          if (this.plan.yearly_discount_pct > 0) {
+            const yearlyPlan = this.plans.yearly
+            let yearlySavings = yearlyPlan.price * this.plan.yearly_discount_pct
 
-              // Apply discount to yearly plan
-              if (this.plan.yearly_discount_pct > 0) {
-                const yearlyPlan = this.plans.yearly
-                let yearlySavings = yearlyPlan.price * this.plan.yearly_discount_pct
-
-                this.plans.yearly.oldPrice = yearlyPlan.price
-                this.plans.yearly.price = Math.floor(yearlyPlan.price - yearlySavings) // floor the price for marketing purposes
-                this.plans.yearly.discountPercent = this.plan.yearly_discount_pct * 100
-              }
-            },
-            fail: error => {
-              this.loading = false
-              this.formError = this.$i18n.t('misc.UNKNOWN_ERROR')
-              console.error('Error while getting pro plan resource', error)
-            }
-          })
+            this.plans.yearly.oldPrice = yearlyPlan.price
+            this.plans.yearly.price = Math.floor(yearlyPlan.price - yearlySavings) // floor the price for marketing purposes
+            this.plans.yearly.discountPercent = this.plan.yearly_discount_pct * 100
+          }
         },
         fail: error => {
           this.loading = false
@@ -299,7 +309,7 @@ export default {
     article {
       flex-basis: 100px;
       flex-grow: 1;
-      margin-right: 8px;
+      margin-right: 12px;
       padding: 40px 20px;
       display: flex;
       flex-direction: column;
@@ -312,15 +322,15 @@ export default {
       cursor: pointer;
 
       &.active {
-        background: lighten($color-success, 50%);
-        border: 4px solid $color-success;
+        background: lighten($color-info, 54%);
+        border-color: $color-info;
         cursor: default;
       }
       &.best-deal {
         .amount .price,
         .amount .per,
         .savings {
-          color: $color-success;
+          color: $color-info;
         }
       }
       .name {
@@ -371,9 +381,56 @@ export default {
         line-height: 100%;
         font-weight: $font-bold;
         text-transform: uppercase;
-        background: $color-success;
+        background: $color-info;
         border-radius: 3px;
       }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+.step {
+  [class^="step-"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: $pad;
+    padding-bottom: $pad;
+    border-bottom: 1px solid $color-border;
+
+    .details {
+      flex: 1;
+    }
+    h5 {
+      margin-bottom: 6px;
+    }
+    p {
+      opacity: 0.5;
+    }
+    &:before {
+      width: 28px;
+      height: 28px;
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $white;
+      font-size: 110%;
+      font-weight: $font-bold;
+      background: $color-info;
+      border-radius: 50%;
+
+      // display: inline-block;
+    }
+    &.step-1:before {
+      content: '1';
+    }
+    &.step-2:before {
+      content: '2';
+    }
+    &.step-3:before {
+      content: '3';
     }
   }
 }

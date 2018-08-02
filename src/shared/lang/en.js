@@ -2,6 +2,7 @@ module.exports = {
   lang: 'en',
   misc: {
     SPECTERO: 'Spectero',
+    PRO: 'Pro',
     IMPERSONATE: 'Impersonate',
     USERS: 'Users',
     ADMIN: 'Admin',
