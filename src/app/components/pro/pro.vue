@@ -1,12 +1,20 @@
 <template>
   <div>
     <template>
-      <top :title="$i18n.t('pro.MAIN_TITLE')"/>
+      <top :title="`${ (!isPro) ? `${$i18n.t('misc.PURCHASE')} `: '' }${$i18n.t('misc.SPECTERO')} ${$i18n.t('misc.PRO')}`"/>
       <loading v-if="loading"/>
       <div v-else>
         <div class="container">
           <div class="col-12">
-            <form>
+            <div
+              v-if="isPro"
+              class="already-pro section padded">
+              <div class="icon-check-circle mb-3"/>
+              <h3>{{ $i18n.t('pro.ALREADY_SUBSCRIBED') }}</h3>
+              <p>{{ $i18n.t('pro.ALREADY_SUBSCRIBED_TEXT') }}</p>
+            </div>
+
+            <form v-else>
               <div
                 v-if="formError"
                 class="message message-error">{{ formError }}</div>
@@ -157,10 +165,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'appAuth/user'
+      user: 'appAuth/user',
+      isPro: 'appAuth/isPro'
     })
   },
   async created () {
+    await this.syncCurrentUser()
     await this.fetchProPlan()
   },
   methods: {
@@ -431,6 +441,14 @@ export default {
     &.step-3:before {
       content: '3';
     }
+  }
+}
+.already-pro {
+  text-align: center;
+
+  [class^="icon-"] {
+    font-size: 56px;
+    color: $color-success;
   }
 }
 </style>

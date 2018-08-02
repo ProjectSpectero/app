@@ -340,8 +340,9 @@ module.exports = {
   },
 
   pro: {
-    MAIN_TITLE: 'Purchase Spectero Pro',
-    ORDER_CREATE_FAILED: 'Sorry, we were unable to process your Spectero Pro order at this time. Please try again or contact our support team if this persists.'
+    ORDER_CREATE_FAILED: 'Sorry, we were unable to process your Spectero Pro order at this time. Please try again or contact our support team if this persists.',
+    ALREADY_SUBSCRIBED: 'Already Subscribed',
+    ALREADY_SUBSCRIBED_TEXT: 'You\'ve already purchased Spectero Pro and it\'s currently active on your account.'
   },
 
   services: {
