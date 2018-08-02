@@ -155,7 +155,8 @@ export default {
       ],
       rules: {
         friendly_name: {
-          max: 50
+          max: 50,
+          regex: /^[a-z\d\-_\s]+$/i
         },
         city: {
           max: 255
