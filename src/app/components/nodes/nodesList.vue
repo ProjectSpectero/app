@@ -141,9 +141,9 @@ export default {
       default: false
     },
     groups: {
-      type: Object,
+      type: Array,
       required: false,
-      default: () => {}
+      default: () => []
     }
   },
   data () {
