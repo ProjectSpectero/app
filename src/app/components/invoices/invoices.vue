@@ -39,7 +39,9 @@
           </div>
         </div>
       </div>
-      <loading v-else/>
+      <loading
+        v-else
+        text="Loading your invoices ..."/>
     </template>
     <error
       v-else
