@@ -399,50 +399,6 @@ export default {
     }
   }
 }
-.step {
-  [class^="step-"] {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: $pad;
-    padding-bottom: $pad;
-    border-bottom: 1px solid $color-border;
-
-    .details {
-      flex: 1;
-    }
-    h5 {
-      margin-bottom: 6px;
-    }
-    p {
-      opacity: 0.5;
-    }
-    &:before {
-      width: 28px;
-      height: 28px;
-      margin-right: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: $white;
-      font-size: 110%;
-      font-weight: $font-bold;
-      background: $color-info;
-      border-radius: 50%;
-
-      // display: inline-block;
-    }
-    &.step-1:before {
-      content: '1';
-    }
-    &.step-2:before {
-      content: '2';
-    }
-    &.step-3:before {
-      content: '3';
-    }
-  }
-}
 .already-pro {
   text-align: center;
 
