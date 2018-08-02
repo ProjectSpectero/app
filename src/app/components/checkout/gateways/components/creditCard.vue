@@ -243,7 +243,4 @@ export default {
   margin-top: $pad;
   opacity: 0.5;
 }
-.billing-fields {
-  align-items: center;
-}
 </style>
