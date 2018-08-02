@@ -90,7 +90,7 @@
       class="alert-msg-centered">
       <div class="icon-slash big-icon"/>
       <h1>{{ $i18n.t('nodes.NO_NODES_TITLE') }}</h1>
-      <p>{{ $i18n.t('nodes.NO_NODES_TEXT') }}</p>
+      <p>{{ $i18n.t( (groups.length > 0) ? 'nodes.NO_NODES_TEXT' : 'nodes.NO_NODES_TEXT_ACCOUNT') }}</p>
       <button
         class="button-success"
         @click.prevent="showAddNodeModal()">
@@ -139,6 +139,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    groups: {
+      type: Object,
+      required: false,
+      default: () => {}
     }
   },
   data () {
