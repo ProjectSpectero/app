@@ -252,7 +252,7 @@ export default {
       return this.$i18n.t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
     },
     search (page, route) {
-      const p = page || this.$route.params.page || 1
+      const p = page || 1
       const r = route || this.$route.name
 
       if (this.route === 'marketMine') {
