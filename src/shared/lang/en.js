@@ -141,7 +141,7 @@ module.exports = {
     MISSING_BODY: 'Some required fields are missing or empty.',
     USER_NOT_FOUND: 'Invalid email or password.',
     INSUFFICIENT_PAYMENT_DETAILS: 'Please complete your billing information before paying!',
-    EMAIL_FIELD_UNIQUE: 'This email is already taken.',
+    EMAIL_FIELD_UNIQUE: 'This email is already taken. <a href="https://app.spectero.com/login">Did you mean to login</a>?',
     GATEWAY_DISABLED_FOR_PURPOSE: 'This payment gateway has been disabled. Please contact us if you are unable to pay using a different gateway.',
     EMAIL_VERIFICATION_NEEDED: 'Your acount is pending verification. Please check your email!',
     USER_OBJECT_NOT_FOUND: 'Unable to submit the form without a proper user',
@@ -189,13 +189,12 @@ module.exports = {
     ACCOUNT_CREDIT_PAYMENT_FAILED: 'We\'re sorry, we were unable to process your account credit payment. Please try again and contact our support team if this persists.',
     REQUEST_FAILED: 'We were unable to start the payment process. Please contact us if this keeps happening.',
     ZERO_CREDIT_BALANCE: 'You don\'t have any balance in your account.',
-    UNPAID_CREDIT_INVOICES_ARE_PRESENT: 'Unable to invoice credits: you already have one invoice queued for payment!',
+    UNPAID_CREDIT_INVOICES_ARE_PRESENT: 'You already have a pending order to add account credit. Contact our support team if you\'d like to cancel your existing pending order to place a new one.',
     ADD_CREDIT: 'Add Credit',
     ADD_CREDIT_TITLE: 'Add Credit',
     ADD_CREDIT_DESC: 'Use the form below to add credit to your account for making payments in the future.',
     ADD_CREDIT_MAX_WARNING: 'You may add up to <span>$</span>{remaining} {currency} more credit to this account.',
     ADD_CREDIT_FORM_LABEL: 'Enter amount of credit you\'d like to add to your account:',
-    CREDIT_INVOICED: '{amount} {currency} worth of credit invoiced!',
     ADD_CREDIT_PLACEHOLDER: 'Enter amount of credit you wish to purchase',
     NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.',
     NO_ACCOUNT_CREDIT: 'You don\'t have any credit in your account.',
@@ -272,11 +271,30 @@ module.exports = {
       RESOURCE_NOT_FOUND: 'Resource no longer available.',
       RESOURCE_SOLD_OUT: 'Resource sold out.'
     },
-    PAID: 'Invoice Paid',
-    THANKS: 'Thank you for your payment, your invoice has been paid in full.',
+    STATUS: {
+      PAID: {
+        TITLE: 'Invoice Paid',
+        TEXT: 'Thank you for your payment, your invoice has been paid in full.'
+      },
+      PARTIALLY_PAID: {
+        TITLE: 'Invoice Partially Paid',
+        TEXT: 'You have partially paid this invoice. Please pay the remaining balance in full.'
+      },
+      CANCELLED: {
+        TITLE: 'Invoice Cancelled',
+        TEXT: 'This invoice has been cancelled.'
+      },
+      REFUNDED: {
+        TITLE: 'Invoice Refunded',
+        TEXT: 'This invoice has been fully refunded.'
+      },
+      PARTIALLY_REFUNDED: {
+        TITLE: 'Invoice Partially Refunded',
+        TEXT: 'This invoice has been partially refunded.'
+      }
+    },
     BILL_TO: 'Bill to',
     NUMBER: 'Invoice Number',
-    STATUS: 'Status',
     TYPE: 'Type',
     DATE: 'Invoice Date',
     PAYMENT_DUE: 'Payment Due',
@@ -291,7 +309,8 @@ module.exports = {
     BILLING_ADDRESS_CONTINUE_PAYMENT: 'Please update your billing address to continue with checkout. You will be returned to checkout once you\'ve finished updating your address.',
     COMPLETE_PAYMENT: 'Complete Payment',
     UNPAYABLE: 'Order Processing',
-    UNPAYABLE_TEXT: 'This order is currently processing. You will be able to make a payment once the order has been fully processed by our verification team.'
+    UNPAYABLE_TEXT: 'This order is currently processing. You will be able to make a payment once the order has been fully processed by our verification team.',
+    CANCEL_CREDIT_INVOICE: 'Please contact our support team if you\'d like to have this add credit invoice cancelled.'
   },
 
   orders: {
@@ -528,12 +547,8 @@ module.exports = {
   users: {
     IMPERSONATING: 'You are currently impersonating {name}.',
     FORGOT_PASSWORD: 'Forgot your password?',
-    RESET_TOKEN_ISSUED: 'We have sent an email with a validation link to {email}. Please check your inbox!',
-    RESET_TOKEN_ERROR: 'An error has ocurred while trying to issue a token for reset. Please try again!',
-    NEW_PASSWORD_ISSUED: 'Your password is now <strong>{password}</strong>. Please store it in a safe place and never tell it to anyone!',
-    NEW_PASSWORD_FAILED: 'An error has ocurred while trying to generate a new password for your account. Please try again later!',
-    BACK_TO_LOGIN: 'Back to login',
-    RESET_PASSWORD_BUTTON: 'Reset your password',
+    BACK_TO_LOGIN: 'Back to Login',
+    RESET_PASSWORD_BUTTON: 'Reset Password',
     PLACEHOLDER_EMAIL: 'Email address',
     PLACEHOLDER_PASSWORD: 'Password',
     PLEASE_LOGIN: 'Please log in to continue.',
@@ -546,6 +561,15 @@ module.exports = {
     USER_UPDATE_ERROR: 'Something went wrong. Please try again!',
     USER_DELETE_SUCCESS: 'User deleted!',
     USER_DELETE_ERROR: 'There was a problem while deleting this user. Please try again later.'
+  },
+
+  reset: {
+    TOKEN_ISSUED: 'Please check your email to finish your password reset.',
+    TOKEN_ERROR: 'An error has ocurred while trying to issue a token for reset. Please try again!',
+    SUCCESSFUL: 'Your password has been reset. Please review your new password below.',
+    PASSWORD_FAILED: 'An error has ocurred while trying to generate a new password for your account. Please try again later or contact our support team if this persists.',
+    YOUR_NEW_PASSWORD: 'Your New Account Password',
+    PASSWORD_WARNING: 'Store your password in a safe place and do not share it with anyone.'
   },
 
   settings: {

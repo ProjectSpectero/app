@@ -163,7 +163,7 @@ export default {
     await this.fetchInvoice(async () => {
       this.loading = true
 
-      if (!this.order.easy_enabled) {
+      if (this.order && !this.order.easy_enabled) {
         await this.getBillingProfile()
       }
 

@@ -26,9 +26,8 @@
 
         <span
           v-show="errors.has('username')"
-          class="input-error-message">
-          {{ errors.first('username') }}
-        </span>
+          class="input-error-message"
+          v-html="errors.first('username')"/>
       </div>
 
       <div class="form-input">
@@ -45,9 +44,8 @@
 
         <span
           v-show="errors.has('password')"
-          class="input-error-message">
-          {{ errors.first('password') }}
-        </span>
+          class="input-error-message"
+          v-html="errors.first('password')"/>
       </div>
 
       <button

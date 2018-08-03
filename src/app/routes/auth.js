@@ -10,7 +10,7 @@ import newPassword from '@/app/components/auth/newPassword'
 
 export default [
   { path: '/login', name: 'login', component: login, meta: { antiAuth: true, layout: 'auth' } },
-  { path: '/ask-for-reset', name: 'resetPassword', component: reset, meta: { antiAuth: true, layout: 'auth' } },
+  { path: '/reset', name: 'resetPassword', component: reset, meta: { antiAuth: true, layout: 'auth' } },
   { path: '/password-reset/:token', name: 'newPassword', component: newPassword, meta: { antiAuth: true, layout: 'auth' } },
   { path: '/tfa', name: 'tfa', component: twoFactorLogin, meta: { antiAuth: true, layout: 'auth' } },
   { path: '/register', name: 'register', component: register, meta: { antiAuth: true, layout: 'auth' } },

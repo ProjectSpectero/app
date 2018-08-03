@@ -40,6 +40,11 @@
   color: $color-danger;
   font-weight: $font-bold;
   line-height: 20px;
+
+  a {
+    color: $color-danger;
+    text-decoration: underline;
+  }
 }
 
 // Input labels

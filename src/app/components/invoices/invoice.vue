@@ -51,13 +51,18 @@
 
               <div class="invoice">
                 <div
-                  v-if="invoice.status === 'PAID'"
-                  class="message-paid message message-success">
+                  v-if="['PAID', 'CANCELLED', 'REFUNDED', 'PARTIALLY_REFUNDED'].indexOf(invoice.status) > -1"
+                  :class="{ 'message-success': invoice.status === 'PAID' }"
+                  class="message-status message">
                   <div>
-                    <h5>{{ $i18n.t('invoices.PAID') }}</h5>
-                    <p>{{ $i18n.t('invoices.THANKS') }}</p>
+                    <h5>{{ $i18n.t('invoices.STATUS.' + invoice.status + '.TITLE') }}</h5>
+                    <p>{{ $i18n.t('invoices.STATUS.' + invoice.status + '.TEXT') }}</p>
                   </div>
                 </div>
+                <div
+                  v-else-if="isCreditInvoice"
+                  class="message-status message"
+                  v-html="$i18n.t('invoices.CANCEL_CREDIT_INVOICE')"/>
 
                 <div class="header">
                   <div class="logo-container">
@@ -113,7 +118,7 @@
                         <td>{{ invoice.id }}</td>
                       </tr>
                       <tr>
-                        <td><strong>{{ $i18n.t('invoices.STATUS') }}:</strong></td>
+                        <td><strong>{{ $i18n.t('misc.STATUS') }}:</strong></td>
                         <td><strong :class="statusClass">{{ status }}</strong></td>
                       </tr>
                       <tr>
@@ -512,7 +517,7 @@ export default {
       background: none;
     }
   }
-  .message-paid, .line-error-msg {
+  .message-status, .line-error-msg {
     display: none !important;
   }
   .divider {

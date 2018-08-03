@@ -23,9 +23,8 @@
           class="input">
         <div
           v-show="errors.has('dhcp_item2')"
-          class="input-error-msg">
-          {{ errors.first('dhcp_item2') }}
-        </div>
+          class="input-error-msg"
+          v-html="errors.first('dhcp_item2')"/>
       </div>
       <button
         class="button-md button-success"
