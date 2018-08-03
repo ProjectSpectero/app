@@ -4,6 +4,8 @@ import openVPN from '@/daemon/components/services/openVPN/edit'
 import services from '@/daemon/components/services/services'
 import users from '@/daemon/components/users/list'
 import certificates from '@/daemon/components/users/certificates'
+import create from '@/daemon/components/users/create'
+import edit from '@/daemon/components/users/edit'
 
 export default [
   { path: '/daemon/:nodeId', name: 'daemon', component: manage, meta: { auth: true, layout: 'daemon' } },
@@ -11,5 +13,7 @@ export default [
   { path: '/daemon/:nodeId/services/HTTPProxy/edit', name: 'daemon-service-HTTPProxy', component: HTTPProxy, meta: { auth: true, layout: 'daemon' } },
   { path: '/daemon/:nodeId/services/openVPN/edit', name: 'daemon-service-OpenVPN', component: openVPN, meta: { auth: true, layout: 'daemon' } },
   { path: '/daemon/:nodeId/users', name: 'daemon-users', component: users, meta: { auth: true, layout: 'daemon' } },
-  { path: '/daemon/:nodeId/users/:id/certificates', name: 'daemon-user-certificates', component: certificates, meta: { auth: true, layout: 'daemon' } }
+  { path: '/daemon/:nodeId/users/:id', name: 'daemon-user-edit', component: edit, meta: { auth: true, layout: 'daemon' } },
+  { path: '/daemon/:nodeId/users/:id/certificates', name: 'daemon-user-certificates', component: certificates, meta: { auth: true, layout: 'daemon' } },
+  { path: '/daemon/:nodeId/users/create', name: 'daemon-user-create', component: create, meta: { auth: true, layout: 'daemon' } }
 ]
