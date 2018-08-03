@@ -1,6 +1,5 @@
 import invoiceAPI from '@/app/api/invoice'
 import orderAPI from '@/app/api/order'
-import marketAPI from '@/app/api/market'
 
 export default {
   data () {

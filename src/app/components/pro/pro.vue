@@ -94,6 +94,12 @@
                       {{ errors.first('email') }}
                     </span>
                   </div>
+                  <div class="captcha">
+                    <vue-recaptcha
+                      :sitekey="recaptchaSitekey"
+                      @verify="captchaVerify"
+                      @expired="captchaExpiry"/>
+                  </div>
                 </div>
 
                 <div class="step section padded">
@@ -129,11 +135,13 @@ import orderAPI from '@/app/api/order'
 import marketAPI from '@/app/api/market'
 import auth from '@/app/api/auth'
 import top from '@/shared/components/top'
+import VueRecaptcha from 'vue-recaptcha'
 import loading from '@/shared/components/loading'
 
 export default {
   components: {
     top,
+    VueRecaptcha,
     loading
   },
   metaInfo: {
@@ -160,14 +168,19 @@ export default {
           termLabel: 'year',
           bestDeal: true
         }
-      }
+      },
+      captchaKey: null,
+      captchaExpired: false
     }
   },
   computed: {
     ...mapGetters({
       user: 'appAuth/user',
       isPro: 'appAuth/isPro'
-    })
+    }),
+    recaptchaSitekey () {
+      return process.env.GOOGLE_RECAPTCHA_KEY
+    }
   },
   async created () {
     await this.syncCurrentUser()
@@ -255,25 +268,30 @@ export default {
         if (!result) {
           this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
         } else {
-          // Disable form while HTTP request being made
-          this.formLoading = true
-          this.formError = null
+          // Check for captcha
+          if (this.captchaExpired || !this.captchaKey) {
+            this.formError = this.$i18n.t('errors.CAPTCHA_VALIDATION_FAILED')
+          } else {
+            // Disable form while HTTP request being made
+            this.formLoading = true
+            this.formError = null
 
-          auth.registerEasy({
-            data: {
-              email: this.email
-            },
-            registerSuccess: async response => {
-              await this.syncCurrentUser()
+            auth.registerEasy({
+              data: {
+                email: this.email
+              },
+              registerSuccess: async response => {
+                await this.syncCurrentUser()
 
-              this.formError = null
-              this.createProOrder()
-            },
-            registerFailed: error => {
-              this.easyRegisterError(error)
-              console.error('Pro login failed', error)
-            }
-          })
+                this.formError = null
+                this.createProOrder()
+              },
+              registerFailed: error => {
+                this.easyRegisterError(error)
+                console.error('Pro login failed', error)
+              }
+            })
+          }
         }
       })
     },
@@ -304,6 +322,14 @@ export default {
           }
         }
       }
+    },
+    captchaVerify: function (response) {
+      this.captchaKey = response
+      this.captchaExpired = false
+    },
+    captchaExpiry: function () {
+      this.captchaKey = null
+      this.captchaExpired = true
     }
   }
 }
@@ -406,5 +432,8 @@ export default {
     font-size: 56px;
     color: $color-success;
   }
+}
+.captcha {
+  margin-top: $pad;
 }
 </style>

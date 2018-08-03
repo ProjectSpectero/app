@@ -120,6 +120,7 @@ module.exports = {
     ERROR_400_ITEM_TEXT: 'We were unable to retrieve the list of {item} you requested.',
     REQUESTED_PAGE_DOES_NOT_EXIST: 'Invalid page!',
     VALIDATION_FAILED: 'Please correct any errors and try again.',
+    CAPTCHA_VALIDATION_FAILED: 'Please complete the captcha and try again.',
     OBJECT_PERSIST_FAILED: 'Something went wrong, please try again later.',
     RESOURCE_CREATION_FAILED: 'Unable to create resource, please try again later.',
     RESOURCE_NOT_FOUND: 'We could not find that resource. Please try again and contact our support team if the error persists.',
@@ -157,7 +158,8 @@ module.exports = {
     ENDPOINT_NOT_FOUND: 'Endpoint not found or unreachable',
     RELEASES_FETCH_FAILED: 'Unable to load release data, please try again later.',
     MATRICES_FETCH_FAILED: 'Unable to load compatibility matrices data, please try again later.',
-    ECONNABORTED: 'We\'re having trouble connecting to the authentication server. Please try again later.'
+    ECONNABORTED: 'We\'re having trouble connecting to the authentication server. Please try again later.',
+    CAPTCHA_MISSING: 'Please complete the captcha and try again.'
   },
 
   payments: {
