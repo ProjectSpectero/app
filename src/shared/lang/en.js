@@ -8,7 +8,7 @@ module.exports = {
     ADMIN: 'Admin',
     HOME: 'Home',
     DASHBOARD: 'Dashboard',
-    MARKET: 'Market',
+    MARKET: 'Marketplace',
     ORDERS: 'Orders',
     ENTERPRISE_ORDERS: 'Enterprise Orders',
     INVOICES: 'Invoices',
@@ -457,7 +457,7 @@ module.exports = {
   },
 
   market: {
-    BACK: 'Back to market',
+    BACK: 'Back to Marketplace',
     MODEL_NODE: {
       UNLISTED: 'Unlisted',
       MANAGED: 'Managed',
