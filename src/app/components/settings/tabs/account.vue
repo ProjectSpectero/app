@@ -183,28 +183,17 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import userAPI from '@/app/api/user'
 
 export default {
   metaInfo: {
     title: 'My Account'
   },
-  props: {
-    user: {
-      type: Object,
-      required: true
-    },
-    formError: {
-      type: String,
-      required: true
-    },
-    formLoading: {
-      type: Boolean,
-      required: true
-    }
-  },
   data () {
     return {
       form: null,
+      formError: null,
+      formLoading: false,
       currentEmail: null,
       showEmailForm: false,
       showPasswordForm: false
@@ -212,6 +201,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      user: 'appAuth/user',
       rules: 'appUsers/editRules'
     })
   },
@@ -232,7 +222,57 @@ export default {
           this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
         } else {
           this.formError = null
-          this.$emit('processForm', this.form)
+          this.process()
+        }
+      })
+    },
+    async process () {
+      this.formLoading = true
+
+      let submitForm = this.form
+
+      // Remove empty fields from the list
+      for (var key in submitForm) {
+        if (submitForm[key] === null) {
+          delete submitForm[key]
+        }
+      }
+
+      userAPI.edit({
+        data: submitForm,
+        success: async response => {
+          await this.syncCurrentUser()
+
+          this.$toasted.success('Your account has been updated successfully.')
+          this.formLoading = false
+        },
+        fail: error => {
+          this.formLoading = false
+
+          // Get first error key to display main error msg
+          for (var errorKey in error.errors) {
+            if (error.errors.hasOwnProperty(errorKey)) {
+              this.formError = this.$i18n.t(`errors.${errorKey}`)
+              break
+            }
+          }
+
+          // Inject errors into form fields
+          for (let inputName in error.fields) {
+            if (error.fields.hasOwnProperty(inputName)) {
+              let inputErrors = error.fields[inputName]
+              console.log(inputErrors)
+              for (let errorKey in inputErrors) {
+                if (inputErrors.hasOwnProperty(errorKey)) {
+                  this.$validator.errors.add({
+                    id: `${inputName}_${errorKey}`,
+                    field: inputName,
+                    msg: this.$i18n.t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
+                  })
+                }
+              }
+            }
+          }
         }
       })
     }

@@ -86,5 +86,13 @@ export default {
    */
   regenerateAccessor (options) {
     return api('PUT', `/order/${options.data.id}/accessor`, options)
+  },
+
+  /**
+   * Returns a plan.
+   * @param {Integer} id Order id.
+   */
+  plan (options) {
+    return api('GET', `/plan/${options.data.id}`, options)
   }
 }

@@ -50,7 +50,7 @@ $tooltip-bg: rgba(40, 48, 58, 0.95);
 
 .vue-tooltip[x-placement^="top"] .tooltip-arrow {
   border-width: 5px 5px 0 5px;
-  border-top-color: #000;
+  border-top-color: $tooltip-bg;
   border-bottom-color: transparent !important;
   border-left-color: transparent !important;
   border-right-color: transparent !important;
@@ -65,7 +65,7 @@ $tooltip-bg: rgba(40, 48, 58, 0.95);
 
 .vue-tooltip[x-placement^="bottom"] .tooltip-arrow {
   border-width: 0 5px 5px 5px;
-  border-bottom-color: #000;
+  border-bottom-color: $tooltip-bg;
   border-top-color: transparent !important;
   border-left-color: transparent !important;
   border-right-color: transparent !important;
@@ -80,7 +80,7 @@ $tooltip-bg: rgba(40, 48, 58, 0.95);
 
 .vue-tooltip[x-placement^="right"] .tooltip-arrow {
   border-width: 5px 5px 5px 0;
-  border-right-color: #000;
+  border-right-color: $tooltip-bg;
   border-top-color: transparent !important;
   border-left-color: transparent !important;
   border-bottom-color: transparent !important;
@@ -95,7 +95,7 @@ $tooltip-bg: rgba(40, 48, 58, 0.95);
 
 .vue-tooltip[x-placement^="left"] .tooltip-arrow {
   border-width: 5px 0 5px 5px;
-  border-left-color: #000;
+  border-left-color: $tooltip-bg;
   border-top-color: transparent !important;
   border-right-color: transparent !important;
   border-bottom-color: transparent !important;

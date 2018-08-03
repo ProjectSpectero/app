@@ -5,7 +5,7 @@
     <h3>Account credit</h3>
     <p
       v-if="user.credit && user.credit > 0"
-      v-html="$i18n.t('payments.COUNT_ACCOUNT_CREDIT', { credit: user.credit })"/>
+      v-html="$i18n.t('payments.COUNT_ACCOUNT_CREDIT', { credit: $filters.currency(user.credit) })"/>
     <p v-else>{{ $i18n.t('payments.NO_ACCOUNT_CREDIT') }}</p>
     <router-link
       :to="{ name: 'addCredit' }"
@@ -16,12 +16,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  props: {
-    user: {
-      type: Object,
-      required: true
-    }
+  computed: {
+    ...mapGetters({
+      user: 'appAuth/user'
+    })
   }
 }
 </script>

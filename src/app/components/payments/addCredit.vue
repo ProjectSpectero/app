@@ -5,27 +5,44 @@
       <p>{{ $i18n.t('payments.ADD_CREDIT_DESC') }}</p>
       <p class="credit-current">Balance: {{ user.credit | currency }} {{ currency }}</p>
 
-      <div
-        class="message"
-        v-html="$i18n.t('payments.ADD_CREDIT_MAX_WARNING', { remaining: remaining, max: max, currency: currency })"/>
+      <template v-if="remaining > 0">
+        <div
+          class="message"
+          v-html="$i18n.t('payments.ADD_CREDIT_MAX_WARNING', { remaining: remaining, max: max, currency: currency })"/>
 
-      <div class="form-input">
-        <div class="label">
-          <label for="creditAddAmount">{{ $i18n.t('payments.ADD_CREDIT_FORM_LABEL') }}</label>
+        <div class="form-input">
+          <div class="label">
+            <label for="creditAddAmount">{{ $i18n.t('payments.ADD_CREDIT_FORM_LABEL') }}</label>
+          </div>
+          <vue-numeric
+            id="creditAddAmount"
+            v-model="amount"
+            :min="0"
+            :max="max"
+            :precision="2"
+            :empty-value="0"
+            class="input"
+            currency="USD $"
+            separator=","
+            output-type="Number" />
         </div>
-        <input
-          id="creditAddAmount"
-          v-model="amount"
-          :placeholder="$i18n.t('payments.ADD_CREDIT_PLACEHOLDER')"
-          type="number"
-          class="input"
-          @keyup="watchMaxValue">
-      </div>
-      <button
-        class="button-md button-success button-full"
-        @click="add(amount)">
-        {{ $i18n.t('misc.PURCHASE') }}
-      </button>
+        <button
+          class="button-md button-success button-full"
+          @click="add(amount)">
+          {{ $i18n.t('misc.PURCHASE') }}
+        </button>
+      </template>
+      <template v-else>
+        <div
+          class="message message-error"
+          v-html="$i18n.t('payments.CREDIT_LIMIT_EXCEEDED')"/>
+
+        <router-link
+          :to="{ name: 'settings', params: { tab: 'payment' } }"
+          class="button button-md button-full">
+          {{ $i18n.t('misc.RETURN_TO_SETTINGS') }}
+        </router-link>
+      </template>
     </div>
   </div>
 </template>
@@ -55,14 +72,6 @@ export default {
     await this.fetchMax()
   },
   methods: {
-    watchMaxValue () {
-      if (this.amount > this.max) {
-        this.amount = this.max
-      }
-      // else if (this.amount === '' || parseInt(this.amount) < 5) {
-      //   this.amount = 5
-      // }
-    },
     fetchMax () {
       paymentAPI.getMaxCredit({
         success: response => {

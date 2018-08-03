@@ -22,7 +22,7 @@
             <td class="table-actions">
               <router-link
                 v-if="row.status === 'UNPAID'"
-                :to="{ name: 'invoice', params: { id: row.id } }"
+                :to="{ name: 'checkout', params: { id: row.id } }"
                 class="button-success">
                 {{ $i18n.t('misc.PAY_NOW') }}
               </router-link>

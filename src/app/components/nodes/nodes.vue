@@ -19,7 +19,9 @@
 
       <div>
         <div class="container">
-          <div class="col-12 content-split">
+          <div
+            v-if="everythingLoaded"
+            class="col-12 content-split">
             <div
               v-if="groups && groups.length"
               class="split-list nodes-sidebar">
@@ -41,7 +43,6 @@
               </div>
 
               <div
-                v-if="uncategorized && uncategorized.result.length"
                 :class="selectedGroup === 0 ? 'active' : ''"
                 class="node-group"
                 @click.stop="selectUncategorized">
@@ -54,22 +55,22 @@
               </div>
             </div>
             <div class="split-details">
-              <loading v-if="groups && loading"/>
-              <template v-else>
-                <nodes-list
-                  :selected-group-information="selectedGroupInformation"
-                  :data-loading="loading"
-                  :search-id="searchId"
-                  :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
-                  :table-data="(selectedGroup === 0) ? uncategorized.result : nodes"
-                  :hide-header="groups && groups.length === 0"
-                  @refetch="setup"
-                  @changedPage="changedPage"
-                  @sortByColumn="sortByColumn"
-                  @showAddNodeModal="showAddNodeModal"/>
-              </template>
+              <nodes-list
+                :selected-group-information="selectedGroupInformation"
+                :search-id="searchId"
+                :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
+                :table-data="(selectedGroup === 0) ? uncategorized.result : nodes"
+                :hide-header="groups && groups.length === 0"
+                :groups="groups"
+                @refetch="setup"
+                @changedPage="changedPage"
+                @sortByColumn="sortByColumn"
+                @showAddNodeModal="showAddNodeModal"/>
             </div>
           </div>
+          <loading
+            v-else
+            :text="loadingText" />
         </div>
       </div>
     </template>
@@ -109,6 +110,9 @@ export default {
   },
   data () {
     return {
+      loadingGroups: true,
+      loadingNodes: true,
+      loadingUncategorized: true,
       perPage: 10,
       selectedGroup: 0,
       groups: null,
@@ -134,6 +138,22 @@ export default {
           friendly_name: found ? found.friendly_name : this.$i18n.t('nodes.UNCATEGORIZED')
         }
       }
+    },
+    everythingLoaded () {
+      return (!this.loadingGroups && !this.loadingNodes && !this.loadingUncategorized)
+    },
+    loadingText () {
+      let str = null
+
+      if (this.loadingGroups) {
+        str = 'Loading node groups ...'
+      } else if (this.loadingNodes) {
+        str = 'Loading nodes ...'
+      } else if (this.loadingUncategorized) {
+        str = 'Loading uncategorized nodes ...'
+      }
+
+      return str
     }
   },
   async created () {
@@ -176,6 +196,9 @@ export default {
 
         if (!found && this.groups.length > 0) {
           this.selectGroup(this.groups[0], false)
+        } else {
+          // No groups found? Stop loading nodes and show the not found screen
+          this.loadingNodes = false
         }
       }
     },
@@ -184,12 +207,10 @@ export default {
       this.$router.push({ name: 'nodesByGroup', params: { id: (this.selectedGroup === 0) ? 'uncategorized' : this.selectedGroup, page: page } })
     },
     selectGroup (group, reset) {
-      this.loading = true
       this.selectedGroup = group.id
       this.changedPage(reset ? 1 : this.currentPage)
     },
     selectUncategorized () {
-      this.loading = true
       this.selectedGroup = 0
       this.changedPage(this.currentPage)
     },
@@ -219,13 +240,14 @@ export default {
             }
 
             if (this.selectedGroup !== 0) {
-              this.fetchNodes(page)
+              await this.fetchNodes(page)
             } else {
-              this.fetchUncategorized(page)
+              await this.fetchUncategorized(page)
+              this.loadingNodes = false
             }
           },
           fail: e => {
-            console.log(e)
+            console.error(e)
             this.error = true
           }
         })
@@ -233,9 +255,10 @@ export default {
         this.searchId = null
 
         if (this.selectedGroup !== 0) {
-          this.fetchNodes(page)
+          await this.fetchNodes(page)
         } else {
-          this.fetchUncategorized(page)
+          await this.fetchUncategorized(page)
+          this.loadingNodes = false
         }
       }
     },
@@ -254,7 +277,7 @@ export default {
           success: response => {
             this.nodes = response.data.result
             this.pagination = response.data.pagination
-            this.loading = false
+            this.loadingNodes = false
             this.error = false
           },
           fail: e => {
@@ -274,11 +297,12 @@ export default {
         },
         success: response => {
           this.uncategorized = response.data
-          this.loading = false
+          console.log('Loaded uncategorized')
+          this.loadingUncategorized = false
           this.fetchSuccessful = true
         },
         fail: e => {
-          console.log(e)
+          console.error(e)
         }
       })
     },
@@ -297,9 +321,10 @@ export default {
               this.groupsPage++
               this.groups = this.groups ? [...this.groups, ...response.data.result] : response.data.result
               this.error = false
+              this.loadingGroups = false
             },
             fail: e => {
-              console.log(e)
+              console.error(e)
             }
           })
         }
@@ -313,7 +338,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

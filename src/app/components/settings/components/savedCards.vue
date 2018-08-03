@@ -29,15 +29,14 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import paymentAPI from '@/app/api/payment.js'
 
 export default {
-  props: {
-    user: {
-      type: Object,
-      required: true
-    }
+  computed: {
+    ...mapGetters({
+      user: 'appAuth/user'
+    })
   },
   methods: {
     ...mapActions({

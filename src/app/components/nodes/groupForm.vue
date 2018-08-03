@@ -127,11 +127,12 @@ export default {
       return {
         friendly_name: {
           required: true,
+          regex: /^[a-z\d\-_\s]+$/i,
           max: 50
         },
         price: {
           required: true,
-          numeric: true,
+          // numeric: true, // Comment out to fix $ input library adding 'USD $' to input
           min_value: 5,
           max_value: 9999
         },

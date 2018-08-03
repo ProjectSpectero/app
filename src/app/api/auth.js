@@ -1,7 +1,23 @@
 import api from './index'
 import store from '@/store'
 
-export default {
+const loginAPI = {
+  loginWithToken (options, callback) {
+    let payload = {
+      accessToken: options.accessToken,
+      refreshToken: options.refreshToken || null,
+      expiry: options.expiry
+    }
+
+    // Bind cookie
+    store.dispatch('appAuth/addCookie', payload).then(() => {
+      // Add tokens to the store
+      store.dispatch('appAuth/setLoginInfo', payload).then(() => {
+        return callback()
+      })
+    })
+  },
+
   /**
    * Authenticates user with credentials.
    *
@@ -13,14 +29,14 @@ export default {
       if (response && response.data) {
         // Login successful, token issued
         if (response.data.message === 'OAUTH_TOKEN_ISSUED') {
-          const result = response.data.result
+          const data = response.data.result
 
-          // Bind cookie
-          store.dispatch('appAuth/addCookie', result).then(() => {
-            // Add tokens to the store
-            store.dispatch('appAuth/setLoginInfo', result).then(() => {
-              return options.loginSuccess()
-            })
+          loginAPI.loginWithToken({
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken,
+            expiry: data.expiry
+          }, function () {
+            return options.loginSuccess()
           })
         }
       }
@@ -51,19 +67,12 @@ export default {
         const result = response.data.result
         const auth = result.auth
 
-        const loginData = {
-          accessToken: auth.token,
-          expiry: auth.expires
-        }
-
-        store.dispatch('appAuth/addCookie', loginData).then(() => {
-          // Add tokens to the store
-          store.dispatch('appAuth/setLoginInfo', loginData).then(() => {
-            return options.registerSuccess(result)
-          })
+        loginAPI.loginWithToken({
+          accessToken: auth.accessToken,
+          expiry: auth.expiry
+        }, function () {
+          return options.registerSuccess()
         })
-
-        // return options.registerSuccess(result)
       }
 
       // 200 status code recieved, but token wasn't issued
@@ -100,3 +109,5 @@ export default {
     return api('POST', `/auth/impersonate/${options.data.id}`, options)
   }
 }
+
+export default loginAPI

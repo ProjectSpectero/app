@@ -2,12 +2,13 @@ module.exports = {
   lang: 'en',
   misc: {
     SPECTERO: 'Spectero',
+    PRO: 'Pro',
     IMPERSONATE: 'Impersonate',
     USERS: 'Users',
     ADMIN: 'Admin',
     HOME: 'Home',
     DASHBOARD: 'Dashboard',
-    MARKET: 'Market',
+    MARKET: 'Marketplace',
     ORDERS: 'Orders',
     ENTERPRISE_ORDERS: 'Enterprise Orders',
     INVOICES: 'Invoices',
@@ -59,6 +60,7 @@ module.exports = {
     LISTENER: 'Listener',
     PURCHASE: 'Purchase',
     PAY_NOW: 'Pay Now',
+    VIEW_INVOICE: 'View Invoice',
     SAVE: 'Save',
     REMOVE: 'Remove',
     MARKET_INFO: 'Market Information',
@@ -104,7 +106,9 @@ module.exports = {
     REGISTER: 'Register',
     RESET_PASSWORD: 'Reset Password',
     SERVICES: 'Services',
-    SAVE_GROUP: 'Save Group'
+    SAVE_GROUP: 'Save Group',
+    UNKNOWN_ERROR: 'An unknown error occurred. Please try again later or contact our support team if this issue persists.',
+    RETURN_TO_SETTINGS: 'Return To Settings'
   },
 
   errors: {
@@ -117,18 +121,20 @@ module.exports = {
     ERROR_400_ITEM_TEXT: 'We were unable to retrieve the list of {item} you requested.',
     REQUESTED_PAGE_DOES_NOT_EXIST: 'Invalid page!',
     VALIDATION_FAILED: 'Please correct any errors and try again.',
+    CAPTCHA_VALIDATION_FAILED: 'Please complete the captcha and try again.',
     OBJECT_PERSIST_FAILED: 'Something went wrong, please try again later.',
     RESOURCE_CREATION_FAILED: 'Unable to create resource, please try again later.',
-    RESOURCE_NOT_FOUND: 'We could not find that resource. Please contact us if the error persists.',
-    REQUEST_FAILED: 'The request failed. Please contact us if the error persists.',
-    UNAUTHORIZED: 'You are not authorized to do this. Please contact us if the error persists.',
-    PAYMENT_FAILED: 'Payment failed. Please try again in a minute and contact us if the error persists.',
+    RESOURCE_NOT_FOUND: 'We could not find that resource. Please try again and contact our support team if the error persists.',
+    REQUEST_FAILED: 'The request failed. Please try again and contact our support team if the error persists.',
+    UNAUTHORIZED: 'You are not authorized to do this. Please try again and contact our support team if the error persists.',
+    PAYMENT_FAILED: 'Payment failed. Please try again and contact our support team if the error persists.',
     INVOICE_ALREADY_PAID: 'This invoice has already been paid!',
     INVOICE_STATUS_MISMATCH: 'There seems to be a problem processing this invoice. Please try again later and contact our customer support if this issue persists.',
     FIELD_REQUIRED: 'This field is required.',
     FIELD_MAXLENGTH: 'Cannot be longer than {x} characters.',
     FIELD_MINLENGTH: 'Cannot be shorter than {x} characters.',
     FIELD_REGEX_MATCH: 'Invalid input format provided.',
+    FIELD_ALPHADASHSPACES: 'This field can only include alpha-numeric characters, dashes or spaces.',
     FIELD_EMAIL: 'Must be a valid email.',
     MISSING_BODY: 'Some required fields are missing or empty.',
     USER_NOT_FOUND: 'Invalid email or password.',
@@ -153,7 +159,9 @@ module.exports = {
     ENDPOINT_NOT_FOUND: 'Endpoint not found or unreachable',
     RELEASES_FETCH_FAILED: 'Unable to load release data, please try again later.',
     MATRICES_FETCH_FAILED: 'Unable to load compatibility matrices data, please try again later.',
-    ECONNABORTED: 'We\'re having trouble connecting to the authentication server. Please try again later.'
+    ECONNABORTED: 'We\'re having trouble connecting to the authentication server. Please try again later.',
+    CAPTCHA_MISSING: 'Please complete the captcha and try again.',
+    CAPTCHA_INVALID: 'Captcha validation failed, please try again.'
   },
 
   payments: {
@@ -161,24 +169,22 @@ module.exports = {
     INVOICE_ALREADY_PAID: 'This invoice was already paid!',
     INVOICE_STATUS_MISMATCH: 'There seems to be a problem processing this invoice. Please try again later and contact our customer support if this issue persists.',
     NO_STORED_CARD: 'Unable to find a card connected to this account.',
-    USE_SAVED_CARD: 'You previously saved a credit card ({card}) on our system. Do you want to pay with it?',
+    USE_SAVED_CARD: 'You previously saved a credit card with our payment processor. Do you want to pay with it?',
     BUTTON_USE_SAVED_CARD_YES: 'Yes, Pay Now',
     BUTTON_USE_SAVED_CARD_NO: 'No, Use Different Card',
-    BUTTON_PROCESS_PAYMENT: 'Process Payment',
+    BUTTON_PAY_NOW: 'Pay Now',
+    STRIPE_ERROR: 'There was an issue processing your card: {msg}',
     CHECK_SAVE_CARD: 'Save card for future orders',
     PAYMENT_SUCCESS: 'Payment processed successfully!',
     PAYMENT_PROCESSING: 'Payment in process, please wait...',
     PAYMENT_ACCEPTED: 'Your payment has been accepted and we are now processing it. Please check this invoice in a few minutes.',
-    PAY_HEADER: 'Payment for invoice #{invoiceId}',
-    PAY_DESCRIPTION: 'Use the form below to pay for your order. Once we recieve your payment, you\'ll gain access to the services associated to the invoice.',
     PAY_SECURE: 'Your payment is secure.',
     PAY_SECURE_DETAILS: 'Your credit card data never touches our server. We operate solely based on tokens with our payment partner Stripe who are leaders in the credit card processing industry.',
     PAYPAL_CONNECT_HEADER: 'Connecting to Paypal',
     PAYPAL_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Paypal One Touch™ to complete your payment.',
-    CRYPTO_CONNECT_HEADER: 'Connecting to Coinbase',
-    CRYPTO_CONNECT_DESCRIPTION: 'Please wait while we redirect you to Coinbase Commerce to complete your payment.',
     PAYMENT_INVALID_PARAMETERS: 'The payment data you have supplied seems to be wrong. Please contact us for more details.',
     PAYMENT_PROCESSOR_NOT_ENABLED: 'This payment processor is not enabled. Please contact us for more details.',
+    ACCOUNT_CREDIT_PAYMENT_FAILED: 'We\'re sorry, we were unable to process your account credit payment. Please try again and contact our support team if this persists.',
     REQUEST_FAILED: 'We were unable to start the payment process. Please contact us if this keeps happening.',
     ZERO_CREDIT_BALANCE: 'You don\'t have any balance in your account.',
     UNPAID_CREDIT_INVOICES_ARE_PRESENT: 'Unable to invoice credits: you already have one invoice queued for payment!',
@@ -186,15 +192,17 @@ module.exports = {
     ADD_CREDIT_TITLE: 'Add Credit',
     ADD_CREDIT_DESC: 'Use the form below to add credit to your account for making payments in the future.',
     ADD_CREDIT_MAX_WARNING: 'You may add up to <span>$</span>{remaining} {currency} more credit to this account.',
-    ADD_CREDIT_FORM_LABEL: 'Enter amount of credit (in $USD) you\'d like to purchase:',
+    ADD_CREDIT_FORM_LABEL: 'Enter amount of credit you\'d like to add to your account:',
     CREDIT_INVOICED: '{amount} {currency} worth of credit invoiced!',
     ADD_CREDIT_PLACEHOLDER: 'Enter amount of credit you wish to purchase',
     NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.',
     NO_ACCOUNT_CREDIT: 'You don\'t have any credit in your account.',
-    COUNT_ACCOUNT_CREDIT: 'You currently have <strong><span>$</span>{credit} USD</strong> of credit in your account.',
+    COUNT_ACCOUNT_CREDIT: 'You currently have <strong>{credit}</strong> of credit in your account.',
     ACCOUNT_CREDIT: '(You have {credit} credits in your account)',
     ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!',
-    INVALID_STRIPE_TOKEN: 'We were unable to process your credit card at this time. This is probably our fault. Please try again!',
+    INVALID_STRIPE_TOKEN: 'We were unable to process your credit card at this time. Please contact our support team if this persists.',
+    PAYMENT_FAILED: 'Payment failed. Please try again and contact our support team if the error persists.',
+    CREDIT_LIMIT_EXCEEDED: 'We\'re unable to process your request to add more credit as you\'ve exceeded your limit. Please contact our support team to raise your credit limits.',
     PROMO: {
       APPLY_MSG: 'Have a promo code? Apply it to your account here.',
       ENTER_PROMO_CODE_HERE: 'Enter promo code here',
@@ -209,27 +217,26 @@ module.exports = {
     METHODS: {
       CRYPTO: {
         TITLE: 'Cryptocurrency',
-        DESCRIPTION: 'Make a secure payment using cryptocurrency. Payments processed through Coinbase Commerce.',
-        BUTTON_TEXT: 'Cryptocurrency Payment',
-        NOT_AVAILABLE: 'Cryptocurrency payments aren\'t available for this transaction.'
+        DESCRIPTION: 'Make a secure payment using cryptocurrency through Coinbase.',
+        PAY_BUTTON: 'Continue to Coinbase',
+        REDIRECT_TEXT: 'Please wait while we redirect you to Coinbase to complete your payment.'
       },
       PAYPAL: {
         TITLE: 'PayPal',
         DESCRIPTION: 'Complete your payment through PayPal.',
-        BUTTON_TEXT: 'PayPal Checkout',
-        NOT_AVAILABLE: 'PayPal payments aren\'t available for this transaction.'
+        PAY_BUTTON: 'Continue to PayPal',
+        REDIRECT_TEXT: 'Please wait while we redirect you to PayPal to complete your payment.'
       },
       STRIPE: {
         TITLE: 'Credit Card',
-        DESCRIPTION: 'Make a secure payment using your credit card. Most major card types are accepted.',
-        BUTTON_TEXT: 'Credit Card Payment',
-        NOT_AVAILABLE: 'Credit card payments aren\'t available for this transaction.'
+        DESCRIPTION: 'Make a secure payment using your credit card. Most major card types are accepted.'
       },
-      CREDIT: {
+      ACCOUNT_CREDIT: {
         TITLE: 'Account Credit',
-        DESCRIPTION: 'Apply your account credit to this invoice. You currently have <strong>{balance}</strong> of account credit available to be applied.',
-        BUTTON_TEXT: 'Use Account Credit',
-        NO_BALANCE: 'You have no account credit available to pay with.'
+        DESCRIPTION: 'Apply your account credit to this invoice. You currently have <strong>{balance}</strong> of account credit available to be applied to this order.',
+        PAY_BUTTON: 'Use Account Credit',
+        APPLY_TEXT: 'You have enough credit to cover the full amount of <strong>{due}</strong> for this order. You won\'t have a remaining balance to pay after your credit is applied.',
+        APPLY_TEXT_PARTIAL: 'You have enough credit to cover a partial amount of <strong>{balance}</strong> for this order. You will have a remaining balance of <strong>{remaining}</strong> to pay on this invoice.'
       }
     }
   },
@@ -279,6 +286,7 @@ module.exports = {
     RESOURCE_HAS_BEEN_CANCELLED: 'Resource has been cancelled',
     MISSING_PAYMENT_INFORMATION: 'Billing Details Missing',
     MISSING_PAYMENT_INFORMATION_TEXT: 'Some of your billing details are missing to complete your payment. Please fill out any missing billing fields below then click the button below to complete your payment.',
+    BILLING_ADDRESS_CONTINUE_PAYMENT: 'Please update your billing address to continue with checkout. You will be returned to checkout once you\'ve finished updating your address.',
     COMPLETE_PAYMENT: 'Complete Payment',
     UNPAYABLE: 'Order Processing',
     UNPAYABLE_TEXT: 'This order is currently processing. You will be able to make a payment once the order has been fully processed by our verification team.'
@@ -338,7 +346,9 @@ module.exports = {
   },
 
   pro: {
-    MAIN_TITLE: 'Purchase Spectero Pro'
+    ORDER_CREATE_FAILED: 'Sorry, we were unable to process your Spectero Pro order at this time. Please try again or contact our support team if this persists.',
+    ALREADY_SUBSCRIBED: 'Already Subscribed',
+    ALREADY_SUBSCRIBED_TEXT: 'You\'ve already purchased Spectero Pro and it\'s currently active on your account.'
   },
 
   services: {
@@ -384,10 +394,11 @@ module.exports = {
     VERIFICATION_FAILED_TITLE: 'Something went wrong!',
     VERIFICATION_FAILED: 'Something happened while attempting to verify your node. We have sent you an email with further details.',
     UNCATEGORIZED: 'Uncategorized',
-    NO_NODES_TITLE: 'No Nodes',
     HAS_NODES: 'You cannot delete this group before reassigning its nodes to a different group!',
     RESOURCE_NOT_FOUND: 'We were unable to find that resource.',
-    NO_NODES_TEXT: 'You don\'t have any nodes linked to your account. Why not add one?',
+    NO_NODES_TITLE: 'No Nodes',
+    NO_NODES_TEXT: 'You don\'t have any nodes linked to this group. Why not add one?',
+    NO_NODES_TEXT_ACCOUNT: 'You don\'t have any nodes linked to your account. Why not add one?',
     EDIT_GROUP: 'Edit Group',
     EDIT_NODE: 'Edit Node',
     GROUP_CREATE_SUCCESS: 'Group created successfully!',
@@ -395,7 +406,7 @@ module.exports = {
     DELETE_SUCCESS: 'Node removed successfully!',
     GROUP_DELETE_SUCCESS: 'Group removed successfully!',
     DELETE_ERROR: 'An error ocurred while trying to delete your node. Please try again later.',
-    REQUEST_FAILED: 'The request failed. Please contact us if the error persists.',
+    REQUEST_FAILED: 'The request failed. Please try again and contact our support team if the error persists.',
     NODE_VERIFY_SUCCESS: 'Your node {node} is now queued for verification. We\'ll send you an email as soon as this is finished.',
     GROUP_UPDATE_SUCCESS: 'Node group updated successfully!',
     UPDATE_SUCCESS: 'Information updated successfully!',
@@ -448,7 +459,7 @@ module.exports = {
   },
 
   market: {
-    BACK: 'Back to market',
+    BACK: 'Back to Marketplace',
     MODEL_NODE: {
       UNLISTED: 'Unlisted',
       MANAGED: 'Managed',

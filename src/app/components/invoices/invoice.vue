@@ -12,18 +12,26 @@
 
           <template v-if="!loading">
             <print :button-text="'Print Invoice'"/>
-
-            <pay
+            <router-link
               v-if="isUnpaid && isPayable"
-              :invoice="invoice"
-              :due="due"
-              classes="button-success"
-              @update="fetchInvoice"/>
+              :to="{ name: 'checkout', params: { id: invoice.id } }"
+              class="button-success">
+              <span class="icon-dollar-sign"/>{{ $i18n.t('misc.PAY_NOW') }}
+            </router-link>
           </template>
         </top>
         <div v-if="!loading">
           <div class="container centered">
             <div class="col-12 invoice-col">
+              <div
+                v-if="'unpayable' in this.$route.query"
+                class="message">
+                <div>
+                  <h5>Checkout unavailable</h5>
+                  <p>We're sorry, checkout is currently unavailable for this invoice. Please check for any errors below or contact our support team if this persists.</p>
+                </div>
+              </div>
+
               <alert-processing
                 v-if="isProcessing"
                 :error-bag="verificationErrors"
@@ -90,7 +98,11 @@
                         <span v-if="user.state && user.post_code">,</span>
                         <span v-if="user.post_code">{{ user.post_code }}</span>
                       </div>
-                      <div class="address-field">{{ getCountryById(user.country).name }}</div>
+                      <div
+                        v-if="user.country"
+                        class="address-field">
+                        {{ getCountryById(user.country).name }}
+                      </div>
                       <div class="address-field spaced">{{ user.email }}</div>
                     </div>
                   </div>
@@ -229,6 +241,7 @@
             </div>
           </div>
         </div>
+        <loading v-else/>
       </div>
       <loading v-else/>
     </template>
@@ -241,8 +254,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import orderAPI from '@/app/api/order'
-import invoiceAPI from '@/app/api/invoice'
 import orderMixin from '@/app/mixins/order'
 import alertProcessing from './alertProcessing'
 import alertOutstanding from './alertOutstanding'
@@ -250,7 +261,6 @@ import alertUnpayable from './alertUnpayable'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
-import pay from './pay'
 import print from '@/shared/components/print'
 
 export default {
@@ -261,7 +271,6 @@ export default {
     alertProcessing,
     alertUnpayable,
     loading,
-    pay,
     print
   },
   metaInfo: {
@@ -272,19 +281,9 @@ export default {
   ],
   data () {
     return {
-      order: null,
-      valid: false,
-      invoice: null,
-      engagement: null,
-      due: {},
-      transactions: null,
-      fetchExtras: true,
-      reFetch: true,
-      interval: null,
-      verified: false,
-      verificationErrors: [],
       errorItem: 'invoice',
-      errorCode: 404
+      errorCode: 404,
+      getTransactions: true
     }
   },
   computed: {
@@ -343,151 +342,11 @@ export default {
   async created () {
     await this.syncCurrentUser()
     await this.fetchInvoice()
-
-    // Keep refreshing the invoice while its status is PROCESSING
-    if (this.reFetch) {
-      this.refreshInvoice()
-    }
-  },
-  beforeDestroy () {
-    clearInterval(this.interval)
   },
   methods: {
     ...mapActions({
       syncCurrentUser: 'appAuth/syncCurrentUser'
-    }),
-    refreshInvoice () {
-      // Refetch invoice every process.env.PROCESSING_INVOICE_REFRESH_TIMER
-      // if status === PROCESSING
-      this.interval = setInterval(() => {
-        if (this.reFetch) {
-          this.fetchInvoice()
-        } else {
-          clearInterval(this.interval)
-        }
-      }, process.env.PROCESSING_INVOICE_REFRESH_TIMER || 15000)
-    },
-    async fetchInvoice () {
-      await invoiceAPI.invoice({
-        data: { id: this.$route.params.id },
-        success: response => {
-          if (response.data.result) {
-            this.error = false
-            this.invoice = response.data.result
-
-            // Non-standard invoices (MANUAL/CREDIT) don't have orders
-            // associated with them. We can only fetch orders for STANDARD invoices
-            if (this.isStandardInvoice) {
-              this.fetchOrder()
-            } else {
-              this.loading = false
-            }
-
-            // Fetch extra info: total due amount and list of transactions
-            // We don't need to fetch these when status checking
-            if (this.fetchExtras) {
-              this.fetchDue()
-              this.fetchTransactions()
-            }
-
-            // Stop invoice re-fetch timer: we only need it
-            // while invoices are being processed
-            if (this.invoice.status !== 'PROCESSING') {
-              this.reFetch = false
-            }
-          }
-        },
-        fail: (e) => {
-          console.log(e)
-          this.error = true
-          this.reFetch = false
-        }
-      })
-    },
-    async fetchOrder () {
-      await orderAPI.order({
-        data: { id: this.invoice.order_id },
-        success: async response => {
-          if (response.data.result) {
-            this.valid = true
-            this.loading = false
-            this.error = false
-            this.order = response.data.result
-
-            // Test if this order is fixable (only certain status need the verify + fix combo)
-            // for invalid resources
-            if (this.isFixable) {
-              await this.verify()
-            } else {
-              this.verified = true
-            }
-          }
-        },
-        fail: (e) => {
-          console.log(e)
-          this.error = true
-        }
-      })
-    },
-    async fetchDue () {
-      await invoiceAPI.due({
-        data: {
-          id: this.$route.params.id
-        },
-        success: response => {
-          if (response.data.result) {
-            this.error = false
-            this.due = response.data.result
-          }
-        },
-        fail: e => {
-          console.log(e)
-          this.error = true
-        }
-      })
-    },
-    async fetchTransactions () {
-      await invoiceAPI.transactions({
-        data: {
-          id: this.$route.params.id
-        },
-        success: response => {
-          if (response.data.result) {
-            this.error = false
-            this.transactions = response.data.result
-
-            // "Close" extras fetching now that we have them
-            this.fetchExtras = false
-          }
-        },
-        fail: e => {
-          console.log(e)
-          this.error = true
-        }
-      })
-    },
-    async verify () {
-      await orderAPI.verify({
-        data: { id: this.invoice.order_id },
-        success: response => {
-          this.verified = true
-          this.verificationErrors = []
-        },
-        fail: error => {
-          this.verified = true
-
-          if (typeof error.errors === 'object') {
-            for (let key in error.errors) {
-              let e = error.errors[key]
-              this.verificationErrors.push(e)
-              this.lineItems[this.lineItems.findIndex(i => i.id === e.id)].error = e.reason
-            }
-          } else {
-            this.$toasted.error(this.errorAPI(error, 'orders'))
-          }
-        }
-      })
-    }
+    })
   }
 }
 </script>
@@ -647,6 +506,11 @@ export default {
   .invoice {
     padding: 0;
     border: none;
+
+    .details .info-table tr.invert {
+      color: $color-primary;
+      background: none;
+    }
   }
   .message-paid, .line-error-msg {
     display: none !important;
@@ -666,6 +530,15 @@ export default {
       background: none;
       padding-bottom: 14px;
     }
+  }
+  .badge, [class^="badge-"] {
+    margin: 0;
+    padding: 0;
+    color: $color-primary;
+    font-size: 100%;
+    font-weight: $font-regular;
+    text-transform: capitalize;
+    background: none;
   }
 }
 </style>

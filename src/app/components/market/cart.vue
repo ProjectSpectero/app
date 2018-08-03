@@ -148,7 +148,7 @@ export default {
         },
         success: response => {
           this.clearCart()
-          this.$router.push({ name: 'invoice', params: { id: response.data.result.last_invoice_id } })
+          this.$router.push({ name: 'checkout', params: { id: response.data.result.last_invoice_id } })
           this.$toasted.success(this.$i18n.t('market.ORDER_PROCESSED', { invoice: response.data.result.last_invoice_id }))
         },
         fail: error => this.$toasted.error(this.errorAPI(error, 'market'))

@@ -43,6 +43,7 @@
   border-radius: 50px;
   color: #626C84;
   text-decoration: none;
+  text-align: center;
   border: 1px solid transparent;
   transition: all 0.1s ease-out;
   cursor: pointer;
@@ -73,6 +74,10 @@
   }
 
   // Button sizes
+  &.button-lg {
+    padding: 12px 24px;
+    font-size: 16px;
+  }
   &.button-md {
     padding: 13px 20px;
   }

@@ -169,6 +169,7 @@ export default {
           this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
         } else {
           this.loading = true
+          this.formError = null
 
           // Format customer data for Stripe's format
           const stripeCustomer = {
@@ -242,8 +243,5 @@ export default {
 .order-secure {
   margin-top: $pad;
   opacity: 0.5;
-}
-.billing-fields {
-  align-items: center;
 }
 </style>

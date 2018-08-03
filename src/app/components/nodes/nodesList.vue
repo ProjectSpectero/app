@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="tableData && !dataLoading"
+    v-if="tableData"
     class="section padded">
     <header v-if="!hideHeader && selectedGroupInformation">
       <h2 class="mb-0">{{ selectedGroupInformation.friendly_name }}</h2>
@@ -90,7 +90,7 @@
       class="alert-msg-centered">
       <div class="icon-slash big-icon"/>
       <h1>{{ $i18n.t('nodes.NO_NODES_TITLE') }}</h1>
-      <p>{{ $i18n.t('nodes.NO_NODES_TEXT') }}</p>
+      <p>{{ $i18n.t( (groups.length > 0) ? 'nodes.NO_NODES_TEXT' : 'nodes.NO_NODES_TEXT_ACCOUNT') }}</p>
       <button
         class="button-success"
         @click.prevent="showAddNodeModal()">
@@ -121,11 +121,6 @@ export default {
       required: false,
       default: null
     },
-    dataLoading: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
     pagination: {
       type: Object,
       required: false,
@@ -144,6 +139,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    groups: {
+      type: Array,
+      required: false,
+      default: () => []
     }
   },
   data () {

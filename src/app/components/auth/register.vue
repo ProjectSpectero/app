@@ -64,6 +64,14 @@
         </span>
       </div>
 
+      <div class="captcha mt-3 mb-3">
+        <vue-recaptcha
+          ref="recaptcha"
+          :sitekey="recaptchaSitekey"
+          @verify="captchaVerify"
+          @expired="captchaExpiry"/>
+      </div>
+
       <button
         :class="{ 'button-loading': formLoading }"
         :disabled="formLoading"
@@ -81,8 +89,12 @@
 
 <script>
 import auth from '@/app/api/auth'
+import VueRecaptcha from 'vue-recaptcha'
 
 export default {
+  components: {
+    VueRecaptcha
+  },
   metaInfo: {
     title: 'Register'
   },
@@ -92,7 +104,14 @@ export default {
       password: null,
       confirmation: null,
       formError: null,
-      formLoading: false
+      formLoading: false,
+      captchaKey: null,
+      captchaExpired: false
+    }
+  },
+  computed: {
+    recaptchaSitekey () {
+      return process.env.GOOGLE_RECAPTCHA_KEY
     }
   },
   methods: {
@@ -101,22 +120,30 @@ export default {
         if (!result) {
           this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
         } else {
-          // Disable form while HTTP request being made
-          this.formLoading = true
-          this.formError = null
+          // Check for captcha
+          if (this.captchaExpired || !this.captchaKey) {
+            this.formError = this.$i18n.t('errors.CAPTCHA_VALIDATION_FAILED')
+          } else {
+            // Disable form while HTTP request being made
+            this.formLoading = true
+            this.formError = null
 
-          auth.register({
-            data: {
-              email: this.email,
-              password: this.password
-            },
-            registerSuccess: response => {
-              this.dealWithSuccess()
-            },
-            registerFailed: error => {
-              this.dealWithError(error)
-            }
-          })
+            auth.register({
+              data: {
+                email: this.email,
+                password: this.password
+              },
+              headers: {
+                'X-CAPTCHA-RESPONSE': this.captchaKey
+              },
+              registerSuccess: response => {
+                this.dealWithSuccess()
+              },
+              registerFailed: error => {
+                this.dealWithError(error)
+              }
+            })
+          }
         }
       })
     },
@@ -126,6 +153,10 @@ export default {
     },
     dealWithError (err) {
       this.formLoading = false
+
+      // Reset captcha
+      this.$refs.recaptcha.reset()
+      this.captchaKey = null
 
       // Get first error key to display main error msg
       for (var errorKey in err.errors) {
@@ -151,6 +182,14 @@ export default {
           }
         }
       }
+    },
+    captchaVerify: function (response) {
+      this.captchaKey = response
+      this.captchaExpired = false
+    },
+    captchaExpiry: function () {
+      this.captchaKey = null
+      this.captchaExpired = true
     }
   }
 }

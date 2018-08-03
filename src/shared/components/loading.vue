@@ -3,21 +3,29 @@
     <div class="loader">
       <div class="spinning-loader"><div/><div/><div/></div>
     </div>
+
+    <div class="text mt-4">{{ text }}</div>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    text: {
+      type: String,
+      required: false,
+      default: 'Loading, please wait ...'
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .loader {
   display: inline-block;
-  padding: 30px;
-  color: $color-primary;
-  background: rgba(255,255,255,0.9);
-  border-radius: 8px;
-  border: 1px solid $color-border;
+}
 
-  h1 {
-    margin-bottom: 0;
-    font-weight: $font-semi;
-  }
+.text {
+  font-size: 1.05rem;
 }
 </style>

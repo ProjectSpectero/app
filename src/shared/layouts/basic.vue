@@ -1,13 +1,5 @@
 <template>
   <div class="basic">
-    <router-view/>
+    <router-view :key="$route.fullPath" />
   </div>
 </template>
-
-<script>
-
-</script>
-
-<style lang="scss" scoped>
-
-</style>

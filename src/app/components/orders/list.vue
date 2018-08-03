@@ -24,7 +24,7 @@
               <template v-if="row.status !== 'CANCELLED'">
                 <router-link
                   v-if="row.status !== 'CANCELLED' && row.last_invoice && row.last_invoice.status === 'UNPAID'"
-                  :to="{ name: 'invoice', params: { id: row.last_invoice.id } }"
+                  :to="{ name: 'checkout', params: { id: row.last_invoice.id } }"
                   class="button-success">
                   {{ $i18n.t('misc.PAY_NOW') }}
                 </router-link>
