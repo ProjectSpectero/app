@@ -269,11 +269,30 @@ module.exports = {
       RESOURCE_NOT_FOUND: 'Resource no longer available.',
       RESOURCE_SOLD_OUT: 'Resource sold out.'
     },
-    PAID: 'Invoice Paid',
-    THANKS: 'Thank you for your payment, your invoice has been paid in full.',
+    STATUS: {
+      PAID: {
+        TITLE: 'Invoice Paid',
+        TEXT: 'Thank you for your payment, your invoice has been paid in full.'
+      },
+      PARTIALLY_PAID: {
+        TITLE: 'Invoice Partially Paid',
+        TEXT: 'You have partially paid this invoice. Please pay the remaining balance in full.'
+      },
+      CANCELLED: {
+        TITLE: 'Invoice Cancelled',
+        TEXT: 'This invoice has been cancelled.'
+      },
+      REFUNDED: {
+        TITLE: 'Invoice Refunded',
+        TEXT: 'This invoice has been fully refunded.'
+      },
+      PARTIALLY_REFUNDED: {
+        TITLE: 'Invoice Partially Refunded',
+        TEXT: 'This invoice has been partially refunded.'
+      }
+    },
     BILL_TO: 'Bill to',
     NUMBER: 'Invoice Number',
-    STATUS: 'Status',
     TYPE: 'Type',
     DATE: 'Invoice Date',
     PAYMENT_DUE: 'Payment Due',
@@ -289,7 +308,7 @@ module.exports = {
     COMPLETE_PAYMENT: 'Complete Payment',
     UNPAYABLE: 'Order Processing',
     UNPAYABLE_TEXT: 'This order is currently processing. You will be able to make a payment once the order has been fully processed by our verification team.',
-    CANCEL_CREDIT_INVOICE: 'Please contact our support team if you\'d like to have this invoice cancelled.'
+    CANCEL_CREDIT_INVOICE: 'Please contact our support team if you\'d like to have this add credit invoice cancelled.'
   },
 
   orders: {
