@@ -196,7 +196,7 @@ module.exports = {
     ADD_CREDIT_PLACEHOLDER: 'Enter amount of credit you wish to purchase',
     NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.',
     NO_ACCOUNT_CREDIT: 'You don\'t have any credit in your account.',
-    COUNT_ACCOUNT_CREDIT: 'You currently have <strong><span>$</span>{credit} USD</strong> of credit in your account.',
+    COUNT_ACCOUNT_CREDIT: 'You currently have <strong>{credit}</strong> of credit in your account.',
     ACCOUNT_CREDIT: '(You have {credit} credits in your account)',
     ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!',
     INVALID_STRIPE_TOKEN: 'We were unable to process your credit card at this time. Please contact our support team if this persists.',
