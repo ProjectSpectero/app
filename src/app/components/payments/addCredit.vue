@@ -10,7 +10,7 @@
           <div
             class="message"
             v-html="$i18n.t('payments.ADD_CREDIT_MAX_WARNING', { remaining: remaining, max: max, currency: currency })"/>
-          
+
           <div
             v-if="formError"
             class="message message-error">{{ formError }}</div>
@@ -76,7 +76,7 @@ export default {
       amount: 10,
       max: 0,
       remaining: 0,
-      currency: 'USD',
+      currency: 'USD'
     }
   },
   computed: {

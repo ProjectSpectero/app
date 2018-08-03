@@ -288,7 +288,8 @@ module.exports = {
     BILLING_ADDRESS_CONTINUE_PAYMENT: 'Please update your billing address to continue with checkout. You will be returned to checkout once you\'ve finished updating your address.',
     COMPLETE_PAYMENT: 'Complete Payment',
     UNPAYABLE: 'Order Processing',
-    UNPAYABLE_TEXT: 'This order is currently processing. You will be able to make a payment once the order has been fully processed by our verification team.'
+    UNPAYABLE_TEXT: 'This order is currently processing. You will be able to make a payment once the order has been fully processed by our verification team.',
+    CANCEL_CREDIT_INVOICE: 'Please contact our support team if you\'d like to have this invoice cancelled.'
   },
 
   orders: {

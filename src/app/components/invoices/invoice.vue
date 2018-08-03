@@ -49,6 +49,11 @@
                 :invoice="invoice"
                 :order="order"/>
 
+              <div
+                v-if="isCreditInvoice"
+                class="message-credit-cancel message"
+                v-html="$i18n.t('invoices.CANCEL_CREDIT_INVOICE')"/>
+
               <div class="invoice">
                 <div
                   v-if="invoice.status === 'PAID'"
@@ -512,7 +517,7 @@ export default {
       background: none;
     }
   }
-  .message-paid, .line-error-msg {
+  .message-paid, .line-error-msg, .message-credit-cancel {
     display: none !important;
   }
   .divider {
