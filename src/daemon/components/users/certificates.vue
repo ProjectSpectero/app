@@ -1,56 +1,64 @@
 <template>
   <div>
-    <h2>Certificates</h2>
-
+    <top :title="$i18n.t('daemon.CERTIFICATES')">
+      <router-link
+        :to="{ name: 'daemon-users' }"
+        class="button">
+        {{ $i18n.t('misc.BACK') }}
+      </router-link>
+    </top>
     <div
       v-if="user"
       class="container">
+      <div class="col-12">
+        <div class="section padded">
+          <div
+            v-if="user.authKey"
+            class="item">
+            <div class="label"><label for="authKey">Username</label></div>
 
-      <div
-        v-if="user.authKey"
-        class="item">
-        <div class="label"><label for="authKey">Username</label></div>
+            <textarea
+              id="authKey"
+              v-model="user.authKey"
+              class="input font-mono"
+              readonly/>
 
-        <textarea
-          id="authKey"
-          v-model="user.authKey"
-          class="input font-mono"
-          readonly/>
+            <copy-to-clipboard
+              :field="user.authKey"
+              button-class="button-sm"/>
+          </div>
+          <div
+            v-if="user.cert"
+            class="item">
+            <div class="label"><label for="certificate">Certificate</label></div>
 
-        <copy-to-clipboard
-          :field="user.authKey"
-          button-class="button-sm"/>
-      </div>
-      <div
-        v-if="user.cert"
-        class="item">
-        <div class="label"><label for="certificate">Certificate</label></div>
+            <textarea
+              id="certificate"
+              v-model="user.cert"
+              class="input font-mono"
+              readonly/>
 
-        <textarea
-          id="certificate"
-          v-model="user.cert"
-          class="input font-mono"
-          readonly/>
+            <download
+              :content="user.cert"
+              :file="'spectero-user-certificate.pfx'"
+              button-class="button-sm"/>
+          </div>
+          <div
+            v-if="user.certKey"
+            class="item">
+            <div class="label"><label for="key">Certificate Key</label></div>
 
-        <download
-          :content="user.cert"
-          :file="'spectero-user-certificate.pfx'"
-          button-class="button-sm"/>
-      </div>
-      <div
-        v-if="user.certKey"
-        class="item">
-        <div class="label"><label for="key">Certificate Key</label></div>
+            <textarea
+              id="key"
+              v-model="user.certKey"
+              class="input font-mono"
+              readonly/>
 
-        <textarea
-          id="key"
-          v-model="user.certKey"
-          class="input font-mono"
-          readonly/>
-
-        <copy-to-clipboard
-          :field="user.certKey"
-          button-class="button-sm"/>
+            <copy-to-clipboard
+              :field="user.certKey"
+              button-class="button-sm"/>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -59,20 +67,41 @@
 <script>
 import copyToClipboard from '@/shared/components/copyToClipboard'
 import download from '@/shared/components/download'
-import { mapGetters } from 'vuex'
+import userAPI from '@/daemon/api/user'
+import top from '@/shared/components/top'
 
 export default {
   components: {
     copyToClipboard,
-    download
+    download,
+    top
   },
   metaInfo: {
     title: 'Certificates'
   },
-  computed: {
-    ...mapGetters({
-      user: 'daemonAuth/user'
-    })
+  data () {
+    return {
+      user: null
+    }
+  },
+  async created () {
+    await this.fetchUser()
+  },
+  methods: {
+    async fetchUser () {
+      await userAPI.get({
+        data: {
+          id: this.$route.params.id
+        },
+        success: response => {
+          this.user = response.data.result
+        },
+        fail: e => {
+          console.error(e)
+          this.$router.push({ name: 'daemon' })
+        }
+      })
+    }
   }
 }
 </script>

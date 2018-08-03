@@ -5,6 +5,8 @@
     <div class="container">
       <div class="col-12">
         <div class="section padded">
+          <h2>{{ $i18n.t('misc.USERS') }}</h2>
+
           <template v-if="tableData">
             <div class="container">
               <div class="col-12 datatable">
@@ -61,7 +63,6 @@
 
 <script>
 import userAPI from '@/daemon/api/user'
-import top from '@/shared/components/top'
 import daemonMenu from '@/daemon/components/common/menu'
 import paginator from '@/shared/components/paginator'
 import tableHeader from '@/shared/components/table/thead'
@@ -96,10 +97,13 @@ export default {
   },
   methods: {
     async edit (id) {
+      this.$router.push({ name: 'daemon-user-certificates', params: { id: id } })
     },
     async remove (id) {
+      this.$router.push({ name: 'daemon-user-certificates', params: { id: id } })
     },
     async certificates (id) {
+      this.$router.push({ name: 'daemon-user-certificates', params: { id: id } })
     },
     async changedPage (page) {
       this.$router.push({ name: 'daemon', params: { nodeId: this.$route.params.nodeId, tabAction: 'users' } })
