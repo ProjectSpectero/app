@@ -35,6 +35,7 @@
             <div class="section padded">
               <services v-if="activeTab === 'services'"/>
               <resources v-else-if="activeTab === 'resources'"/>
+              <users v-else-if="activeTab === 'users'"/>
               <not-found v-else/>
             </div>
           </div>
@@ -54,6 +55,7 @@ import { mapGetters } from 'vuex'
 import specs from '@/daemon/components/common/specs'
 import services from '@/daemon/components/services/services'
 import resources from '@/daemon/components/users/resources'
+import users from '@/daemon/components/users/list'
 import tabs from './tabs'
 import top from '@/shared/components/top'
 import loading from '@/shared/components/loading'
@@ -69,6 +71,7 @@ export default {
     tabs,
     services,
     resources,
+    users,
     loading
   },
   data () {
@@ -76,6 +79,7 @@ export default {
       activeTab: '',
       tabs: [
         { id: 'services', path: 'services', 'label': this.$i18n.t('daemon.SERVICES') },
+        { id: 'users', path: 'users', 'label': this.$i18n.t('daemon.USERS') },
         { id: 'resources', path: 'resources', 'label': this.$i18n.t('daemon.RESOURCES') }
       ]
     }

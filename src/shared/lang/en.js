@@ -442,6 +442,7 @@ module.exports = {
     MANAGE_DAEMON: 'Manage Daemon',
     INVALID_NETWORK: 'Please add a valid network address.',
     RESOURCES: 'My resources',
+    USERS: 'Users',
     BACK_TO_NODES: 'Back To Nodes',
     MANAGING_AS: 'Managing daemon {id} as',
     SERVICES: 'Services',
