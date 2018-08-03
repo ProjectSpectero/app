@@ -55,9 +55,8 @@
 
                 <span
                   v-show="errors.has('email')"
-                  class="input-error-message">
-                  {{ errors.first('email') }}
-                </span>
+                  class="input-error-message"
+                  v-html="errors.first('email')"/>
               </div>
               <div class="form-input">
                 <float-label>
@@ -76,9 +75,8 @@
 
                 <span
                   v-show="errors.has('emailConfirm')"
-                  class="input-error-message">
-                  {{ errors.first('emailConfirm') }}
-                </span>
+                  class="input-error-message"
+                  v-html="errors.first('emailConfirm')"/>
               </div>
             </div>
           </div>
@@ -138,9 +136,8 @@
 
                 <span
                   v-show="errors.has('password')"
-                  class="input-error-message">
-                  {{ errors.first('password') }}
-                </span>
+                  class="input-error-message"
+                  v-html="errors.first('password')"/>
               </div>
 
               <div class="form-input">
@@ -160,9 +157,8 @@
 
                 <span
                   v-show="errors.has('passwordConfirm')"
-                  class="input-error-message">
-                  {{ errors.first('passwordConfirm') }}
-                </span>
+                  class="input-error-message"
+                  v-html="errors.first('passwordConfirm')"/>
               </div>
             </div>
           </div>

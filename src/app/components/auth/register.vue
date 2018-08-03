@@ -21,9 +21,8 @@
 
         <span
           v-show="errors.has('email')"
-          class="input-error-message">
-          {{ errors.first('email') }}
-        </span>
+          class="input-error-message"
+          v-html="errors.first('email')"/>
       </div>
 
       <div class="form-input">
@@ -40,9 +39,8 @@
 
         <span
           v-show="errors.has('password')"
-          class="input-error-message">
-          {{ errors.first('password') }}
-        </span>
+          class="input-error-message"
+          v-html="errors.first('password')"/>
       </div>
 
       <div class="form-input">
@@ -59,9 +57,8 @@
 
         <span
           v-show="errors.has('confirmation')"
-          class="input-error-message">
-          {{ errors.first('confirmation') }}
-        </span>
+          class="input-error-message"
+          v-html="errors.first('confirmation')"/>
       </div>
 
       <div class="captcha mt-3 mb-3">

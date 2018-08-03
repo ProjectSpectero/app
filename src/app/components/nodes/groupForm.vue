@@ -26,9 +26,8 @@
 
             <span
               v-show="errors.has('friendly_name')"
-              class="input-error-message">
-              {{ errors.first('friendly_name') }}
-            </span>
+              class="input-error-message"
+              v-html="errors.first('friendly_name')"/>
           </div>
           <div
             v-if="form.market_model !== 'UNLISTED'"
@@ -56,9 +55,8 @@
 
             <span
               v-show="errors.has('price')"
-              class="input-error-message">
-              {{ errors.first('price') }}
-            </span>
+              class="input-error-message"
+              v-html="errors.first('price')"/>
           </div>
 
           <div class="form-input">

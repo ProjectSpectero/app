@@ -62,9 +62,8 @@
                 data-vv-as="maximum clients">
               <div
                 v-show="errors.has('maxClients')"
-                class="input-error-msg">
-                {{ errors.first('maxClients') }}
-              </div>
+                class="input-error-msg"
+                v-html="errors.first('maxClients')"/>
             </div>
           </div>
 

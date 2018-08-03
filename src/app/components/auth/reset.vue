@@ -26,9 +26,8 @@
 
           <span
             v-show="errors.has('email')"
-            class="input-error-message">
-            {{ errors.first('email') }}
-          </span>
+            class="input-error-message"
+            v-html="errors.first('email')"/>
         </div>
 
         <button

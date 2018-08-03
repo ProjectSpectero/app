@@ -17,9 +17,8 @@
           @keyup.enter="add">
         <div
           v-show="errors.has('ip')"
-          class="input-error-msg">
-          {{ errors.first('ip') }}
-        </div>
+          class="input-error-msg"
+          v-html="errors.first('ip')"/>
       </div>
 
       <div class="input-float">
@@ -36,9 +35,8 @@
           @keyup.enter="add">
         <div
           v-show="errors.has('port')"
-          class="input-error-msg">
-          {{ errors.first('port') }}
-        </div>
+          class="input-error-msg"
+          v-html="errors.first('port')"/>
       </div>
 
       <button
