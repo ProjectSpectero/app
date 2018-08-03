@@ -4,7 +4,7 @@
     <form>
       <template v-if="tokenIssued">
         <div class="message message-success">
-          {{ $i18n.t('users.RESET_TOKEN_ISSUED', { email: email }) }}
+          {{ $i18n.t('reset.TOKEN_ISSUED', { email: email }) }}
         </div>
       </template>
       <template v-else>
@@ -54,7 +54,7 @@ import authAPI from '@/app/api/auth'
 
 export default {
   metaInfo: {
-    title: 'Reset password'
+    title: 'Reset Password'
   },
   data () {
     return {
@@ -88,7 +88,7 @@ export default {
         fail: error => {
           console.log(error)
           this.formLoading = false
-          this.$toasted.error('users.RESET_TOKEN_ERROR')
+          this.$toasted.error('reset.TOKEN_ERROR')
         }
       })
     },

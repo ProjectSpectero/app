@@ -539,12 +539,8 @@ module.exports = {
   users: {
     IMPERSONATING: 'You are currently impersonating {name}.',
     FORGOT_PASSWORD: 'Forgot your password?',
-    RESET_TOKEN_ISSUED: 'We have sent an email with a validation link to {email}. Please check your inbox!',
-    RESET_TOKEN_ERROR: 'An error has ocurred while trying to issue a token for reset. Please try again!',
-    NEW_PASSWORD_ISSUED: 'Your password is now <strong>{password}</strong>. Please store it in a safe place and never tell it to anyone!',
-    NEW_PASSWORD_FAILED: 'An error has ocurred while trying to generate a new password for your account. Please try again later!',
-    BACK_TO_LOGIN: 'Back to login',
-    RESET_PASSWORD_BUTTON: 'Reset your password',
+    BACK_TO_LOGIN: 'Back to Login',
+    RESET_PASSWORD_BUTTON: 'Reset Password',
     PLACEHOLDER_EMAIL: 'Email address',
     PLACEHOLDER_PASSWORD: 'Password',
     PLEASE_LOGIN: 'Please log in to continue.',
@@ -557,6 +553,15 @@ module.exports = {
     USER_UPDATE_ERROR: 'Something went wrong. Please try again!',
     USER_DELETE_SUCCESS: 'User deleted!',
     USER_DELETE_ERROR: 'There was a problem while deleting this user. Please try again later.'
+  },
+
+  reset: {
+    TOKEN_ISSUED: 'Please check your email to finish your password reset.',
+    TOKEN_ERROR: 'An error has ocurred while trying to issue a token for reset. Please try again!',
+    SUCCESSFUL: 'Your password has been reset. Please review your new password below.',
+    PASSWORD_FAILED: 'An error has ocurred while trying to generate a new password for your account. Please try again later or contact our support team if this persists.',
+    YOUR_NEW_PASSWORD: 'Your New Account Password',
+    PASSWORD_WARNING: 'Store your password in a safe place and do not share it with anyone.'
   },
 
   settings: {
