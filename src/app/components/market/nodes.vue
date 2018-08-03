@@ -14,8 +14,8 @@
       slot-scope="props">
       <span
         v-for="service in props.row.services"
-        :key="service.id"
-        class="badge">{{ service.type }}</span>
+        :key="service"
+        class="badge">{{ service }}</span>
     </template>
 
     <template
