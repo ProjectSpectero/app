@@ -66,6 +66,7 @@
 
       <div class="captcha mt-3 mb-3">
         <vue-recaptcha
+          ref="recaptcha"
           :sitekey="recaptchaSitekey"
           @verify="captchaVerify"
           @expired="captchaExpiry"/>
@@ -152,6 +153,9 @@ export default {
     },
     dealWithError (err) {
       this.formLoading = false
+
+      // Reset captcha
+      this.$refs.recaptcha.reset()
 
       // Get first error key to display main error msg
       for (var errorKey in err.errors) {
