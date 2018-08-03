@@ -94,7 +94,7 @@
                       {{ errors.first('email') }}
                     </span>
                   </div>
-                  <div class="captcha">
+                  <div class="captcha mt-3">
                     <vue-recaptcha
                       :sitekey="recaptchaSitekey"
                       @verify="captchaVerify"
@@ -432,8 +432,5 @@ export default {
     font-size: 56px;
     color: $color-success;
   }
-}
-.captcha {
-  margin-top: $pad;
 }
 </style>
