@@ -107,7 +107,8 @@ module.exports = {
     RESET_PASSWORD: 'Reset Password',
     SERVICES: 'Services',
     SAVE_GROUP: 'Save Group',
-    UNKNOWN_ERROR: 'An unknown error occurred. Please try again later or contact our support team if this issue persists.'
+    UNKNOWN_ERROR: 'An unknown error occurred. Please try again later or contact our support team if this issue persists.',
+    RETURN_TO_SETTINGS: 'Return To Settings'
   },
 
   errors: {
@@ -201,6 +202,7 @@ module.exports = {
     ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!',
     INVALID_STRIPE_TOKEN: 'We were unable to process your credit card at this time. Please contact our support team if this persists.',
     PAYMENT_FAILED: 'Payment failed. Please try again and contact our support team if the error persists.',
+    CREDIT_LIMIT_EXCEEDED: 'We\'re unable to process your request to add more credit as you\'ve exceeded your limit. Please contact our support team to raise your credit limits.',
     PROMO: {
       APPLY_MSG: 'Have a promo code? Apply it to your account here.',
       ENTER_PROMO_CODE_HERE: 'Enter promo code here',
