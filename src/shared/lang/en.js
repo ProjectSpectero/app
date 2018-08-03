@@ -8,7 +8,7 @@ module.exports = {
     ADMIN: 'Admin',
     HOME: 'Home',
     DASHBOARD: 'Dashboard',
-    MARKET: 'Market',
+    MARKET: 'Marketplace',
     ORDERS: 'Orders',
     ENTERPRISE_ORDERS: 'Enterprise Orders',
     INVOICES: 'Invoices',
@@ -107,7 +107,8 @@ module.exports = {
     RESET_PASSWORD: 'Reset Password',
     SERVICES: 'Services',
     SAVE_GROUP: 'Save Group',
-    UNKNOWN_ERROR: 'An unknown error occurred. Please try again later or contact our support team if this issue persists.'
+    UNKNOWN_ERROR: 'An unknown error occurred. Please try again later or contact our support team if this issue persists.',
+    RETURN_TO_SETTINGS: 'Return To Settings'
   },
 
   errors: {
@@ -120,6 +121,7 @@ module.exports = {
     ERROR_400_ITEM_TEXT: 'We were unable to retrieve the list of {item} you requested.',
     REQUESTED_PAGE_DOES_NOT_EXIST: 'Invalid page!',
     VALIDATION_FAILED: 'Please correct any errors and try again.',
+    CAPTCHA_VALIDATION_FAILED: 'Please complete the captcha and try again.',
     OBJECT_PERSIST_FAILED: 'Something went wrong, please try again later.',
     RESOURCE_CREATION_FAILED: 'Unable to create resource, please try again later.',
     RESOURCE_NOT_FOUND: 'We could not find that resource. Please try again and contact our support team if the error persists.',
@@ -157,7 +159,9 @@ module.exports = {
     ENDPOINT_NOT_FOUND: 'Endpoint not found or unreachable',
     RELEASES_FETCH_FAILED: 'Unable to load release data, please try again later.',
     MATRICES_FETCH_FAILED: 'Unable to load compatibility matrices data, please try again later.',
-    ECONNABORTED: 'We\'re having trouble connecting to the authentication server. Please try again later.'
+    ECONNABORTED: 'We\'re having trouble connecting to the authentication server. Please try again later.',
+    CAPTCHA_MISSING: 'Please complete the captcha and try again.',
+    CAPTCHA_INVALID: 'Captcha validation failed, please try again.'
   },
 
   payments: {
@@ -193,11 +197,12 @@ module.exports = {
     ADD_CREDIT_PLACEHOLDER: 'Enter amount of credit you wish to purchase',
     NO_CREDIT_CARD: 'You don\'t have any credit or debit cards saved. You\'ll have the option to save one upon checkout.',
     NO_ACCOUNT_CREDIT: 'You don\'t have any credit in your account.',
-    COUNT_ACCOUNT_CREDIT: 'You currently have <strong><span>$</span>{credit} USD</strong> of credit in your account.',
+    COUNT_ACCOUNT_CREDIT: 'You currently have <strong>{credit}</strong> of credit in your account.',
     ACCOUNT_CREDIT: '(You have {credit} credits in your account)',
     ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!',
     INVALID_STRIPE_TOKEN: 'We were unable to process your credit card at this time. Please contact our support team if this persists.',
     PAYMENT_FAILED: 'Payment failed. Please try again and contact our support team if the error persists.',
+    CREDIT_LIMIT_EXCEEDED: 'We\'re unable to process your request to add more credit as you\'ve exceeded your limit. Please contact our support team to raise your credit limits.',
     PROMO: {
       APPLY_MSG: 'Have a promo code? Apply it to your account here.',
       ENTER_PROMO_CODE_HERE: 'Enter promo code here',
@@ -455,7 +460,7 @@ module.exports = {
   },
 
   market: {
-    BACK: 'Back to market',
+    BACK: 'Back to Marketplace',
     MODEL_NODE: {
       UNLISTED: 'Unlisted',
       MANAGED: 'Managed',
