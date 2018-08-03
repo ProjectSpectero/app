@@ -90,9 +90,8 @@
 
                     <span
                       v-show="errors.has('email')"
-                      class="input-error-message">
-                      {{ errors.first('email') }}
-                    </span>
+                      class="input-error-message"
+                      v-html="errors.first('email')"/>
                   </div>
                   <div class="captcha mt-3">
                     <vue-recaptcha

@@ -139,7 +139,7 @@ module.exports = {
     MISSING_BODY: 'Some required fields are missing or empty.',
     USER_NOT_FOUND: 'Invalid email or password.',
     INSUFFICIENT_PAYMENT_DETAILS: 'Please complete your billing information before paying!',
-    EMAIL_FIELD_UNIQUE: 'This email is already taken.',
+    EMAIL_FIELD_UNIQUE: 'This email is already taken. <a href="https://app.spectero.com/login">Did you mean to login</a>?',
     GATEWAY_DISABLED_FOR_PURPOSE: 'This payment gateway has been disabled. Please contact us if you are unable to pay using a different gateway.',
     EMAIL_VERIFICATION_NEEDED: 'Your acount is pending verification. Please check your email!',
     USER_OBJECT_NOT_FOUND: 'Unable to submit the form without a proper user',
