@@ -156,6 +156,7 @@ export default {
 
       // Reset captcha
       this.$refs.recaptcha.reset()
+      this.captchaKey = null
 
       // Get first error key to display main error msg
       for (var errorKey in err.errors) {
