@@ -14,8 +14,7 @@ export default {
       getTransactions: false,
       transactions: null,
       showCheckout: false,
-      loading: true,
-      easyCheckout: false
+      loading: true
     }
   },
   created () {
@@ -115,34 +114,6 @@ export default {
         }
       })
     },
-    async checkEasyCheckout () {
-      // This bit of code checks if the first item in the order is associated to a plan
-      // (ie: Pro) - this is to be revamped in the future with a proper response from the
-      // GET order endpoint.
-      await marketAPI.fetch({
-        data: {
-          id: this.order.line_items[0].resource,
-          type: this.order.line_items[0].type === 'NODE_GROUP' ? 'group' : 'node'
-        },
-        success: async response => {
-          if (response.data.result) {
-            // this.loading = false
-            this.error = false
-
-            let result = response.data.result
-
-            if (result.plan === 'pro') {
-              this.easyCheckout = true
-            }
-          }
-        },
-        fail: (e) => {
-          this.error = true
-          this.loading = false
-          console.error('Error while fetching order', e)
-        }
-      })
-    },
     async fetchDue () {
       await invoiceAPI.due({
         data: {
@@ -192,7 +163,6 @@ export default {
             // Otherwise we skip fetching the order if order.type !== STANDARD
             if (this.invoice.type === 'STANDARD') {
               await this.fetchOrder()
-              await this.checkEasyCheckout()
 
               // Test if this order is fixable (only certain status need the verify + fix combo) for invalid resources
               if (this.isFixable) {
