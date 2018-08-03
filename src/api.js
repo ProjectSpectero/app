@@ -18,14 +18,22 @@ async function API (project, method, path, data, success, failed) {
 
   Vue.prototype.$Progress.start()
 
+  let headers = {
+    Authorization: project.cookie ? `Bearer ${project.cookie.accessToken}` : null
+  }
+
+  let dataHeaders = data.headers
+
+  if (data.headers) {
+    headers = {...headers, ...dataHeaders}
+  }
+
   try {
     const response = await axios({
       method: method,
       baseURL: baseURL,
       timeout: project.timeout,
-      headers: {
-        Authorization: project.cookie ? `Bearer ${project.cookie.accessToken}` : null
-      },
+      headers: headers,
       url: path,
       data: data.data
     })

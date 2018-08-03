@@ -159,7 +159,7 @@ module.exports = {
     RELEASES_FETCH_FAILED: 'Unable to load release data, please try again later.',
     MATRICES_FETCH_FAILED: 'Unable to load compatibility matrices data, please try again later.',
     ECONNABORTED: 'We\'re having trouble connecting to the authentication server. Please try again later.',
-    CAPTCHA_MISSING: 'Please complete the captcha and try again.'
+    CAPTCHA_MISSING: 'Captcha validation failed, please try again.'
   },
 
   payments: {

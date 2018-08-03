@@ -132,6 +132,9 @@ export default {
                 email: this.email,
                 password: this.password
               },
+              headers: {
+                'X-CAPTCHA-RESPONSE': this.captchaKey
+              },
               registerSuccess: response => {
                 this.dealWithSuccess()
               },

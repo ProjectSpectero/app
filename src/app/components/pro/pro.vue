@@ -280,6 +280,9 @@ export default {
               data: {
                 email: this.email
               },
+              headers: {
+                'X-CAPTCHA-RESPONSE': this.captchaKey
+              },
               registerSuccess: async response => {
                 await this.syncCurrentUser()
 
