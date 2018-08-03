@@ -1,59 +1,68 @@
 <template>
   <div>
-    <template v-if="tableData">
-      <div class="container">
-        <div class="col-12 datatable">
-          <table>
-            <table-header
-              :columns="columns"
-              :headings="headings"
-              :sortable="sortable"/>
-            <tbody>
-              <tr
-                v-for="row in tableData"
-                :key="row.id">
-                <td>{{ row.id }}</td>
-                <td>{{ row.fullName }}</td>
-                <td>{{ row.emailAddress }}</td>
-                <td>{{ parseRoles(row.roles) }}</td>
-                <td>{{ row.lastLoginDate | moment('MMM D, YYYY') }}</td>
-                <td class="table-actions">
-                  <template v-if="row.source === 'Local'">
-                    <button
-                      class="button"
-                      @click.stop="remove(row.id)">
-                      {{ $i18n.t('misc.REMOVE') }}
-                    </button>
+    <daemon-menu/>
 
-                    <button
-                      class="button"
-                      @click.stop="edit(row.id)">
-                      {{ $i18n.t('misc.EDIT') }}
-                    </button>
+    <div class="container">
+      <div class="col-12">
+        <div class="section padded">
+          <template v-if="tableData">
+            <div class="container">
+              <div class="col-12 datatable">
+                <table>
+                  <table-header
+                    :columns="columns"
+                    :headings="headings"
+                    :sortable="sortable"/>
+                  <tbody>
+                    <tr
+                      v-for="row in tableData"
+                      :key="row.id">
+                      <td>{{ row.id }}</td>
+                      <td>{{ row.fullName }}</td>
+                      <td>{{ row.emailAddress }}</td>
+                      <td>{{ parseRoles(row.roles) }}</td>
+                      <td>{{ row.lastLoginDate | moment('MMM D, YYYY') }}</td>
+                      <td class="table-actions">
+                        <template v-if="row.source === 'Local'">
+                          <button
+                            class="button"
+                            @click.stop="remove(row.id)">
+                            {{ $i18n.t('misc.REMOVE') }}
+                          </button>
 
-                    <button
-                      class="button"
-                      @click.stop="certificates(row.id)">
-                      {{ $i18n.t('daemon.CERTIFICATES') }}
-                    </button>
-                  </template>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                          <button
+                            class="button"
+                            @click.stop="edit(row.id)">
+                            {{ $i18n.t('misc.EDIT') }}
+                          </button>
+
+                          <button
+                            class="button"
+                            @click.stop="certificates(row.id)">
+                            {{ $i18n.t('daemon.CERTIFICATES') }}
+                          </button>
+                        </template>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <paginator
+              :pagination="pagination"
+              @changedPage="changedPage"/>
+          </template>
         </div>
       </div>
-
-      <paginator
-        :pagination="pagination"
-        @changedPage="changedPage"/>
-    </template>
+    </div>
   </div>
 </template>
 
 <script>
 import userAPI from '@/daemon/api/user'
 import top from '@/shared/components/top'
+import daemonMenu from '@/daemon/components/common/menu'
 import paginator from '@/shared/components/paginator'
 import tableHeader from '@/shared/components/table/thead'
 
@@ -61,6 +70,7 @@ export default {
   components: {
     top,
     paginator,
+    daemonMenu,
     tableHeader
   },
   data () {
@@ -92,7 +102,7 @@ export default {
     async certificates (id) {
     },
     async changedPage (page) {
-      this.$router.push({ name: 'manage', params: { nodeId: this.$route.params.nodeId, tabAction: 'users' } })
+      this.$router.push({ name: 'daemon', params: { nodeId: this.$route.params.nodeId, tabAction: 'users' } })
       await this.fetchUsers(page)
     },
     parseRoles (roles) {
@@ -110,7 +120,7 @@ export default {
         },
         fail: e => {
           console.error(e)
-          this.$router.push({ name: 'manage' })
+          this.$router.push({ name: 'daemon' })
         }
       })
     }

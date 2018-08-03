@@ -2,13 +2,15 @@
   <div class="spectero daemon">
     <sidebar/>
 
-    <div class="content">
+    <div
+      v-if="daemonInitialized"
+      class="content">
+      <modals-container/>
       <impersonation-bar/>
       <bar
         v-if="barComponent"
         :bar-component="barComponent"/>
 
-      <modals-container/>
       <router-view :key="$route.fullPath" />
     </div>
   </div>
@@ -18,6 +20,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import nodeAPI from '@/app/api/node'
 import bar from '@/daemon/components/common/bar'
+import loading from '@/shared/components/loading'
 import sidebar from '@/shared/components/sidebar'
 import impersonationBar from '@/shared/components/impersonating'
 
@@ -25,10 +28,12 @@ export default {
   components: {
     sidebar,
     bar,
+    loading,
     impersonationBar
   },
   computed: {
     ...mapGetters({
+      daemonInitialized: 'daemonAuth/initialized',
       barComponent: 'settings/bar'
     })
   },
@@ -36,7 +41,6 @@ export default {
     if (this.$route.params.nodeId) {
       try {
         await this.autologin(this.$route.params.nodeId)
-        console.log('autologin finished')
       } catch (e) {
         this.$toasted.error(this.$i18n.t(`daemon.${e.message}`))
         this.$router.push({ name: 'nodes' })
