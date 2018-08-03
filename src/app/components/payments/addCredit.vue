@@ -10,6 +10,10 @@
           <div
             class="message"
             v-html="$i18n.t('payments.ADD_CREDIT_MAX_WARNING', { remaining: remaining, max: max, currency: currency })"/>
+          
+          <div
+            v-if="formError"
+            class="message message-error">{{ formError }}</div>
 
           <div class="form-input">
             <div class="label">
@@ -28,6 +32,8 @@
               output-type="Number" />
           </div>
           <button
+            :class="{ 'button-loading': formLoading }"
+            :disabled="formLoading"
             class="button-md button-success button-full"
             @click="add(amount)">
             {{ $i18n.t('misc.PURCHASE') }}
@@ -65,10 +71,12 @@ export default {
   data () {
     return {
       loading: true,
+      formLoading: false,
+      formError: null,
       amount: 10,
       max: 0,
       remaining: 0,
-      currency: 'USD'
+      currency: 'USD',
     }
   },
   computed: {
@@ -92,17 +100,18 @@ export default {
       })
     },
     add (n) {
+      this.formLoading = true
+
       paymentAPI.addCredit({
         data: {
           amount: this.amount
         },
         success: response => {
-          this.$toasted.success(this.$i18n.t('payments.CREDIT_INVOICED', { amount: this.amount, currency: this.currency }))
-          this.$router.push({ name: 'invoice', params: { id: response.data.result.id } })
+          this.$router.push({ name: 'checkout', params: { id: response.data.result.id } })
         },
         fail: error => {
-          this.$toasted.error(this.errorAPI(error, 'payments'))
-          this.amount = 5
+          this.formLoading = false
+          this.formError = this.errorAPI(error, 'payments')
         }
       })
     }
