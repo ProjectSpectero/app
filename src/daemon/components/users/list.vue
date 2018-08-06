@@ -29,6 +29,7 @@
                       v-for="row in tableData"
                       :key="row.id">
                       <td>{{ row.id }}</td>
+                      <td>{{ row.authKey }}</td>
                       <td>{{ row.fullName }}</td>
                       <td>{{ row.emailAddress }}</td>
                       <td>{{ parseRoles(row.roles) }}</td>
@@ -52,6 +53,12 @@
                             @click.stop="certificates(row.id)">
                             {{ $i18n.t('daemon.CERTIFICATES') }}
                           </button>
+
+                          <button
+                            class="button"
+                            @click.stop="resources(row.id)">
+                            {{ $i18n.t('daemon.RESOURCES') }}
+                          </button>
                         </template>
                       </td>
                     </tr>
@@ -71,6 +78,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import userAPI from '@/daemon/api/user'
 import daemonMenu from '@/daemon/components/common/menu'
 import paginator from '@/shared/components/paginator'
@@ -88,10 +96,11 @@ export default {
       tableData: null,
       pagination: null,
       perPage: 10,
-      columns: ['id', 'fullName', 'emailAddress', 'roles', 'lastLoginDate', 'actions'],
+      columns: ['id', 'authKey', 'fullName', 'emailAddress', 'roles', 'lastLoginDate', 'actions'],
       sortable: [],
       headings: {
         id: 'ID',
+        authKey: 'Username',
         fullName: 'Name',
         emailAddress: 'Email',
         roles: 'Roles',
@@ -101,7 +110,16 @@ export default {
       actionButtons: null
     }
   },
+  computed: {
+    ...mapGetters({
+      node: 'daemonAuth/node'
+    })
+  },
   async created () {
+    if (this.node.market_model !== 'UNLISTED') {
+      this.$router.push({ name: 'daemon-services', params: { nodeId: this.$route.params.nodeId } })
+    }
+
     await this.fetchUsers(this.$route.params.page || 1)
   },
   methods: {
@@ -132,12 +150,15 @@ export default {
     async certificates (id) {
       this.$router.push({ name: 'daemon-user-certificates', params: { id: id } })
     },
+    async resources (id) {
+      this.$router.push({ name: 'daemon-user-resources', params: { id: id } })
+    },
     async changedPage (page) {
       this.$router.push({ name: 'daemon', params: { nodeId: this.$route.params.nodeId, tabAction: 'users' } })
       await this.fetchUsers(page)
     },
     parseRoles (roles) {
-      return roles.join(', ')
+      return roles.join(',')
     },
     async fetchUsers (page) {
       await userAPI.list({

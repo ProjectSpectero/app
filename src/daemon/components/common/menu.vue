@@ -9,6 +9,8 @@
     <div
       slot="sub"
       class="daemon-details">
+      <user-management-info v-if="node && node.market_model !== 'UNLISTED'"/>
+
       <div
         v-if="user"
         class="managing-user line">
@@ -29,16 +31,19 @@ import { mapGetters } from 'vuex'
 import top from '@/shared/components/top'
 import specs from '@/daemon/components/common/specs'
 import tabs from '@/daemon/components/manage/tabs'
+import userManagementInfo from '@/daemon/components/common/userManagementInfo'
 
 export default {
   components: {
     specs,
     tabs,
-    top
+    top,
+    userManagementInfo
   },
   computed: {
     ...mapGetters({
-      user: 'daemonAuth/user'
+      user: 'daemonAuth/user',
+      node: 'daemonAuth/node'
     }),
     displayName () {
       return this.user.fullName ? this.user.fullName : this.user.authKey
