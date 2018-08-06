@@ -564,12 +564,16 @@ module.exports = {
   },
 
   reset: {
+    HEADER: 'Reset Password',
+    CHANGE_BUTTON: 'Reset Password',
+    SET_BUTTON: 'Set Password',
     TOKEN_ISSUED: 'Please check your email to finish your password reset.',
     TOKEN_ERROR: 'An error has ocurred while trying to issue a token for reset. Please try again!',
-    SUCCESSFUL: 'Your password has been reset. Please review your new password below.',
-    PASSWORD_FAILED: 'An error has ocurred while trying to generate a new password for your account. Please try again later or contact our support team if this persists.',
-    YOUR_NEW_PASSWORD: 'Your New Account Password',
-    PASSWORD_WARNING: 'Store your password in a safe place and do not share it with anyone.'
+    PASSWORD_FAILED: 'There was a problem with this reset token. Please try again later or contact our support team if this persists.',
+    RESET_COMPLETE: 'Password Reset Complete',
+    RESET_COMPLETE_TEXT: 'Your password has been successfully changed. You may now log into your account.',
+    RESET_INFO_MSG: 'Enter a new password for your account below.',
+    RESET_INFO_MSG_EASY: 'Welcome to Spectero! Please select a password for your account.'
   },
 
   settings: {

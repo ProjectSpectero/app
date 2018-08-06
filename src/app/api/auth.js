@@ -85,19 +85,28 @@ const loginAPI = {
   /**
    * Requests a password reset.
    *
-   * @param {String} email  The user's email.
+   * @param {String} token The reset token.
    */
-  askForPasswordReset (options) {
+  requestPasswordReset (options) {
     return api('POST', '/password-reset', options)
   },
 
   /**
    * Validates the password reset.
    *
-   * @param {String} email  The user's email.
+   * @param {String} token The reset token.
    */
-  validatePasswordReset (options) {
+  validateResetToken (options) {
     return api('GET', `/password-reset/${options.data.token}`, options)
+  },
+
+  /**
+   * Processes a password reset.
+   * 
+   * @param {String} token The reset token.
+   */
+  processPasswordReset (options) {
+    return api('POST', `/password-reset/${options.data.token}`, options)
   },
 
   /**
