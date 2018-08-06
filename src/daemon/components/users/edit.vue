@@ -17,8 +17,8 @@
 
 <script>
 import top from '@/shared/components/top'
-import userForm from './form'
-import userAPI from '../../api/user.js'
+import userForm from '@/daemon/components/users/form'
+import userAPI from '@/daemon/api/user'
 
 export default {
   components: {
@@ -33,28 +33,32 @@ export default {
       selectedUser: null
     }
   },
-  created () {
-    userAPI.get({
-      data: {
-        id: this.$route.params.id
-      },
-      success: response => {
-        this.selectedUser = response.data.result
-      },
-      fail: error => {
-        console.log(error)
-        this.$router.push({ name: 'error404' })
-      }
-    })
+  async created () {
+    await this.fetchUser()
   },
   methods: {
+    async fetchUser () {
+      await userAPI.get({
+        data: {
+          id: this.$route.params.id
+        },
+        success: response => {
+          this.selectedUser = response.data.result
+        },
+        fail: error => {
+          console.log(error)
+          this.$toasted.error(this.errorAPI(error, 'errors'))
+        }
+      })
+    },
     askBeforeExiting () {
       if (confirm(this.$i18n.t('misc.LEAVE_CONFIRM_DIALOG'))) {
-        this.$router.push({ name: 'users' })
+        this.$router.push({ name: 'daemon-users' })
       }
     },
     showSuccessMessage () {
-      this.$toasted.show(this.$i18n.t('USER_UPDATE_SUCCESS'))
+      this.$toasted.success(this.$i18n.t('daemon.USER_UPDATE_SUCCESS'))
+      this.$router.push({ name: 'daemon-users' })
     }
   }
 }

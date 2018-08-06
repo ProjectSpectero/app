@@ -24,9 +24,8 @@
 
           <span
             v-show="errors.has('name')"
-            class="input-error-message">
-            {{ errors.first('name') }}
-          </span>
+            class="input-error-message"
+            v-html="errors.first('name')"/>
         </div>
         <div class="col">
           <float-label>
@@ -44,9 +43,8 @@
 
           <span
             v-show="errors.has('zip')"
-            class="input-error-message">
-            {{ errors.first('zip') }}
-          </span>
+            class="input-error-message"
+            v-html="errors.first('zip')"/>
         </div>
         <div v-if="disableBillingFields">
           <router-link

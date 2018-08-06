@@ -28,9 +28,8 @@
 
       <span
         v-show="errors.has('name')"
-        class="input-error-message">
-        {{ errors.first('name') }}
-      </span>
+        class="input-error-message"
+        v-html="errors.first('name')"/>
     </div>
 
     <div class="form-input">
@@ -50,9 +49,8 @@
 
       <span
         v-show="errors.has('phone_no')"
-        class="input-error-message">
-        {{ errors.first('phone_no') }}
-      </span>
+        class="input-error-message"
+        v-html="errors.first('phone_no')"/>
     </div>
 
     <div class="form-input">
@@ -72,9 +70,8 @@
 
       <span
         v-show="errors.has('organization')"
-        class="input-error-message">
-        {{ errors.first('organization') }}
-      </span>
+        class="input-error-message"
+        v-html="errors.first('organization')"/>
     </div>
 
     <div class="form-input">
@@ -94,9 +91,8 @@
 
       <span
         v-show="errors.has('address_line_1')"
-        class="input-error-message">
-        {{ errors.first('address_line_1') }}
-      </span>
+        class="input-error-message"
+        v-html="errors.first('address_line_1')"/>
     </div>
 
     <div class="form-input">
@@ -116,9 +112,8 @@
 
       <span
         v-show="errors.has('address_line_2')"
-        class="input-error-message">
-        {{ errors.first('address_line_2') }}
-      </span>
+        class="input-error-message"
+        v-html="errors.first('address_line_2')"/>
     </div>
 
     <div class="form-input col-container reduce-spacing">
@@ -139,9 +134,8 @@
 
         <span
           v-show="errors.has('city')"
-          class="input-error-message">
-          {{ errors.first('city') }}
-        </span>
+          class="input-error-message"
+          v-html="errors.first('city')"/>
       </div>
       <div class="col">
         <float-label>
@@ -160,9 +154,8 @@
 
         <span
           v-show="errors.has('state')"
-          class="input-error-message">
-          {{ errors.first('state') }}
-        </span>
+          class="input-error-message"
+          v-html="errors.first('state')"/>
       </div>
     </div>
 
@@ -184,9 +177,8 @@
 
         <span
           v-show="errors.has('post_code')"
-          class="input-error-message">
-          {{ errors.first('post_code') }}
-        </span>
+          class="input-error-message"
+          v-html="errors.first('post_code')"/>
       </div>
       <div class="col">
         <float-label label="Country">
@@ -221,9 +213,8 @@
 
       <span
         v-show="errors.has('tax_identification')"
-        class="input-error-message">
-        {{ errors.first('tax_identification') }}
-      </span>
+        class="input-error-message"
+        v-html="errors.first('tax_identification')"/>
     </div>
 
     <button

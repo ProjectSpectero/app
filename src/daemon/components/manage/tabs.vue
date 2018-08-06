@@ -1,31 +1,28 @@
 <template>
   <ul class="tabs">
     <li
-      v-for="tab in tabs"
-      :key="tab.id"
-      :class="(activeTab === tab.id) ? 'active' : ''"
-      @click.stop="switchTab(tab.id, tab.path)">
-      {{ tab.label }}
+      v-for="(link, i) in links"
+      :key="i"
+      :class="{ active: ($route.name === link.route) }">
+      <router-link :to="{ name: link.route }">
+        {{ $i18n.t(link.label) }}
+      </router-link>
     </li>
   </ul>
 </template>
 
 <script>
 export default {
-  props: {
-    tabs: {
-      type: Array,
-      required: true
-    },
-    activeTab: {
-      type: String,
-      required: true
+  data () {
+    return {
+      links: []
     }
   },
-  methods: {
-    switchTab (id, path) {
-      this.$emit('switchTab', { id: id, path: path })
-    }
+  created () {
+    this.links = [
+      { route: 'daemon-services', label: 'daemon.SERVICES' },
+      { route: 'daemon-users', label: 'daemon.USERS' }
+    ]
   }
 }
 </script>

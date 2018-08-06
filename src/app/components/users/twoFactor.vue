@@ -23,9 +23,8 @@
 
         <span
           v-show="errors.has('tfaValue')"
-          class="input-error-message">
-          {{ errors.first('tfaValue') }}
-        </span>
+          class="input-error-message"
+          v-html="errors.first('tfaValue')"/>
       </div>
 
       <button

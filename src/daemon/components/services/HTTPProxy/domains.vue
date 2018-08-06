@@ -18,9 +18,8 @@
           @keyup.enter="add">
         <div
           v-show="errors.has('domain')"
-          class="input-error-msg">
-          {{ errors.first('domain') }}
-        </div>
+          class="input-error-msg"
+          v-html="errors.first('domain')"/>
       </div>
 
       <button

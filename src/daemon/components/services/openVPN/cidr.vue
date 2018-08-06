@@ -13,9 +13,8 @@
           class="input">
         <div
           v-show="errors.has('network')"
-          class="input-error-msg">
-          {{ errors.first('network') }}
-        </div>
+          class="input-error-msg"
+          v-html="errors.first('network')"/>
       </div>
       <button
         class="button-md button-success"

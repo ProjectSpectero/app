@@ -1,80 +1,99 @@
 <template>
   <form>
-    <div class="container container-600">
-      <div class="pad">
-        <h2>Basic Details</h2>
-        <div
-          v-if="formError"
-          class="message error">{{ formError }}</div>
-
-        <div
-          v-for="field in formFields"
-          :key="field.model"
-          class="input-container">
-          <div class="label">
-            <label :for="field.model">{{ field.label }}</label>
+    <div class="container">
+      <div class="col-12">
+        <div class="section padded">
+          <h2>Basic Details</h2>
+          <div
+            v-if="formError"
+            class="message error">{{ formError }}
           </div>
-
-          <input
-            v-validate="rules[field.model]"
-            :type="field.type"
-            :id="field.model"
-            :name="field.model"
-            v-model="form[field.model]"
-            :disabled="formDisable"
-            :data-vv-as="field.label.toLowerCase()"
-            :class="{'input-error': errors.has(field.model)}"
-            class="input">
 
           <div
-            v-show="errors.has(field.model)"
-            class="input-error-msg">
-            {{ errors.first(field.model) }}
+            v-for="field in formFields"
+            :key="field.model"
+            class="input-container">
+
+            <template v-if="field.type !== 'checkbox'">
+              <div class="form-input">
+                <div class="label">
+                  <label :for="field.model">{{ field.label }}</label>
+                </div>
+
+                <input
+                  v-validate="rules[field.model]"
+                  :type="field.type"
+                  :id="field.model"
+                  :name="field.model"
+                  v-model="form[field.model]"
+                  :disabled="formDisable"
+                  :data-vv-as="field.label.toLowerCase()"
+                  :class="{'input-error': errors.has(field.model)}"
+                  class="input">
+
+                <div
+                  v-show="errors.has(field.model)"
+                  class="input-error-msg">
+                  {{ errors.first(field.model) }}
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="mt-4">
+                <p-input
+                  :id="field.model"
+                  :value="form[field.model]"
+                  v-model="form[field.model]"
+                  type="checkbox"
+                  class="p-default p-curve">
+                  {{ field.label }}
+                </p-input>
+              </div>
+            </template>
+          </div>
+
+          <div class="section padded mt-5">
+            <h2>Permissions</h2>
+            <div class="checkbox-container">
+              <ul>
+                <li
+                  v-for="permission in permissions"
+                  :key="permission.id"
+                  :class="{ disabled: permission.disabled }">
+                  <p-input
+                    :id="permission.id"
+                    :value="permission.id"
+                    :disabled="permission.disabled"
+                    v-model="form.roles"
+                    type="checkbox"
+                    class="p-default p-curve">
+                    {{ permission.label }}
+                    <small v-if="permission.disabled">You don't have permission to set this.</small>
+                  </p-input>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <button
+              :disabled="formDisable"
+              class="button-info"
+              @click.prevent="submit"
+              @keyup.enter="submit">
+              {{ formDisable ? 'Please wait...' : title }}
+            </button>
+            <button
+              class="button-light right"
+              @click.prevent="cancel">Cancel</button>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="container container-600">
-      <div class="pad">
-        <h2>Permissions</h2>
-        <div class="checkbox-container">
-          <ul>
-            <li
-              v-for="permission in permissions"
-              :key="permission.id"
-              :class="{ disabled: permission.disabled }">
-              <p-input
-                :id="permission.id"
-                :value="permission.id"
-                :disabled="permission.disabled"
-                v-model="form.roles"
-                type="checkbox"
-                class="p-default p-curve">
-                {{ permission.label }}
-                <small v-if="permission.disabled">You don't have permission to set this.</small>
-              </p-input>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="content-bottom">
-        <button
-          :disabled="formDisable"
-          class="button-info"
-          @click.prevent="submit"
-          @keyup.enter="submit">
-          {{ formDisable ? 'Please wait...' : title }}
-        </button>
-        <button
-          class="button-light right"
-          @click.prevent="cancel">Cancel</button>
       </div>
     </div>
   </form>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
 import userAPI from '@/daemon/api/user'
 
 export default {
@@ -99,17 +118,42 @@ export default {
         password: null,
         emailAddress: null,
         fullName: null,
-        roles: []
+        roles: [],
+        encryptCertificate: true
       }
     }
   },
   computed: {
-    ...mapGetters({
-      currentUser: 'daemonAuth/currentUser',
-      isSuperAdmin: 'daemonAuth/isSuperAdmin',
-      createRules: 'daemonUsers/createRules',
-      editRules: 'daemonUsers/editRules'
-    }),
+    editRules () {
+      return {
+        authKey: {
+          required: true,
+          max: 50,
+          regex: /^[a-zA-Z][\w]*$/
+        },
+        password: {
+          max: 72
+        },
+        emailAddress: {
+          required: true,
+          email: true
+        },
+        fullName: {
+          max: 50
+        },
+        encryptCertificate: {
+          required: true
+        }
+      }
+    },
+    createRules () {
+      let rules = JSON.parse(JSON.stringify(this.editRules))
+      rules.password.required = true
+      return rules
+    },
+    isSuperAdmin () {
+      return this.user && (this.user.roles.indexOf('SuperAdmin') > -1)
+    },
     permissions () {
       let permissions = [
         { id: 'SuperAdmin', label: 'SuperAdmin' },
@@ -132,11 +176,21 @@ export default {
     this.setup()
   },
   methods: {
-    ...mapActions({
-      syncCurrentUser: 'appAuth/syncCurrentUser',
-      fetchUsers: 'appUsers/fetch'
-    }),
-    setup () {
+    async fetchUser () {
+      await userAPI.get({
+        data: {
+          id: this.$route.params.id
+        },
+        success: response => {
+          this.user = response.data.result
+        },
+        fail: e => {
+          console.error(e)
+          this.$router.push({ name: 'daemon' })
+        }
+      })
+    },
+    async setup () {
       // Set up the form. In this method we'll do two things:
       // 1) Take care of specific data fields (titles, etc.)
       // 2) Set the form fields array
@@ -145,7 +199,7 @@ export default {
         this.title = 'Add User'
         this.rules = this.createRules
       } else {
-        this.form = JSON.parse(JSON.stringify(this.user))
+        this.form = Object.assign({}, this.user)
         this.rules = this.editRules
       }
 
@@ -154,7 +208,8 @@ export default {
         { label: 'Username', type: 'text', model: 'authKey' },
         { label: 'Password', type: 'password', model: 'password' },
         { label: 'Email', type: 'email', model: 'emailAddress' },
-        { label: 'Display Name', type: 'text', model: 'fullName' }
+        { label: 'Display Name', type: 'text', model: 'fullName' },
+        { label: 'Encrypt Certificate?', type: 'checkbox', model: 'encryptCertificate' }
       ]
     },
     submit () {
@@ -165,7 +220,6 @@ export default {
         if (!result) {
           this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
         } else {
-          // Disable form while HTTP request being made
           this.formDisable = true
           this.formError = null
 
@@ -185,7 +239,7 @@ export default {
           this.dealWithSuccess(response)
         },
         fail: (err) => {
-          this.$toasted.error(this.$i18n.t('USER_UPDATE_ERROR'))
+          this.$toasted.error(this.$i18n.t('daemon.USER_UPDATE_ERROR'))
           this.dealWithErrors(err)
         }
       })
@@ -195,15 +249,10 @@ export default {
         userAPI.edit({
           data: this.form,
           success: (response) => {
-            // Update user in store if user updating themselves
-            if (this.form.id === this.currentUser.id) {
-              this.syncCurrentUser({ self: this })
-            }
-
             this.dealWithSuccess(response)
           },
           fail: (err) => {
-            this.$toasted.error(this.$i18n.t('USER_UPDATE_ERROR'))
+            this.$toasted.error(this.$i18n.t('daemon.USER_UPDATE_ERROR'))
             this.dealWithErrors(err)
           }
         })
@@ -216,20 +265,14 @@ export default {
     },
     dealWithSuccess (response) {
       this.$emit('success')
-      this.formError = null
-      this.fetchUsers()
-      this.reset()
-      this.$router.push({ name: 'users' })
     },
     dealWithErrors (err) {
-      // Here otherwise $validator won't allow you to act on disabled inputs
       this.formDisable = false
 
-      // Get first error key to display main error msg
       for (let errorKey in err.errors) {
         if (err.errors.hasOwnProperty(errorKey)) {
           this.formError = this.$i18n.t(`errors.${errorKey}`)
-          break // Only want the first element key
+          break
         }
       }
 
@@ -249,9 +292,6 @@ export default {
           }
         }
       }
-    },
-    reset () {
-      Object.assign(this.$data, this.$options.data.call(this))
     }
   }
 }

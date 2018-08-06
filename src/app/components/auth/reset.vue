@@ -4,7 +4,7 @@
     <form>
       <template v-if="tokenIssued">
         <div class="message message-success">
-          {{ $i18n.t('users.RESET_TOKEN_ISSUED', { email: email }) }}
+          {{ $i18n.t('reset.TOKEN_ISSUED', { email: email }) }}
         </div>
       </template>
       <template v-else>
@@ -26,9 +26,8 @@
 
           <span
             v-show="errors.has('email')"
-            class="input-error-message">
-            {{ errors.first('email') }}
-          </span>
+            class="input-error-message"
+            v-html="errors.first('email')"/>
         </div>
 
         <button
@@ -55,7 +54,7 @@ import authAPI from '@/app/api/auth'
 
 export default {
   metaInfo: {
-    title: 'Reset password'
+    title: 'Reset Password'
   },
   data () {
     return {
@@ -78,7 +77,7 @@ export default {
       })
     },
     async reset () {
-      await authAPI.askForPasswordReset({
+      await authAPI.requestPasswordReset({
         data: { email: this.email },
         success: response => {
           if (response.data.message && response.data.message === 'PASSWORD_RESET_TOKEN_ISSUED') {
@@ -89,7 +88,7 @@ export default {
         fail: error => {
           console.log(error)
           this.formLoading = false
-          this.$toasted.error('users.RESET_TOKEN_ERROR')
+          this.$toasted.error('reset.TOKEN_ERROR')
         }
       })
     },

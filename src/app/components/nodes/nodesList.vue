@@ -64,7 +64,7 @@
 
               <router-link
                 v-if="row.status === 'CONFIRMED'"
-                :to="{ name: 'manage', params: { nodeId: row.id } }"
+                :to="{ name: 'daemon', params: { nodeId: row.id } }"
                 class="button-sm button-info">
                 <span class="icon-sliders"/> Manage
               </router-link>
