@@ -134,7 +134,13 @@ export default {
       })
     },
     formatAccessReferences (ref) {
-      return ref ? ref.join(',') : null
+      let output = ''
+
+      for (let r of ref) {
+        output += `${r}\n`
+      }
+
+      return output
     }
   }
 }
