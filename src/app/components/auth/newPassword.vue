@@ -1,31 +1,86 @@
 <template>
   <div>
     <div v-if="!loading">
-      <template v-if="tokenFailed">
-        <div class="message message-error">
-          {{ $i18n.t('reset.PASSWORD_FAILED') }}
-        </div>
-      </template>
-      <template v-else>
+      <h1 v-if="!resetProcessed && !resetFailed">{{ $i18n.t('reset.HEADER') }}</h1>
+
+      <div
+        v-if="formError"
+        class="message message-error">{{ formError }}</div>
+      <template v-else-if="tokenValid && !resetProcessed">
         <div
-          class="message message-info"
-          v-html="$i18n.t('reset.SUCCESSFUL')"/>
-
-        <div class="new-password">
-          <h5 v-html="$i18n.t('reset.YOUR_NEW_PASSWORD')"/>
-          <p
-            class="new-password-field"
-            v-html="newPassword"/>
-          <p
-            class="password-warning"
-            v-html="$i18n.t('reset.PASSWORD_WARNING')"/>
-          <copy-to-clipboard
-            :field="newPassword"
-            button-class="button-sm button-copy"/>
-        </div>
+          v-if="isEasy"
+          class="message message-info">{{ $i18n.t('reset.RESET_INFO_MSG_EASY') }}</div>
+        <div
+          v-else
+          class="message message-info">{{ $i18n.t('reset.RESET_INFO_MSG') }}</div>
       </template>
 
-      <div class="bottom-link">
+      <template v-if="tokenValid">
+        <form v-if="!resetProcessed">
+          <div class="form-input">
+            <input
+              v-validate="'required|min:5|max:72'"
+              v-model="password"
+              :class="{'input-error': errors.has('password')}"
+              :disabled="formLoading"
+              type="password"
+              name="password"
+              placeholder="Password"
+              class="input max-width"
+              data-vv-as="password">
+
+            <span
+              v-show="errors.has('password')"
+              class="input-error-message"
+              v-html="errors.first('password')"/>
+          </div>
+
+          <div class="form-input">
+            <input
+              v-validate="'required|confirmed:password'"
+              v-model="confirmation"
+              :class="{'input-error': errors.has('confirmation')}"
+              :disabled="formLoading"
+              type="password"
+              name="confirmation"
+              placeholder="Repeat password"
+              class="input max-width"
+              data-vv-as="confirmation">
+
+            <span
+              v-show="errors.has('confirmation')"
+              class="input-error-message"
+              v-html="errors.first('confirmation')"/>
+          </div>
+
+          <button
+            :class="{ 'button-loading': formLoading }"
+            :disabled="formLoading"
+            class="button-info button-md max-width"
+            @click.prevent="submit"
+            @keyup.enter="submit">
+            {{ formLoading ? $i18n.t('misc.LOADING') : ( (isEasy) ? $i18n.t('reset.SET_BUTTON') : $i18n.t('reset.CHANGE_BUTTON') ) }}
+          </button>
+        </form>
+        <template v-else>
+          <div
+            v-if="!resetFailed"
+            class="reset-complete">
+            <div class="icon-check-circle mb-3"/>
+            <h3>{{ $i18n.t('reset.RESET_COMPLETE') }}</h3>
+            <p class="mb-3">{{ $i18n.t('reset.RESET_COMPLETE_TEXT') }}</p>
+            <router-link
+              :to="{ name: 'login' }"
+              class="button">
+              {{ $i18n.t('users.BACK_TO_LOGIN') }}
+            </router-link>
+          </div>
+        </template>
+      </template>
+
+      <div
+        v-else
+        class="bottom-link">
         <router-link :to="{ name: 'login' }">
           {{ $i18n.t('users.BACK_TO_LOGIN') }}
         </router-link>
@@ -36,69 +91,124 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import authAPI from '@/app/api/auth'
 import loading from '@/shared/components/loading'
-import copyToClipboard from '@/shared/components/copyToClipboard'
 
 export default {
   components: {
-    loading,
-    copyToClipboard
+    loading
   },
   metaInfo: {
     title: 'Reset Password'
   },
   data () {
     return {
-      tokenFailed: false
+      formError: null,
+      formLoading: false,
+      tokenValid: false,
+      password: null,
+      confirmation: null,
+      resetProcessed: false,
+      resetFailed: false
+    }
+  },
+  computed: {
+    token () {
+      return this.$route.params.token
+    },
+    isEasy () {
+      return this.$route.query.easy
     }
   },
   async created () {
     await this.validate()
   },
   methods: {
+    ...mapActions({
+      syncCurrentUser: 'appAuth/syncCurrentUser'
+    }),
     async validate () {
-      await authAPI.validatePasswordReset({
-        data: { token: this.$route.params.token },
+      await authAPI.validateResetToken({
+        data: {
+          token: this.token
+        },
         success: response => {
-          if (response.data.message !== 'PASSWORD_RESET_SUCCESS' && response.data.result.new_password !== undefined) {
-            this.tokenFailed = true
-          } else {
-            this.tokenFailed = false
-            this.newPassword = response.data.result.new_password
-          }
-
           this.loading = false
+          this.tokenValid = true
         },
         fail: error => {
-          console.log(error)
-          this.tokenFailed = true
           this.loading = false
+          this.tokenValid = false
+          this.formError = this.$i18n.t('reset.PASSWORD_FAILED')
+          console.error('Error validating reset token', error)
         }
       })
+    },
+    submit () {
+      this.$validator.validateAll().then((result) => {
+        if (!result) {
+          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
+        } else {
+          // Disable form while HTTP request being made
+          this.formLoading = true
+          this.formError = null
+
+          authAPI.processPasswordReset({
+            data: {
+              token: this.token,
+              password: this.password
+            },
+            success: response => {
+              this.loading = false
+              this.resetProcessed = true
+              this.resetFailed = false
+
+              // Autologin easy register users, as per Pro checkout flow spec
+              if (this.isEasy) {
+                this.login()
+              }
+            },
+            fail: error => {
+              this.loading = false
+              this.resetProcessed = true
+              this.resetFailed = true
+              this.formError = this.$i18n.t('reset.PASSWORD_FAILED')
+              console.error('Error resetting password', error)
+            }
+          })
+        }
+      })
+    },
+    login () {
+      if (this.isEasy && this.$route.query.for) {
+        authAPI.login({
+          data: {
+            username: this.$route.query.for,
+            password: this.password
+          },
+          loginSuccess: async response => {
+            await this.syncCurrentUser()
+
+            this.$router.push({ name: 'dashboard' })
+          },
+          loginFailed: error => {
+            console.error('Autologin fail (easy)', error)
+          }
+        })
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.new-password {
-  padding: 8px 0 $pad 0;
+.reset-complete {
   text-align: center;
-  border-bottom: 1px solid $color-border;
-}
-.new-password-field {
-  margin-bottom: 8px;
-  padding: 8px;
-  word-break: break-all;
-  border: 2px dashed $color-border;
-}
-.password-warning {
-  margin-top: 8px;
-  color: $color-danger;
-  font-weight: $font-bold;
-}
-.button-copy {
-  margin-top: 12px;
+
+  [class^="icon-"] {
+    font-size: 56px;
+    color: $color-success;
+  }
 }
 </style>

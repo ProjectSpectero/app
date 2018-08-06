@@ -77,7 +77,7 @@ export default {
       })
     },
     async reset () {
-      await authAPI.askForPasswordReset({
+      await authAPI.requestPasswordReset({
         data: { email: this.email },
         success: response => {
           if (response.data.message && response.data.message === 'PASSWORD_RESET_TOKEN_ISSUED') {
