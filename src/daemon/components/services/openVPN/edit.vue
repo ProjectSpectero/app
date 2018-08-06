@@ -66,7 +66,6 @@
                 v-html="errors.first('maxClients')"/>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -412,7 +411,7 @@ export default {
           if (response.data.message && response.data.message === 'SERVICE_RESTART_NEEDED') {
             this.switchBarComponent('restartOpenVPN')
           } else {
-            this.$router.push({ name: 'manage', params: { nodeId: this.$route.params.nodeId, action: 'services' } })
+            this.$router.push({ name: 'daemon', params: { nodeId: this.$route.params.nodeId, action: 'services' } })
           }
         },
         fail: error => {
@@ -423,7 +422,7 @@ export default {
     },
     askBeforeExiting () {
       if (confirm(this.$i18n.t('misc.LEAVE_CONFIRM_DIALOG'))) {
-        this.$router.push({ name: 'manage', params: { nodeId: this.$route.params.nodeId, action: 'services' } })
+        this.$router.push({ name: 'daemon', params: { nodeId: this.$route.params.nodeId, action: 'services' } })
       }
     }
   }

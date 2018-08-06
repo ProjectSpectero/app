@@ -61,7 +61,7 @@
             <li>
               <router-link
                 :to="{ name: 'nodes' }"
-                :class="{'router-link-active': ['node', 'nodesGroupCreate', 'nodeGroupEdit', 'manage', 'service.HTTPProxy', 'service.OpenVPN'].includes($route.name)}">
+                :class="{'router-link-active': ['node', 'nodesGroupCreate', 'nodeGroupEdit', 'daemon', 'daemon-service-HTTPProxy', 'daemon-service-OpenVPN'].includes($route.name)}">
                 <span class="icon-hard-drive"/>
                 {{ $i18n.t('misc.NODES') }}
               </router-link>
