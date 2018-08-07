@@ -191,6 +191,14 @@ export default {
       })
     },
     async setup () {
+      // Set up basic form fields to avoid code repetition
+      this.formFields = [
+        { label: 'Username', type: 'text', model: 'authKey' },
+        { label: 'Password', type: 'password', model: 'password' },
+        { label: 'Email', type: 'email', model: 'emailAddress' },
+        { label: 'Display Name', type: 'text', model: 'fullName' }
+      ]
+
       // Set up the form. In this method we'll do two things:
       // 1) Take care of specific data fields (titles, etc.)
       // 2) Set the form fields array
@@ -198,19 +206,13 @@ export default {
       if (this.action === 'create') {
         this.title = 'Add User'
         this.rules = this.createRules
+
+        // Setting certificate encription on/off is only available when creating a new user
+        this.formFields.push({ label: 'Encrypt Certificate?', type: 'checkbox', model: 'encryptCertificate' })
       } else {
         this.form = Object.assign({}, this.user)
         this.rules = this.editRules
       }
-
-      // Set up basic form fields to avoid code repetition
-      this.formFields = [
-        { label: 'Username', type: 'text', model: 'authKey' },
-        { label: 'Password', type: 'password', model: 'password' },
-        { label: 'Email', type: 'email', model: 'emailAddress' },
-        { label: 'Display Name', type: 'text', model: 'fullName' },
-        { label: 'Encrypt Certificate?', type: 'checkbox', model: 'encryptCertificate' }
-      ]
     },
     submit () {
       this.formError = null

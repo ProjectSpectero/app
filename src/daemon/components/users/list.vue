@@ -4,8 +4,8 @@
 
     <div class="container">
       <div class="col-12">
-        <div class="section padded">
-          <div class="add col-12 mb-4">
+        <div class="section">
+          <div class="add col-12 mt-4 mb-4">
             <h2>
               {{ $i18n.t('misc.USERS') }}
             </h2>
