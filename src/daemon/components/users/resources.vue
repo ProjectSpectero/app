@@ -58,12 +58,33 @@
             </div>
 
             <div
-              v-if="service.accessCredentials"
               class="item">
               <div class="label">
                 <label>{{ $i18n.t('orders.ACCESS_CREDENTIALS') }}</label>
               </div>
-              <div>{{ service.accessCredentials }}</div>
+
+              <template v-if="service.accessCredentials">
+                <div
+                  v-if="service.accessCredentials === 'SPECTERO_USERNAME_PASSWORD'"
+                  class="message">
+                  Please create a local user and use the specified credentials to log in.
+                </div>
+                <div
+                  v-else-if="key === 'OpenVPN'"
+                  class="message">
+                  This is this local user's certificate encryption password.
+                </div>
+                <div
+                  v-else
+                  class="mb-3">
+                  {{ service.accessCredentials }}
+                </div>
+              </template>
+              <div
+                v-else
+                class="message">
+                Please use your local user's credentials to log in.
+              </div>
             </div>
           </div>
         </div>
@@ -196,6 +217,10 @@ export default {
       display: none;
     }
   }
+}
+
+small {
+  color: $color-light;
 }
 
 textarea {
