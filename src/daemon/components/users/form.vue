@@ -55,7 +55,7 @@
           <div class="section padded mt-5">
             <h2>Permissions</h2>
             <div class="checkbox-container">
-              <ul>
+              <ul class="permissions">
                 <li
                   v-for="permission in permissions"
                   :key="permission.id"
@@ -94,6 +94,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import userAPI from '@/daemon/api/user'
 
 export default {
@@ -124,6 +125,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      currentUser: 'daemonAuth/user'
+    }),
     editRules () {
       return {
         authKey: {
@@ -152,7 +156,7 @@ export default {
       return rules
     },
     isSuperAdmin () {
-      return this.user && (this.user.roles.indexOf('SuperAdmin') > -1)
+      return this.currentUser && (this.currentUser.roles.indexOf('SuperAdmin') > -1)
     },
     permissions () {
       let permissions = [
@@ -298,3 +302,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.permissions {
+  > li {
+    display: inline-block;
+  }
+}
+</style>
