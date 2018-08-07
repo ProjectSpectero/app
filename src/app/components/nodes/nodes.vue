@@ -26,7 +26,7 @@
               v-if="groups && groups.length"
               class="split-list nodes-sidebar">
               <header>
-                <h2 class="mb-0">Node Groups</h2>
+                <h2 class="mb-0">{{ $i18n.t('misc.GROUPS') }}</h2>
               </header>
               <div
                 v-for="group in groups"
