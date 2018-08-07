@@ -1,12 +1,12 @@
 <template>
   <form>
     <div class="container">
-      <div class="col-12">
+      <div class="col-6">
         <div class="section padded">
           <h2>Basic Details</h2>
           <div
             v-if="formError"
-            class="message error">{{ formError }}
+            class="message message-error">{{ formError }}
           </div>
 
           <div
@@ -55,11 +55,12 @@
           <div class="section padded mt-5">
             <h2>Permissions</h2>
             <div class="checkbox-container">
-              <ul>
+              <ul class="permissions">
                 <li
                   v-for="permission in permissions"
                   :key="permission.id"
-                  :class="{ disabled: permission.disabled }">
+                  :class="{ disabled: permission.disabled }"
+                  class="mb-3">
                   <p-input
                     :id="permission.id"
                     :value="permission.id"
@@ -68,7 +69,6 @@
                     type="checkbox"
                     class="p-default p-curve">
                     {{ permission.label }}
-                    <small v-if="permission.disabled">You don't have permission to set this.</small>
                   </p-input>
                 </li>
               </ul>
@@ -94,6 +94,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import userAPI from '@/daemon/api/user'
 
 export default {
@@ -124,6 +125,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      currentUser: 'daemonAuth/user'
+    }),
     editRules () {
       return {
         authKey: {
@@ -152,7 +156,7 @@ export default {
       return rules
     },
     isSuperAdmin () {
-      return this.user && (this.user.roles.indexOf('SuperAdmin') > -1)
+      return this.currentUser && (this.currentUser.roles.indexOf('SuperAdmin') > -1)
     },
     permissions () {
       let permissions = [
@@ -191,6 +195,14 @@ export default {
       })
     },
     async setup () {
+      // Set up basic form fields to avoid code repetition
+      this.formFields = [
+        { label: 'Username', type: 'text', model: 'authKey' },
+        { label: 'Password', type: 'password', model: 'password' },
+        { label: 'Email', type: 'email', model: 'emailAddress' },
+        { label: 'Display Name', type: 'text', model: 'fullName' }
+      ]
+
       // Set up the form. In this method we'll do two things:
       // 1) Take care of specific data fields (titles, etc.)
       // 2) Set the form fields array
@@ -198,19 +210,13 @@ export default {
       if (this.action === 'create') {
         this.title = 'Add User'
         this.rules = this.createRules
+
+        // Setting certificate encription on/off is only available when creating a new user
+        this.formFields.push({ label: 'Encrypt Certificate?', type: 'checkbox', model: 'encryptCertificate' })
       } else {
         this.form = Object.assign({}, this.user)
         this.rules = this.editRules
       }
-
-      // Set up basic form fields to avoid code repetition
-      this.formFields = [
-        { label: 'Username', type: 'text', model: 'authKey' },
-        { label: 'Password', type: 'password', model: 'password' },
-        { label: 'Email', type: 'email', model: 'emailAddress' },
-        { label: 'Display Name', type: 'text', model: 'fullName' },
-        { label: 'Encrypt Certificate?', type: 'checkbox', model: 'encryptCertificate' }
-      ]
     },
     submit () {
       this.formError = null
@@ -246,6 +252,7 @@ export default {
     },
     update () {
       if (this.user) {
+        console.log(this.form)
         userAPI.edit({
           data: this.form,
           success: (response) => {
@@ -296,3 +303,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.permissions {
+  > li {
+    display: inline-block;
+  }
+}
+</style>

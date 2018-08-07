@@ -1,6 +1,7 @@
 import { setCookie, removeCookie } from 'tiny-cookie'
 import userAPI from '@/daemon/api/user'
 import cloudAPI from '@/daemon/api/cloud'
+import nodeAPI from '@/app/api/node'
 
 const state = {
   specs: null,
@@ -13,7 +14,8 @@ const state = {
   ip: null,
   port: null,
   protocol: 'http',
-  version: 'v1'
+  version: 'v1',
+  node: null
 }
 
 const getters = {
@@ -27,7 +29,8 @@ const getters = {
   ip: (state) => state.ip,
   port: (state) => state.port,
   protocol: (state) => state.protocol,
-  version: (state) => state.version
+  version: (state) => state.version,
+  node: (state) => state.node
 }
 
 const actions = {
@@ -76,6 +79,23 @@ const actions = {
   setupEndpoint ({ commit }, payload) {
     commit('SETUP_ENDPOINT', payload)
   },
+  async setupNode ({ commit }, id) {
+    await nodeAPI.node({
+      data: {
+        id: id
+      },
+      success: async response => {
+        if (response.data.result) {
+          console.log('Setting up node', response.data.result)
+          commit('SETUP_NODE', response.data.result)
+        }
+      },
+      fail: (e) => {
+        console.log(e)
+        this.$toasted.error('nodes.RESOURCE_NOT_FOUND')
+      }
+    })
+  },
   logout ({ commit }) {
     removeCookie(process.env.DAEMON_COOKIE)
     commit('CLEAR_ENDPOINT')
@@ -101,6 +121,10 @@ const mutations = {
     state.port = payload.meta.port
     state.version = payload.meta.apiVersion
   },
+  SETUP_NODE (state, node) {
+    console.log('Loaded node:', node)
+    state.node = node
+  },
   CLEAR_ENDPOINT (state) {
     state.accessToken = null
     state.refreshToken = null
@@ -110,6 +134,7 @@ const mutations = {
     state.port = null
     state.protocol = 'http'
     state.version = 'v1'
+    state.node = null
   }
 }
 

@@ -47,7 +47,9 @@
               </div>
             </div>
           </div>
-          <loading v-else/>
+          <loading
+            v-else
+            text="Fetching services ..."/>
         </div>
       </div>
     </div>

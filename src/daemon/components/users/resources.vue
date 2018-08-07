@@ -1,65 +1,96 @@
 <template>
   <div>
-    <h2>Certificates</h2>
+    <top :title="$i18n.t('daemon.RESOURCES')">
+      <router-link
+        :to="{ name: 'daemon-users' }"
+        class="button">
+        {{ $i18n.t('misc.BACK') }}
+      </router-link>
+    </top>
 
     <div
-      v-if="user">
-
-      <template v-if="services">
-        <div
-          v-for="(service, key) in services"
-          :key="key"
-          class="container details">
-          <h3>{{ key }}</h3>
-
+      v-if="services"
+      class="container">
+      <div class="col-12">
+        <div class="section padded">
           <div
-            v-if="service.accessReference"
-            class="item">
-            <div class="label"><label>{{ $i18n.t('orders.ACCESS_REFERENCE') }}</label></div>
+            v-for="(service, key) in services"
+            :key="key"
+            class="container details">
+            <h3>{{ key }}</h3>
 
-            <div class="reference-list">
-              <span>{{ formatAccessReferences(service.accessReference) }}</span>
+            <div
+              v-if="service.accessReference"
+              class="item">
+              <div class="label"><label>{{ $i18n.t('orders.ACCESS_REFERENCE') }}</label></div>
+
+              <div class="reference-list">
+                <span>{{ formatAccessReferences(service.accessReference) }}</span>
+              </div>
+              <div class="ips items-centered">
+                <copy-to-clipboard
+                  :field="formatAccessReferences(service.accessReference)"
+                  :service="service.accessReference"
+                  button-class="button-sm"/>
+              </div>
             </div>
-            <div class="ips items-centered">
+
+            <div
+              v-if="service.accessConfig"
+              class="item">
+              <div class="label">
+                <label for="accessConfig">{{ $i18n.t('orders.ACCESS_CONFIG') }}</label>
+              </div>
+
+              <textarea
+                :id="key + '-' + service.accessConfig"
+                v-model="service.accessConfig"
+                class="input font-mono"
+                readonly/>
               <copy-to-clipboard
-                :field="formatAccessReferences(service.accessReference)"
-                :service="service.accessReference"
+                :field="key + '-' + service.accessConfig"
+                :service="service.accessConfig"
+                button-class="button-sm"/>
+              <download
+                :content="service.accessConfig"
+                :file="configFileName"
                 button-class="button-sm"/>
             </div>
-          </div>
 
-          <div
-            v-if="service.accessConfig"
-            class="item">
-            <div class="label">
-              <label for="accessConfig">{{ $i18n.t('orders.ACCESS_CONFIG') }}</label>
+            <div
+              class="item">
+              <div class="label">
+                <label>{{ $i18n.t('orders.ACCESS_CREDENTIALS') }}</label>
+              </div>
+
+              <template v-if="service.accessCredentials">
+                <div
+                  v-if="service.accessCredentials === 'SPECTERO_USERNAME_PASSWORD'"
+                  class="message">
+                  Please create a local user and use the specified credentials to log in.
+                </div>
+                <div v-else-if="key === 'OpenVPN'">
+                  {{ service.accessCredentials }}
+
+                  <div class="message mt-3">
+                    This is this local user's certificate encryption password.
+                  </div>
+                </div>
+                <div
+                  v-else
+                  class="mb-3">
+                  {{ service.accessCredentials }}
+                </div>
+              </template>
+              <div
+                v-else
+                class="message">
+                Please use your local user's credentials to log in.
+              </div>
             </div>
-
-            <textarea
-              :id="key + '-' + service.accessConfig"
-              v-model="service.accessConfig"
-              class="input font-mono"
-              readonly/>
-            <copy-to-clipboard
-              :field="key + '-' + service.accessConfig"
-              :service="service.accessConfig"
-              button-class="button-sm"/>
-            <download
-              :content="service.accessConfig"
-              :file="configFileName"
-              button-class="button-sm"/>
-          </div>
-
-          <div
-            v-if="service.accessCredentials"
-            class="item">
-            <div class="label">
-              <label>{{ $i18n.t('orders.ACCESS_CREDENTIALS') }}</label>
-            </div>
-            <div>{{ service.accessCredentials }}</div>
           </div>
         </div>
-      </template>
+      </div>
     </div>
   </div>
 </template>
@@ -69,10 +100,12 @@ import { mapGetters } from 'vuex'
 import userAPI from '@/daemon/api/user'
 import copyToClipboard from '@/shared/components/copyToClipboard'
 import download from '@/shared/components/download'
+import top from '@/shared/components/top'
 
 export default {
   components: {
     copyToClipboard,
+    top,
     download
   },
   metaInfo: {
@@ -86,7 +119,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'daemonAuth/user',
       specs: 'daemonAuth/specs'
     })
   },
@@ -98,10 +130,8 @@ export default {
       this.setConfigFileName()
     }
   },
-  created () {
-    if (this.user) {
-      this.fetchServices()
-    }
+  async created () {
+    await this.fetchServices()
 
     if (this.specs) {
       this.setConfigFileName()
@@ -112,11 +142,10 @@ export default {
       const id = (this.specs.cloud) ? this.specs.cloud.id : 'item'
       this.configFileName = 'spectero-' + id + '-openvpn.ovpn'
     },
-    async fetchServices (service) {
-      console.log('fetchService')
+    async fetchServices () {
       await userAPI.getServices({
         data: {
-          id: this.user.id
+          id: this.$route.params.id
         },
         success: response => {
           console.log(response.data.result)
@@ -128,7 +157,13 @@ export default {
       })
     },
     formatAccessReferences (ref) {
-      return ref ? ref.join(',') : null
+      let output = ''
+
+      for (let r of ref) {
+        output += `${r}\n`
+      }
+
+      return output
     }
   }
 }
@@ -184,6 +219,10 @@ export default {
       display: none;
     }
   }
+}
+
+small {
+  color: $color-light;
 }
 
 textarea {
