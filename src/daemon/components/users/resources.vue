@@ -69,10 +69,12 @@
                   class="message">
                   Please create a local user and use the specified credentials to log in.
                 </div>
-                <div
-                  v-else-if="key === 'OpenVPN'"
-                  class="message">
-                  This is this local user's certificate encryption password.
+                <div v-else-if="key === 'OpenVPN'">
+                  {{ service.accessCredentials }}
+
+                  <div class="message mt-3">
+                    This is this local user's certificate encryption password.
+                  </div>
                 </div>
                 <div
                   v-else

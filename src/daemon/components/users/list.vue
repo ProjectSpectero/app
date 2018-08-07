@@ -30,7 +30,6 @@
                       :key="row.id">
                       <td>{{ row.id }}</td>
                       <td>{{ row.authKey }}</td>
-                      <td>{{ row.fullName }}</td>
                       <td>{{ row.emailAddress }}</td>
                       <td>{{ parseRoles(row.roles) }}</td>
                       <td>{{ row.lastLoginDate | moment('MMM D, YYYY') }}</td>
@@ -96,12 +95,11 @@ export default {
       tableData: null,
       pagination: null,
       perPage: 10,
-      columns: ['id', 'authKey', 'fullName', 'emailAddress', 'roles', 'lastLoginDate', 'actions'],
+      columns: ['id', 'authKey', 'emailAddress', 'roles', 'lastLoginDate', 'actions'],
       sortable: [],
       headings: {
         id: 'ID',
         authKey: 'Username',
-        fullName: 'Name',
         emailAddress: 'Email',
         roles: 'Roles',
         lastLoginDate: 'Last login',
