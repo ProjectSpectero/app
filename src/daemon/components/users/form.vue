@@ -151,7 +151,7 @@ export default {
       }
     },
     createRules () {
-      let rules = JSON.parse(JSON.stringify(this.editRules))
+      let rules = Object.assign({}, this.editRules)
       rules.password.required = true
       return rules
     },
@@ -168,9 +168,10 @@ export default {
         { id: 'SSHTunnel', label: 'SSHTunnel' }
       ]
 
-      if (!this.isSuperAdmin) { // Disable SuperAdmin and WebApi checkboxes if not SuperAdmin
-        permissions[0].disabled = true // SuperAdmin
-        permissions[1].disabled = true // WebApi
+      // Disable SuperAdmin and WebApi checkboxes if not SuperAdmin
+      if (!this.isSuperAdmin) {
+        permissions[0].disabled = true
+        permissions[1].disabled = true
       }
 
       return permissions
@@ -206,7 +207,6 @@ export default {
       // Set up the form. In this method we'll do two things:
       // 1) Take care of specific data fields (titles, etc.)
       // 2) Set the form fields array
-
       if (this.action === 'create') {
         this.title = 'Add User'
         this.rules = this.createRules
@@ -252,7 +252,6 @@ export default {
     },
     update () {
       if (this.user) {
-        console.log(this.form)
         userAPI.edit({
           data: this.form,
           success: (response) => {
