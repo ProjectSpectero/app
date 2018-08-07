@@ -551,6 +551,7 @@ module.exports = {
     IMPERSONATING: 'You are currently impersonating {name}.',
     FORGOT_PASSWORD: 'Forgot your password?',
     BACK_TO_LOGIN: 'Back to Login',
+    LOGIN_AGAIN: 'Changes saved! Please check your email to verify your account.',
     RESET_PASSWORD_BUTTON: 'Reset Password',
     PLACEHOLDER_EMAIL: 'Email address',
     PLACEHOLDER_PASSWORD: 'Password',

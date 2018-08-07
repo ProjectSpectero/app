@@ -32,7 +32,6 @@
                       <td>{{ row.authKey }}</td>
                       <td>{{ row.emailAddress }}</td>
                       <td>{{ parseRoles(row.roles) }}</td>
-                      <td>{{ row.lastLoginDate | moment('MMM D, YYYY') }}</td>
                       <td class="table-actions">
                         <template v-if="row.source === 'Local'">
                           <button
@@ -94,14 +93,13 @@ export default {
       tableData: null,
       pagination: null,
       perPage: 10,
-      columns: ['id', 'authKey', 'emailAddress', 'roles', 'lastLoginDate', 'actions'],
+      columns: ['id', 'authKey', 'emailAddress', 'roles', 'actions'],
       sortable: [],
       headings: {
         id: 'ID',
         authKey: 'Username',
         emailAddress: 'Email',
         roles: 'Roles',
-        lastLoginDate: 'Last login',
         actions: ''
       },
       actionButtons: null
