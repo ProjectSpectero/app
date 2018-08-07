@@ -122,6 +122,7 @@ const mutations = {
     state.version = payload.meta.apiVersion
   },
   SETUP_NODE (state, node) {
+    console.log('Loaded node:', node)
     state.node = node
   },
   CLEAR_ENDPOINT (state) {
@@ -133,6 +134,7 @@ const mutations = {
     state.port = null
     state.protocol = 'http'
     state.version = 'v1'
+    state.node = null
   }
 }
 

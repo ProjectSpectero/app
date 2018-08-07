@@ -1,12 +1,12 @@
 <template>
   <form>
     <div class="container">
-      <div class="col-12">
+      <div class="col-6">
         <div class="section padded">
           <h2>Basic Details</h2>
           <div
             v-if="formError"
-            class="message error">{{ formError }}
+            class="message message-error">{{ formError }}
           </div>
 
           <div
@@ -59,7 +59,8 @@
                 <li
                   v-for="permission in permissions"
                   :key="permission.id"
-                  :class="{ disabled: permission.disabled }">
+                  :class="{ disabled: permission.disabled }"
+                  class="mb-3">
                   <p-input
                     :id="permission.id"
                     :value="permission.id"
@@ -68,7 +69,6 @@
                     type="checkbox"
                     class="p-default p-curve">
                     {{ permission.label }}
-                    <small v-if="permission.disabled">You don't have permission to set this.</small>
                   </p-input>
                 </li>
               </ul>
@@ -252,6 +252,7 @@ export default {
     },
     update () {
       if (this.user) {
+        console.log(this.form)
         userAPI.edit({
           data: this.form,
           success: (response) => {

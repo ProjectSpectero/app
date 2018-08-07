@@ -65,11 +65,10 @@
                 </table>
               </div>
             </div>
-
-            <paginator
-              :pagination="pagination"
-              @changedPage="changedPage"/>
           </template>
+          <loading
+            v-else
+            text="Fetching local users ..."/>
         </div>
       </div>
     </div>
@@ -80,13 +79,13 @@
 import { mapGetters } from 'vuex'
 import userAPI from '@/daemon/api/user'
 import daemonMenu from '@/daemon/components/common/menu'
-import paginator from '@/shared/components/paginator'
 import tableHeader from '@/shared/components/table/thead'
+import loading from '@/shared/components/loading'
 
 export default {
   components: {
     top,
-    paginator,
+    loading,
     daemonMenu,
     tableHeader
   },
@@ -160,12 +159,7 @@ export default {
     },
     async fetchUsers (page) {
       await userAPI.list({
-        queryParams: {
-          page: page || 1,
-          perPage: this.perPage || 10
-        },
         success: response => {
-          this.pagination = response.data.pagination
           this.tableData = response.data.result
         },
         fail: e => {
