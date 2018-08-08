@@ -451,13 +451,18 @@ module.exports = {
     NODE_PENDING_VERIFICATION: 'This node is pending verification. Please try again when its status is CONFIRMED.',
     STATUS: {
       ACTIVE: 'Active',
-      UNCONFIRMED: 'Unconfirmed',
       CONFIRMED: 'Confirmed',
+      UNCONFIRMED: 'Unconfirmed',
       PENDING: 'Pending Verification',
       PENDING_VERIFICATION: 'Pending Verification',
       ENABLED: 'Enabled',
       DISABLED: 'Disabled',
       CANCELLED: 'Cancelled'
+    },
+    STATUS_TOOLTIPS: {
+      CONFIRMED: '<strong>Confirmed</strong>: This node has been confirmed and is ready for use.',
+      UNCONFIRMED: '<strong>Unconfirmed</strong>: This node is awaiting confirmation.',
+      PENDING_VERIFICATION: '<strong>Pending Verification</strong>: This node is pending verification.'
     },
     MODEL: {
       ANY: 'Any type',
@@ -597,25 +602,25 @@ module.exports = {
   help: {
     nodes: {
       title: 'Nodes',
-      subtitle: 'Subtitle here',
+      subtitle: '-',
       topics: {
         general: {
-          title: 'General help',
-          description: 'test 123',
+          title: 'General Help',
+          description: '-',
           topics: {
             what: {
               title: 'What is a node?',
-              description: 'A node is you lorem ipsum dolor.'
+              description: '-'
             },
             availability: {
               title: 'How do I know the availability of a given node?',
-              description: 'A given node is lorem.'
+              description: '-'
             }
           }
         },
         buying: {
           title: 'Purchasing nodes',
-          description: 'Purchasing nodes is very simple! Lorem ipsum for all!'
+          description: '-'
         },
         marketModels: {
           title: 'Market models',
@@ -629,11 +634,11 @@ module.exports = {
     },
     groups: {
       title: 'Groups',
-      subtitle: 'Subtitle here',
+      subtitle: '-',
       topics: {
         general: {
           title: 'General help',
-          description: 'This is a general text about groups.'
+          description: '-'
         }
       }
     },
@@ -643,7 +648,7 @@ module.exports = {
       topics: {
         methods: {
           title: 'Payment methods',
-          description: 'You can pay with PayPal, Credit Card or credit.'
+          description: 'You can pay with Cryptocurrency, PayPal, credit card or your account credit.'
         }
       }
     },
@@ -653,22 +658,23 @@ module.exports = {
       topics: {
         status: {
           title: 'Invoice status',
-          description: 'Your invoice can have a different status.'
+          description: '-'
         }
       }
     },
     orders: {
       title: 'Orders',
-      subtitle: 'Subtitle here',
+      subtitle: '-',
       topics: {
         billing: {
           title: 'Billing',
-          description: 'Billing works like this: ...'
+          description: '-'
         }
       }
     },
     services: {
       title: 'Services',
+      subtitle: '-',
       topics: {
         protocols: {
           title: 'Protocols',
@@ -710,7 +716,7 @@ module.exports = {
         },
         pushedNetworks: {
           title: 'Pushed Networks',
-          description: ''
+          description: '-'
         }
       }
     }

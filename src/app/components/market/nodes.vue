@@ -12,10 +12,13 @@
     <template
       slot="services"
       slot-scope="props">
-      <span
-        v-for="service in props.row.services"
-        :key="service"
-        class="badge">{{ service }}</span>
+      <div class="service-badges">
+        <article
+          v-tooltip="service"
+          v-for="service in props.row.services"
+          :key="service"
+          :class="`type-${service.toLowerCase()}`"/>
+      </div>
     </template>
 
     <template
@@ -34,9 +37,15 @@
     <template
       slot="status"
       slot-scope="props">
-      <div :class="'badge-' + props.row.status.toLowerCase()">
+      <div
+        v-tooltip="{ html: `node-${props.row.id}-status-tooltip` }"
+        :class="'badge-' + props.row.status.toLowerCase()">
         {{ $i18n.t(`nodes.STATUS.${props.row.status}`) }}
       </div>
+      <div
+        :id="`node-${props.row.id}-status-tooltip`"
+        class="tooltip"
+        v-html="$i18n.t(`nodes.STATUS_TOOLTIPS.${props.row.status}`)"/>
     </template>
   </v-client-table>
 </template>

@@ -41,24 +41,30 @@
             </td>
             <td>
               <div class="service-badges">
-                <div
+                <article
+                  v-tooltip="service.type"
                   v-for="service in row.services"
-                  :key="service.id">
-                  {{ service.type }}
-                </div>
+                  :key="service.id"
+                  :class="`type-${service.type.toLowerCase()}`"/>
               </div>
             </td>
             <td>{{ $i18n.t(`nodes.MODEL.${row.market_model}`) }}</td>
             <td>
-              <div :class="'badge-' + row.status.toLowerCase()">
+              <div
+                v-tooltip="{ html: `node-${row.id}-status-tooltip` }"
+                :class="'badge-' + row.status.toLowerCase()">
                 {{ $i18n.t(`nodes.STATUS.${row.status}`) }}
               </div>
+              <div
+                :id="`node-${row.id}-status-tooltip`"
+                class="tooltip"
+                v-html="$i18n.t(`nodes.STATUS_TOOLTIPS.${row.status}`)"/>
             </td>
             <td class="table-actions">
               <button
-                v-if="row.status === 'UNCONFIRMED'"
+                v-if="row.status === 'UNCONFIRMED' && row.status !== 'PENDING_VERIFICATION'"
                 class="button-success button-sm"
-                @click.stop="verifyNode(row)">
+                @click.stop="verifyNode($event, row)">
                 <span class="icon-check"/> {{ $i18n.t('misc.VERIFY') }}
               </button>
 
@@ -180,14 +186,27 @@ export default {
         })
       }
     },
-    verifyNode (node) {
+    verifyNode ($event, node) {
+      let button = $event.currentTarget
+      button.disabled = true
+      button.classList.toggle('button-loading')
+      button.classList.toggle('button-success')
+
       nodeAPI.verify({
-        data: { id: node.id },
+        data: {
+          id: node.id
+        },
         success: async response => {
           this.$emit('refetch')
           this.$toasted.success(this.$i18n.t('nodes.NODE_VERIFY_SUCCESS', { node: node.friendly_name ? node.friendly_name : node.id }))
+          button.remove()
         },
-        fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
+        fail: error => {
+          this.$toasted.error(this.errorAPI(error, 'nodes'))
+          button.disabled = false
+          button.classList.toggle('button-loading')
+          button.classList.toggle('button-success')
+        }
       })
     },
     editGroup () {
