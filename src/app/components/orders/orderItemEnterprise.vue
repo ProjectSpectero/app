@@ -76,30 +76,38 @@ export default {
   },
   computed: {
     ipListFormatted () {
-      let list = ''
-      console.log('ipListFormatted', this.resources)
+      let list = []
 
       if (this.resources) {
         this.resources.forEach(r => {
-          console.log('current resource', r)
-
-          for (var type in r.references) {
+          for (let type in r.references) {
             if (r.references.hasOwnProperty(type)) {
               r.references[type].forEach(ref => {
-                list += r.references[type].accessReference
+                list.push(ref.accessReference)
               })
             }
           }
         })
       }
 
-      return list
+      return this.formatAccessReferences(list)
     }
   },
   async created () {
     // Only ACTIVE orders have valid resources
     if (this.order.status === 'ACTIVE') {
       await this.fetchResources()
+    }
+  },
+  methods: {
+    formatAccessReferences (refs) {
+      let output = ''
+
+      for (let r of refs) {
+        output += `${r}\n`
+      }
+
+      return output
     }
   }
 }
