@@ -41,11 +41,11 @@
             </td>
             <td>
               <div class="service-badges">
-                <div
+                <article
+                  v-tooltip="service.type"
                   v-for="service in row.services"
-                  :key="service.id">
-                  {{ service.type }}
-                </div>
+                  :key="service.id"
+                  :class="`type-${service.type.toLowerCase()}`"/>
               </div>
             </td>
             <td>{{ $i18n.t(`nodes.MODEL.${row.market_model}`) }}</td>

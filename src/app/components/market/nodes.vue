@@ -12,10 +12,13 @@
     <template
       slot="services"
       slot-scope="props">
-      <span
-        v-for="service in props.row.services"
-        :key="service"
-        class="badge">{{ service }}</span>
+      <div class="service-badges">
+        <article
+          v-tooltip="service"
+          v-for="service in props.row.services"
+          :key="service"
+          :class="`type-${service.toLowerCase()}`"/>
+      </div>
     </template>
 
     <template
