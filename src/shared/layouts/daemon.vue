@@ -11,7 +11,12 @@
         v-if="barComponent"
         :bar-component="barComponent"/>
 
-      <router-view :key="$route.fullPath" />
+      <template v-if="specs && node">
+        <router-view :key="$route.fullPath" />
+      </template>
+      <loading
+        v-else
+        text="Loading daemon ..."/>
     </div>
   </div>
 </template>
@@ -34,6 +39,8 @@ export default {
   computed: {
     ...mapGetters({
       daemonInitialized: 'daemonAuth/initialized',
+      specs: 'daemonAuth/specs',
+      node: 'daemonAuth/node',
       barComponent: 'settings/bar'
     })
   },
@@ -41,6 +48,7 @@ export default {
     if (this.$route.params.nodeId) {
       try {
         await this.autologin(this.$route.params.nodeId)
+        await this.setupNode(this.$route.params.nodeId)
       } catch (e) {
         this.$toasted.error(this.$i18n.t(`daemon.${e.message}`))
         this.$router.push({ name: 'nodes' })
@@ -53,6 +61,7 @@ export default {
     ...mapActions({
       addCookie: 'daemonAuth/addCookie',
       setupEndpoint: 'daemonAuth/setupEndpoint',
+      setupNode: 'daemonAuth/setupNode',
       syncCurrentUser: 'daemonAuth/syncCurrentUser'
     }),
     async autologin (nodeId) {

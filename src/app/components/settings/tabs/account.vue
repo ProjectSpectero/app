@@ -178,7 +178,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import userAPI from '@/app/api/user'
 
 export default {
@@ -206,6 +206,9 @@ export default {
     this.currentEmail = this.form.email
   },
   methods: {
+    ...mapActions({
+      logout: 'appAuth/logout'
+    }),
     toggleEmailEdit () {
       this.showEmailForm = !this.showEmailForm
     },
@@ -236,11 +239,11 @@ export default {
 
       userAPI.edit({
         data: submitForm,
-        success: async response => {
-          await this.syncCurrentUser()
-
-          this.$toasted.success('Your account has been updated successfully.')
+        success: response => {
           this.formLoading = false
+          this.logout()
+          this.$router.push({ name: 'login' })
+          this.$toasted.success(this.$i18n.t('users.LOGIN_AGAIN'))
         },
         fail: error => {
           this.formLoading = false

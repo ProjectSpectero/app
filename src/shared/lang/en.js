@@ -16,6 +16,8 @@ module.exports = {
     BACK: 'Back',
     NODE: 'Node',
     ENTERPRISE: 'Enterprise',
+    GROUP: 'Group',
+    GROUPS: 'Groups',
     NODE_GROUP: 'Node group',
     NODE_GROUPS: 'Node groups',
     TOTAL_NODES: 'Total Nodes',
@@ -117,12 +119,16 @@ module.exports = {
     ERROR_404_META_TITLE: 'Page not found!',
     ERROR_404_TEXT: 'Oops! The page or resource you were looking for doesn\'t exist.',
     ERROR_404_ITEM_TITLE: '{item} not found!',
-    AUTHKEY_FIELD_REGEX_MATCH: 'Invalid authentication key!',
+    AUTHKEY_FIELD_REGEX_MATCH: 'Only letters are allowed in authentication keys.',
     ERROR_404_ITEM_TEXT: 'We were unable to find that {item}.',
+    EMAIL_FIELD_EMAIL: 'Please type a valid email address.',
+    EMAIL_FIELD_REQUIRED: 'The email field is required.',
+    PASSWORD_FIELD_REQUIRED: 'The password field is required.',
     ERROR_400_ITEM_TITLE: 'Something went wrong.',
     ERROR_400_ITEM_TEXT: 'We were unable to retrieve the list of {item} you requested.',
     REQUESTED_PAGE_DOES_NOT_EXIST: 'Invalid page!',
     VALIDATION_FAILED: 'Please correct any errors and try again.',
+    PASSWORD_FIELD_MINLENGTH: 'Your password must have 5 characters or more.',
     CAPTCHA_VALIDATION_FAILED: 'Please complete the captcha and try again.',
     OBJECT_PERSIST_FAILED: 'Something went wrong, please try again later.',
     RESOURCE_CREATION_FAILED: 'Unable to create resource, please try again later.',
@@ -445,13 +451,18 @@ module.exports = {
     NODE_PENDING_VERIFICATION: 'This node is pending verification. Please try again when its status is CONFIRMED.',
     STATUS: {
       ACTIVE: 'Active',
-      UNCONFIRMED: 'Unconfirmed',
       CONFIRMED: 'Confirmed',
+      UNCONFIRMED: 'Unconfirmed',
       PENDING: 'Pending Verification',
       PENDING_VERIFICATION: 'Pending Verification',
       ENABLED: 'Enabled',
       DISABLED: 'Disabled',
       CANCELLED: 'Cancelled'
+    },
+    STATUS_TOOLTIPS: {
+      CONFIRMED: '<strong>Confirmed</strong>: This node has been confirmed and is ready for use.',
+      UNCONFIRMED: '<strong>Unconfirmed</strong>: This node is awaiting confirmation.',
+      PENDING_VERIFICATION: '<strong>Pending Verification</strong>: This node is pending verification.'
     },
     MODEL: {
       ANY: 'Any type',
@@ -467,7 +478,7 @@ module.exports = {
     RESOURCE_NOT_FOUND: 'We were unable to find that node. Please try again later and contact us if the problem persists.',
     MANAGE_DAEMON: 'Manage Daemon',
     INVALID_NETWORK: 'Please add a valid network address.',
-    RESOURCES: 'My resources',
+    RESOURCES: 'Resources',
     USERS: 'Users',
     BACK_TO_DAEMON: 'Back',
     BACK_TO_NODES: 'Back To Nodes',
@@ -548,6 +559,7 @@ module.exports = {
     IMPERSONATING: 'You are currently impersonating {name}.',
     FORGOT_PASSWORD: 'Forgot your password?',
     BACK_TO_LOGIN: 'Back to Login',
+    LOGIN_AGAIN: 'Changes saved! Please check your email to verify your account.',
     RESET_PASSWORD_BUTTON: 'Reset Password',
     PLACEHOLDER_EMAIL: 'Email address',
     PLACEHOLDER_PASSWORD: 'Password',
@@ -568,7 +580,7 @@ module.exports = {
     CHANGE_BUTTON: 'Reset Password',
     SET_BUTTON: 'Set Password',
     TOKEN_ISSUED: 'Please check your email to finish your password reset.',
-    TOKEN_ERROR: 'An error has ocurred while trying to issue a token for reset. Please try again!',
+    TOKEN_ERROR: 'An error has ocurred while trying to issue a token for reset. Please try again later.',
     PASSWORD_FAILED: 'There was a problem with this reset token. Please try again later or contact our support team if this persists.',
     RESET_COMPLETE: 'Password Reset Complete',
     RESET_COMPLETE_TEXT: 'Your password has been successfully changed. You may now log into your account.',
@@ -590,25 +602,25 @@ module.exports = {
   help: {
     nodes: {
       title: 'Nodes',
-      subtitle: 'Subtitle here',
+      subtitle: '-',
       topics: {
         general: {
-          title: 'General help',
-          description: 'test 123',
+          title: 'General Help',
+          description: '-',
           topics: {
             what: {
               title: 'What is a node?',
-              description: 'A node is you lorem ipsum dolor.'
+              description: '-'
             },
             availability: {
               title: 'How do I know the availability of a given node?',
-              description: 'A given node is lorem.'
+              description: '-'
             }
           }
         },
         buying: {
           title: 'Purchasing nodes',
-          description: 'Purchasing nodes is very simple! Lorem ipsum for all!'
+          description: '-'
         },
         marketModels: {
           title: 'Market models',
@@ -622,11 +634,11 @@ module.exports = {
     },
     groups: {
       title: 'Groups',
-      subtitle: 'Subtitle here',
+      subtitle: '-',
       topics: {
         general: {
           title: 'General help',
-          description: 'This is a general text about groups.'
+          description: '-'
         }
       }
     },
@@ -636,7 +648,7 @@ module.exports = {
       topics: {
         methods: {
           title: 'Payment methods',
-          description: 'You can pay with PayPal, Credit Card or credit.'
+          description: 'You can pay with Cryptocurrency, PayPal, credit card or your account credit.'
         }
       }
     },
@@ -646,22 +658,23 @@ module.exports = {
       topics: {
         status: {
           title: 'Invoice status',
-          description: 'Your invoice can have a different status.'
+          description: '-'
         }
       }
     },
     orders: {
       title: 'Orders',
-      subtitle: 'Subtitle here',
+      subtitle: '-',
       topics: {
         billing: {
           title: 'Billing',
-          description: 'Billing works like this: ...'
+          description: '-'
         }
       }
     },
     services: {
       title: 'Services',
+      subtitle: '-',
       topics: {
         protocols: {
           title: 'Protocols',
@@ -703,7 +716,7 @@ module.exports = {
         },
         pushedNetworks: {
           title: 'Pushed Networks',
-          description: ''
+          description: '-'
         }
       }
     }

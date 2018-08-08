@@ -4,8 +4,8 @@
 
     <div class="container">
       <div class="col-12">
-        <div class="section padded">
-          <div class="add col-12 mb-4">
+        <div class="section">
+          <div class="add col-12 mt-4 mb-4">
             <h2>
               {{ $i18n.t('misc.USERS') }}
             </h2>
@@ -29,10 +29,9 @@
                       v-for="row in tableData"
                       :key="row.id">
                       <td>{{ row.id }}</td>
-                      <td>{{ row.fullName }}</td>
+                      <td>{{ row.authKey }}</td>
                       <td>{{ row.emailAddress }}</td>
                       <td>{{ parseRoles(row.roles) }}</td>
-                      <td>{{ row.lastLoginDate | moment('MMM D, YYYY') }}</td>
                       <td class="table-actions">
                         <template v-if="row.source === 'Local'">
                           <button
@@ -52,6 +51,12 @@
                             @click.stop="certificates(row.id)">
                             {{ $i18n.t('daemon.CERTIFICATES') }}
                           </button>
+
+                          <button
+                            class="button"
+                            @click.stop="resources(row.id)">
+                            {{ $i18n.t('daemon.RESOURCES') }}
+                          </button>
                         </template>
                       </td>
                     </tr>
@@ -59,11 +64,10 @@
                 </table>
               </div>
             </div>
-
-            <paginator
-              :pagination="pagination"
-              @changedPage="changedPage"/>
           </template>
+          <loading
+            v-else
+            text="Fetching local users ..."/>
         </div>
       </div>
     </div>
@@ -71,15 +75,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import userAPI from '@/daemon/api/user'
 import daemonMenu from '@/daemon/components/common/menu'
-import paginator from '@/shared/components/paginator'
 import tableHeader from '@/shared/components/table/thead'
+import loading from '@/shared/components/loading'
 
 export default {
   components: {
     top,
-    paginator,
+    loading,
     daemonMenu,
     tableHeader
   },
@@ -88,20 +93,28 @@ export default {
       tableData: null,
       pagination: null,
       perPage: 10,
-      columns: ['id', 'fullName', 'emailAddress', 'roles', 'lastLoginDate', 'actions'],
+      columns: ['id', 'authKey', 'emailAddress', 'roles', 'actions'],
       sortable: [],
       headings: {
         id: 'ID',
-        fullName: 'Name',
+        authKey: 'Username',
         emailAddress: 'Email',
         roles: 'Roles',
-        lastLoginDate: 'Last login',
         actions: ''
       },
       actionButtons: null
     }
   },
+  computed: {
+    ...mapGetters({
+      node: 'daemonAuth/node'
+    })
+  },
   async created () {
+    if (this.node.market_model !== 'UNLISTED') {
+      this.$router.push({ name: 'daemon-services', params: { nodeId: this.$route.params.nodeId } })
+    }
+
     await this.fetchUsers(this.$route.params.page || 1)
   },
   methods: {
@@ -132,21 +145,19 @@ export default {
     async certificates (id) {
       this.$router.push({ name: 'daemon-user-certificates', params: { id: id } })
     },
+    async resources (id) {
+      this.$router.push({ name: 'daemon-user-resources', params: { id: id } })
+    },
     async changedPage (page) {
       this.$router.push({ name: 'daemon', params: { nodeId: this.$route.params.nodeId, tabAction: 'users' } })
       await this.fetchUsers(page)
     },
     parseRoles (roles) {
-      return roles.join(', ')
+      return roles.join(',')
     },
     async fetchUsers (page) {
       await userAPI.list({
-        queryParams: {
-          page: page || 1,
-          perPage: this.perPage || 10
-        },
         success: response => {
-          this.pagination = response.data.pagination
           this.tableData = response.data.result
         },
         fail: e => {
