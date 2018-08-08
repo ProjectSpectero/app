@@ -37,9 +37,15 @@
     <template
       slot="status"
       slot-scope="props">
-      <div :class="'badge-' + props.row.status.toLowerCase()">
+      <div
+        v-tooltip="{ html: `node-${props.row.id}-status-tooltip` }"
+        :class="'badge-' + props.row.status.toLowerCase()">
         {{ $i18n.t(`nodes.STATUS.${props.row.status}`) }}
       </div>
+      <div
+        :id="`node-${props.row.id}-status-tooltip`"
+        class="tooltip"
+        v-html="$i18n.t(`nodes.STATUS_TOOLTIPS.${props.row.status}`)"/>
     </template>
   </v-client-table>
 </template>

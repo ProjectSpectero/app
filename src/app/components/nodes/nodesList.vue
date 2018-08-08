@@ -50,9 +50,15 @@
             </td>
             <td>{{ $i18n.t(`nodes.MODEL.${row.market_model}`) }}</td>
             <td>
-              <div :class="'badge-' + row.status.toLowerCase()">
+              <div
+                v-tooltip="{ html: `node-${row.id}-status-tooltip` }"
+                :class="'badge-' + row.status.toLowerCase()">
                 {{ $i18n.t(`nodes.STATUS.${row.status}`) }}
               </div>
+              <div
+                :id="`node-${row.id}-status-tooltip`"
+                class="tooltip"
+                v-html="$i18n.t(`nodes.STATUS_TOOLTIPS.${row.status}`)"/>
             </td>
             <td class="table-actions">
               <button

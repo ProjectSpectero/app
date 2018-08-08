@@ -451,13 +451,18 @@ module.exports = {
     NODE_PENDING_VERIFICATION: 'This node is pending verification. Please try again when its status is CONFIRMED.',
     STATUS: {
       ACTIVE: 'Active',
-      UNCONFIRMED: 'Unconfirmed',
       CONFIRMED: 'Confirmed',
+      UNCONFIRMED: 'Unconfirmed',
       PENDING: 'Pending Verification',
       PENDING_VERIFICATION: 'Pending Verification',
       ENABLED: 'Enabled',
       DISABLED: 'Disabled',
       CANCELLED: 'Cancelled'
+    },
+    STATUS_TOOLTIPS: {
+      CONFIRMED: '<strong>Confirmed</strong>: This node has been confirmed and is ready for use.',
+      UNCONFIRMED: '<strong>Unconfirmed</strong>: This node is awaiting confirmation.',
+      PENDING_VERIFICATION: '<strong>Pending Verification</strong>: This node is pending verification.'
     },
     MODEL: {
       ANY: 'Any type',
