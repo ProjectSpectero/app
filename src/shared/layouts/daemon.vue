@@ -12,7 +12,7 @@
         :bar-component="barComponent"/>
 
       <template v-if="specs && node">
-        <router-view :key="$route.fullPath" />
+        <router-view/>
       </template>
       <loading
         v-else
