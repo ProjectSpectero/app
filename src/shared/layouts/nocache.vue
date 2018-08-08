@@ -4,7 +4,7 @@
     <div class="content">
       <impersonation-bar/>
       <modals-container/>
-      <router-view/>
+      <router-view :key="$route.fullPath" />
     </div>
     <help/>
   </div>

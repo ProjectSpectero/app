@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import userAPI from '@/daemon/api/user'
 import daemonMenu from '@/daemon/components/common/menu'
 import tableHeader from '@/shared/components/table/thead'
@@ -118,6 +118,9 @@ export default {
     await this.fetchUsers(this.$route.params.page || 1)
   },
   methods: {
+    ...mapActions({
+      testLogin: 'daemonAuth/testLogin'
+    }),
     add () {
       this.$router.push({ name: 'daemon-user-create', params: { nodeId: this.$route.params.nodeId } })
     },
@@ -127,6 +130,8 @@ export default {
     },
     async remove (id) {
       if (confirm(this.$i18n.t('misc.DELETE_CONFIRM_DIALOG', { object: 'user' }))) {
+        await this.testLogin()
+
         await userAPI.delete({
           data: {
             id: id
@@ -156,6 +161,8 @@ export default {
       return roles.join(',')
     },
     async fetchUsers (page) {
+      await this.testLogin()
+
       await userAPI.list({
         success: response => {
           this.tableData = response.data.result

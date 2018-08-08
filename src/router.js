@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Meta from 'vue-meta'
 import store from '@/store'
+import { getCookie } from 'tiny-cookie'
 
 import appRoutes from '@/app/routes'
 import daemonRoutes from '@/daemon/routes'
@@ -39,9 +40,21 @@ router.beforeEach((to, from, next) => {
 function processRoute (loggedIn, to, from, next) {
   if (to.matched.some(record => record.meta.auth)) {
     if (loggedIn) {
-      next()
+      const hasDaemonUser = store.getters['daemonAuth/user']
+      const hasDaemonCookie = (getCookie(process.env.DAEMON_COOKIE) !== null)
+
+      // Are we inside the daemon? Then we must make sure our cookie + daemon auth
+      // are synced and auto-login again if not
+      if (hasDaemonUser && to.params.nodeId && !hasDaemonCookie) {
+        console.warn('Daemon user is set but cookie is out of sync. Attempting to autologin again ...')
+        store.dispatch('daemonAuth/autologin').then(daemonLoggedIn => {
+          next()
+        })
+      } else {
+        next()
+      }
     } else {
-      let redirectQuery = to.fullPath === '/' ? {} : { redirect: to.fullPath }
+      const redirectQuery = to.fullPath === '/' ? {} : { redirect: to.fullPath }
 
       // Force the same behavior as logging out (remove cookie + clean store)
       // for scenarios where our cookie has expired

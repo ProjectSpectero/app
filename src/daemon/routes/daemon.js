@@ -9,7 +9,7 @@ import edit from '@/daemon/components/users/edit'
 import create from '@/daemon/components/users/create'
 
 export default [
-  { path: '/daemon/:nodeId', name: 'daemon', component: manage, meta: { auth: true, layout: 'daemon' } },
+  { path: '/daemon/:nodeId', name: 'daemon', component: manage, meta: { layout: 'daemon' } },
   { path: '/daemon/:nodeId/services', name: 'daemon-services', component: services, meta: { auth: true, layout: 'daemon' } },
   { path: '/daemon/:nodeId/services/HTTPProxy/edit', name: 'daemon-service-HTTPProxy', component: HTTPProxy, meta: { auth: true, layout: 'daemon' } },
   { path: '/daemon/:nodeId/services/openVPN/edit', name: 'daemon-service-OpenVPN', component: openVPN, meta: { auth: true, layout: 'daemon' } },

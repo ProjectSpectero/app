@@ -71,6 +71,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      user: 'daemonAuth/user',
       services: 'services/services'
     })
   },
@@ -79,13 +80,16 @@ export default {
   },
   methods: {
     ...mapActions({
+      testLogin: 'daemonAuth/testLogin',
       fetchServices: 'services/fetch',
       toggleStatus: 'services/toggleStatus'
     }),
-    start (service) {
+    async start (service) {
+      await this.testLogin()
       this.toggleStatus({ service: service, action: 'start' })
     },
-    stop (service) {
+    async stop (service) {
+      await this.testLogin()
       this.toggleStatus({ service: service, action: 'stop' })
     }
   }

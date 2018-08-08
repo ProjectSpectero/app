@@ -11,6 +11,7 @@ import auth from '@/shared/layouts/auth'
 import basic from '@/shared/layouts/basic'
 import error from '@/shared/layouts/error'
 import master from '@/shared/layouts/master'
+import nocache from '@/shared/layouts/nocache'
 import daemon from '@/shared/layouts/daemon'
 
 export default {
@@ -20,6 +21,7 @@ export default {
     basic,
     error,
     master,
+    nocache,
     daemon
   },
   metaInfo: {
