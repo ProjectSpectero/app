@@ -128,16 +128,19 @@ export default {
       this.setup()
     }
   },
-  created () {
+  async created () {
     if (this.daemonInitialized) {
+      await this.testLogin()
       this.setup()
     }
   },
   methods: {
     ...mapActions({
+      testLogin: 'daemonAuth/testLogin',
       switchBarComponent: 'settings/switchBarComponent'
     }),
     async setup () {
+      await this.testLogin()
       await this.fetchService()
       await this.fetchIps()
     },
@@ -180,7 +183,10 @@ export default {
     proxyChanged () {
       this.$set(this.config, 'proxyMode', this.proxy)
     },
-    update () {
+    async update () {
+      // Test login: if failed, we'll login automatically again
+      await this.testLogin()
+
       serviceAPI.update({
         name: this.name,
         data: this.config,
