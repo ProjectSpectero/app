@@ -145,7 +145,6 @@ export default {
       await serviceAPI.get({
         name: this.name,
         success: response => {
-          console.warn(response.data.result)
           this.config = response.data.result[0]
           this.proxy = this.config.proxyMode
         },

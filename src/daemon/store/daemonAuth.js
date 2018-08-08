@@ -1,7 +1,8 @@
-import { setCookie, removeCookie } from 'tiny-cookie'
+import { setCookie, getCookie, removeCookie } from 'tiny-cookie'
 import userAPI from '@/daemon/api/user'
 import cloudAPI from '@/daemon/api/cloud'
 import nodeAPI from '@/app/api/node'
+import router from '@/router'
 
 const state = {
   specs: null,
@@ -37,21 +38,21 @@ const actions = {
   async syncCurrentUser ({ commit, dispatch }) {
     await userAPI.getMe({
       success: async response => {
-        console.log('syncCurrentUser successful on daemon', response.data.result)
+        console.log('Retrieved user information (syncCurrentUser)', response.data.result)
         commit('SET_CURRENT_USER', response.data.result)
 
         // Gather remote node details
         await dispatch('connectToRemote')
       },
       fail: error => {
-        console.log(error)
+        console.error(error)
       }
     })
   },
   async connectToRemote ({ commit, dispatch }) {
     await cloudAPI.remote({
       success: response => {
-        console.log('Finished connectToRemote')
+        console.warn('Finished connecting to remote', response.data.result)
         commit('SET_SPECS', response.data.result)
 
         // Append the restart server button if needed
@@ -66,7 +67,15 @@ const actions = {
       }
     })
   },
-  async addCookie ({ commit, dispatch }, payload) {
+  async testLogin ({ state, dispatch }) {
+    if (state.user && getCookie(process.env.DAEMON_COOKIE) === null) {
+      console.warn('Daemon login test failed, calling autologin() ...')
+      await dispatch('autologin')
+    } else {
+      console.warn('Daemon login test passed, proceeding ...')
+    }
+  },
+  async addCookie ({ commit }, payload) {
     const data = {
       accessToken: payload.credentials.access.token,
       refreshToken: payload.credentials.refresh.token,
@@ -74,9 +83,12 @@ const actions = {
       refreshTokenExpires: payload.credentials.refresh.expires
     }
 
-    setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: parseFloat(payload.credentials.access.expires / 1000) + 's' })
+    setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: '10s' })
+    // setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: parseFloat(payload.credentials.access.expires / 1000) + 's' })
+    console.log('Finished adding cookie with data')
   },
   setupEndpoint ({ commit }, payload) {
+    console.log('Setting up endpoint', payload)
     commit('SETUP_ENDPOINT', payload)
   },
   async setupNode ({ commit }, id) {
@@ -86,7 +98,7 @@ const actions = {
       },
       success: async response => {
         if (response.data.result) {
-          console.log('Setting up node', response.data.result)
+          console.log('Finished setting up node', response.data.result)
           commit('SETUP_NODE', response.data.result)
         }
       },
@@ -95,6 +107,32 @@ const actions = {
         this.$toasted.error('nodes.RESOURCE_NOT_FOUND')
       }
     })
+  },
+  async autologin ({ dispatch }) {
+    const nodeId = router.currentRoute.params.nodeId
+
+    if (nodeId) {
+      await nodeAPI.nodeLogin({
+        data: {
+          id: nodeId
+        },
+        success: async response => {
+          console.warn('Auto-login started, setting up daemon data', response.data.result)
+          await dispatch('addCookie', response.data.result)
+          await dispatch('setupEndpoint', response.data.result)
+          await dispatch('setupNode', nodeId)
+          await dispatch('syncCurrentUser')
+        },
+        fail: error => {
+          console.error('Auto-login failed', error)
+          router.push({ name: 'nodes' })
+          const e = Object.keys(error.errors)[0] || 'AUTOLOGIN_FAIL'
+          throw new Error(e)
+        }
+      })
+    } else {
+      router.push({ name: 'nodes' })
+    }
   },
   logout ({ commit }) {
     removeCookie(process.env.DAEMON_COOKIE)
@@ -107,7 +145,6 @@ const mutations = {
     state.user = payload
   },
   SET_SPECS (state, data) {
-    console.log('System specs:', data)
     state.specs = data
   },
   SETUP_ENDPOINT (state, payload) {
@@ -122,7 +159,6 @@ const mutations = {
     state.version = payload.meta.apiVersion
   },
   SETUP_NODE (state, node) {
-    console.log('Loaded node:', node)
     state.node = node
   },
   CLEAR_ENDPOINT (state) {

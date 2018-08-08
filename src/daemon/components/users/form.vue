@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import userAPI from '@/daemon/api/user'
 
 export default {
@@ -136,7 +136,8 @@ export default {
           regex: /^[a-zA-Z][\w]*$/
         },
         password: {
-          max: 72
+          max: 72,
+          min: 5
         },
         emailAddress: {
           required: true,
@@ -181,6 +182,9 @@ export default {
     this.setup()
   },
   methods: {
+    ...mapActions({
+      testLogin: 'daemonAuth/testLogin'
+    }),
     async fetchUser () {
       await userAPI.get({
         data: {
@@ -218,9 +222,12 @@ export default {
         this.rules = this.editRules
       }
     },
-    submit () {
+    async submit () {
       this.formError = null
       this.errors.clear()
+
+      // Test login: if failed, we'll login automatically again
+      await this.testLogin()
 
       this.$validator.validateAll().then((result) => {
         if (!result) {
