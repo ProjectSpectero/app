@@ -163,10 +163,7 @@ export default {
     await this.fetchInvoice(async () => {
       this.loading = true
 
-      if (this.order && !this.order.easy_enabled) {
-        await this.getBillingProfile()
-      }
-
+      await this.getBillingProfile()
       await this.fetchGateways()
     })
   },
@@ -235,7 +232,7 @@ export default {
           // this.loading = false
           this.customer = response.data.result
 
-          if (!this.customer.complete) {
+          if (!this.customer.complete && this.order && !this.order.easy_enabled) {
             this.billingProfileUpdateRequired = true
           }
         },
@@ -258,15 +255,6 @@ export default {
 .container.centered .col-12 {
   max-width: 1200px;
   margin-left: 0;
-}
-.checkout {
-  .payment-form {
-
-  }
-  .summary {
-    background: tomato;
-    padding: 40px;
-  }
 }
 .select-gateway {
   display: flex;

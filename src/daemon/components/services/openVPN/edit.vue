@@ -296,13 +296,15 @@ export default {
       this.setup()
     }
   },
-  created () {
+  async created () {
     if (this.daemonInitialized) {
+      await this.testLogin()
       this.setup()
     }
   },
   methods: {
     ...mapActions({
+      testLogin: 'daemonAuth/testLogin',
       switchBarComponent: 'settings/switchBarComponent'
     }),
     async setup () {
@@ -390,16 +392,17 @@ export default {
 
       return obj
     },
-    update () {
+    async update () {
       let obj = null
+
+      // Test login: if failed, we'll login automatically again
+      await this.testLogin()
 
       this.$set(this.config[0], 'dhcpOptions', this.dhcpOptions)
       this.$set(this.config[0], 'redirectGateway', this.redirectGateway)
       this.$set(this.config[0], 'pushedNetworks', this.pushedNetworks)
 
       obj = this.buildObject()
-
-      console.log('Updating with config', obj)
 
       serviceAPI.update({
         name: this.name,

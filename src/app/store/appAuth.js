@@ -24,11 +24,10 @@ const actions = {
   async syncCurrentUser ({ commit }) {
     await userAPI.getMe({
       success: response => {
-        console.log('syncCurrentUser: adding real user')
         commit('SET_CURRENT_USER', response.data.result)
       },
       fail: error => {
-        console.log(error)
+        console.error(error)
       }
     })
   },
@@ -36,11 +35,10 @@ const actions = {
     await userAPI.getMe({
       data: { id: id },
       success: response => {
-        console.warn('syncImpersonatedUser: setting current user as ', response.data.result.name)
         commit('SET_CURRENT_USER', response.data.result)
       },
       fail: error => {
-        console.log(error)
+        console.error(error)
       }
     })
   },
@@ -79,9 +77,6 @@ const actions = {
     // (default cookie for login)
     if (payload.cookieName !== undefined && payload.cookieName) {
       cookieName = payload.cookieName
-      console.warn('addCookie (backing up real user data)', data)
-    } else {
-      console.warn('addCookie (faking new user)', data)
     }
 
     setCookie(cookieName, JSON.stringify(data), { expires: payload.expiry + 's' })
@@ -91,8 +86,7 @@ const actions = {
     removeCookie(process.env.IMPERSONATE_COOKIE)
     commit('CLEAR_LOGIN_INFO')
   },
-  setLoginInfo ({ commit, dispatch }, payload) {
-    console.warn('setLoginInfo', payload)
+  setLoginInfo ({ commit }, payload) {
     commit('SET_LOGIN_INFO', payload)
   },
   async startImpersonating ({ commit }) {

@@ -12,7 +12,7 @@
         :bar-component="barComponent"/>
 
       <template v-if="specs && node">
-        <router-view :key="$route.fullPath" />
+        <router-view :key="$route.fullPath"/>
       </template>
       <loading
         v-else
@@ -23,7 +23,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import nodeAPI from '@/app/api/node'
 import bar from '@/daemon/components/common/bar'
 import loading from '@/shared/components/loading'
 import sidebar from '@/shared/components/sidebar'
@@ -47,8 +46,7 @@ export default {
   async created () {
     if (this.$route.params.nodeId) {
       try {
-        await this.autologin(this.$route.params.nodeId)
-        await this.setupNode(this.$route.params.nodeId)
+        await this.autologin()
       } catch (e) {
         this.$toasted.error(this.$i18n.t(`daemon.${e.message}`))
         this.$router.push({ name: 'nodes' })
@@ -59,32 +57,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      addCookie: 'daemonAuth/addCookie',
-      setupEndpoint: 'daemonAuth/setupEndpoint',
-      setupNode: 'daemonAuth/setupNode',
-      syncCurrentUser: 'daemonAuth/syncCurrentUser'
-    }),
-    async autologin (nodeId) {
-      await nodeAPI.nodeLogin({
-        data: {
-          id: nodeId
-        },
-        success: async response => {
-          console.log('Auto-login started, setting up daemon data', response)
-          await this.setup(response.data.result)
-        },
-        fail: error => {
-          console.log('Auto-login failed', error)
-          const e = Object.keys(error.errors)[0] || 'AUTOLOGIN_FAIL'
-          throw new Error(e)
-        }
-      })
-    },
-    async setup (data) {
-      await this.addCookie(data)
-      await this.setupEndpoint(data)
-      await this.syncCurrentUser()
-    }
+      autologin: 'daemonAuth/autologin'
+    })
   }
 }
 </script>

@@ -4,7 +4,7 @@
     <div class="content">
       <div class="auth">
         <div class="auth-container">
-          <router-view :key="$route.fullPath" />
+          <router-view/>
         </div>
       </div>
     </div>
