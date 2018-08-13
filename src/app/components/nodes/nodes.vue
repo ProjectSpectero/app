@@ -124,7 +124,7 @@ export default {
         pagination: {},
         result: []
       },
-      errorItem: 'nodes',
+      errorItem: 'list of nodes',
       fetchSuccessful: false
     }
   },
@@ -174,12 +174,17 @@ export default {
         if (id === 'uncategorized') {
           this.selectUncategorized()
         } else {
-          const target = this.groups.find(g => g.id === parseInt(id))
+          if (this.groups) {
+            const target = this.groups.find(g => g.id === parseInt(id))
 
-          if (!target) {
-            this.error = true
+            if (!target) {
+              this.error = true
+            } else {
+              this.selectGroup(target, false)
+            }
           } else {
-            this.selectGroup(target, false)
+            // No groups found? Stop loading nodes and show the not found screen
+            this.loadingNodes = false
           }
         }
       } else {
@@ -267,7 +272,7 @@ export default {
       // the newly sorted one
       const index = this.groups.findIndex(g => g.id === this.selectedGroup)
 
-      if (index !== -1) {
+      if (index !== -1 && !isNaN(page)) {
         await nodeAPI.myNodes({
           queryParams: {
             searchId: this.searchId,
@@ -286,25 +291,33 @@ export default {
             this.errorCode = 400
           }
         })
+      } else {
+        this.error = true
+        this.errorCode = 400
       }
     },
     async fetchUncategorized (page) {
-      await nodeAPI.uncategorizedNodes({
-        queryParams: {
-          searchId: this.searchId,
-          page: page || 1,
-          perPage: this.perPage || 10
-        },
-        success: response => {
-          this.uncategorized = response.data
-          console.log('Loaded uncategorized')
-          this.loadingUncategorized = false
-          this.fetchSuccessful = true
-        },
-        fail: e => {
-          console.error(e)
-        }
-      })
+      if (!isNaN(page)) {
+        await nodeAPI.uncategorizedNodes({
+          queryParams: {
+            searchId: this.searchId,
+            page: page || 1,
+            perPage: this.perPage || 10
+          },
+          success: response => {
+            this.uncategorized = response.data
+            console.log('Loaded uncategorized')
+            this.loadingUncategorized = false
+            this.fetchSuccessful = true
+          },
+          fail: e => {
+            console.error(e)
+          }
+        })
+      } else {
+        this.error = true
+        this.errorCode = 400
+      }
     },
     async fetchGroups () {
       // Group fetching is paged in chunks of 10, so we need to keep
