@@ -25,13 +25,13 @@
             :class="{'button-loading': loading, 'button-danger': !loading}"
             :disabled="loading"
             class="button"
-            @click="cancel()">
+            @click="cancel">
             Cancel Order
           </button>
           <button
             :disabled="loading"
             class="button right"
-            @click="$emit('close')">
+            @click="close">
             No, Nevermind
           </button>
         </div>
@@ -53,7 +53,7 @@ export default {
       type: Number,
       required: true
     },
-    cancelItem: {
+    cancelled: {
       type: Function,
       required: false,
       default: () => {}
@@ -70,14 +70,15 @@ export default {
     }
   },
   methods: {
-    cancel () {
+    async cancel () {
       this.loading = true
 
-      orderAPI.delete({
+      await orderAPI.delete({
         data: { id: this.id },
         success: response => {
-          this.cancelItem()
-          this.$emit('close')
+          this.loading = false
+          this.cancelled()
+          this.close()
           this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
         },
         fail: error => {
@@ -86,6 +87,9 @@ export default {
           console.error(error)
         }
       })
+    },
+    close () {
+      this.$emit('close')
     }
   }
 }

@@ -302,8 +302,8 @@ export default {
       this.$modal.show(cancelOrderModal, {
         id: id,
         enterpriseOrder: this.isEnterpriseOrder,
-        cancelItem: () => {
-          this.order.status = 'CANCELLED'
+        cancelled: () => {
+          this.fetchOrder()
         }
       }, {
         height: 'auto'

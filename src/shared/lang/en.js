@@ -477,6 +477,7 @@ module.exports = {
   daemon: {
     RESOURCE_NOT_FOUND: 'We were unable to find that node. Please try again later and contact us if the problem persists.',
     MANAGE_DAEMON: 'Manage Daemon',
+    REQUEST_FAILED: 'We were unable to communicate with that node. Please try again later and contact us if the problem persists.',
     INVALID_NETWORK: 'Please add a valid network address.',
     RESOURCES: 'Resources',
     USERS: 'Users',
