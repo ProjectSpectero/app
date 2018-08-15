@@ -2,6 +2,7 @@
   <div>
     <h1>{{ $i18n.t('misc.LOGIN') }}</h1>
     <form id="form-login">
+      {{ environment }}
       <div
         v-if="!formError && this.$route.query.redirect"
         class="message message-info">
@@ -89,7 +90,10 @@ export default {
   computed: {
     ...mapGetters({
       isEnterprise: 'appAuth/isEnterprise'
-    })
+    }),
+    environment () {
+      return process.env.NODE_ENV
+    }
   },
   created () {
     this.autoLogin()
