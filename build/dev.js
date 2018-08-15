@@ -10,7 +10,7 @@ var webpack = require('webpack')
 var config = require('../config')
 var webpackConfig = require('./webpack.staging.conf')
 
-var spinner = ora('building for staging...')
+var spinner = ora('building for dev...')
 
 spinner.start()
 
@@ -27,6 +27,6 @@ rm(path.join(config.staging.assetsRoot, config.staging.assetsSubDirectory), err 
       chunkModules: false
     }) + '\n\n')
 
-    console.log(chalk.cyan('  Build for staging.spectero.com (STAGING) complete.\n'))
+    console.log(chalk.cyan('  Build for dev.spectero.com (DEVELOPMENT) complete.\n'))
   })
 })
