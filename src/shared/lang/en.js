@@ -51,7 +51,6 @@ module.exports = {
     CANCEL: 'Cancel',
     VIEW: 'View',
     ENGAGEMENTS: 'Engagements',
-    VIEW_DETAILS: 'View Details',
     VIEW_FULL_DETAILS: 'View Full Details',
     RESET: 'Reset',
     EDIT: 'Edit',
@@ -322,6 +321,7 @@ module.exports = {
   orders: {
     RESOURCES_NOT_FOUND: 'We were unable to find any resources for this order.',
     RESOURCE_NOT_FOUND: 'We were unable to find that order resource.',
+    VIEW_ON_MARKETPLACE: 'View on Marketplace',
     ORDER_STATUS: {
       PENDING: 'Pending',
       AUTOMATED_FRAUD_CHECK: 'Pending Fraud Check',
@@ -580,7 +580,7 @@ module.exports = {
     HEADER: 'Reset Password',
     CHANGE_BUTTON: 'Reset Password',
     SET_BUTTON: 'Set Password',
-    TOKEN_ISSUED: 'Please check your email to finish your password reset.',
+    TOKEN_ISSUED: 'If you have an account with that email address, reset instructions have been sent.',
     TOKEN_ERROR: 'An error has ocurred while trying to issue a token for reset. Please try again later.',
     PASSWORD_FAILED: 'There was a problem with this reset token. Please try again later or contact our support team if this persists.',
     RESET_COMPLETE: 'Password Reset Complete',
