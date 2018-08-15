@@ -10,6 +10,7 @@ function globalMixin (i18n) {
     },
     computed: {
       isDevelopmentEnvironment () {
+        console.log('isDevelopmentEnvironment', process.env.NODE_ENV)
         return (process.env.NODE_ENV === 'development')
       },
       isStagingEnvironment () {
