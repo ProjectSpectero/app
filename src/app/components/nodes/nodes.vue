@@ -312,6 +312,8 @@ export default {
           },
           fail: e => {
             console.error(e)
+            this.error = true
+            this.errorCode = 400
           }
         })
       } else {
@@ -338,6 +340,8 @@ export default {
             },
             fail: e => {
               console.error(e)
+              this.error = true
+              this.errorCode = 400
             }
           })
         }
