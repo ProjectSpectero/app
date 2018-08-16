@@ -1,5 +1,7 @@
 <template>
-  <div class="spectero daemon">
+  <div
+    :class="{ bar: barComponent }"
+    class="spectero daemon">
     <sidebar/>
 
     <div
@@ -11,12 +13,16 @@
         v-if="barComponent"
         :bar-component="barComponent"/>
 
-      <template v-if="specs && node">
-        <router-view :key="$route.fullPath"/>
-      </template>
-      <loading
-        v-else
-        text="Loading daemon ..."/>
+      <div
+        :class="{ padded: barComponent }"
+        class="daemon-view">
+        <template v-if="specs && node">
+          <router-view :key="$route.fullPath"/>
+        </template>
+        <loading
+          v-else
+          text="Loading daemon ..."/>
+      </div>
     </div>
   </div>
 </template>
@@ -62,3 +68,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.bar .content {
+  .daemon-view {
+    position: relative;
+
+    &.padded {
+      padding-top: 78px;
+    }
+  }
+}
+</style>

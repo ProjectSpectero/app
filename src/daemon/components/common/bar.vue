@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="alert-bar">
     <component :is="barComponent"/>
   </div>
 </template>
