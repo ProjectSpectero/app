@@ -21,9 +21,6 @@ async function API (method, path, data, success, failed) {
     parsedPort = (port !== 'null') ? ':' + port : ''
   }
 
-  console.log('port', port)
-  console.log('parsedPort', parsedPort)
-
   let project = {
     cookieName: cookieName,
     cookie: (cookie !== null) ? JSON.parse(cookie) : null,
