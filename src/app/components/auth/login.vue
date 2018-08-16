@@ -103,7 +103,7 @@ export default {
       syncCurrentUser: 'appAuth/syncCurrentUser'
     }),
     autoLogin () {
-      if (this.isDevelopmentEnvironment && this.$route.query.autologin !== undefined) {
+      if (this.nodeEnvironment !== 'production' && this.$route.query.autologin !== undefined) {
         this.username = 'dev@spectero.com'
         this.password = 'temppass'
         this.processLogin()

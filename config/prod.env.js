@@ -1,3 +1,5 @@
+// Configuration for app.spectero.com
+
 const merge = require('webpack-merge')
 const config = require('dotenv').config()
 const dotenvVars = {}
@@ -9,9 +11,9 @@ if (config.parsed !== undefined) {
 }
 
 module.exports = merge(dotenvVars, {
-  NODE_ENV: '"production"',
-  APP_VERSION: '"v1"',
-  APP_COOKIE: '"SPECTERO_APP_AUTH"',
-  DAEMON_COOKIE: '"SPECTERO_DAEMON_AUTH"',
-  IMPERSONATE_COOKIE: '"SPECTERO_APP_IMPERSONATE"'
+  NODE_ENV: JSON.stringify('production'),
+  APP_VERSION: JSON.stringify('v1'),
+  APP_COOKIE: JSON.stringify('SPECTERO_APP_AUTH'),
+  DAEMON_COOKIE: JSON.stringify('SPECTERO_DAEMON_AUTH'),
+  IMPERSONATE_COOKIE: JSON.stringify('SPECTERO_APP_IMPERSONATE')
 })

@@ -1,4 +1,4 @@
-// Configuration for your local environment
+// Configuration for dev.spectero.com
 
 const merge = require('webpack-merge')
 const config = require('dotenv').config()
@@ -14,8 +14,8 @@ module.exports = merge(dotenvVars, {
   NODE_ENV: JSON.stringify('development'),
   APP_ENDPOINT: JSON.stringify('dev.spectero.com'),
   APP_PROTOCOL: JSON.stringify('https'),
-  APP_PORT: JSON.stringify('null'),
   APP_VERSION: JSON.stringify('v1'),
+  APP_PORT: JSON.stringify('null'),
   APP_COOKIE: JSON.stringify('SPECTERO_APP_AUTH'),
   DAEMON_COOKIE: JSON.stringify('SPECTERO_DAEMON_AUTH'),
   IMPERSONATE_COOKIE: JSON.stringify('SPECTERO_APP_IMPERSONATE')
