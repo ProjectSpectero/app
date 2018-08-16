@@ -226,7 +226,7 @@ export default {
       verificationErrors: [],
       sort: {
         fields: {
-          'id': 'ID',
+          'resource': 'Resource ID',
           'status': 'Status',
           'type': 'Type',
           'sync_status': 'Sync Status'
