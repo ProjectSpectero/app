@@ -449,6 +449,7 @@ module.exports = {
     GO_TO_NODE_GROUP: 'Go to node group',
     MARKET_MODEL_TOOLTIP: 'There are three types of market model:',
     NODE_PENDING_VERIFICATION: 'This node is pending verification. Please try again when its status is CONFIRMED.',
+    NODE_BELONGS_TO_GROUP: 'This node belongs to a group and cannot be deleted. Please remove it from this group and try again.',
     STATUS: {
       ACTIVE: 'Active',
       CONFIRMED: 'Confirmed',
