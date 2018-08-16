@@ -430,8 +430,8 @@ module.exports = {
     EDIT_NODE: 'Edit Node',
     GROUP_CREATE_SUCCESS: 'Group created successfully!',
     DELETE_GROUP_CONFIRM_DIALOG: 'Are you sure you want to remove this node group?',
-    DELETE_SUCCESS: 'Node removed successfully!',
-    GROUP_DELETE_SUCCESS: 'Group removed successfully!',
+    DELETE_SUCCESS: 'Your node is now queued for deletion and should be removed shortly.',
+    GROUP_DELETE_SUCCESS: 'Your group is now queued for deletion and should be removed shortly.',
     DELETE_ERROR: 'An error ocurred while trying to delete your node. Please try again later.',
     REQUEST_FAILED: 'The request failed. Please try again and contact our support team if the error persists.',
     NODE_VERIFY_SUCCESS: 'Your node {node} is now queued for verification. We\'ll send you an email as soon as this is finished.',
@@ -457,12 +457,14 @@ module.exports = {
       PENDING_VERIFICATION: 'Pending Verification',
       ENABLED: 'Enabled',
       DISABLED: 'Disabled',
-      CANCELLED: 'Cancelled'
+      CANCELLED: 'Cancelled',
+      PENDING_DELETION: 'Pending Deletion'
     },
     STATUS_TOOLTIPS: {
       CONFIRMED: '<strong>Confirmed</strong>: This node has been confirmed and is ready for use.',
       UNCONFIRMED: '<strong>Unconfirmed</strong>: This node is awaiting confirmation.',
-      PENDING_VERIFICATION: '<strong>Pending Verification</strong>: This node is pending verification.'
+      PENDING_VERIFICATION: '<strong>Pending Verification</strong>: This node is pending verification.',
+      PENDING_DELETION: '<strong>Pending Deletion</strong>: This node is pending deletion.'
     },
     MODEL: {
       ANY: 'Any type',
