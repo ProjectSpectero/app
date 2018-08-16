@@ -86,7 +86,10 @@ export default {
               let e = error.errors[key]
 
               this.verificationErrors.push(e)
-              this.lineItems[this.lineItems.findIndex(i => i.id === e.id)].error = e.reason
+
+              if (this.lineItems) {
+                this.lineItems[this.lineItems.findIndex(i => i.id === e.id)].error = e.reason
+              }
             }
           } else {
             this.$toasted.error(this.errorAPI(error, 'orders'))
