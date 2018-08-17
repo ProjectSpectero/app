@@ -1,5 +1,6 @@
 <template>
-  <div class="sidebar">
+  <div
+    class="sidebar">
     <div class="menu-logo">
       <router-link :to="{ name: 'dashboard' }">
         <div
@@ -119,9 +120,9 @@
                 {{ $i18n.t('misc.DOCUMENTATION') }}
               </router-link>
             </li>
-            <li>
+            <li v-if="supportLink">
               <a
-                :href="supportLink ? supportLink : '#'"
+                :href="supportLink"
                 target="_blank">
                 <span class="icon-life-buoy"/>
                 {{ $i18n.t('misc.SUPPORT') }}
@@ -185,17 +186,11 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import userAPI from '@/app/api/user'
 import sidebarDropdown from './sidebarDropdown'
 
 export default {
   components: {
     sidebarDropdown
-  },
-  data () {
-    return {
-      supportLink: null
-    }
   },
   computed: {
     ...mapGetters({
@@ -203,37 +198,30 @@ export default {
       user: 'appAuth/user',
       isEnterprise: 'appAuth/isEnterprise',
       isPro: 'appAuth/isPro',
-      isAdmin: 'appAuth/isAdmin'
+      isAdmin: 'appAuth/isAdmin',
+      supportLink: 'settings/supportLink'
     })
   },
   watch: {
     user: async function (u) {
       if (u) {
-        await this.fetchFreshdesk()
+        await this.fetchSupportLink()
         await this.fetchPlans()
         await this.refreshCart()
       }
     }
+  },
+  created () {
+    this.fetchSupportLink()
   },
   methods: {
     ...mapActions({
       appLogout: 'appAuth/logout',
       daemonLogout: 'daemonAuth/logout',
       fetchPlans: 'market/fetchPlans',
-      refreshCart: 'cart/refresh'
-    }),
-    async fetchFreshdesk () {
-      await userAPI.getSupportLink({
-        success: response => {
-          if (response.data.result.redirect_uri !== undefined) {
-            this.supportLink = response.data.result.redirect_uri
-          }
-        },
-        fail: error => {
-          console.log(error)
-        }
-      })
-    }
+      refreshCart: 'cart/refresh',
+      fetchSupportLink: 'settings/fetchSupportLink'
+    })
   }
 }
 </script>

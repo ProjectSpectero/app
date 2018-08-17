@@ -322,7 +322,6 @@ export default {
             this.uncategorized = response.data
             this.loadingUncategorized = false
             this.fetchSuccessful = true
-            console.log('Loaded uncategorized', this.fetchSuccessful)
           },
           fail: e => {
             console.error(e)
