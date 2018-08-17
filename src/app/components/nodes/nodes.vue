@@ -20,7 +20,7 @@
       <div>
         <div class="container">
           <div
-            v-if="everythingLoaded"
+            v-if="groups && everythingLoaded"
             class="col-12 content-split">
             <div
               v-if="groups && groups.length"
@@ -161,9 +161,23 @@ export default {
   },
   methods: {
     async setup () {
+      this.reset()
+
       await this.fetchUncategorized(this.currentPage)
       await this.fetchGroups()
+
       this.handleSelection()
+    },
+    reset () {
+      this.groups = null
+      this.totalGroups = null
+      this.processedGroups = 0
+      this.groupsPage = 1
+      this.nodes = []
+      this.uncategorized = {
+        pagination: {},
+        result: []
+      }
     },
     handleSelection () {
       const id = this.$route.params.id
@@ -306,9 +320,9 @@ export default {
           },
           success: response => {
             this.uncategorized = response.data
-            console.log('Loaded uncategorized')
             this.loadingUncategorized = false
             this.fetchSuccessful = true
+            console.log('Loaded uncategorized', this.fetchSuccessful)
           },
           fail: e => {
             console.error(e)

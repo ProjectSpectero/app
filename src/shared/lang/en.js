@@ -431,7 +431,7 @@ module.exports = {
     GROUP_CREATE_SUCCESS: 'Group created successfully!',
     DELETE_GROUP_CONFIRM_DIALOG: 'Are you sure you want to remove this node group?',
     DELETE_SUCCESS: 'Your node is now queued for deletion and should be removed shortly.',
-    GROUP_DELETE_SUCCESS: 'Your group is now queued for deletion and should be removed shortly.',
+    GROUP_DELETE_SUCCESS: 'Node group deleted successfully!',
     DELETE_ERROR: 'An error ocurred while trying to delete your node. Please try again later.',
     REQUEST_FAILED: 'The request failed. Please try again and contact our support team if the error persists.',
     NODE_VERIFY_SUCCESS: 'Your node {node} is now queued for verification. We\'ll send you an email as soon as this is finished.',
