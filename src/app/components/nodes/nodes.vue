@@ -37,9 +37,9 @@
                 <div class="group-name">
                   {{ group.friendly_name }}
                 </div>
-                <div class="count">
-                  {{ group.nodes.length }}
-                </div>
+                <!-- <div class="count">
+                  0
+                </div> -->
               </div>
 
               <div
@@ -203,15 +203,6 @@ export default {
         }
       } else {
         let found = false
-
-        // Select the first group with nodes, if any.
-        // Otherwise, just pick the first empty group.
-        this.groups.forEach(g => {
-          if (!found && g.nodes.length > 0) {
-            this.selectGroup(g, false)
-            found = true
-          }
-        })
 
         if (!found && this.groups.length > 0) {
           this.selectGroup(this.groups[0], false)
