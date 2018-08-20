@@ -27,7 +27,7 @@
           <li>
             <router-link
               :to="{ name: 'settings' }"
-              @click.native="toggleAccountDropdown">
+              @click.native="toggleDropdownAndMenu">
               <span class="icon-settings"/>
               {{ $i18n.t('misc.SETTINGS') }}
             </router-link>
@@ -78,6 +78,8 @@ export default {
       daemonLogout: 'daemonAuth/logout'
     }),
     logOut () {
+      this.toggleMenuClick()
+
       this.daemonLogout().then(() => {
         this.appLogout().then(() => {
           this.$router.push({ name: 'login' })
@@ -94,6 +96,13 @@ export default {
       if (el !== e.target && !el.contains(e.target)) {
         this.showAccountDropdown = false
       }
+    },
+    toggleMenuClick () {
+      this.$emit('toggleMenuClick')
+    },
+    toggleDropdownAndMenu () {
+      this.toggleAccountDropdown()
+      this.toggleMenuClick()
     }
   }
 }

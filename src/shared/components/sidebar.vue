@@ -2,7 +2,9 @@
   <div
     class="sidebar">
     <div class="menu-logo">
-      <router-link :to="{ name: 'dashboard' }">
+      <router-link
+        :to="{ name: 'dashboard' }"
+        @click.native="toggleMenuClick">
         <div
           :class="{ 'logo-pro': isPro }"
           class="logo logo-sm"/>
@@ -28,7 +30,9 @@
           <!-- <section class="nav-section">
             <ul>
               <li>
-                <router-link :to="{ name: 'dashboard' }">
+                <router-link
+                  :to="{ name: 'dashboard' }"
+                  @click.native="toggleMenuClick">
                   <span class="icon-pie-chart"></span>
                   {{ $i18n.t('misc.DASHBOARD') }}
                 </router-link>
@@ -41,7 +45,9 @@
             <h5>{{ $i18n.t('misc.ADMIN') }}</h5>
             <ul>
               <li>
-                <router-link :to="{ name: 'users-list' }">
+                <router-link
+                  :to="{ name: 'users-list' }"
+                  @click.native="toggleMenuClick">
                   <span class="icon-pie-chart"/>
                   {{ $i18n.t('misc.USERS') }}
                 </router-link>
@@ -51,7 +57,9 @@
           <section class="nav-section">
             <ul>
               <li>
-                <router-link :to="{ name: 'pro' }">
+                <router-link
+                  :to="{ name: 'pro' }"
+                  @click.native="toggleMenuClick">
                   <span class="icon-zap"/>
                   {{ $i18n.t('misc.PRO') }}
                 </router-link>
@@ -64,7 +72,9 @@
             <h5>{{ $i18n.t('misc.ENTERPRISE') }}</h5>
             <ul>
               <li>
-                <router-link :to="{ name: 'enterpriseOrders' }">
+                <router-link
+                  :to="{ name: 'enterpriseOrders' }"
+                  @click.native="toggleMenuClick">
                   <span class="icon-server"/>
                   {{ $i18n.t('misc.ENTERPRISE') }}
                 </router-link>
@@ -77,13 +87,16 @@
               <li>
                 <router-link
                   :to="{ name: 'nodes' }"
-                  :class="{'router-link-active': ['node', 'nodesGroupCreate', 'nodeGroupEdit', 'daemon', 'daemon-service-HTTPProxy', 'daemon-service-OpenVPN'].includes($route.name)}">
+                  :class="{'router-link-active': ['node', 'nodesGroupCreate', 'nodeGroupEdit', 'daemon', 'daemon-service-HTTPProxy', 'daemon-service-OpenVPN'].includes($route.name)}"
+                  @click.native="toggleMenuClick">
                   <span class="icon-hard-drive"/>
                   {{ $i18n.t('misc.NODES') }}
                 </router-link>
               </li>
               <li>
-                <router-link :to="{ name: 'downloads' }">
+                <router-link
+                  :to="{ name: 'downloads' }"
+                  @click.native="toggleMenuClick">
                   <span class="icon-download-cloud"/>
                   {{ $i18n.t('misc.DOWNLOADS') }}
                 </router-link>
@@ -94,13 +107,17 @@
             <h5>{{ $i18n.t('misc.MARKET') }}</h5>
             <ul>
               <li>
-                <router-link :to="{ name: 'market' }">
+                <router-link
+                  :to="{ name: 'market' }"
+                  @click.native="toggleMenuClick">
                   <span class="icon-shopping-bag"/>
                   {{ $i18n.t('misc.MARKET') }}
                 </router-link>
               </li>
               <li>
-                <router-link :to="{ name: 'cart' }">
+                <router-link
+                  :to="{ name: 'cart' }"
+                  @click.native="toggleMenuClick">
                   <span class="icon-shopping-cart"/>
                   {{ $i18n.t('misc.CART') }}
                   <span
@@ -111,7 +128,8 @@
               <li>
                 <router-link
                   :to="{ name: 'orders' }"
-                  :class="{'router-link-active': ['order', 'orderResources', 'orderInvoices'].includes($route.name)}">
+                  :class="{'router-link-active': ['order', 'orderResources', 'orderInvoices'].includes($route.name)}"
+                  @click.native="toggleMenuClick">
                   <span class="icon-briefcase"/>
                   {{ $i18n.t('misc.ORDERS') }}
                 </router-link>
@@ -119,7 +137,8 @@
               <li>
                 <router-link
                   :to="{ name: 'invoices' }"
-                  :class="{'router-link-active': ['invoice', 'checkout'].includes($route.name)}">
+                  :class="{'router-link-active': ['invoice', 'checkout'].includes($route.name)}"
+                  @click.native="toggleMenuClick">
                   <span class="icon-dollar-sign"/>
                   {{ $i18n.t('misc.INVOICES') }}
                 </router-link>
@@ -130,7 +149,9 @@
             <h5>{{ $i18n.t('misc.HELP') }}</h5>
             <ul>
               <li>
-                <router-link :to="{ name: 'docs' }">
+                <router-link
+                  :to="{ name: 'docs' }"
+                  @click.native="toggleMenuClick">
                   <span class="icon-help-circle"/>
                   {{ $i18n.t('misc.DOCUMENTATION') }}
                 </router-link>
@@ -156,7 +177,9 @@
                 </a>
               </li>
               <li>
-                <router-link :to="{ name: 'pro' }">
+                <router-link
+                  :to="{ name: 'pro' }"
+                  @click.native="toggleMenuClick">
                   <span class="icon-zap"/>
                   {{ $i18n.t('misc.PRO') }}
                 </router-link>
@@ -167,7 +190,9 @@
             <h5>{{ $i18n.t('misc.DAEMON') }}</h5>
             <ul>
               <li>
-                <router-link :to="{ name: 'downloads' }">
+                <router-link
+                  :to="{ name: 'downloads' }"
+                  @click.native="toggleMenuClick">
                   <span class="icon-download-cloud"/>
                   {{ $i18n.t('misc.DOWNLOADS') }}
                 </router-link>
@@ -180,13 +205,16 @@
               <li>
                 <router-link
                   :to="{ name: 'login', query: { redirect: '/' } }"
-                  :class="{'router-link-active': ['login'].includes($route.name)}">
+                  :class="{'router-link-active': ['login'].includes($route.name)}"
+                  @click.native="toggleMenuClick">
                   <span class="icon-log-in"/>
                   {{ $i18n.t('misc.LOGIN') }}
                 </router-link>
               </li>
               <li>
-                <router-link :to="{ name: 'register' }">
+                <router-link
+                  :to="{ name: 'register' }"
+                  @click.native="toggleMenuClick">
                   <span class="icon-user-plus"/>
                   {{ $i18n.t('misc.REGISTER') }}
                 </router-link>
@@ -195,7 +223,9 @@
           </section>
         </template>
       </div>
-      <sidebar-dropdown v-if="user"/>
+      <sidebar-dropdown
+        v-if="user"
+        @toggleMenuClick="toggleMenuClick"/>
     </div>
   </div>
 </template>
@@ -245,6 +275,11 @@ export default {
     }),
     toggleMenu () {
       this.menuCollapsed = !this.menuCollapsed
+    },
+    toggleMenuClick () {
+      if (!this.menuCollapsed) {
+        this.menuCollapsed = true
+      }
     }
   }
 }
