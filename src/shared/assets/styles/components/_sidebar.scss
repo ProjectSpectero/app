@@ -89,7 +89,7 @@
     display: none;
     color: $white;
     opacity: 0.7;
-    padding: 14px 17px;
+    padding: 17px 17px;
     line-height: 22px;
 
     [class^="icon-"] {
@@ -115,7 +115,7 @@
   @media only screen and (max-width: 900px) {
     width: 100%;
     height: auto;
-    padding: 0 0 0 16px;
+    padding: 0 0 0 $pad;
     flex-direction: row;
     align-items: center;
     z-index: 999;
@@ -141,9 +141,9 @@
       position: fixed;
       top: 0;
       right: 0;
-      margin-top: 55px;
+      margin-top: 61px;
       padding-top: 4px;
-      padding-bottom: 55px;
+      padding-bottom: 61px;
       background: darken(#28303A, 5%);
       overflow: auto;
 
