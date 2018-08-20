@@ -19,10 +19,6 @@
     </a>
 
     <div
-      :class="{ 'show': !menuCollapsed }"
-      class="responsive-menu-overlay" />
-
-    <div
       :class="{ collapsed: menuCollapsed }"
       class="sidebar-menu">
       <div class="menu-items middle">
@@ -166,6 +162,27 @@
               </li>
             </ul>
           </section>
+          <section class="nav-section responsive-only">
+            <h5>{{ $i18n.t('misc.ACCOUNT') }}</h5>
+            <ul>
+              <li>
+                <router-link
+                  :to="{ name: 'settings' }"
+                  @click.native="toggleMenuClick">
+                  <span class="icon-settings"/>
+                  {{ $i18n.t('misc.SETTINGS') }}
+                </router-link>
+              </li>
+              <li>
+                <a
+                  href="#logout"
+                  @click.prevent="logOut()">
+                  <span class="icon-log-out"/>
+                  {{ $i18n.t('misc.LOGOUT') }}
+                </a>
+              </li>
+            </ul>
+          </section>
         </template>
         <template v-else>
           <section class="nav-section">
@@ -279,8 +296,17 @@ export default {
     },
     toggleMenuClick () {
       if (!this.menuCollapsed) {
-        this.menuCollapsed = true
+        this.toggleMenu()
       }
+    },
+    logOut () {
+      this.toggleMenuClick()
+
+      this.daemonLogout().then(() => {
+        this.appLogout().then(() => {
+          this.$router.push({ name: 'login' })
+        })
+      })
     }
   }
 }

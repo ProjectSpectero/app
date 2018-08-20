@@ -1,6 +1,11 @@
 <template>
   <div class="spectero">
     <sidebar @toggleMenu="toggleMenu"/>
+
+    <div
+      :class="{ 'show': !menuCollapsed }"
+      class="responsive-menu-overlay" />
+
     <div
       :class="{ 'overlay-active': !menuCollapsed }"
       class="content">
