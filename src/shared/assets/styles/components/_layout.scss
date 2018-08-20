@@ -1,6 +1,7 @@
 .spectero {
   display: flex;
   min-width: fit-content;
+  flex-direction: row;
 
   > .content {
     height: 100vh;
@@ -8,6 +9,13 @@
     flex: 1;
     padding-bottom: 0;
     position: relative;
+  }
+  @media only screen and (max-width: 900px) {
+    flex-direction: column;
+
+    > .content {
+      height: 100%;
+    }
   }
 }
 
