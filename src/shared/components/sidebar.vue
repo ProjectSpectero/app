@@ -275,6 +275,7 @@ export default {
     }),
     toggleMenu () {
       this.menuCollapsed = !this.menuCollapsed
+      this.$emit('toggleMenu')
     },
     toggleMenuClick () {
       if (!this.menuCollapsed) {
