@@ -25,12 +25,16 @@
     flex-direction: column;
 
     > .content {
-      padding-top: 55px;
+      padding-top: 61px;
       overflow: visible;
 
       &.overlay-active {
-        overflow: hidden;
+        width: 100%;
+        height: 100%;
         position: fixed;
+        top: 0;
+        left: 0;
+        overflow: hidden;
       }
     }
     .responsive-menu-overlay.show {
