@@ -36,7 +36,7 @@
             button-class="button-sm"/>
           <download
             :content="field.accessConfig"
-            :file="configFileName"
+            :file="generateFileName(field.nodeId || null)"
             button-class="button-sm"/>
         </div>
 
@@ -89,12 +89,16 @@ export default {
       required: true
     }
   },
-  computed: {
-    configFileName () {
-      return 'spectero-' + this.type.toLowerCase() + '-' + this.id + '-openvpn.ovpn'
-    }
-  },
   methods: {
+    generateFileName (nodeId) {
+      // Node groups' config should also have the nodeId in the filename
+      // Regular nodes don't need this as we already hold the id on this.id
+      if (nodeId) {
+        return 'spectero-' + this.type.toLowerCase() + '-' + this.id + '-node-' + nodeId + '-openvpn.ovpn'
+      }
+
+      return 'spectero-' + this.type.toLowerCase() + '-' + this.id + '-openvpn.ovpn'
+    },
     formatAccessReferences (ref) {
       let output = ''
       for (let r of ref.split(',')) {

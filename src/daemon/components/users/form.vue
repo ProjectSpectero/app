@@ -164,9 +164,9 @@ export default {
         { id: 'SuperAdmin', label: 'SuperAdmin' },
         { id: 'WebApi', label: 'WebApi' },
         { id: 'HTTPProxy', label: 'HTTPProxy' },
-        { id: 'OpenVPN', label: 'OpenVPN' },
-        { id: 'ShadowSOCKS', label: 'ShadowSOCKS' },
-        { id: 'SSHTunnel', label: 'SSHTunnel' }
+        { id: 'OpenVPN', label: 'OpenVPN' }
+        // { id: 'ShadowSOCKS', label: 'ShadowSOCKS' },
+        // { id: 'SSHTunnel', label: 'SSHTunnel' }
       ]
 
       // Disable SuperAdmin and WebApi checkboxes if not SuperAdmin

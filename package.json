@@ -9,10 +9,13 @@
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
-    "staging": "node build/staging.js"
+    "build-production": "node build/build.js",
+    "build-staging": "node build/staging.js",
+    "build-dev": "node build/development.js"
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "babel-polyfill": "^6.26.0",
     "bourbon-neat": "^2.1.0",
     "cidr-js": "^2.3.1",
     "dotenv": "^5.0.1",

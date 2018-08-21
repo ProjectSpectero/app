@@ -43,6 +43,7 @@
     @extend .badge-success;
   }
 
+  &.badge-pending,
   &.badge-automated_fraud_check,
   &.badge-manual_fraud_check,
   &.badge-partially_paid {

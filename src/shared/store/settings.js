@@ -1,15 +1,18 @@
 import countries from '@/shared/helpers/countries'
+import userAPI from '@/app/api/user'
 
 const state = {
   countries: countries,
   layout: 'master',
-  bar: null
+  bar: null,
+  supportLink: null
 }
 
 const getters = {
   layout: (state) => state.layout,
   countries: (state) => state.countries,
-  bar: (state) => state.bar
+  bar: (state) => state.bar,
+  supportLink: (state) => state.supportLink
 }
 
 const actions = {
@@ -21,12 +24,31 @@ const actions = {
   },
   removeBarComponent: ({ commit }) => {
     commit('REMOVE_BAR_COMPONENT')
+  },
+  async fetchSupportLink ({ commit }) {
+    let link = '#'
+
+    await userAPI.getSupportLink({
+      success: response => {
+        if (response.data.result.redirect_uri !== undefined) {
+          link = response.data.result.redirect_uri
+        }
+
+        commit('SET_SUPPORT_LINK', link)
+      },
+      fail: e => {
+        console.error(e)
+      }
+    })
   }
 }
 
 const mutations = {
   SWITCH_LAYOUT: (state, layout) => {
     state.layout = layout
+  },
+  SET_SUPPORT_LINK: (state, link) => {
+    state.supportLink = link
   },
   SWITCH_BAR_COMPONENT: (state, component) => {
     state.bar = component

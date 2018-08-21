@@ -96,7 +96,7 @@
       class="alert-msg-centered">
       <div class="icon-slash big-icon"/>
       <h1>{{ $i18n.t('nodes.NO_NODES_TITLE') }}</h1>
-      <p>{{ $i18n.t( (groups.length > 0) ? 'nodes.NO_NODES_TEXT' : 'nodes.NO_NODES_TEXT_ACCOUNT') }}</p>
+      <p>{{ $i18n.t( (groups && groups.length) ? 'nodes.NO_NODES_TEXT' : 'nodes.NO_NODES_TEXT_ACCOUNT') }}</p>
       <button
         class="button-success"
         @click.prevent="showAddNodeModal()">
@@ -217,8 +217,10 @@ export default {
         nodeAPI.deleteGroup({
           data: { id: this.selectedGroupInformation.id },
           success: response => {
-            this.fetchNodes()
-            this.$toasted.show(this.$i18n.t('nodes.GROUP_DELETE_SUCCESS'))
+            this.$route.params.id = null
+            this.$route.params.page = null
+            this.$emit('refetch')
+            this.$toasted.success(this.$i18n.t('nodes.GROUP_DELETE_SUCCESS'))
           },
           fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
         })

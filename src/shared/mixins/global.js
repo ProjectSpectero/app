@@ -9,11 +9,9 @@ function globalMixin (i18n) {
       }
     },
     computed: {
-      isDevelopmentEnvironment () {
-        return (process.env.NODE_ENV === 'development')
-      },
-      isStagingEnvironment () {
-        return (process.env.NODE_ENV === 'staging')
+      nodeEnvironment () {
+        console.log(process.env)
+        return process.env.NODE_ENV
       }
     },
     methods: {

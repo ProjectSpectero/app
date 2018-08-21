@@ -89,7 +89,10 @@ export default {
   computed: {
     ...mapGetters({
       isEnterprise: 'appAuth/isEnterprise'
-    })
+    }),
+    environment () {
+      return process.env.NODE_ENV
+    }
   },
   created () {
     this.autoLogin()
@@ -99,7 +102,7 @@ export default {
       syncCurrentUser: 'appAuth/syncCurrentUser'
     }),
     autoLogin () {
-      if ((this.isDevelopmentEnvironment || this.isStagingEnvironment) && this.$route.query.autologin !== undefined) {
+      if (this.nodeEnvironment !== 'production' && this.$route.query.autologin !== undefined) {
         this.username = 'dev@spectero.com'
         this.password = 'temppass'
         this.processLogin()

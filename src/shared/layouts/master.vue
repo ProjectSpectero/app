@@ -1,7 +1,14 @@
 <template>
   <div class="spectero">
-    <sidebar/>
-    <div class="content">
+    <sidebar @toggleMenu="toggleMenu"/>
+
+    <div
+      :class="{ 'show': !menuCollapsed }"
+      class="responsive-menu-overlay" />
+
+    <div
+      :class="{ 'overlay-active': !menuCollapsed }"
+      class="content">
       <impersonation-bar/>
       <modals-container/>
       <router-view/>
@@ -20,6 +27,16 @@ export default {
     sidebar,
     help,
     impersonationBar
+  },
+  data () {
+    return {
+      menuCollapsed: true
+    }
+  },
+  methods: {
+    toggleMenu () {
+      this.menuCollapsed = !this.menuCollapsed
+    }
   }
 }
 </script>
