@@ -11,21 +11,24 @@ async function API (method, path, data, success, failed) {
   // 2.3) If a port is specified and numeric, that will be used as expected
 
   const cookieName = process.env.APP_COOKIE
+  const port = process.env.APP_PORT
   const cookie = getCookie(cookieName)
+  let parsedPort = location.port ? ':' + location.port : ''
+
+  // Allowing a default empty port to be specified
+  // Whenever I use the same PORT var here as it's set on development.env.js, build gets weird
+  if (port !== undefined) {
+    parsedPort = (port !== 'null') ? ':' + port : ''
+  }
 
   let project = {
     cookieName: cookieName,
     cookie: (cookie !== null) ? JSON.parse(cookie) : null,
-    protocol: process.env.APP_HTTPS ? 'https://' : location.protocol + '//',
-    port: location.port ? ':' + location.port : '',
+    protocol: 'https://',
+    port: parsedPort,
     endpoint: process.env.APP_ENDPOINT ? process.env.APP_ENDPOINT : location.hostname,
     version: process.env.APP_VERSION,
     timeout: 10000
-  }
-
-  // Allowing a default empty port to be specified
-  if (process.env.APP_PORT !== undefined) {
-    project.port = process.env.APP_PORT ? ':' + process.env.APP_PORT : ''
   }
 
   await requestAPI(project, method, path, data, success, failed)

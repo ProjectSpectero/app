@@ -174,6 +174,9 @@ export default {
     }),
     paymentComplete () {
       this.paymentSuccess = true
+
+      // Syncs current user to add reactive Pro state
+      this.syncCurrentUser()
     },
     selectGateway (gateway) {
       this.selectedGateway = gateway

@@ -61,8 +61,12 @@
                 </div>
                 <div
                   v-else-if="isCreditInvoice"
-                  class="message-status message"
-                  v-html="$i18n.t('invoices.CANCEL_CREDIT_INVOICE')"/>
+                  class="message-status message">
+                  <div>
+                    <h5 v-html="$i18n.t('invoices.CANCEL_CREDIT_INVOICE')"/>
+                    <p v-html="$i18n.t('invoices.CANCEL_CREDIT_INVOICE_DAYS', { cancelDays: creditInvoiceCancelDays })"/>
+                  </div>
+                </div>
 
                 <div class="header">
                   <div class="logo-container">
@@ -288,7 +292,8 @@ export default {
     return {
       errorItem: 'invoice',
       errorCode: 404,
-      getTransactions: true
+      getTransactions: true,
+      creditInvoiceCancelDays: process.env.CREDIT_INVOICE_AUTOCANCEL_DAYS
     }
   },
   computed: {

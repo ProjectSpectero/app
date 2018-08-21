@@ -20,7 +20,7 @@
       <div>
         <div class="container">
           <div
-            v-if="everythingLoaded"
+            v-if="groups && everythingLoaded"
             class="col-12 content-split">
             <div
               v-if="groups && groups.length"
@@ -37,9 +37,9 @@
                 <div class="group-name">
                   {{ group.friendly_name }}
                 </div>
-                <div class="count">
-                  {{ group.nodes.length }}
-                </div>
+                <!-- <div class="count">
+                  0
+                </div> -->
               </div>
 
               <div
@@ -161,9 +161,23 @@ export default {
   },
   methods: {
     async setup () {
+      this.reset()
+
       await this.fetchUncategorized(this.currentPage)
       await this.fetchGroups()
+
       this.handleSelection()
+    },
+    reset () {
+      this.groups = null
+      this.totalGroups = null
+      this.processedGroups = 0
+      this.groupsPage = 1
+      this.nodes = []
+      this.uncategorized = {
+        pagination: {},
+        result: []
+      }
     },
     handleSelection () {
       const id = this.$route.params.id
@@ -189,15 +203,6 @@ export default {
         }
       } else {
         let found = false
-
-        // Select the first group with nodes, if any.
-        // Otherwise, just pick the first empty group.
-        this.groups.forEach(g => {
-          if (!found && g.nodes.length > 0) {
-            this.selectGroup(g, false)
-            found = true
-          }
-        })
 
         if (!found && this.groups.length > 0) {
           this.selectGroup(this.groups[0], false)
@@ -306,12 +311,13 @@ export default {
           },
           success: response => {
             this.uncategorized = response.data
-            console.log('Loaded uncategorized')
             this.loadingUncategorized = false
             this.fetchSuccessful = true
           },
           fail: e => {
             console.error(e)
+            this.error = true
+            this.errorCode = 400
           }
         })
       } else {
@@ -338,6 +344,8 @@ export default {
             },
             fail: e => {
               console.error(e)
+              this.error = true
+              this.errorCode = 400
             }
           })
         }

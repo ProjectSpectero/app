@@ -51,7 +51,6 @@ module.exports = {
     CANCEL: 'Cancel',
     VIEW: 'View',
     ENGAGEMENTS: 'Engagements',
-    VIEW_DETAILS: 'View Details',
     VIEW_FULL_DETAILS: 'View Full Details',
     RESET: 'Reset',
     EDIT: 'Edit',
@@ -316,12 +315,14 @@ module.exports = {
     COMPLETE_PAYMENT: 'Complete Payment',
     UNPAYABLE: 'Order Processing',
     UNPAYABLE_TEXT: 'This order is currently processing. You will be able to make a payment once the order has been fully processed by our verification team.',
-    CANCEL_CREDIT_INVOICE: 'Please contact our support team if you\'d like to have this add credit invoice cancelled.'
+    CANCEL_CREDIT_INVOICE: 'Please contact our support team if you\'d like to have this invoice cancelled.',
+    CANCEL_CREDIT_INVOICE_DAYS: 'Note: account credit invoices are automatically cancelled after {cancelDays} days.'
   },
 
   orders: {
     RESOURCES_NOT_FOUND: 'We were unable to find any resources for this order.',
     RESOURCE_NOT_FOUND: 'We were unable to find that order resource.',
+    VIEW_ON_MARKETPLACE: 'View on Marketplace',
     ORDER_STATUS: {
       PENDING: 'Pending',
       AUTOMATED_FRAUD_CHECK: 'Pending Fraud Check',
@@ -430,8 +431,8 @@ module.exports = {
     EDIT_NODE: 'Edit Node',
     GROUP_CREATE_SUCCESS: 'Group created successfully!',
     DELETE_GROUP_CONFIRM_DIALOG: 'Are you sure you want to remove this node group?',
-    DELETE_SUCCESS: 'Node removed successfully!',
-    GROUP_DELETE_SUCCESS: 'Group removed successfully!',
+    DELETE_SUCCESS: 'Your node is now queued for deletion and should be removed shortly.',
+    GROUP_DELETE_SUCCESS: 'Node group deleted successfully!',
     DELETE_ERROR: 'An error ocurred while trying to delete your node. Please try again later.',
     REQUEST_FAILED: 'The request failed. Please try again and contact our support team if the error persists.',
     NODE_VERIFY_SUCCESS: 'Your node {node} is now queued for verification. We\'ll send you an email as soon as this is finished.',
@@ -449,6 +450,7 @@ module.exports = {
     GO_TO_NODE_GROUP: 'Go to node group',
     MARKET_MODEL_TOOLTIP: 'There are three types of market model:',
     NODE_PENDING_VERIFICATION: 'This node is pending verification. Please try again when its status is CONFIRMED.',
+    NODE_BELONGS_TO_GROUP: 'This node belongs to a group and cannot be deleted. Please remove it from this group and try again.',
     STATUS: {
       ACTIVE: 'Active',
       CONFIRMED: 'Confirmed',
@@ -457,12 +459,14 @@ module.exports = {
       PENDING_VERIFICATION: 'Pending Verification',
       ENABLED: 'Enabled',
       DISABLED: 'Disabled',
-      CANCELLED: 'Cancelled'
+      CANCELLED: 'Cancelled',
+      PENDING_DELETION: 'Pending Deletion'
     },
     STATUS_TOOLTIPS: {
       CONFIRMED: '<strong>Confirmed</strong>: This node has been confirmed and is ready for use.',
       UNCONFIRMED: '<strong>Unconfirmed</strong>: This node is awaiting confirmation.',
-      PENDING_VERIFICATION: '<strong>Pending Verification</strong>: This node is pending verification.'
+      PENDING_VERIFICATION: '<strong>Pending Verification</strong>: This node is pending verification.',
+      PENDING_DELETION: '<strong>Pending Deletion</strong>: This node is pending deletion.'
     },
     MODEL: {
       ANY: 'Any type',
@@ -560,7 +564,7 @@ module.exports = {
     IMPERSONATING: 'You are currently impersonating {name}.',
     FORGOT_PASSWORD: 'Forgot your password?',
     BACK_TO_LOGIN: 'Back to Login',
-    LOGIN_AGAIN: 'Changes saved! Please check your email to verify your account.',
+    LOGIN_AGAIN: 'Your account has been updated successfully. Please log in again.',
     RESET_PASSWORD_BUTTON: 'Reset Password',
     PLACEHOLDER_EMAIL: 'Email address',
     PLACEHOLDER_PASSWORD: 'Password',
@@ -580,7 +584,7 @@ module.exports = {
     HEADER: 'Reset Password',
     CHANGE_BUTTON: 'Reset Password',
     SET_BUTTON: 'Set Password',
-    TOKEN_ISSUED: 'Please check your email to finish your password reset.',
+    TOKEN_ISSUED: 'If you have an account with that email address, reset instructions have been sent.',
     TOKEN_ERROR: 'An error has ocurred while trying to issue a token for reset. Please try again later.',
     PASSWORD_FAILED: 'There was a problem with this reset token. Please try again later or contact our support team if this persists.',
     RESET_COMPLETE: 'Password Reset Complete',

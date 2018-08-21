@@ -68,12 +68,12 @@ Vue.use(Toasted, {
   singleton: false
 })
 
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV === 'production') {
   Vue.use(VueAnalytics, {
     appName: 'Spectero',
     appVersion: '1.0',
     trackingId: process.env.GOOGLE_ANALYTICS_ID,
-    debug: process.env.NODE_ENV === 'development',
+    debug: process.env.NODE_ENV !== 'development',
     vueRouter: router,
     trackPage: true // Whether you want page changes to be recorded as pageviews (website) or screenviews (app)
     // ignoredViews: ['homepage'], // If router, you can exclude some routes name (case insensitive) (optional)

@@ -136,7 +136,12 @@ export default {
       selectedType: null,
       selectedResource: null,
       selectedReferences: [],
-      types: ['HTTPProxy', 'OpenVPN', 'ShadowSOCKS', 'SSHTunnel'],
+      types: [
+        'HTTPProxy',
+        'OpenVPN'
+        // 'ShadowSOCKS',
+        // 'SSHTunnel'
+      ],
       accessorCheckPending: false
     }
   },

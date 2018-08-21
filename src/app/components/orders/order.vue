@@ -80,6 +80,7 @@
             </div>
           </div>
         </top>
+
         <div v-if="!loading">
           <div class="container">
             <section class="col-12">
@@ -92,6 +93,10 @@
               <alert-unpayable
                 v-else-if="isUnpaid && !isPayable && !isProcessing"
                 :invoice="invoice"
+                :order="order"/>
+
+              <alert-credentials
+                v-if="order.status === 'ACTIVE'"
                 :order="order"/>
             </section>
 
@@ -147,12 +152,16 @@
                       class="text-light">{{ $i18n.t('misc.NEXT_DUE_DATE') }}: {{ order.due_next | moment('MMM D, YYYY') }}</small>
                   </div>
                 </div>
-                <router-link
-                  :to="{ name: 'invoice', params: { id: invoice.id } }"
-                  class="button-info">View Invoice</router-link>
-                <router-link
-                  :to="{ name: 'orderInvoices', params: { id: order.id } }"
-                  class="button">View All Invoices</router-link>
+
+                <div class="invoice-links">
+                  <router-link
+                    :to="{ name: 'invoice', params: { id: invoice.id } }"
+                    class="button-info mb-1">View Invoice</router-link>
+
+                  <router-link
+                    :to="{ name: 'orderInvoices', params: { id: order.id } }"
+                    class="button mb-1">View All Invoices</router-link>
+                </div>
               </div>
             </section>
           </div>
@@ -182,6 +191,7 @@ import sortDropdown from '@/shared/components/sortDropdown'
 import alertProcessing from '../invoices/alertProcessing'
 import alertOutstanding from '../invoices/alertOutstanding'
 import alertUnpayable from '../invoices/alertUnpayable'
+import alertCredentials from './alertCredentials'
 import cancelOrderModal from './cancelOrderModal'
 
 export default {
@@ -196,7 +206,8 @@ export default {
     alertUnpayable,
     alertProcessing,
     tooltip,
-    cancelOrderModal
+    cancelOrderModal,
+    alertCredentials
   },
   metaInfo: {
     title: 'Order Details'
@@ -215,7 +226,7 @@ export default {
       verificationErrors: [],
       sort: {
         fields: {
-          'id': 'ID',
+          'resource': 'Resource ID',
           'status': 'Status',
           'type': 'Type',
           'sync_status': 'Sync Status'

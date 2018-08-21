@@ -38,6 +38,11 @@ export default {
         } else {
           this.removeFilter('=')
         }
+      } else {
+        // Erroneous status? Throw error
+        this.errorCode = 400
+        this.error = true
+        return
       }
 
       this.fetch(page)

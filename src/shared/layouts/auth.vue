@@ -1,6 +1,11 @@
 <template>
   <div class="spectero">
-    <sidebar/>
+    <sidebar @toggleMenu="toggleMenu"/>
+
+    <div
+      :class="{ 'show': !menuCollapsed }"
+      class="responsive-menu-overlay" />
+
     <div class="content">
       <div class="auth">
         <div class="auth-container">
@@ -17,6 +22,17 @@ import sidebar from '@/shared/components/sidebar'
 export default {
   components: {
     sidebar
+  },
+  data () {
+    return {
+      menuCollapsed: true
+    }
+  },
+  methods: {
+    toggleMenu () {
+      console.log(`toggleMenu!`)
+      this.menuCollapsed = !this.menuCollapsed
+    }
   }
 }
 </script>
