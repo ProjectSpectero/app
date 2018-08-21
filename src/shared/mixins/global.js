@@ -10,6 +10,7 @@ function globalMixin (i18n) {
     },
     computed: {
       nodeEnvironment () {
+        console.log(process.env)
         return process.env.NODE_ENV
       }
     },

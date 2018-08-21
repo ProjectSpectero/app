@@ -16,7 +16,6 @@ async function API (method, path, data, success, failed) {
   let parsedPort = location.port ? ':' + location.port : ''
 
   // Allowing a default empty port to be specified
-  // Whenever I use the same PORT var here as it's set on development.env.js, build gets weird
   if (port !== undefined) {
     parsedPort = (port !== 'null') ? ':' + port : ''
   }
