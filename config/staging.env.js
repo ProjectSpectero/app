@@ -12,7 +12,10 @@ if (config.parsed !== undefined) {
 
 module.exports = merge(dotenvVars, {
   NODE_ENV: JSON.stringify('staging'),
+  APP_ENDPOINT: JSON.stringify('app.spectero.com'),
+  APP_PROTOCOL: JSON.stringify('https'),
   APP_VERSION: JSON.stringify('v1'),
+  APP_PORT: JSON.stringify('null'),
   APP_COOKIE: JSON.stringify('SPECTERO_APP_AUTH'),
   DAEMON_COOKIE: JSON.stringify('SPECTERO_DAEMON_AUTH'),
   IMPERSONATE_COOKIE: JSON.stringify('SPECTERO_APP_IMPERSONATE')
