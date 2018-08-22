@@ -1,0 +1,21 @@
+.table-styled {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: right;
+  border: 1px solid $color-border;
+
+  td, th {
+    padding: 14px 16px;
+    border-bottom: 1px solid $color-border;
+
+    &:first-child {
+      text-align: left;
+    }
+  }
+  th {
+    background-image: linear-gradient(0deg, #F2F4F7 0%, #FFFFFF 100%);
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+}

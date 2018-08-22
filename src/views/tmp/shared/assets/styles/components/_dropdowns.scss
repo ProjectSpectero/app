@@ -1,0 +1,84 @@
+// Dropdown buttons
+.bp-dropdown {
+  position: relative;
+  display: inline-block;
+}
+.bp-dropdown__btn {
+  padding: 0 !important; // 1px top/bottom because no border required
+  border: none !important;
+  background: none !important;
+
+  .button:after {
+    @extend [class^="icon-"];
+    @extend .icon-chevron-down:before;
+
+    display: inline-block;
+    margin-left: 6px;
+    position: relative;
+    top: 1px;
+  }
+}
+.bp-dropdown__btn--active {
+  background: none !important;
+
+  .button:after {
+    @extend .icon-chevron-up:before;
+  }
+}
+.bp-dropdown__icon {
+  display: none !important;
+}
+.bp-dropdown__body {
+  width: 200px !important;
+  min-width: auto !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  position: absolute !important;
+  top: 120% !important;
+  left: auto !important;
+  right: 0 !important;
+
+  border-radius: 4px;
+  border: 1px solid $color-border;
+  overflow: hidden;
+
+  &.right-bp__body {
+    left: 0 !important;
+    right: auto !important;
+  }
+  a {
+    display: block;
+    padding: 14px 14px;
+    color: $color-primary;
+    background: $white;
+    border-bottom: 1px solid $color-border;
+    transition: all 0.1s ease-out;
+    cursor: pointer;
+    font-weight: $font-semi;
+
+    [class^="icon-"] {
+      margin-right: 4px;
+      color: rgba(0,0,0,0.2);
+      transition: all 0.1s ease-out;
+    }
+    &:hover {
+      color: $color-info;
+      background: rgba(29, 43, 182, 0.04);
+
+      [class^="icon-"] {
+        color: $color-info;
+      }
+    }
+    &:last-child {
+      border-bottom: none;
+    }
+    &.danger:hover {
+      color: $color-danger;
+      background: rgba(227, 82, 65, 0.04);
+
+      [class^="icon-"] {
+        color: $color-danger;
+      }
+    }
+  }
+}

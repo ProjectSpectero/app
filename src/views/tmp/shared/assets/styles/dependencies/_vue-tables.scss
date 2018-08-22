@@ -1,0 +1,217 @@
+// Custom table
+
+.datatable {
+  background: $white;
+  border: 1px solid $color-border;
+  border-radius: 4px;
+
+  table {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 12px 6px;
+    border-top: 1px solid $color-border;
+
+    &:first-child {
+      padding-left: 16px;
+    }
+    &:last-child {
+      padding-right: 16px;
+    }
+  }
+  th {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .button {
+    @extend .button.button-sm;
+  }
+
+  .sortable {
+    cursor: pointer;
+
+    > .direction {
+      line-height: 80%;
+    }
+  }
+
+  th {
+    font-size: $font-size;
+    font-weight: $font-semi;
+    color: $color-light;
+    text-transform: capitalize;
+  }
+
+  tr:first-child th {
+    border-top: 0;
+  }
+
+  .search {
+    display: flex;
+    margin-bottom: 12px;
+
+    input[type=text] {
+      @extend .input;
+      margin-right: 1rem;
+    }
+  }
+
+  .table-actions {
+    text-align: right;
+
+    .button {
+      margin-left: 4px;
+    }
+  }
+  .VueTables__sort-icon, .sortable .direction {
+    @extend [class^="icon-"];
+    margin-left: 2px;
+    position: relative;
+    top: 1px;
+
+    &.glyphicon-sort:before {
+      @extend .icon-menu:before;
+      display: none;
+    }
+    &.glyphicon-chevron-down:before, &.desc:before {
+      @extend .icon-chevron-down:before;
+    }
+    &.glyphicon-chevron-up:before, &.asc:before {
+      @extend .icon-chevron-up:before;
+    }
+  }
+}
+
+// VueTables table
+
+.VueTables.VueTables--client {
+  .row {
+    div.col-md-12 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .table-responsive {
+    background: $white;
+    border: 1px solid $color-border;
+    border-width: 1px 1px 0 1px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    overflow: auto;
+
+    > .VueTables__table {
+      width: 100%;
+      text-align: left;
+      border-collapse: collapse;
+
+      th, td {
+        padding: 12px 16px;
+        border-bottom: 1px solid $color-border;
+      }
+      th {
+        font-size: $font-size;
+        font-weight: $font-semi;
+        color: $color-light;
+      }
+    }
+  }
+
+  .VueTables__search {
+    flex: 1;
+    margin-bottom: 12px;
+
+    .VueTables__search-field {
+      display: flex;
+      align-items: center;
+    }
+
+    input[type=text] {
+      @extend .input;
+    }
+  }
+
+  .VueTables__limit-field {
+    display: flex;
+    align-items: center;
+    margin-left: 12px;
+    margin-bottom: 12px;
+
+    label {
+      margin-right: 8px;
+    }
+  }
+
+  .table-actions {
+    text-align: right;
+
+    .button {
+      margin-left: 4px;
+    }
+  }
+
+  .VuePagination {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+  }
+  .VuePagination__pagination {
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid $color-border;
+
+    .page-item {
+      display: inline-block;
+
+      cursor: pointer;
+
+      a {
+        display: inline-block;
+        color: $color-primary;
+        padding: 0 14px;
+        line-height: 30px;
+        font-size: 14px;
+        font-weight: $font-bold;
+        background-color: $white;
+        border-radius: 4px;
+
+        &:hover {
+          background: $color-border;
+        }
+
+      }
+      &.active {
+        a {
+          color: $white;
+          background-color: $color-info;
+        }
+      }
+      &.disabled {
+        pointer-events: none;
+
+        a {
+          color: $color-light;
+          cursor: disabled;
+        }
+      }
+    }
+  }
+  .VuePagination__count {
+    margin-top: 10px;
+  }
+  .VueTables__heading {
+    cursor: default;
+  }
+  .VueTables__sortable .VueTables__heading {
+    cursor: pointer;
+  }
+}

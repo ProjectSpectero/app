@@ -1,0 +1,33 @@
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+.flex {
+  display: flex;
+}
+.block {
+  display: block;
+}
+.inline {
+  display: inline-block;
+}
+.pad {
+  padding: $pad;
+}
+.full-width, .max-width {
+  width: 100%;
+}
+.pad-margin {
+  margin: $pad;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}

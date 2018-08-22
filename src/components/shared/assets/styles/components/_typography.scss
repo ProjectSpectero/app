@@ -1,0 +1,76 @@
+h1, h2, h3, h4, h5 {
+  display: block;
+  margin-bottom: 1em;
+  line-height: 100%;
+  font-weight: $font-semi;
+}
+
+h1 {
+  font-size: 170%;
+  font-weight: $font-bold;
+}
+h2 {
+  font-size: 140%;
+}
+h3 {
+  font-size: 125%;
+}
+h4 {
+  font-size: 120%;
+}
+h5 {
+  font-size: 110%;
+}
+h6 {
+  font-size: 100%;
+  font-weight: $font-regular;
+  color: $color-light;
+}
+
+p {
+  line-height: 160%;
+  
+  &.small {
+    font-size: 90%;
+    color: #999;
+  }
+  &.spaced {
+    margin-bottom: 12px;
+  }
+}
+
+a {
+  color: $color-info;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-success {
+  color: $color-success;
+}
+.text-info {
+  color: $color-info;
+}
+.text-danger {
+  color: $color-danger;
+}
+.text-warning {
+  color: $color-warning;
+}
+.text-light {
+  color: $color-light;
+}
+
+.font-mono {
+  font-family: monospace !important;
+}
+
+.tooltip-text-trigger {
+  text-decoration: underline;
+  cursor: pointer;
+}

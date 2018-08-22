@@ -1,0 +1,58 @@
+.badge, [class^="badge-"] {
+  display: inline-block;
+  margin-right: 3px;
+  padding: 4px 6px 2px 6px;
+  font-size: 12px;
+  line-height: 100%;
+  font-weight: $font-bold;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #626C84;
+  background-color: #F2F3F5;
+  border-radius: 4px;
+
+  &.badge-info {
+    color: $white;
+    background-color: $color-info;
+  }
+  &.badge-error, &.badge-danger {
+    color: $white;
+    background-color: $color-danger;
+  }
+  &.badge-success {
+    color: $white;
+    background-color: $color-success;
+  }
+  &.badge-warning {
+    color: rgba(0,0,0,0.7);
+    background-color: $color-warning;
+  }
+  &.badge-dark {
+    color: $white;
+    background-color: $color-dark;
+  }
+  &.badge-brand {
+    color: $color-primary;
+    background-color: $color-brand;
+  }
+
+  &.badge-active,
+  &.badge-paid,
+  &.badge-confirmed,
+  &.badge-enabled {
+    @extend .badge-success;
+  }
+
+  &.badge-pending,
+  &.badge-automated_fraud_check,
+  &.badge-manual_fraud_check,
+  &.badge-partially_paid {
+    @extend .badge-warning;
+  }
+
+  &.badge-unpaid,
+  &.badge-unconfirmed,
+  &.badge-disabled {
+    @extend .badge-error;
+  }
+}

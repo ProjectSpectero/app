@@ -1,0 +1,48 @@
+.service-badges {
+  display: flex;
+  flex-direction: row;
+
+  article {
+    width: 16px;
+    height: 16px;
+    display: block;
+    margin-right: 4px;
+    color: #626C84;
+    background-color: #F2F3F5;
+    text-align: center;
+    font-weight: $font-bold;
+    font-size: 90%;
+    line-height: 18px;
+    border-radius: 2px;
+
+    &.type-openvpn {
+      color: #ED7E22;
+      background: #193867;
+
+      &:before {
+        content: 'O';
+      }
+    }
+    &.type-httpproxy {
+      &:before {
+        content: 'H';
+      }
+    }
+    &.type-shadowsocks {
+      color: $white;
+      background: #209B47;
+
+      &:before {
+        content: 'S';
+      }
+    }
+    &.type-sshtunnel {
+      &:before {
+        content: 'S';
+      }
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

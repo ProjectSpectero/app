@@ -1,0 +1,46 @@
+.col-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  .info-box {
+    flex: 1;
+    margin-right: $pad;
+
+    &:last-child {
+      margin-right: 0;
+      border-right: none;
+    }
+  }
+  h5 {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+    line-height: 100%;
+    text-transform: uppercase;
+    color: $color-light;
+  }
+  p {
+    display: block;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: $font-semi;
+  }
+}
+
+.alert-msg-centered {
+  padding: 50px 0;
+  text-align: center;
+
+  h1 {
+    margin-bottom: 12px;
+  }
+  .big-icon {
+    margin-bottom: 24px;
+    opacity: 0.1;
+    font-size: 100px;
+  }
+  [class^="button-"] {
+    margin-top: 16px;
+  }
+}
