@@ -32,10 +32,13 @@ p {
   
   &.small {
     font-size: 90%;
-    color: #999;
+    color: #999999;
   }
   &.spaced {
     margin-bottom: 12px;
+  }
+  &.sub {
+    color: #666666;
   }
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <template>
-      <top :title="`${ (!isPro) ? `${$i18n.t('misc.PURCHASE')} `: '' }${$i18n.t('misc.SPECTERO')} ${$i18n.t('misc.PRO')}`"/>
+      <top :title="`${$i18n.t('misc.SPECTERO')} ${$i18n.t('misc.PRO')}`"/>
       <loading v-if="loading"/>
       <div v-else>
         <div class="container">
@@ -14,114 +14,186 @@
               <p>{{ $i18n.t('pro.ALREADY_SUBSCRIBED_TEXT') }}</p>
             </div>
 
-            <form v-else>
-              <div
-                v-if="formError"
-                class="message message-error">{{ formError }}</div>
-
-              <template v-if="planFetched">
-                <div class="step section padded select-plan">
-                  <div class="step-1">
-                    <div class="details">
-                      <h5>Select your plan</h5>
-                      <p>Please select the billing term you'd like to subscribe to.</p>
-                    </div>
+            <div v-else>
+              <div class="pro-marketing-cta section padded mb-0">
+                <h2 class="mb-2">Upgrade to Spectero Pro</h2>
+                <p class="cta sub">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet lorem convallis, sollicitudin mauris in, lacinia ipsum. Nunc bibendum lorem a augue lobortis pharetra.</p>
+                <div class="features container pb-0">
+                  <div class="col-4">
+                    <p class="icon-globe"/>
+                    <h3>Global VPN Access</h3>
+                    <p class="sub">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
                   </div>
-                  <div class="plans">
-                    <article
-                      v-for="(plan, id) in plans"
-                      :key="id"
-                      :class="{
-                        'active': selectedPlan === id,
-                        'best-deal': plan.bestDeal
-                      }"
-                      class="plan"
-                      @click.stop="selectPlan(id)">
-                      <div
-                        v-if="plan.bestDeal"
-                        class="most-popular-badge">
-                        Most Popular
-                      </div>
-                      <div class="name">{{ plan.name }}</div>
-                      <div class="amount">
-                        <div
-                          v-if="plan.oldPrice"
-                          class="price old">
-                          {{ plan.oldPrice | currency }}
+                  <div class="col-4">
+                    <p class="icon-bar-chart"/>
+                    <h3>Ultra Fast Servers</h3>
+                    <p class="sub">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                  </div>
+                  <div class="col-4">
+                    <p class="icon-zap"/>
+                    <h3>Premium Features</h3>
+                    <p class="sub">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="container">
+                <div class="col-8">
+                  <form>
+                    <div
+                      v-if="formError"
+                      class="message message-error">{{ formError }}</div>
+
+                    <template v-if="planFetched">
+                      <div class="step section padded select-plan">
+                        <div class="step-1">
+                          <div class="details">
+                            <h5>Select your plan</h5>
+                            <p>Please select the billing term you'd like to subscribe to.</p>
+                          </div>
                         </div>
-                        <div class="price">{{ plan.price | currency }}</div>
-                        <div class="per">per {{ plan.termLabel }}</div>
+                        <div class="plans">
+                          <article
+                            v-for="(plan, id) in plans"
+                            :key="id"
+                            :class="{
+                              'active': selectedPlan === id,
+                              'best-deal': plan.bestDeal
+                            }"
+                            class="plan"
+                            @click.stop="selectPlan(id)">
+                            <div
+                              v-if="plan.bestDeal"
+                              class="most-popular-badge">
+                              Most Popular
+                            </div>
+                            <div class="name">{{ plan.name }}</div>
+                            <div class="amount">
+                              <div
+                                v-if="plan.oldPrice"
+                                class="price old">
+                                {{ plan.oldPrice | currency }}
+                              </div>
+                              <div class="price">{{ plan.price | currency }}</div>
+                              <div class="per">per {{ plan.termLabel }}</div>
+                            </div>
+                            <div class="billing-terms">
+                              <p>Billed {{ plan.price | currency }} every {{ plan.termLabel }}</p>
+                            </div>
+                            <div
+                              v-if="plan.discountPercent"
+                              class="savings">
+                              Save {{ plan.discountPercent }}%
+                            </div>
+                          </article>
+                        </div>
+                        <p class="price-warning">All prices are listed in <strong>USD</strong>.</p>
                       </div>
-                      <div class="billing-terms">
-                        <p>Billed {{ plan.price | currency }} every {{ plan.termLabel }}</p>
-                      </div>
+
                       <div
-                        v-if="plan.discountPercent"
-                        class="savings">
-                        Save {{ plan.discountPercent }}%
+                        v-if="!user"
+                        class="step section padded">
+                        <div class="step-2">
+                          <div class="details">
+                            <h5>Enter your email address</h5>
+                            <p>We'll create an account associated to this email and send your order details here. We hate spam as much as you do.</p>
+                          </div>
+                        </div>
+                        <div class="form-input mb-0">
+                          <float-label>
+                            <input
+                              v-validate="'required|email'"
+                              v-model="email"
+                              :class="{'input-error': errors.has('email')}"
+                              :disabled="formLoading"
+                              type="email"
+                              name="email"
+                              class="input"
+                              placeholder="Your email address"
+                              data-vv-as="email"
+                              @keyup="$validator.errors.removeById('email_FIELD_UNIQUE')">
+                          </float-label>
+
+                          <span
+                            v-show="errors.has('email')"
+                            class="input-error-message"
+                            v-html="errors.first('email')"/>
+                        </div>
+                        <div class="captcha mt-3">
+                          <vue-recaptcha
+                            ref="recaptcha"
+                            :sitekey="recaptchaSitekey"
+                            @verify="captchaVerify"
+                            @expired="captchaExpiry"/>
+                        </div>
                       </div>
-                    </article>
-                  </div>
+
+                      <div class="step section padded">
+                        <div :class="`step-${ (user) ? 2 : 3 }`">
+                          <div class="details">
+                            <h5>Continue to payment</h5>
+                            <p>Once you've selected your plan<template v-if="!user"> and entered your email</template>, click to continue below.</p>
+                          </div>
+                        </div>
+                        <div>
+                          <button
+                            :class="{ 'button-loading': formLoading }"
+                            :disabled="formLoading"
+                            class="button-info button-md"
+                            @click.prevent="submit"
+                            @keyup.enter="submit">
+                            <span class="icon-check"/> {{ $i18n.t('misc.CONTINUE') }}
+                          </button>
+                        </div>
+                      </div>
+                    </template>
+                  </form>
                 </div>
 
-                <div
-                  v-if="!user"
-                  class="step section padded">
-                  <div class="step-2">
-                    <div class="details">
-                      <h5>Enter your email address</h5>
-                      <p>We'll create an account associated to this email and send your order details here. We hate spam as much as you do.</p>
-                    </div>
+                <div class="col-4">
+                  <div class="section padded">
+                    <h3 class="mb-2">Spectero Pro Includes</h3>
+                    <p class="sub mb-2">Enjoy fully featured VPN services with Spectero Pro.</p>
+                    <ul class="checkmark">
+                      <li>24/7 customer support</li>
+                      <li>Ultra fast servers in 94 countries</li>
+                      <li>Best-in-class security &amp; encryption</li>
+                      <li>No activity logs &amp; no connection logs</li>
+                      <li>30 Days Risk Free. Not satisfied? Get your money back, no questions asked.</li>
+                    </ul>
                   </div>
-                  <div class="form-input mb-0">
-                    <float-label>
-                      <input
-                        v-validate="'required|email'"
-                        v-model="email"
-                        :class="{'input-error': errors.has('email')}"
-                        :disabled="formLoading"
-                        type="email"
-                        name="email"
-                        class="input"
-                        placeholder="Your email address"
-                        data-vv-as="email"
-                        @keyup="$validator.errors.removeById('email_FIELD_UNIQUE')">
-                    </float-label>
-
-                    <span
-                      v-show="errors.has('email')"
-                      class="input-error-message"
-                      v-html="errors.first('email')"/>
-                  </div>
-                  <div class="captcha mt-3">
-                    <vue-recaptcha
-                      ref="recaptcha"
-                      :sitekey="recaptchaSitekey"
-                      @verify="captchaVerify"
-                      @expired="captchaExpiry"/>
-                  </div>
-                </div>
-
-                <div class="step section padded">
-                  <div :class="`step-${ (user) ? 2 : 3 }`">
-                    <div class="details">
-                      <h5>Continue to payment</h5>
-                      <p>Once you've selected your plan<template v-if="!user"> and entered your email</template>, click to continue below.</p>
-                    </div>
-                  </div>
-                  <div>
-                    <button
-                      :class="{ 'button-loading': formLoading }"
-                      :disabled="formLoading"
-                      class="button-info button-md"
-                      @click.prevent="submit"
-                      @keyup.enter="submit">
-                      <span class="icon-check"/> {{ $i18n.t('misc.CONTINUE') }}
-                    </button>
+                  <div class="section padded">
+                    <h3 class="mb-2">VPN Locations</h3>
+                    <p class="sub mb-2">Choose from 148 cities in 94 countries. With unlimited speeds and unlimited server switches, you can connect from anywhere in the world.</p>
+                    <ul class="list vpn-country-list">
+                      <li>
+                        <p>
+                          <flag
+                            :squared="false"
+                            iso="US"/>
+                          United States
+                        </p>
+                        <ul>
+                          <li>Seattle, WA</li>
+                          <li>San Francisco, CA</li>
+                          <li>New York, NY</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <p>
+                          <flag
+                            :squared="false"
+                            iso="CA"/>
+                          Canada
+                        </p>
+                        <ul>
+                          <li>Toronto, ON</li>
+                        </ul>
+                      </li>
+                    </ul>
                   </div>
                 </div>
-              </template>
-            </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -431,6 +503,11 @@ export default {
       }
     }
   }
+  .price-warning {
+    margin-top: 12px;
+    font-size: 90%;
+    opacity: 0.6;
+  }
 }
 .already-pro {
   text-align: center;
@@ -438,6 +515,42 @@ export default {
   [class^="icon-"] {
     font-size: 56px;
     color: $color-success;
+  }
+}
+.pro-marketing-cta {
+  h2 {
+    font-size: 180%;
+    font-weight: $font-bold;
+    text-align: center;
+  }
+  .cta {
+    text-align: center;
+  }
+  .features {
+    text-align: center;
+
+    [class^="icon-"] {
+      margin-bottom: 20px;
+      font-size: 48px;
+      opacity: 0.8;
+    }
+    h3 {
+      margin-bottom: 12px;
+    }
+  }
+}
+.vpn-country-list {
+  .flag-icon {
+    margin-right: 4px;
+    position: relative;
+    top: -1px;
+  }
+  > li {
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 </style>
