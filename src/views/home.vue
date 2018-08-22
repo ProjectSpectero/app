@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
+    {{ environment }}
     <helloWorld/>
   </div>
 </template>
@@ -12,6 +13,11 @@ export default {
   name: 'home',
   components: {
     helloWorld
+  },
+  computed: {
+    environment () {
+      return process.env
+    }
   }
 }
 </script>

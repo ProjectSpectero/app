@@ -6,6 +6,9 @@
     "serve": "vue-cli-service serve",
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build-development": "vue-cli-service build --mode development",
+    "build-staging": "vue-cli-service build --mode staging",
+    "build-production": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e"
@@ -13,7 +16,6 @@
   "dependencies": {
     "bourbon-neat": "^3.0.0",
     "cidr-js": "^2.3.1",
-    "dotenv": "^6.0.0",
     "downloadjs": "^1.4.7",
     "eslint-plugin-cypress": "^2.0.1",
     "tiny-cookie": "^2.1.2",
