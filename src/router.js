@@ -4,10 +4,9 @@ import Meta from 'vue-meta'
 // import store from '@/store'
 // import { getCookie } from 'tiny-cookie'
 
-// import appRoutes from '@/app/routes'
-// import daemonRoutes from '@/daemon/routes'
-// import sharedRoutes from '@/shared/routes'
-import home from './views/home.vue'
+import appRoutes from '@/app/routes'
+import daemonRoutes from '@/daemon/routes'
+import sharedRoutes from '@/shared/routes'
 
 Vue.use(Router)
 Vue.use(Meta)
@@ -17,14 +16,9 @@ const router = new Router({
   base: process.env.BASE_URL,
   saveScrollPosition: true,
   routes: [
-    // ...appRoutes,
-    // ...daemonRoutes,
-    // ...sharedRoutes
-    {
-      path: '/',
-      name: 'home',
-      component: home
-    }
+    ...appRoutes,
+    ...daemonRoutes,
+    ...sharedRoutes
   ]
 })
 
