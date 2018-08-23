@@ -173,9 +173,15 @@
                     United States
                   </p>
                   <ul>
-                    <li>Seattle, WA</li>
+                    <li>Los Angeles, CA</li>
                     <li>San Francisco, CA</li>
+                    <li>San Jose, CA</li>
+                    <li>Atlanta, GA</li>
                     <li>New York, NY</li>
+                    <li>Newark, NJ</li>
+                    <li>Dallas, TX</li>
+                    <li>Washington, VA</li>
+                    <li>Seattle, WA</li>
                   </ul>
                 </li>
                 <li>
@@ -183,11 +189,64 @@
                     <flag
                       :squared="false"
                       iso="CA"/>
-                    Canada
+                    Toronto, Canada
                   </p>
-                  <ul>
-                    <li>Toronto, ON</li>
-                  </ul>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="DE"/>
+                    Frankfurt, Germany
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="GB"/>
+                    London, United Kingdom
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="SG"/>
+                    Singapore City, Singapore
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="IN"/>
+                    Bengaluru, India
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="JP"/>
+                    Tokyo, Japan
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="ZA"/>
+                    Johannesburg, South Africa
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="TW"/>
+                    Taipei, Taiwan
+                  </p>
                 </li>
               </ul>
             </div>
