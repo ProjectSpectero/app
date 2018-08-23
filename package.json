@@ -14,7 +14,6 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
-    "autodll-webpack-plugin": "^0.3.9",
     "axios": "^0.18.0",
     "bourbon-neat": "^3.0.0",
     "bp-vuejs-dropdown": "^2.1.1",
