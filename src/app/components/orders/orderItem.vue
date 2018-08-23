@@ -9,7 +9,7 @@
             v-tooltip="$i18n.t('orders.ORDER_STATUS.' + ((item.error) ? 'ERROR' : item.status))"
             :class="['status-' + status, {'status-error': item.error }]"
             class="status-dot status-active"/>
-          Resource {{ item.resource }}
+          {{ item.description }}
         </h5>
         <span
           v-if="item.error"
