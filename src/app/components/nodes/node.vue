@@ -32,7 +32,7 @@ export default {
     error
   },
   metaInfo: {
-    title: this.title
+    title: 'View node'
   },
   data () {
     return {
@@ -48,11 +48,6 @@ export default {
         { id: 'system', path: 'system', label: 'SYSTEM' }
       ],
       errorItem: 'node'
-    }
-  },
-  computed: {
-    title () {
-      return (this.$route.params.action === 'edit') ? 'Edit node' : 'View node'
     }
   },
   created () {

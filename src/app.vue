@@ -1,29 +1,71 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <component :is="layout"/>
+    <vue-progress-bar/>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+import { mapGetters, mapActions } from 'vuex'
+import auth from '@/shared/layouts/auth'
+import basic from '@/shared/layouts/basic'
+import error from '@/shared/layouts/error'
+import master from '@/shared/layouts/master'
+import nocache from '@/shared/layouts/nocache'
+import daemon from '@/shared/layouts/daemon'
+
+export default {
+  name: 'Spectero',
+  components: {
+    auth,
+    basic,
+    error,
+    master,
+    nocache,
+    daemon
+  },
+  metaInfo: {
+    title: 'test',
+    titleTemplate: (titleChunk) => {
+      return (titleChunk ? `${titleChunk} - ` : '') + 'Spectero'
+    }
+  },
+  computed: {
+    ...mapGetters({
+      layout: 'settings/layout'
+    })
+  },
+  watch: {
+    '$route' (to, from) {
+      this.switchLayout(this.fetchLayoutFromRoute(to))
+    }
+  },
+  created () {
+    this.init()
+  },
+  methods: {
+    ...mapActions({
+      switchLayout: 'settings/switchLayout'
+    }),
+    init () {
+      // If we refresh the page, we need to make sure our layout is set correctly
+      // before vue-router kicks in. This is just necessary on the first page load;
+      // any layout changes will be handled by watching vue-router from then on.
+      // If there's no specified route.meta.layout, the default 'master' layout will be used.
+      this.switchLayout(this.fetchLayoutFromRoute(this.$route))
+    },
+    fetchLayoutFromRoute: function (route) {
+      return route.meta.layout || ''
     }
   }
+}
+</script>
+
+<style lang="scss">
+@import '~@styles/main.scss';
+
+#app {
+  width: 100%;
+  height: 100%;
 }
 </style>

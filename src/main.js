@@ -78,21 +78,22 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // i18n data
-const i18n = new VueI18n({ locale: 'en', messages: { en: require('./shared/lang/en.js') } })
-const globalMethods = globalMixin(i18n)
+const i18n = new VueI18n({
+  locale: 'en',
+  messages: {
+    en: require('./shared/lang/en')
+  }
+})
 
 // Load global mixin
-Vue.mixin(globalMethods)
+Vue.mixin(globalMixin(i18n))
 
 Vue.config.productionTip = false
-
 Vue.prototype.$filters = Vue.options.filters
 
 // /* eslint-disable no-new */
-
-Vue.config.productionTip = false
-
 new Vue({
+  i18n,
   router,
   store,
   render: h => h(app)
