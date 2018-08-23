@@ -38,6 +38,15 @@ async function API (project, method, path, data, success, failed) {
       data: data.data
     })
 
+    // axios.interceptors.response.use((response) => {
+    //   console.log('interceptor response')
+    //   return response
+    // }, (error) => {
+    //   console.log('interceptor error')
+    //   if (error.response) {
+    //   }
+    // })
+
     if (response) {
       Vue.prototype.$Progress.finish()
 
