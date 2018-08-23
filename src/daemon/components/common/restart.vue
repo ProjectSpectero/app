@@ -25,11 +25,11 @@ export default {
       cloudAPI.restartSystem({
         success: response => {
           this.removeBarComponent()
-          this.$toasted.success(this.$i18n.t('cloud.RESTART_SUCCESS'))
+          this.$toasted.success(this.$t('cloud.RESTART_SUCCESS'))
         },
         fail: error => {
           console.error(error)
-          this.$toasted.error(this.$i18n.t('cloud.RESTART_ERROR'))
+          this.$toasted.error(this.$t('cloud.RESTART_ERROR'))
         }
       })
     }

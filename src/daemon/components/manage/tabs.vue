@@ -5,7 +5,7 @@
       :key="i"
       :class="{ active: ($route.name === link.route) }">
       <router-link :to="{ name: link.route }">
-        {{ $i18n.t(link.label) }}
+        {{ $t(link.label) }}
       </router-link>
     </li>
   </ul>

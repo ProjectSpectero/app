@@ -1,9 +1,9 @@
 <template>
-  <top :title="$i18n.t('daemon.MANAGE_DAEMON')">
+  <top :title="$t('daemon.MANAGE_DAEMON')">
     <router-link
       :to="{ name: 'nodes' }"
       class="button">
-      {{ $i18n.t('daemon.BACK_TO_NODES') }}
+      {{ $t('daemon.BACK_TO_NODES') }}
     </router-link>
 
     <div
@@ -16,7 +16,7 @@
         v-if="user"
         class="managing-user line">
         <span class="icon-user" /> <strong>User:</strong>
-        <span>{{ $i18n.t('daemon.MANAGING_AS', { id: $route.params.nodeId }) }} {{ displayName }}</span>
+        <span>{{ $t('daemon.MANAGING_AS', { id: $route.params.nodeId }) }} {{ displayName }}</span>
       </div>
       <specs/>
     </div>

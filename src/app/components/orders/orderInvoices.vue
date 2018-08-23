@@ -1,11 +1,11 @@
 <template>
   <div>
     <template v-if="!error">
-      <top :title="$i18n.t('orders.INVOICES_FOR_ORDER', { id: $route.params.id })">
+      <top :title="$t('orders.INVOICES_FOR_ORDER', { id: $route.params.id })">
         <router-link
           :to="{ name: 'order', params: { id: $route.params.id } }"
           class="button button-info">
-          {{ $i18n.t('orders.BACK_TO_ORDER') }}
+          {{ $t('orders.BACK_TO_ORDER') }}
         </router-link>
       </top>
 
@@ -24,7 +24,7 @@
           v-else
           type="invoices">
           <slot>
-            <p v-html="$i18n.t('invoices.NO_INVOICES_TEXT')"/>
+            <p v-html="$t('invoices.NO_INVOICES_TEXT')"/>
           </slot>
         </not-found>
       </div>

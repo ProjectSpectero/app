@@ -4,7 +4,7 @@
     class="impersonating message message-info message-top">
     <div>
       <h5>This isn't you!</h5>
-      <p>{{ $i18n.t('users.IMPERSONATING', { name: user.name }) }}</p>
+      <p>{{ $t('users.IMPERSONATING', { name: user.name }) }}</p>
     </div>
     <div class="actions">
       <button

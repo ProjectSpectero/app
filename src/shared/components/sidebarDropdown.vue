@@ -29,7 +29,7 @@
               :to="{ name: 'settings' }"
               @click.native="toggleDropdownAndMenu">
               <span class="icon-settings"/>
-              {{ $i18n.t('misc.SETTINGS') }}
+              {{ $t('misc.SETTINGS') }}
             </router-link>
           </li>
           <li>
@@ -37,7 +37,7 @@
               href="#logout"
               @click.prevent="logOut()">
               <span class="icon-log-out"/>
-              {{ $i18n.t('misc.LOGOUT') }}
+              {{ $t('misc.LOGOUT') }}
             </a>
           </li>
         </ul>

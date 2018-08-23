@@ -1,9 +1,9 @@
 <template>
   <div class="message message-danger processing">
     <div>
-      <h5>{{ $i18n.t('invoices.RESOURCES_NOT_AVAILABLE') }}</h5>
-      <p>{{ $i18n.t('invoices.RESOURCES_NOT_AVAILABLE_TEXT') }}</p>
-      <p>{{ $i18n.t('invoices.FIX_ORDER_TEXT') }}</p>
+      <h5>{{ $t('invoices.RESOURCES_NOT_AVAILABLE') }}</h5>
+      <p>{{ $t('invoices.RESOURCES_NOT_AVAILABLE_TEXT') }}</p>
+      <p>{{ $t('invoices.FIX_ORDER_TEXT') }}</p>
       <p class="actions">
         <processing-errors
           :error-bag="errorBag"

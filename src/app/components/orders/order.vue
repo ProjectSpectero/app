@@ -9,7 +9,7 @@
             v-if="!loading && order.status === 'ACTIVE'"
             :to="{ name: 'orderResources', params: { id: order.id } }"
             class="button-info">
-            <span class="icon-package"/> {{ $i18n.t('orders.VIEW_RESOURCES') }}
+            <span class="icon-package"/> {{ $t('orders.VIEW_RESOURCES') }}
           </router-link>
 
           <dropdown ref="dropdown">
@@ -18,28 +18,28 @@
             </template>
             <template slot="body">
               <router-link :to="{ name: 'invoice', params: { id: invoice.id } }">
-                <span class="icon-tag"/> {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
+                <span class="icon-tag"/> {{ $t('orders.VIEW_LATEST_INVOICE') }}
               </router-link>
 
               <router-link :to="{ name: 'orderInvoices', params: { id: order.id } }">
-                <span class="icon-tag"/> {{ $i18n.t('orders.VIEW_ALL_INVOICES') }}
+                <span class="icon-tag"/> {{ $t('orders.VIEW_ALL_INVOICES') }}
               </router-link>
 
               <template v-if="order.status !== 'CANCELLED'">
                 <router-link
                   v-if="isUnpaid && isPayable"
                   :to="{ name: 'invoice', params: { id: invoice.id } }">
-                  <span class="icon-dollar-sign"/> {{ $i18n.t('misc.PAY_NOW') }}
+                  <span class="icon-dollar-sign"/> {{ $t('misc.PAY_NOW') }}
                 </router-link>
                 <router-link
                   v-if="!loading && order.status === 'ACTIVE'"
                   :to="{ name: 'orderResources', params: { id: order.id } }">
-                  <span class="icon-package"/> {{ $i18n.t('orders.VIEW_RESOURCES') }}
+                  <span class="icon-package"/> {{ $t('orders.VIEW_RESOURCES') }}
                 </router-link>
                 <a
                   class="danger"
                   @click.stop="cancel(order.id)">
-                  <span class="icon-x-circle"/> {{ $i18n.t('misc.CANCEL') }} {{ $i18n.t('misc.ORDER') }}
+                  <span class="icon-x-circle"/> {{ $t('misc.CANCEL') }} {{ $t('misc.ORDER') }}
                 </a>
               </template>
             </template>
@@ -51,30 +51,30 @@
             class="sub">
             <div class="col-info">
               <div class="info-box">
-                <h5>{{ $i18n.t('misc.ORDER_DATE') }}</h5>
+                <h5>{{ $t('misc.ORDER_DATE') }}</h5>
                 <p>{{ order.created_at | moment('MMM D, YYYY') }}</p>
               </div>
               <div class="info-box">
-                <h5>{{ $i18n.t('misc.TERM') }}</h5>
-                <p>{{ $i18n.t('market.TERM.' + ((order.term === 365) ? 'YEARLY' : 'MONTHLY')) }}</p>
+                <h5>{{ $t('misc.TERM') }}</h5>
+                <p>{{ $t('market.TERM.' + ((order.term === 365) ? 'YEARLY' : 'MONTHLY')) }}</p>
               </div>
               <div class="info-box">
-                <h5>{{ $i18n.t('misc.STATUS') }}</h5>
+                <h5>{{ $t('misc.STATUS') }}</h5>
                 <div :class="'badge-' + order.status.toLowerCase()">
-                  {{ $i18n.t('orders.ORDER_STATUS.' + order.status) }}
+                  {{ $t('orders.ORDER_STATUS.' + order.status) }}
                 </div>
               </div>
               <div class="info-box">
-                <h5>{{ $i18n.t('misc.ORDER') }} {{ $i18n.t('misc.TOTAL') }}</h5>
+                <h5>{{ $t('misc.ORDER') }} {{ $t('misc.TOTAL') }}</h5>
                 <p>{{ invoice.amount | currency }}</p>
               </div>
               <div
                 v-if="order.due_next"
                 class="info-box">
-                <h5>{{ $i18n.t('misc.NEXT_DUE_DATE') }}</h5>
+                <h5>{{ $t('misc.NEXT_DUE_DATE') }}</h5>
                 <p>{{ order.due_next | moment('MMM D, YYYY') }}</p>
                 <router-link :to="{ name: 'invoice', params: { id: invoice.id } }">
-                  {{ $i18n.t('orders.VIEW_LATEST_INVOICE') }}
+                  {{ $t('orders.VIEW_LATEST_INVOICE') }}
                 </router-link>
               </div>
             </div>
@@ -149,7 +149,7 @@
                     <small class="text-light">Invoice No: {{ invoice.id }}</small>
                     <small
                       v-if="order.due_next"
-                      class="text-light">{{ $i18n.t('misc.NEXT_DUE_DATE') }}: {{ order.due_next | moment('MMM D, YYYY') }}</small>
+                      class="text-light">{{ $t('misc.NEXT_DUE_DATE') }}: {{ order.due_next | moment('MMM D, YYYY') }}</small>
                   </div>
                 </div>
 

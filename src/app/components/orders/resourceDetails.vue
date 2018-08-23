@@ -6,11 +6,11 @@
         :key="j"
         class="details">
         <h5 v-if="field.nodeId">
-          {{ $i18n.t('misc.NODE') }}
+          {{ $t('misc.NODE') }}
           {{ field.nodeId }}
         </h5>
         <div v-if="field.accessReference">
-          <div class="label"><label>{{ $i18n.t('orders.ACCESS_REFERENCE') }}</label></div>
+          <div class="label"><label>{{ $t('orders.ACCESS_REFERENCE') }}</label></div>
           <div class="reference-list">
             <span>{{ formatAccessReferences(field.accessReference) }}</span>
           </div>
@@ -23,7 +23,7 @@
 
         <div v-if="field.accessConfig">
           <div class="label">
-            <label for="accessConfig">{{ $i18n.t('orders.ACCESS_CONFIG') }}</label>
+            <label for="accessConfig">{{ $t('orders.ACCESS_CONFIG') }}</label>
           </div>
 
           <textarea
@@ -42,7 +42,7 @@
 
         <div v-if="field.accessCredentials">
           <div class="label">
-            <label>{{ $i18n.t('orders.ACCESS_CREDENTIALS') }}</label>
+            <label>{{ $t('orders.ACCESS_CREDENTIALS') }}</label>
           </div>
           <div>{{ field.accessCredentials }}</div>
         </div>
@@ -50,8 +50,8 @@
     </template>
     <error
       v-else
-      :header="$i18n.t('orders.NOT_ENABLED_TITLE')"
-      :msg="$i18n.t('orders.NOT_ENABLED', { type: selectedType })"/>
+      :header="$t('orders.NOT_ENABLED_TITLE')"
+      :msg="$t('orders.NOT_ENABLED', { type: selectedType })"/>
   </div>
 </template>
 

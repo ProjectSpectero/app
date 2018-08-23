@@ -5,12 +5,12 @@
     <h3>Account credit</h3>
     <p
       v-if="user.credit && user.credit > 0"
-      v-html="$i18n.t('payments.COUNT_ACCOUNT_CREDIT', { credit: $filters.currency(user.credit) })"/>
-    <p v-else>{{ $i18n.t('payments.NO_ACCOUNT_CREDIT') }}</p>
+      v-html="$t('payments.COUNT_ACCOUNT_CREDIT', { credit: $filters.currency(user.credit) })"/>
+    <p v-else>{{ $t('payments.NO_ACCOUNT_CREDIT') }}</p>
     <router-link
       :to="{ name: 'addCredit' }"
       class="button">
-      {{ $i18n.t('payments.ADD_CREDIT') }}
+      {{ $t('payments.ADD_CREDIT') }}
     </router-link>
   </div>
 </template>

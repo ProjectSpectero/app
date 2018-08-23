@@ -8,7 +8,7 @@
             v-for="(option, i) in dhcp"
             :key="i"
             :value="option.id">
-            {{ $i18n.t(`cloud.dhcp.${option.label}`) }}
+            {{ $t(`cloud.dhcp.${option.label}`) }}
           </option>
         </select>
         <tooltip id="services.topics.dhcpOptions"/>

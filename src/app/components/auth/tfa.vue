@@ -29,7 +29,7 @@
         class="button-info max-width"
         @click.prevent="submit"
         @keyup.enter="submit">
-        {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.CONTINUE') }}
+        {{ formLoading ? $t('misc.LOADING') : $t('misc.CONTINUE') }}
       </button>
     </form>
   </div>

@@ -4,7 +4,7 @@
     v-clipboard:success="copyToClipboard"
     :class="buttonClass"
     class="button-bordered button-info">
-    <span class="icon-copy"/> {{ $i18n.t('misc.COPY_TO_CLIPBOARD') }}
+    <span class="icon-copy"/> {{ $t('misc.COPY_TO_CLIPBOARD') }}
   </button>
 </template>
 
@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     copyToClipboard (e) {
-      this.$toasted.success(this.$i18n.t('misc.COPIED_TO_CLIPBOARD'))
+      this.$toasted.success(this.$t('misc.COPIED_TO_CLIPBOARD'))
     }
   }
 }

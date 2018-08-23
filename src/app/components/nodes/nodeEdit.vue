@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top :title="$i18n.t('nodes.EDIT_NODE')">
+    <top :title="$t('nodes.EDIT_NODE')">
       <div
         slot="sub"
         class="sub">
@@ -13,11 +13,11 @@
           </div>
           <div class="info-box">
             <h5>Market Model</h5>
-            <div :class="'badge'">{{ $i18n.t(`nodes.MODEL.${node.market_model}`) }}</div>
+            <div :class="'badge'">{{ $t(`nodes.MODEL.${node.market_model}`) }}</div>
           </div>
           <div class="info-box">
             <h5>Status</h5>
-            <div :class="'badge-' + node.status.toLowerCase()">{{ $i18n.t(`nodes.STATUS.${node.status}`) }}</div>
+            <div :class="'badge-' + node.status.toLowerCase()">{{ $t(`nodes.STATUS.${node.status}`) }}</div>
           </div>
           <div class="info-box">
             <h5>IP/Port</h5>

@@ -4,17 +4,17 @@
       <router-link
         :to="{ name: 'market' }"
         class="button">
-        {{ $i18n.t('market.BACK') }}
+        {{ $t('market.BACK') }}
       </router-link>
       <button
         :class="{ 'button-bordered': existsInCart(item.id) }"
         class="button-success"
         @click.stop="showModal(item)">
         <template v-if="existsInCart(item.id)">
-          <span class="icon-check-circle"/> {{ $i18n.t('misc.IN_CART') }}
+          <span class="icon-check-circle"/> {{ $t('misc.IN_CART') }}
         </template>
         <template v-else>
-          <span class="icon-shopping-bag"/> {{ $i18n.t('misc.PURCHASE') }}
+          <span class="icon-shopping-bag"/> {{ $t('misc.PURCHASE') }}
         </template>
       </button>
 
@@ -23,9 +23,9 @@
         class="sub">
         <div class="col-info">
           <div class="info-box">
-            <h5>{{ $i18n.t('misc.MARKET_MODEL') }}</h5>
+            <h5>{{ $t('misc.MARKET_MODEL') }}</h5>
             <div>
-              <div class="badge">{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</div>
+              <div class="badge">{{ $t(`market.MODEL_NODE.${item.market_model}`) }}</div>
               <div
                 v-if="item.plan"
                 class="badge badge-brand badge-plan">{{ item.plan }}</div>
@@ -34,39 +34,39 @@
           <div
             v-if="item.type === 'NODE' && item.services.length > 0"
             class="info-box">
-            <h5>{{ $i18n.t('misc.SERVICES') }}</h5>
+            <h5>{{ $t('misc.SERVICES') }}</h5>
             <div
               v-for="service in item.services"
               :key="service"
               class="badge">{{ service }}</div>
           </div>
           <div class="info-box">
-            <h5>{{ $i18n.t('misc.IP_COUNT') }}</h5>
+            <h5>{{ $t('misc.IP_COUNT') }}</h5>
             <p v-if="item.ip_addresses">{{ item.ip_addresses.length }}</p>
             <p v-else>{{ countIpsInNodeGroup(item) }}</p>
           </div>
           <div class="info-box">
-            <h5>{{ $i18n.t('misc.TYPE') }}</h5>
-            <p v-if="item.type === 'NODE_GROUP'">{{ $i18n.t('misc.NODE_GROUP') }}</p>
-            <p v-else>{{ $i18n.t('misc.NODE') }}</p>
+            <h5>{{ $t('misc.TYPE') }}</h5>
+            <p v-if="item.type === 'NODE_GROUP'">{{ $t('misc.NODE_GROUP') }}</p>
+            <p v-else>{{ $t('misc.NODE') }}</p>
           </div>
           <div
             v-if="item.asn"
             class="info-box">
-            <h5>{{ $i18n.t('misc.ASN') }}</h5>
+            <h5>{{ $t('misc.ASN') }}</h5>
             <p>{{ item.asn }}</p>
           </div>
           <div
             v-if="item.cc || item.city"
             class="info-box">
-            <h5>{{ $i18n.t('misc.LOCATION') }}</h5>
+            <h5>{{ $t('misc.LOCATION') }}</h5>
             <p>
               <template v-if="item.cc">{{ getCountryById(item.cc).name }}</template>
               <template v-if="item.city"> ({{ item.city }})</template>
             </p>
           </div>
           <div class="info-box">
-            <h5>{{ $i18n.t('misc.PRICE') }}</h5>
+            <h5>{{ $t('misc.PRICE') }}</h5>
             <p>{{ item.price | currency }} USD</p>
           </div>
         </div>
@@ -76,7 +76,7 @@
       <div class="col-12">
         <template v-if="item.nodes">
           <div class="section padded">
-            <h4>{{ $i18n.t('misc.NODES') }}</h4>
+            <h4>{{ $t('misc.NODES') }}</h4>
             <nodes :nodes="item.nodes"/>
           </div>
         </template>
@@ -185,7 +185,7 @@ export default {
         ips += node.ip_addresses.length
       })
 
-      return this.$i18n.t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
+      return this.$t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
     }
   }
 }

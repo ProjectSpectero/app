@@ -33,9 +33,9 @@
       v-if="accessor"
       class="accessor">
       <div class="credentials">
-        <div class="label">{{ $i18n.t('orders.ACCESSOR_DETAILS') }}</div>
-        <p>{{ $i18n.t('misc.USERNAME') }}: <strong>{{ accessor.username }}</strong></p>
-        <p>{{ $i18n.t('misc.PASSWORD') }}: <strong>{{ accessor.password }}</strong></p>
+        <div class="label">{{ $t('orders.ACCESSOR_DETAILS') }}</div>
+        <p>{{ $t('misc.USERNAME') }}: <strong>{{ accessor.username }}</strong></p>
+        <p>{{ $t('misc.PASSWORD') }}: <strong>{{ accessor.password }}</strong></p>
       </div>
     </div>
 

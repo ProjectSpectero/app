@@ -1,10 +1,10 @@
 <template>
   <div>
-    <top :title="$i18n.t('daemon.CERTIFICATES')">
+    <top :title="$t('daemon.CERTIFICATES')">
       <router-link
         :to="{ name: 'daemon-users' }"
         class="button">
-        {{ $i18n.t('misc.BACK') }}
+        {{ $t('misc.BACK') }}
       </router-link>
     </top>
     <div

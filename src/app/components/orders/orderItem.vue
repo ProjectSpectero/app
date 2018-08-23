@@ -6,7 +6,7 @@
       <div class="title">
         <h5 class="mb-0">
           <div
-            v-tooltip="$i18n.t('orders.ORDER_STATUS.' + ((item.error) ? 'ERROR' : item.status))"
+            v-tooltip="$t('orders.ORDER_STATUS.' + ((item.error) ? 'ERROR' : item.status))"
             :class="['status-' + status, {'status-error': item.error }]"
             class="status-dot status-active"/>
           Resource {{ item.resource }}
@@ -15,7 +15,7 @@
           v-if="item.error"
           class="line-msg text-danger">
           <span class="icon-alert-circle"/>
-          {{ $i18n.t(`invoices.RESOURCE_ERROR.${item.error}`) }}
+          {{ $t(`invoices.RESOURCE_ERROR.${item.error}`) }}
         </span>
       </div>
 

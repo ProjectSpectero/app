@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ $i18n.t('misc.REGISTER') }}</h1>
+    <h1>{{ $t('misc.REGISTER') }}</h1>
     <form id="form-register">
       <div
         v-if="formError"
@@ -75,7 +75,7 @@
         class="button-info button-md max-width"
         @click.prevent="submit"
         @keyup.enter="submit">
-        {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('users.REGISTER_BUTTON') }}
+        {{ formLoading ? $t('misc.LOADING') : $t('users.REGISTER_BUTTON') }}
       </button>
     </form>
     <div class="bottom-link">
@@ -115,11 +115,11 @@ export default {
     submit () {
       this.$validator.validateAll().then((result) => {
         if (!result) {
-          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
+          this.formError = this.$t('errors.VALIDATION_FAILED')
         } else {
           // Check for captcha
           if (this.captchaExpired || !this.captchaKey) {
-            this.formError = this.$i18n.t('errors.CAPTCHA_VALIDATION_FAILED')
+            this.formError = this.$t('errors.CAPTCHA_VALIDATION_FAILED')
           } else {
             // Disable form while HTTP request being made
             this.formLoading = true
@@ -158,7 +158,7 @@ export default {
       // Get first error key to display main error msg
       for (var errorKey in err.errors) {
         if (err.errors.hasOwnProperty(errorKey)) {
-          this.formError = this.$i18n.t(`errors.${errorKey}`)
+          this.formError = this.$t(`errors.${errorKey}`)
           break
         }
       }
@@ -173,7 +173,7 @@ export default {
               this.$validator.errors.add({
                 id: `${inputName}_${errorKey}`,
                 field: inputName,
-                msg: this.$i18n.t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
+                msg: this.$t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
               })
             }
           }

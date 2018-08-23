@@ -36,7 +36,7 @@
               class="change-email-form">
               <p
                 class="spaced"
-                v-html="$i18n.t('settings.EMAIL_CHANGE_NOTICE', { email: currentEmail })"/>
+                v-html="$t('settings.EMAIL_CHANGE_NOTICE', { email: currentEmail })"/>
 
               <div class="form-input">
                 <float-label>
@@ -218,7 +218,7 @@ export default {
     submit () {
       this.$validator.validateAll().then((result) => {
         if (!result) {
-          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
+          this.formError = this.$t('errors.VALIDATION_FAILED')
         } else {
           this.formError = null
           this.process()
@@ -243,7 +243,7 @@ export default {
           this.formLoading = false
           this.logout()
           this.$router.push({ name: 'login' })
-          this.$toasted.success(this.$i18n.t('users.LOGIN_AGAIN'))
+          this.$toasted.success(this.$t('users.LOGIN_AGAIN'))
         },
         fail: error => {
           this.formLoading = false
@@ -251,7 +251,7 @@ export default {
           // Get first error key to display main error msg
           for (var errorKey in error.errors) {
             if (error.errors.hasOwnProperty(errorKey)) {
-              this.formError = this.$i18n.t(`errors.${errorKey}`)
+              this.formError = this.$t(`errors.${errorKey}`)
               break
             }
           }
@@ -266,7 +266,7 @@ export default {
                   this.$validator.errors.add({
                     id: `${inputName}_${errorKey}`,
                     field: inputName,
-                    msg: this.$i18n.t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
+                    msg: this.$t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
                   })
                 }
               }

@@ -4,7 +4,7 @@
       <button
         class="button"
         @click="askBeforeExiting">
-        {{ $i18n.t('misc.CANCEL') }}
+        {{ $t('misc.CANCEL') }}
       </button>
     </top>
     <form v-if="config">
@@ -87,7 +87,7 @@
                 :key="i"
                 class="col-6 section padded">
                 <div class="add mb-5">
-                  <h3>{{ $i18n.t('misc.LISTENER') + ' #' + (i+1) }}</h3>
+                  <h3>{{ $t('misc.LISTENER') + ' #' + (i+1) }}</h3>
                   <button
                     class="button-sm button-icon"
                     @click.prevent.stop="removeItem(i)">
@@ -179,7 +179,7 @@
                   v-if="protocolOptions"
                   class="form-input">
                   <div class="label">
-                    <label :for="item.listener.protocol">{{ $i18n.t('misc.PROTOCOL') }}</label>
+                    <label :for="item.listener.protocol">{{ $t('misc.PROTOCOL') }}</label>
                   </div>
                   <div class="input-with-tooltip">
                     <select v-model="item.listener.protocol">
@@ -187,7 +187,7 @@
                         v-for="(option, i) in protocolOptions"
                         :key="i"
                         :value="option.id">
-                        {{ $i18n.t(`cloud.protocols.${option.label}`) }}
+                        {{ $t(`cloud.protocols.${option.label}`) }}
                       </option>
                     </select>
 
@@ -408,7 +408,7 @@ export default {
         name: this.name,
         data: obj,
         success: response => {
-          this.$toasted.success(this.$i18n.t('services.UPDATE_SUCCESS'))
+          this.$toasted.success(this.$t('services.UPDATE_SUCCESS'))
 
           // Append the restart server button if needed
           if (response.data.message && response.data.message === 'SERVICE_RESTART_NEEDED') {
@@ -419,12 +419,12 @@ export default {
         },
         fail: error => {
           console.error(error)
-          this.$toasted.error(this.$i18n.t('services.UPDATE_ERROR'))
+          this.$toasted.error(this.$t('services.UPDATE_ERROR'))
         }
       })
     },
     askBeforeExiting () {
-      if (confirm(this.$i18n.t('misc.LEAVE_CONFIRM_DIALOG'))) {
+      if (confirm(this.$t('misc.LEAVE_CONFIRM_DIALOG'))) {
         this.$router.push({ name: 'daemon', params: { nodeId: this.$route.params.nodeId, action: 'services' } })
       }
     }

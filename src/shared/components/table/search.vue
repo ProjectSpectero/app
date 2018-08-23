@@ -6,7 +6,7 @@
       @keyup.enter="search">
     <button
       class="button reset"
-      @click.prevent.stop="reset">{{ $i18n.t('misc.RESET') }}</button>
+      @click.prevent.stop="reset">{{ $t('misc.RESET') }}</button>
   </div>
 </template>
 

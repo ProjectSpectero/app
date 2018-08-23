@@ -1,7 +1,7 @@
 <template>
   <div class="modal">
     <div class="modal-header">
-      <h2>{{ $i18n.t('invoices.PAY_INVOICE') }}</h2>
+      <h2>{{ $t('invoices.PAY_INVOICE') }}</h2>
       <button
         class="modal-close"
         @click="close"/>

@@ -31,7 +31,7 @@
         :class="{ 'button-loading': formLoading }"
         :disabled="formLoading"
         class="button-info max-width">
-        {{ formLoading ? $i18n.t('misc.CONTINUE') : $i18n.t('misc.SAVE') }}
+        {{ formLoading ? $t('misc.CONTINUE') : $t('misc.SAVE') }}
       </button>
     </form>
     <div v-else>

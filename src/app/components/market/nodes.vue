@@ -28,7 +28,7 @@
         <li
           v-for="ip in props.row.ip_addresses"
           :key="ip.asn">
-          <span class="asn">{{ $i18n.t('misc.ASN') }} {{ ip.asn }}</span>
+          <span class="asn">{{ $t('misc.ASN') }} {{ ip.asn }}</span>
           <span class="location">{{ ip.city }}, {{ getCountryById(ip.cc).name }}</span>
         </li>
       </ul>
@@ -40,12 +40,12 @@
       <div
         v-tooltip="{ html: `node-${props.row.id}-status-tooltip` }"
         :class="'badge-' + props.row.status.toLowerCase()">
-        {{ $i18n.t(`nodes.STATUS.${props.row.status}`) }}
+        {{ $t(`nodes.STATUS.${props.row.status}`) }}
       </div>
       <div
         :id="`node-${props.row.id}-status-tooltip`"
         class="tooltip"
-        v-html="$i18n.t(`nodes.STATUS_TOOLTIPS.${props.row.status}`)"/>
+        v-html="$t(`nodes.STATUS_TOOLTIPS.${props.row.status}`)"/>
     </template>
   </v-client-table>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="!error">
-      <top :title="$i18n.t('nodes.EDIT_GROUP')">
+      <top :title="$t('nodes.EDIT_GROUP')">
         <tabs
           slot="tabs"
           :tabs="tabs"

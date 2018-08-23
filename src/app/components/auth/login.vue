@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1>{{ $i18n.t('misc.LOGIN') }}</h1>
+    <h1>{{ $t('misc.LOGIN') }}</h1>
     <form id="form-login">
       <div
         v-if="!formError && this.$route.query.redirect"
         class="message message-info">
-        {{ $i18n.t('users.PLEASE_LOGIN') }}
+        {{ $t('users.PLEASE_LOGIN') }}
       </div>
 
       <div
@@ -16,7 +16,7 @@
         <input
           v-validate="'required|email'"
           v-model="username"
-          :placeholder="$i18n.t('users.PLACEHOLDER_EMAIL')"
+          :placeholder="$t('users.PLACEHOLDER_EMAIL')"
           :class="{'input-error': errors.has('username')}"
           :disabled="formLoading"
           type="text"
@@ -34,7 +34,7 @@
         <input
           v-validate="'required'"
           v-model="password"
-          :placeholder="$i18n.t('users.PLACEHOLDER_PASSWORD')"
+          :placeholder="$t('users.PLACEHOLDER_PASSWORD')"
           :class="{'input-error': errors.has('password')}"
           :disabled="formLoading"
           type="password"
@@ -54,17 +54,17 @@
         class="button-info button-md max-width"
         @click.prevent="submit"
         @keyup.enter="submit">
-        {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('users.LOGIN_BUTTON') }}
+        {{ formLoading ? $t('misc.LOADING') : $t('users.LOGIN_BUTTON') }}
       </button>
     </form>
     <div class="bottom-link">
       <!-- <router-link :to="{ name: 'register' }">
-        {{ $i18n.t('users.NO_ACCOUNT') }}
-        <strong>{{ $i18n.t('users.CREATE_ACCOUNT_NOW') }}</strong>
+        {{ $t('users.NO_ACCOUNT') }}
+        <strong>{{ $t('users.CREATE_ACCOUNT_NOW') }}</strong>
       </router-link> -->
 
       <router-link :to="{ name: 'resetPassword' }">
-        {{ $i18n.t('users.FORGOT_PASSWORD') }}
+        {{ $t('users.FORGOT_PASSWORD') }}
       </router-link>
     </div>
   </div>
@@ -111,7 +111,7 @@ export default {
     submit () {
       this.$validator.validateAll().then(result => {
         if (!result) {
-          this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
+          this.formError = this.$t(`errors.VALIDATION_FAILED`)
         } else {
           this.formLoading = true
           this.formError = null
@@ -145,7 +145,7 @@ export default {
       // Get first error key to display main error msg
       for (var errorKey in err.errors) {
         if (err.errors.hasOwnProperty(errorKey)) {
-          this.formError = this.$i18n.t(`errors.${errorKey}`)
+          this.formError = this.$t(`errors.${errorKey}`)
           break
         }
       }
@@ -160,7 +160,7 @@ export default {
               this.$validator.errors.add({
                 id: `${inputName}_${errorKey}`,
                 field: inputName,
-                msg: this.$i18n.t(`errors.${errorKey}`, null, { x: inputErrors[errorKey] })
+                msg: this.$t(`errors.${errorKey}`, null, { x: inputErrors[errorKey] })
               })
             }
           }

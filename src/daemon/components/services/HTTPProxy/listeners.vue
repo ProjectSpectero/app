@@ -1,6 +1,6 @@
 <template>
   <div class="section">
-    <h2>{{ $i18n.t('misc.LISTENERS') }}</h2>
+    <h2>{{ $t('misc.LISTENERS') }}</h2>
 
     <div class="add">
       <div class="input-float">
@@ -42,7 +42,7 @@
       <button
         class="button-md button-success"
         @click.prevent="add">
-        {{ $i18n.t('services.ADD_LISTENER') }}
+        {{ $t('services.ADD_LISTENER') }}
       </button>
     </div>
     <div

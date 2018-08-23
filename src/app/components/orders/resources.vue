@@ -6,7 +6,7 @@
           <router-link
             :to="{ name: 'order', params: { id: orderId } }"
             class="button">
-            {{ $i18n.t('orders.BACK_TO_ORDER') }}
+            {{ $t('orders.BACK_TO_ORDER') }}
           </router-link>
         </top>
         <div v-if="resources.length">
@@ -21,10 +21,10 @@
                   @click="selectResource(item)">
 
                   <div class="group-name">
-                    {{ $i18n.t('misc.ITEM') }} {{ item.id }}
+                    {{ $t('misc.ITEM') }} {{ item.id }}
                   </div>
                   <div class="count">
-                    {{ item.type === 'NODE_GROUP' ? $i18n.t('misc.NODE_GROUP') : $i18n.t('misc.NODE') }}
+                    {{ item.type === 'NODE_GROUP' ? $t('misc.NODE_GROUP') : $t('misc.NODE') }}
                   </div>
                 </div>
               </div>
@@ -34,22 +34,22 @@
                   class="accessor">
                   <div class="credentials">
                     <div class="label">
-                      <label>{{ $i18n.t('orders.ACCESSOR_DETAILS') }}</label>
+                      <label>{{ $t('orders.ACCESSOR_DETAILS') }}</label>
                     </div>
 
-                    <p>{{ $i18n.t('misc.USERNAME') }}: <strong>{{ accessor.username }}</strong></p>
-                    <p>{{ $i18n.t('misc.PASSWORD') }}: <strong>{{ accessor.password }}</strong></p>
+                    <p>{{ $t('misc.USERNAME') }}: <strong>{{ accessor.username }}</strong></p>
+                    <p>{{ $t('misc.PASSWORD') }}: <strong>{{ accessor.password }}</strong></p>
 
                     <p
                       v-if="accessorCheckPending"
                       class="changeWarning">
-                      {{ $i18n.t('orders.ACCESSOR_DETAILS_TEXT') }}
+                      {{ $t('orders.ACCESSOR_DETAILS_TEXT') }}
                     </p>
                   </div>
                   <button
                     v-if="!isEnterpriseOrder"
                     class="button-warning"
-                    @click.stop="showRegenerateAccessorModal(orderId)">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
+                    @click.stop="showRegenerateAccessorModal(orderId)">{{ $t('orders.REGENERATE_ACCESSOR') }}</button>
                 </div>
 
                 <ul
@@ -89,7 +89,7 @@
           class="boxed boxed-centered">
           <div class="boxed-container boxed-md">
             <div class="message message-info mb-0">
-              {{ $i18n.t('orders.RESOURCES_NOT_FOUND') }}
+              {{ $t('orders.RESOURCES_NOT_FOUND') }}
             </div>
           </div>
         </div>

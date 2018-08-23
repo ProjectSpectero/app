@@ -195,7 +195,7 @@ export default {
         }
       } catch (e) {
         console.error('Failed to fetch matrices data:', e.response)
-        this.$toasted.error(this.$i18n.t(`errors.MATRICES_FETCH_FAILED`))
+        this.$toasted.error(this.$t(`errors.MATRICES_FETCH_FAILED`))
       }
     },
     switchTab (tabId) {
@@ -223,7 +223,7 @@ export default {
     //     }
     //   } catch (e) {
     //     console.error('Failed to fetch release data:', e.response)
-    //     this.$toasted.error(this.$i18n.t(`errors.RELEASES_FETCH_FAILED`))
+    //     this.$toasted.error(this.$t(`errors.RELEASES_FETCH_FAILED`))
     //   }
     // },
   }

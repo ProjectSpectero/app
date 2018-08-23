@@ -3,7 +3,7 @@
     <div v-if="!loading">
       <div v-if="!success">
         <h2>We were unable to process your payment</h2>
-        <p>{{ $i18n.t('payments.PAYMENT_INVALID_PARAMETERS') }}</p>
+        <p>{{ $t('payments.PAYMENT_INVALID_PARAMETERS') }}</p>
       </div>
     </div>
     <loading v-else/>
@@ -38,7 +38,7 @@ export default {
           success: async processResponse => {
             this.loading = false
             this.success = true
-            this.$toasted.success(this.$i18n.t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
+            this.$toasted.success(this.$t('payments.PAYMENT_ACCEPTED'), { duration: 10000 })
             this.$router.push({ name: 'invoice', params: { id: processResponse.data.result.invoice_id } })
           },
           fail: error => {

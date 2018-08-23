@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top :title="$i18n.t('misc.DOCUMENTATION')"/>
+    <top :title="$t('misc.DOCUMENTATION')"/>
 
     <div class="container">
       <div class="col-12">

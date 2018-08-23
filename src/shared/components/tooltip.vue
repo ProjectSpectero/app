@@ -6,10 +6,10 @@
     <div
       :id="randomId"
       class="tooltip">
-      <h4>{{ $i18n.t(`help.${id}.title`) }}</h4>
+      <h4>{{ $t(`help.${id}.title`) }}</h4>
       <div
         class="description"
-        v-html="$i18n.t(`help.${id}.description`)"/>
+        v-html="$t(`help.${id}.description`)"/>
     </div>
   </div>
 </template>

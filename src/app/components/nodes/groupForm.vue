@@ -9,7 +9,7 @@
         <div>
           <div class="form-input">
             <div class="label">
-              <label for="friendly_name">{{ $i18n.t('misc.FRIENDLY_NAME') }}</label>
+              <label for="friendly_name">{{ $t('misc.FRIENDLY_NAME') }}</label>
             </div>
 
             <input
@@ -33,7 +33,7 @@
             v-if="form.market_model !== 'UNLISTED'"
             class="form-input">
             <div class="label">
-              <label for="price">{{ $i18n.t('misc.PRICE') }}</label>
+              <label for="price">{{ $t('misc.PRICE') }}</label>
             </div>
 
             <vue-numeric
@@ -60,14 +60,14 @@
           </div>
 
           <div class="form-input">
-            <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.MARKET_MODEL') }}</label></div>
+            <div class="label"><label :for="form.market_model">{{ $t('misc.MARKET_MODEL') }}</label></div>
             <div class="input-with-tooltip">
               <select v-model="form.market_model">
                 <option
                   v-for="model in marketModels"
                   :key="model"
                   :value="model">
-                  {{ $i18n.t(`nodes.MODEL.${model}`) }}
+                  {{ $t(`nodes.MODEL.${model}`) }}
                 </option>
               </select>
 
@@ -81,7 +81,7 @@
           :disabled="formLoading"
           type="submit"
           class="button-info button-md max-width">
-          {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE_GROUP') }}
+          {{ formLoading ? $t('misc.LOADING') : $t('misc.SAVE_GROUP') }}
         </button>
       </div>
     </div>
@@ -160,7 +160,7 @@ export default {
     submit () {
       this.$validator.validateAll().then(result => {
         if (!result) {
-          this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
+          this.formError = this.$t(`errors.VALIDATION_FAILED`)
         } else {
           this.formError = null
           this.processSubmit()
@@ -176,7 +176,7 @@ export default {
           data: this.form,
           success: response => {
             this.formLoading = false
-            this.$toasted.success(this.$i18n.t('nodes.GROUP_UPDATE_SUCCESS'))
+            this.$toasted.success(this.$t('nodes.GROUP_UPDATE_SUCCESS'))
           },
           fail: error => {
             this.formLoading = false
@@ -188,7 +188,7 @@ export default {
           data: this.form,
           success: response => {
             this.$router.push({ name: 'nodesByGroup', params: { id: response.data.result.id, page: 1 } })
-            this.$toasted.success(this.$i18n.t('nodes.GROUP_CREATE_SUCCESS'))
+            this.$toasted.success(this.$t('nodes.GROUP_CREATE_SUCCESS'))
           },
           fail: error => {
             this.formLoading = false

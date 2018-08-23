@@ -1,7 +1,7 @@
 <template>
   <div class="modal">
     <div class="modal-header">
-      <h2>{{ $i18n.t('nodes.ADD_NODE') }}</h2>
+      <h2>{{ $t('nodes.ADD_NODE') }}</h2>
       <button
         class="modal-close"
         @click="$emit('close')"/>

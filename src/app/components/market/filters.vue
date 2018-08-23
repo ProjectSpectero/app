@@ -4,7 +4,7 @@
     @submit.prevent.stop="submitFilters">
     <div class="form-input">
       <div class="label">
-        <label for="market-model">{{ $i18n.t('misc.MARKET_MODEL') }}</label>
+        <label for="market-model">{{ $t('misc.MARKET_MODEL') }}</label>
       </div>
       <select
         id="market-model"
@@ -14,15 +14,15 @@
         <option
           value=""
           selected>
-          {{ $i18n.t('nodes.MODEL.ANY') }}
+          {{ $t('nodes.MODEL.ANY') }}
         </option>
-        <option value="LISTED_SHARED">{{ $i18n.t('nodes.MODEL.LISTED_SHARED') }}</option>
-        <option value="LISTED_DEDICATED">{{ $i18n.t('nodes.MODEL.LISTED_DEDICATED') }}</option>
+        <option value="LISTED_SHARED">{{ $t('nodes.MODEL.LISTED_SHARED') }}</option>
+        <option value="LISTED_DEDICATED">{{ $t('nodes.MODEL.LISTED_DEDICATED') }}</option>
       </select>
     </div>
 
     <div class="form-input">
-      <div class="label"><label for="market-asn">{{ $i18n.t('misc.ASN') }}</label></div>
+      <div class="label"><label for="market-asn">{{ $t('misc.ASN') }}</label></div>
       <input
         id="market-asn"
         v-model="nodes.asn"
@@ -34,7 +34,7 @@
 
     <div class="form-input">
       <div class="label">
-        <label>{{ $i18n.t('market.GROUPED_RESULTS') }}</label>
+        <label>{{ $t('market.GROUPED_RESULTS') }}</label>
       </div>
       <div class="form-checkbox">
         <p-input
@@ -43,14 +43,14 @@
           class="p-default p-curve"
           type="checkbox"
           @change="toggleGrouped">
-          {{ $i18n.t('market.SHOW_GROUPED_RESULTS') }}
+          {{ $t('market.SHOW_GROUPED_RESULTS') }}
         </p-input>
       </div>
     </div>
 
     <div class="form-input">
       <div class="label">
-        <label>{{ $i18n.t('market.SERVICE_TYPES') }}</label>
+        <label>{{ $t('market.SERVICE_TYPES') }}</label>
       </div>
       <div
         v-for="type in serviceTypes"
@@ -70,7 +70,7 @@
 
     <div class="form-input">
       <div class="label">
-        <label>{{ $i18n.t('market.PRICE_RANGE') }}</label>
+        <label>{{ $t('market.PRICE_RANGE') }}</label>
       </div>
       <vue-slider
         ref="slider-price"
@@ -92,7 +92,7 @@
 
     <div class="form-input">
       <div class="label">
-        <label for="filter-country">{{ $i18n.t('misc.COUNTRY') }}</label>
+        <label for="filter-country">{{ $t('misc.COUNTRY') }}</label>
       </div>
       <select
         id="filter-country"
@@ -101,7 +101,7 @@
         <option
           value=""
           selected>
-          {{ $i18n.t('misc.ANY_COUNTRY') }}
+          {{ $t('misc.ANY_COUNTRY') }}
         </option>
         <option disabled>&nbsp;</option>
         <option
@@ -115,7 +115,7 @@
 
     <div class="form-input">
       <div class="label">
-        <label for="filter-city">{{ $i18n.t('misc.CITY') }}</label>
+        <label for="filter-city">{{ $t('misc.CITY') }}</label>
       </div>
       <input
         id="filter-city"
@@ -127,7 +127,7 @@
 
     <div class="form-input">
       <div class="label">
-        <label for="filter-nodeCount">{{ $i18n.t('market.MIN_IPS') }}</label>
+        <label for="filter-nodeCount">{{ $t('market.MIN_IPS') }}</label>
       </div>
       <input
         id="filter-nodeCount"

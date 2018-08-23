@@ -2,14 +2,14 @@
   <div class="boxed boxed-centered">
     <div class="boxed-container boxed-md">
       <template v-if="!loading">
-        <h1>{{ $i18n.t('payments.ADD_CREDIT_TITLE') }}</h1>
-        <p>{{ $i18n.t('payments.ADD_CREDIT_DESC') }}</p>
+        <h1>{{ $t('payments.ADD_CREDIT_TITLE') }}</h1>
+        <p>{{ $t('payments.ADD_CREDIT_DESC') }}</p>
         <p class="credit-current">Balance: {{ user.credit | currency }} {{ currency }}</p>
 
         <template v-if="remaining > 0">
           <div
             class="message"
-            v-html="$i18n.t('payments.ADD_CREDIT_MAX_WARNING', { remaining: remaining, max: max, currency: currency })"/>
+            v-html="$t('payments.ADD_CREDIT_MAX_WARNING', { remaining: remaining, max: max, currency: currency })"/>
 
           <div
             v-if="formError"
@@ -17,7 +17,7 @@
 
           <div class="form-input">
             <div class="label">
-              <label for="creditAddAmount">{{ $i18n.t('payments.ADD_CREDIT_FORM_LABEL') }}</label>
+              <label for="creditAddAmount">{{ $t('payments.ADD_CREDIT_FORM_LABEL') }}</label>
             </div>
             <vue-numeric
               id="creditAddAmount"
@@ -36,18 +36,18 @@
             :disabled="formLoading"
             class="button-md button-success button-full"
             @click="add(amount)">
-            {{ $i18n.t('misc.PURCHASE') }}
+            {{ $t('misc.PURCHASE') }}
           </button>
         </template>
         <template v-else>
           <div
             class="message message-error"
-            v-html="$i18n.t('payments.CREDIT_LIMIT_EXCEEDED')"/>
+            v-html="$t('payments.CREDIT_LIMIT_EXCEEDED')"/>
 
           <router-link
             :to="{ name: 'settings', params: { tab: 'payment' } }"
             class="button button-md button-full">
-            {{ $i18n.t('misc.RETURN_TO_SETTINGS') }}
+            {{ $t('misc.RETURN_TO_SETTINGS') }}
           </router-link>
         </template>
       </template>

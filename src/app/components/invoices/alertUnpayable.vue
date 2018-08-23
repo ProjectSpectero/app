@@ -1,8 +1,8 @@
 <template>
   <div class="message message-warning unpayable">
     <div>
-      <h5>{{ $i18n.t('invoices.UNPAYABLE') }}</h5>
-      <p>{{ $i18n.t('invoices.UNPAYABLE_TEXT') }}</p>
+      <h5>{{ $t('invoices.UNPAYABLE') }}</h5>
+      <p>{{ $t('invoices.UNPAYABLE_TEXT') }}</p>
     </div>
   </div>
 </template>

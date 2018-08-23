@@ -9,7 +9,7 @@
 
       <p
         class="description"
-        v-html="$i18n.t('payments.USE_SAVED_CARD')"/>
+        v-html="$t('payments.USE_SAVED_CARD')"/>
       <div class="saved-card">
         <div>
           <p><strong>{{ savedCard.brand }}</strong> ending in {{ savedCard.last4 }}</p>
@@ -19,12 +19,12 @@
           <button
             :disabled="loading"
             class="button"
-            @click="toggleSavedCard">{{ $i18n.t('payments.BUTTON_USE_SAVED_CARD_NO') }}</button>
+            @click="toggleSavedCard">{{ $t('payments.BUTTON_USE_SAVED_CARD_NO') }}</button>
           <button
             :disabled="loading"
             :class="{'button-loading': loading}"
             class="button-info"
-            @click.stop="payUsingSavedCard">{{ $i18n.t('payments.BUTTON_USE_SAVED_CARD_YES') }}</button>
+            @click.stop="payUsingSavedCard">{{ $t('payments.BUTTON_USE_SAVED_CARD_YES') }}</button>
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@
     <template v-else>
       <p
         class="description"
-        v-html="$i18n.t(`payments.METHODS.${lang}.DESCRIPTION`)"/>
+        v-html="$t(`payments.METHODS.${lang}.DESCRIPTION`)"/>
       <credit-card
         :invoice="invoice"
         :due="due"

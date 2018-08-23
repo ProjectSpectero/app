@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="!error">
-      <top :title="$i18n.t('misc.INVOICES')">
+      <top :title="$t('misc.INVOICES')">
         <help-button obj="invoices.topics"/>
         <ul
           slot="tabs"
@@ -13,7 +13,7 @@
               :to="{ name: 'invoicesByStatus', params: { status: s, page: 1 } }"
               :class="{ active: currentStatus === s }"
               @click.native="tabChange">
-              {{ $i18n.t('invoices.MENU_STATUS.' + s.toUpperCase()) }}
+              {{ $t('invoices.MENU_STATUS.' + s.toUpperCase()) }}
             </router-link>
           </li>
         </ul>
@@ -33,7 +33,7 @@
               v-else
               type="invoices">
               <slot>
-                <p v-html="$i18n.t('invoices.NO_INVOICES_TEXT')"/>
+                <p v-html="$t('invoices.NO_INVOICES_TEXT')"/>
               </slot>
             </not-found>
           </div>

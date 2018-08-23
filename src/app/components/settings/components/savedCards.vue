@@ -22,7 +22,7 @@
     </div>
     <div v-else>
       <div class="cc-info col">
-        <p>{{ $i18n.t('payments.NO_CREDIT_CARD') }}</p>
+        <p>{{ $t('payments.NO_CREDIT_CARD') }}</p>
       </div>
     </div>
   </div>

@@ -16,7 +16,7 @@
         <button
           class="button-sm"
           @click.stop="editGroup">
-          {{ $i18n.t('nodes.EDIT_GROUP') }}
+          {{ $t('nodes.EDIT_GROUP') }}
         </button>
       </div>
     </header>
@@ -48,24 +48,24 @@
                   :class="`type-${service.type.toLowerCase()}`"/>
               </div>
             </td>
-            <td>{{ $i18n.t(`nodes.MODEL.${row.market_model}`) }}</td>
+            <td>{{ $t(`nodes.MODEL.${row.market_model}`) }}</td>
             <td>
               <div
                 v-tooltip="{ html: `node-${row.id}-status-tooltip` }"
                 :class="'badge-' + row.status.toLowerCase()">
-                {{ $i18n.t(`nodes.STATUS.${row.status}`) }}
+                {{ $t(`nodes.STATUS.${row.status}`) }}
               </div>
               <div
                 :id="`node-${row.id}-status-tooltip`"
                 class="tooltip"
-                v-html="$i18n.t(`nodes.STATUS_TOOLTIPS.${row.status}`)"/>
+                v-html="$t(`nodes.STATUS_TOOLTIPS.${row.status}`)"/>
             </td>
             <td class="table-actions">
               <button
                 v-if="row.status === 'UNCONFIRMED' && row.status !== 'PENDING_VERIFICATION'"
                 class="button-success button-sm"
                 @click.stop="verifyNode($event, row)">
-                <span class="icon-check"/> {{ $i18n.t('misc.VERIFY') }}
+                <span class="icon-check"/> {{ $t('misc.VERIFY') }}
               </button>
 
               <router-link
@@ -95,12 +95,12 @@
       v-else
       class="alert-msg-centered">
       <div class="icon-slash big-icon"/>
-      <h1>{{ $i18n.t('nodes.NO_NODES_TITLE') }}</h1>
-      <p>{{ $i18n.t( (groups && groups.length) ? 'nodes.NO_NODES_TEXT' : 'nodes.NO_NODES_TEXT_ACCOUNT') }}</p>
+      <h1>{{ $t('nodes.NO_NODES_TITLE') }}</h1>
+      <p>{{ $t( (groups && groups.length) ? 'nodes.NO_NODES_TEXT' : 'nodes.NO_NODES_TEXT_ACCOUNT') }}</p>
       <button
         class="button-success"
         @click.prevent="showAddNodeModal()">
-        <span class="icon-plus"/>{{ $i18n.t('nodes.ADD_NODE') }}
+        <span class="icon-plus"/>{{ $t('nodes.ADD_NODE') }}
       </button>
     </div>
 
@@ -173,14 +173,14 @@ export default {
       this.$emit('changedPage', page)
     },
     async removeNode (id) {
-      if (confirm(this.$i18n.t('misc.DELETE_CONFIRM_DIALOG', { object: 'node' }))) {
+      if (confirm(this.$t('misc.DELETE_CONFIRM_DIALOG', { object: 'node' }))) {
         await nodeAPI.delete({
           data: {
             id: id
           },
           success: response => {
             this.$emit('refetch')
-            this.$toasted.success(this.$i18n.t('nodes.DELETE_SUCCESS'))
+            this.$toasted.success(this.$t('nodes.DELETE_SUCCESS'))
           },
           fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
         })
@@ -198,7 +198,7 @@ export default {
         },
         success: async response => {
           this.$emit('refetch')
-          this.$toasted.success(this.$i18n.t('nodes.NODE_VERIFY_SUCCESS', { node: node.friendly_name ? node.friendly_name : node.id }))
+          this.$toasted.success(this.$t('nodes.NODE_VERIFY_SUCCESS', { node: node.friendly_name ? node.friendly_name : node.id }))
           button.remove()
         },
         fail: error => {
@@ -213,14 +213,14 @@ export default {
       this.$router.push({ name: 'nodeGroupEdit', params: { id: this.selectedGroupInformation.id } })
     },
     removeGroup () {
-      if (confirm(this.$i18n.t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {
+      if (confirm(this.$t('nodes.DELETE_GROUP_CONFIRM_DIALOG'))) {
         nodeAPI.deleteGroup({
           data: { id: this.selectedGroupInformation.id },
           success: response => {
             this.$route.params.id = null
             this.$route.params.page = null
             this.$emit('refetch')
-            this.$toasted.success(this.$i18n.t('nodes.GROUP_DELETE_SUCCESS'))
+            this.$toasted.success(this.$t('nodes.GROUP_DELETE_SUCCESS'))
           },
           fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
         })

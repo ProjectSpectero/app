@@ -54,7 +54,7 @@ export default {
       try {
         await this.autologin()
       } catch (e) {
-        this.$toasted.error(this.$i18n.t(`daemon.${e.message}`))
+        this.$toasted.error(this.$t(`daemon.${e.message}`))
         this.$router.push({ name: 'nodes' })
       }
     } else {

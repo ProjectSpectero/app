@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top :title="$i18n.t('nodes.CREATE_GROUP')"/>
+    <top :title="$t('nodes.CREATE_GROUP')"/>
     <div class="container">
       <create-form/>
     </div>

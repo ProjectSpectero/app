@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top :title="$i18n.t('misc.USERS')"/>
+    <top :title="$t('misc.USERS')"/>
 
     <template v-if="tableData">
       <div class="container">
@@ -23,7 +23,7 @@
                   <button
                     class="button"
                     @click.stop="triggerImpersonation(row.id)">
-                    {{ $i18n.t('misc.IMPERSONATE') }}
+                    {{ $t('misc.IMPERSONATE') }}
                   </button>
                 </td>
               </tr>

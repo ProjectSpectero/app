@@ -7,13 +7,13 @@
         {{ item.data.friendly_name }}
       </router-link>
       <div class="type">
-        <span v-if="item.type === 'NODE_GROUP'">{{ $i18n.t('misc.NODE_GROUP') }}</span>
-        <span v-else>{{ $i18n.t('misc.NODE') }}</span>
+        <span v-if="item.type === 'NODE_GROUP'">{{ $t('misc.NODE_GROUP') }}</span>
+        <span v-else>{{ $t('misc.NODE') }}</span>
       </div>
     </div>
     <div class="price">
       {{ item.pricing[item.term === 'YEARLY' ? 'yearly' : 'monthly'] | currency }}
-      <span class="renews">{{ $i18n.t('market.RENEWS') }} {{ $i18n.t(`market.TERM.${item.term}`) }}</span>
+      <span class="renews">{{ $t('market.RENEWS') }} {{ $t(`market.TERM.${item.term}`) }}</span>
     </div>
 
     <div class="savings">
@@ -21,17 +21,17 @@
         <p
           v-if="item.term === 'YEARLY'"
           class="text-success">
-          <span class="icon-check-circle"/> {{ $i18n.t('market.YEARLY_SAVING') }} <strong>{{ item.pricing.yearlySavings | currency }}</strong>
+          <span class="icon-check-circle"/> {{ $t('market.YEARLY_SAVING') }} <strong>{{ item.pricing.yearlySavings | currency }}</strong>
         </p>
         <p
           v-else
           class="text-warning switch-yearly">
-          <span class="icon-alert-circle"/> {{ $i18n.t('market.YEARLY_COULD_SAVE') }} <strong>{{ item.pricing.yearlySavings | currency }}</strong>
+          <span class="icon-alert-circle"/> {{ $t('market.YEARLY_COULD_SAVE') }} <strong>{{ item.pricing.yearlySavings | currency }}</strong>
           <br>
           <span
             class="link"
             @click.stop="swithTermYearly">
-            {{ $i18n.t('market.YEARLY_SWITCH') }}
+            {{ $t('market.YEARLY_SWITCH') }}
           </span>
         </p>
       </template>
@@ -64,7 +64,7 @@ export default {
     }),
     remove () {
       this.removeFromCart(this.item)
-      this.$toasted.success(this.$i18n.t('market.REMOVED_FROM_CART', { name: this.item.data.friendly_name }))
+      this.$toasted.success(this.$t('market.REMOVED_FROM_CART', { name: this.item.data.friendly_name }))
     },
     swithTermYearly () {
       this.changeTerm({
@@ -72,7 +72,7 @@ export default {
         type: this.item.type,
         term: 'YEARLY'
       })
-      this.$toasted.success(this.$i18n.t('market.SAVINGS_APPLIED'))
+      this.$toasted.success(this.$t('market.SAVINGS_APPLIED'))
     }
   }
 }

@@ -31,9 +31,9 @@
       <div>
         <p
           class="description"
-          v-html="$i18n.t(`payments.METHODS.${lang}.DESCRIPTION`, { balance: $filters.currency(user.credit) })"/>
+          v-html="$t(`payments.METHODS.${lang}.DESCRIPTION`, { balance: $filters.currency(user.credit) })"/>
 
-        <p v-html="$i18n.t(`payments.METHODS.${lang}.APPLY_TEXT${(isPartialCredit) ? '_PARTIAL' : ''}`, { due: $filters.currency(due.amount), balance: $filters.currency(user.credit), remaining: $filters.currency(outstanding) })"/>
+        <p v-html="$t(`payments.METHODS.${lang}.APPLY_TEXT${(isPartialCredit) ? '_PARTIAL' : ''}`, { due: $filters.currency(due.amount), balance: $filters.currency(user.credit), remaining: $filters.currency(outstanding) })"/>
 
         <p class="order-total">
           Order Total: <span class="amount">{{ due.amount | currency }} {{ due.currency }}</span>
@@ -45,7 +45,7 @@
             :class="{'button-loading': loading}"
             class="button-lg button-success button-pay"
             @click.stop="pay"
-            v-html="$i18n.t(`payments.METHODS.${lang}.PAY_BUTTON`)"/>
+            v-html="$t(`payments.METHODS.${lang}.PAY_BUTTON`)"/>
         </div>
       </div>
     </div>
@@ -115,7 +115,7 @@ export default {
         },
         fail: error => {
           this.loading = false
-          this.formError = this.$i18n.t('payments.ACCOUNT_CREDIT_PAYMENT_FAILED')
+          this.formError = this.$t('payments.ACCOUNT_CREDIT_PAYMENT_FAILED')
           console.error('Error while finishing credit payment payment', error)
         }
       })

@@ -29,7 +29,7 @@
         <router-link
           :to="{ name: 'marketView', params: { id: item.resource, type: (item.type === 'NODE_GROUP' || item.type == 'MANAGED') ? 'group' : 'node' } }"
           class="button-sm button-info">
-          <span class="icon-book-open"/> {{ $i18n.t('orders.VIEW_ON_MARKETPLACE') }}
+          <span class="icon-book-open"/> {{ $t('orders.VIEW_ON_MARKETPLACE') }}
         </router-link>
       </div>
     </div>

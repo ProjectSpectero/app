@@ -3,7 +3,7 @@
     <div
       v-if="ips && ips.length"
       class="list section padded">
-      <h4>{{ $i18n.t('misc.IP_ADDRESSES') }}</h4>
+      <h4>{{ $t('misc.IP_ADDRESSES') }}</h4>
       <v-client-table
         :data="ips"
         :columns="columns"

@@ -2,7 +2,7 @@
   <div>
     <div class="section padded col-6">
       <form @submit.prevent.stop="submit">
-        <h2>{{ $i18n.t('misc.MARKET_INFO') }}</h2>
+        <h2>{{ $t('misc.MARKET_INFO') }}</h2>
         <div
           v-if="formError"
           class="message message-error">{{ formError }}</div>
@@ -31,14 +31,14 @@
             <div
               v-if="marketModels"
               class="form-input">
-              <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.MARKET_MODEL') }}</label></div>
+              <div class="label"><label :for="form.market_model">{{ $t('misc.MARKET_MODEL') }}</label></div>
               <div class="input-with-tooltip">
                 <select v-model="form.market_model">
                   <option
                     v-for="model in marketModels"
                     :key="model"
                     :value="model">
-                    {{ $i18n.t(`nodes.MODEL.${model}`) }}
+                    {{ $t(`nodes.MODEL.${model}`) }}
                   </option>
                 </select>
                 <tooltip id="nodes.topics.marketModels"/>
@@ -102,7 +102,7 @@
           :disabled="formLoading"
           type="submit"
           class="button-info button-md max-width">
-          {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
+          {{ formLoading ? $t('misc.LOADING') : $t('misc.SAVE') }}
         </button>
       </form>
     </div>
@@ -118,7 +118,7 @@
           slot="status"
           slot-scope="props">
           <div :class="'badge-' + props.row.status.toLowerCase()">
-            {{ $i18n.t(`nodes.STATUS.${props.row.status}`) }}
+            {{ $t(`nodes.STATUS.${props.row.status}`) }}
           </div>
         </template>
 
@@ -134,10 +134,10 @@
           slot="type"
           slot-scope="props">
           <template v-if="props.row.type === 'NODE'">
-            <div>{{ $i18n.t('misc.NODE') }} #{{ props.row.resource }}</div>
+            <div>{{ $t('misc.NODE') }} #{{ props.row.resource }}</div>
           </template>
           <template v-else-if="props.row.type === 'NODE_GROUP'">
-            <div>{{ $i18n.t('misc.NODE_GROUP') }} #{{ props.row.resource }}</div>
+            <div>{{ $t('misc.NODE_GROUP') }} #{{ props.row.resource }}</div>
           </template>
         </template>
 
@@ -148,7 +148,7 @@
             v-if="props.row.status === 'ACTIVE'"
             class="button"
             @click.stop="deleteEngagement(props.row.id)">
-            {{ $i18n.t('misc.CANCEL') }}
+            {{ $t('misc.CANCEL') }}
           </button>
           <div v-else>&nbsp;</div>
         </template>
@@ -227,22 +227,22 @@ export default {
       return [
         {
           name: 'friendly_name',
-          label: this.$i18n.t('misc.FRIENDLY_NAME'),
-          placeholder: this.$i18n.t('misc.FRIENDLY_NAME'),
+          label: this.$t('misc.FRIENDLY_NAME'),
+          placeholder: this.$t('misc.FRIENDLY_NAME'),
           type: 'text'
         },
         {
           name: 'market_model',
-          label: this.$i18n.t('misc.MARKET_MODEL'),
-          placeholder: this.$i18n.t('misc.MARKET_MODEL'),
+          label: this.$t('misc.MARKET_MODEL'),
+          placeholder: this.$t('misc.MARKET_MODEL'),
           type: 'model',
           object: this.marketModels,
           objectKey: null
         },
         {
           name: 'price',
-          label: this.$i18n.t('misc.PRICE'),
-          placeholder: this.$i18n.t('misc.PRICE'),
+          label: this.$t('misc.PRICE'),
+          placeholder: this.$t('misc.PRICE'),
           type: 'price',
           show: this.form.market_model !== 'UNLISTED'
         }
@@ -285,7 +285,7 @@ export default {
     submit () {
       this.$validator.validateAll().then(result => {
         if (!result) {
-          this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
+          this.formError = this.$t(`errors.VALIDATION_FAILED`)
         } else {
           this.formError = null
           this.processSubmit()
@@ -301,7 +301,7 @@ export default {
         success: response => {
           if (response.data.result) {
             this.formLoading = false
-            this.$toasted.success(this.$i18n.t('nodes.UPDATE_SUCCESS'))
+            this.$toasted.success(this.$t('nodes.UPDATE_SUCCESS'))
           }
         },
         fail: error => {
@@ -311,12 +311,12 @@ export default {
       })
     },
     deleteEngagement (id) {
-      if (confirm(this.$i18n.t('nodes.DELETE_ENGAGEMENT_CONFIRM_DIALOG'))) {
+      if (confirm(this.$t('nodes.DELETE_ENGAGEMENT_CONFIRM_DIALOG'))) {
         nodeAPI.deleteEngagement({
           data: { id: id },
           success: response => {
             this.$emit('updateEngagements')
-            this.$toasted.success(this.$i18n.t('nodes.ENGAGEMENT_DELETE_SUCCESS'))
+            this.$toasted.success(this.$t('nodes.ENGAGEMENT_DELETE_SUCCESS'))
           },
           fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
         })

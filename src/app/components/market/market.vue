@@ -1,11 +1,11 @@
 <template>
   <div>
-    <top :title="$i18n.t('misc.MARKET')">
+    <top :title="$t('misc.MARKET')">
       <router-link
         v-if="totals.total > 0"
         :to="{ name: 'cart' }"
         class="button">
-        {{ $i18n.t('misc.VIEW_CART') }}
+        {{ $t('misc.VIEW_CART') }}
       </router-link>
       <help-button obj="market.topics"/>
       <market-menu
@@ -34,14 +34,14 @@
             class="cart">
             <div class="info">
               <h4 class="mb-0">
-                <span class="icon icon-shopping-cart"/> {{ $i18n.t('misc.CART') }}: {{ totals.total | currency }} USD
+                <span class="icon icon-shopping-cart"/> {{ $t('misc.CART') }}: {{ totals.total | currency }} USD
               </h4>
             </div>
             <div class="actions">
               <router-link
                 :to="{ name: 'cart' }"
                 class="button-info">
-                {{ $i18n.t('misc.CHECKOUT') }}
+                {{ $t('misc.CHECKOUT') }}
               </router-link>
             </div>
           </div>
@@ -72,7 +72,7 @@
                       class="badge badge-brand badge-plan">{{ item.plan }}</div>
                   </td>
                   <td>
-                    <div class="badge">{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</div>
+                    <div class="badge">{{ $t(`market.MODEL_NODE.${item.market_model}`) }}</div>
                   </td>
                   <td>
                     <template v-if="route === 'marketMine'">
@@ -84,8 +84,8 @@
                     </template>
                   </td>
                   <td>
-                    <span v-if="item.type === 'NODE_GROUP'">{{ $i18n.t('misc.NODE_GROUP') }}</span>
-                    <span v-else>{{ $i18n.t('misc.NODE') }}</span>
+                    <span v-if="item.type === 'NODE_GROUP'">{{ $t('misc.NODE_GROUP') }}</span>
+                    <span v-else>{{ $t('misc.NODE') }}</span>
                   </td>
                   <td>{{ item.price | currency }} USD</td>
                   <td class="table-actions">
@@ -93,7 +93,7 @@
                       <router-link
                         :to="{ name: 'node', params: { action: 'edit', id: item.id } }"
                         class="button-sm">
-                        {{ $i18n.t('misc.EDIT') }}
+                        {{ $t('misc.EDIT') }}
                       </router-link>
                     </template>
                     <template v-else>
@@ -102,10 +102,10 @@
                         class="button-sm button-success"
                         @click.stop="showModal(item)">
                         <template v-if="existsInCart(item.id)">
-                          <span class="icon-check-circle"/> {{ $i18n.t('misc.IN_CART') }}
+                          <span class="icon-check-circle"/> {{ $t('misc.IN_CART') }}
                         </template>
                         <template v-else>
-                          <span class="icon-shopping-bag"/> {{ $i18n.t('misc.PURCHASE') }}
+                          <span class="icon-shopping-bag"/> {{ $t('misc.PURCHASE') }}
                         </template>
                       </button>
 
@@ -113,7 +113,7 @@
                         v-if="item.type"
                         :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }"
                         class="button-sm">
-                        {{ $i18n.t('misc.VIEW') }}
+                        {{ $t('misc.VIEW') }}
                       </router-link>
                     </template>
                   </td>
@@ -126,16 +126,16 @@
             class="alert-msg-centered">
             <div class="icon-slash big-icon"/>
             <template v-if="route !== 'marketMine'">
-              <h1>{{ $i18n.t('market.NO_LISTINGS_TITLE') }}</h1>
-              <p>{{ $i18n.t('market.NO_LISTINGS_TEXT') }}</p>
+              <h1>{{ $t('market.NO_LISTINGS_TITLE') }}</h1>
+              <p>{{ $t('market.NO_LISTINGS_TEXT') }}</p>
             </template>
             <template v-else>
-              <h1>{{ $i18n.t('market.NO_LISTINGS_SELF_TITLE') }}</h1>
-              <p>{{ $i18n.t('market.NO_LISTINGS_SELF_TEXT') }}</p>
+              <h1>{{ $t('market.NO_LISTINGS_SELF_TITLE') }}</h1>
+              <p>{{ $t('market.NO_LISTINGS_SELF_TEXT') }}</p>
               <button
                 class="button-success"
                 @click.prevent="showAddNodeModal()">
-                <span class="icon-plus"/>{{ $i18n.t('nodes.ADD_NODE') }}
+                <span class="icon-plus"/>{{ $t('nodes.ADD_NODE') }}
               </button>
             </template>
           </div>
@@ -249,7 +249,7 @@ export default {
         ips += node.ip_addresses.length
       })
 
-      return this.$i18n.t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
+      return this.$t('market.NODE_GROUP_IP_COUNT', { nodes: nodes, ips: ips })
     },
     search (page, route) {
       const p = page || 1

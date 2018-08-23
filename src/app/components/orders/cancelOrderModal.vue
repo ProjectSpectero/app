@@ -8,7 +8,7 @@
     </div>
     <div class="modal-content">
       <template v-if="enterpriseOrder">
-        <div class="message message-info">{{ $i18n.t('orders.CONTACT_ACCOUNT_REPRESENTATIVE') }}</div>
+        <div class="message message-info">{{ $t('orders.CONTACT_ACCOUNT_REPRESENTATIVE') }}</div>
         <div>
           <button
             :disabled="loading"
@@ -19,7 +19,7 @@
         </div>
       </template>
       <template v-else>
-        <p class="spaced">{{ $i18n.t('orders.DELETE_ORDER_CONFIRM_DIALOG') }}</p>
+        <p class="spaced">{{ $t('orders.DELETE_ORDER_CONFIRM_DIALOG') }}</p>
         <div>
           <button
             :class="{'button-loading': loading, 'button-danger': !loading}"
@@ -79,11 +79,11 @@ export default {
           this.loading = false
           this.cancelled()
           this.close()
-          this.$toasted.success(this.$i18n.t('orders.CANCEL_SUCCESS'))
+          this.$toasted.success(this.$t('orders.CANCEL_SUCCESS'))
         },
         fail: error => {
           this.loading = false
-          this.$toasted.error(this.$i18n.t('orders.CANCEL_ERROR'))
+          this.$toasted.error(this.$t('orders.CANCEL_ERROR'))
           console.error(error)
         }
       })

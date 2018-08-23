@@ -52,12 +52,12 @@ export default {
       })
     },
     askBeforeExiting () {
-      if (confirm(this.$i18n.t('misc.LEAVE_CONFIRM_DIALOG'))) {
+      if (confirm(this.$t('misc.LEAVE_CONFIRM_DIALOG'))) {
         this.$router.push({ name: 'daemon-users' })
       }
     },
     showSuccessMessage () {
-      this.$toasted.success(this.$i18n.t('daemon.USER_UPDATE_SUCCESS'))
+      this.$toasted.success(this.$t('daemon.USER_UPDATE_SUCCESS'))
       this.$router.push({ name: 'daemon-users' })
     }
   }

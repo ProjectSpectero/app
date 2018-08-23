@@ -1,9 +1,9 @@
 <template>
   <div v-if="tableData">
-    <top :title="$i18n.t('misc.DASHBOARD')"/>
+    <top :title="$t('misc.DASHBOARD')"/>
     <div class="dashboard">
       <div class="dashboard-component">
-        <h2>{{ $i18n.t('misc.ORDERS') }}</h2>
+        <h2>{{ $t('misc.ORDERS') }}</h2>
         <orders-list
           :pagination="pagination"
           :table-data="tableData"/>

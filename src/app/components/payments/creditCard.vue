@@ -72,7 +72,7 @@
           class="p-default p-curve"
           type="checkbox"
           color="success">
-          {{ $i18n.t('payments.CHECK_SAVE_CARD') }}
+          {{ $t('payments.CHECK_SAVE_CARD') }}
         </p-input>
       </div>
 
@@ -85,15 +85,15 @@
         :class="{'button-loading': loading}"
         class="button-lg button-success button-pay"
         @click.stop="pay">
-        {{ $i18n.t('payments.BUTTON_PAY_NOW') }}
+        {{ $t('payments.BUTTON_PAY_NOW') }}
       </button>
 
       <p class="order-secure">
-        <span class="icon-lock"/> {{ $i18n.t('payments.PAY_SECURE') }}
+        <span class="icon-lock"/> {{ $t('payments.PAY_SECURE') }}
         <span
-          v-tooltip="$i18n.t('payments.PAY_SECURE_DETAILS')"
+          v-tooltip="$t('payments.PAY_SECURE_DETAILS')"
           class="tooltip-text-trigger">
-          {{ $i18n.t('misc.LEARN_MORE') }} &raquo;
+          {{ $t('misc.LEARN_MORE') }} &raquo;
         </span>
       </p>
     </div>
@@ -164,7 +164,7 @@ export default {
     pay () {
       this.$validator.validateAll().then(result => {
         if (!result) {
-          this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
+          this.formError = this.$t(`errors.VALIDATION_FAILED`)
         } else {
           this.loading = true
 
@@ -182,7 +182,7 @@ export default {
           // Issue Stripe customer token
           createToken(stripeCustomer).then(stripeResponse => {
             if (stripeResponse.error) {
-              this.formError = this.$i18n.t('payments.STRIPE_ERROR', { msg: stripeResponse.error.message })
+              this.formError = this.$t('payments.STRIPE_ERROR', { msg: stripeResponse.error.message })
               this.loading = false
             } else {
               this.formError = null
@@ -191,7 +191,7 @@ export default {
               this.processStripe(stripeResponse)
             }
           }).catch((e) => {
-            this.formError = this.$i18n.t('misc.UNKNOWN_ERROR')
+            this.formError = this.$t('misc.UNKNOWN_ERROR')
             this.loading = false
             console.error('Error while creating Stripe token', e)
           })

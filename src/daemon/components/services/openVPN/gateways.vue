@@ -13,7 +13,7 @@
         type="checkbox"
         class="p-default p-curve"
         @change="toggle($event, option)">
-        {{ $i18n.t(`cloud.gateway.${option.label}`) }}
+        {{ $t(`cloud.gateway.${option.label}`) }}
       </p-input>
     </div>
   </div>

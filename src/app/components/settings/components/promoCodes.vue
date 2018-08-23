@@ -1,11 +1,11 @@
 <template>
   <div class="promo-codes">
     <h3>Promo code</h3>
-    <p class="headline-msg">{{ $i18n.t('payments.PROMO.APPLY_MSG') }}</p>
+    <p class="headline-msg">{{ $t('payments.PROMO.APPLY_MSG') }}</p>
     <form @submit.prevent.stop="add">
       <input
         v-model="promoCode"
-        :placeholder="$i18n.t('payments.PROMO.ENTER_PROMO_CODE_HERE')"
+        :placeholder="$t('payments.PROMO.ENTER_PROMO_CODE_HERE')"
         type="text"
         class="input">
       <button
@@ -13,13 +13,13 @@
         :disabled="promoCode === '' || pending"
         type="submit"
         class="button-md">
-        {{ (pending) ? $i18n.t('misc.PLEASE_WAIT') : $i18n.t('payments.PROMO.APPLY_PROMO_CODE_BUTTON') }}
+        {{ (pending) ? $t('misc.PLEASE_WAIT') : $t('payments.PROMO.APPLY_PROMO_CODE_BUTTON') }}
       </button>
     </form>
     <p
       v-if="result.msg"
       :class="result.status"
-      class="promo-status">{{ $i18n.t('payments.PROMO.STATUS.' + result.msg) }}</p>
+      class="promo-status">{{ $t('payments.PROMO.STATUS.' + result.msg) }}</p>
   </div>
 </template>
 

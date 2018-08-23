@@ -1,7 +1,7 @@
 <template>
   <div class="modal">
     <div class="modal-header">
-      <h2>{{ $i18n.t('misc.PURCHASE') }} {{ (item.type.toLowerCase() === 'node') ? $i18n.t('misc.NODE') : $i18n.t('misc.NODE_GROUP') }}</h2>
+      <h2>{{ $t('misc.PURCHASE') }} {{ (item.type.toLowerCase() === 'node') ? $t('misc.NODE') : $t('misc.NODE_GROUP') }}</h2>
       <button
         class="modal-close"
         @click="$emit('close')"/>
@@ -12,22 +12,22 @@
       <div
         v-if="item.plan"
         class="message message-success">
-        <p v-html="$i18n.t(`market.PLAN_PURCHASE_MSG`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })"/>
+        <p v-html="$t(`market.PLAN_PURCHASE_MSG`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })"/>
       </div>
 
       <div
         v-if="item.type === 'NODE_GROUP'"
         class="message message-info message-group-warning"
-        v-html="$i18n.t(`market.ITEM_IS_GROUP_WARNING`, { count: item.nodes.length })"/>
+        v-html="$t(`market.ITEM_IS_GROUP_WARNING`, { count: item.nodes.length })"/>
 
       <ul class="details">
         <li v-if="item.type === 'NODE_GROUP'">
-          {{ $i18n.t('misc.TOTAL_NODES') }}: <strong>{{ item.nodes.length }} {{ $i18n.t('misc.NODES') }}</strong>
+          {{ $t('misc.TOTAL_NODES') }}: <strong>{{ item.nodes.length }} {{ $t('misc.NODES') }}</strong>
         </li>
-        <li v-if="item.asn">{{ $i18n.t('misc.ASN') }}: <strong>{{ item.asn }}</strong></li>
-        <li v-if="item.city">{{ $i18n.t('misc.CITY') }}: <strong>{{ item.city }}</strong></li>
-        <li v-if="item.cc">{{ $i18n.t('misc.CC') }}: <strong>{{ item.cc }}</strong></li>
-        <li>{{ $i18n.t('misc.MARKET_MODEL') }}: <strong>{{ $i18n.t(`market.MODEL_NODE.${item.market_model}`) }}</strong></li>
+        <li v-if="item.asn">{{ $t('misc.ASN') }}: <strong>{{ item.asn }}</strong></li>
+        <li v-if="item.city">{{ $t('misc.CITY') }}: <strong>{{ item.city }}</strong></li>
+        <li v-if="item.cc">{{ $t('misc.CC') }}: <strong>{{ item.cc }}</strong></li>
+        <li>{{ $t('misc.MARKET_MODEL') }}: <strong>{{ $t(`market.MODEL_NODE.${item.market_model}`) }}</strong></li>
       </ul>
 
       <div class="actions">
@@ -35,7 +35,7 @@
           :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }"
           class="button-info"
           @click.native="$emit('close')">
-          {{ $i18n.t('misc.VIEW_FULL_DETAILS') }}
+          {{ $t('misc.VIEW_FULL_DETAILS') }}
         </router-link>
       </div>
 
@@ -44,20 +44,20 @@
           <div class="message no-icon">
             <span class="icon-alert-circle"/>
             <div>
-              <h5>{{ $i18n.t('market.CANT_ADD_TO_CART_TITLE') }}</h5>
-              <p>{{ $i18n.t( (cartLocked) ? 'market.CANT_ADD_TO_CART_MSG_LOCKED' : 'market.CANT_ADD_TO_CART_MSG' ) }}</p>
-              <p>{{ $i18n.t('market.CHECKOUT_CURRENT_CART') }}</p>
+              <h5>{{ $t('market.CANT_ADD_TO_CART_TITLE') }}</h5>
+              <p>{{ $t( (cartLocked) ? 'market.CANT_ADD_TO_CART_MSG_LOCKED' : 'market.CANT_ADD_TO_CART_MSG' ) }}</p>
+              <p>{{ $t('market.CHECKOUT_CURRENT_CART') }}</p>
               <p class="actions">
                 <router-link
                   :to="{ name: 'cart' }"
                   class="button"
                   @click.native="$emit('close')">
-                  {{ $i18n.t('market.CHECKOUT_EXISTING_ITEMS') }}
+                  {{ $t('market.CHECKOUT_EXISTING_ITEMS') }}
                 </router-link>
                 <button
                   class="button right"
                   @click.stop="clearCart">
-                  {{ $i18n.t('market.EMPTY_CART') }}
+                  {{ $t('market.EMPTY_CART') }}
                 </button>
               </p>
             </div>
@@ -66,31 +66,31 @@
         <div
           v-else-if="!inCart || showChangeTerm"
           class="addToCart">
-          <h5 v-html="showChangeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('market.PURCHASE_ACCESS')" />
+          <h5 v-html="showChangeTerm ? $t('market.CHANGE_TERM') : $t('market.PURCHASE_ACCESS')" />
           <div>
             <div class="terms">
               <div
                 :class="{ active: term === 'MONTHLY' }"
                 @click="toggleTerm('MONTHLY')">
-                <label>{{ $i18n.t('market.TERM.MONTHLY') }}</label>
-                <span class="price">{{ item.price | currency }} {{ $i18n.t('market.PER_MONTH') }}</span>
+                <label>{{ $t('market.TERM.MONTHLY') }}</label>
+                <span class="price">{{ item.price | currency }} {{ $t('market.PER_MONTH') }}</span>
               </div>
               <div
                 :class="{ active: term === 'YEARLY', unavailable: !item.plan }"
                 @click="item.plan ? toggleTerm('YEARLY') : false">
-                <label>{{ $i18n.t('market.TERM.YEARLY') }}</label>
+                <label>{{ $t('market.TERM.YEARLY') }}</label>
                 <span class="price">
                   <template v-if="item.plan">
-                    {{ yearlyPrice | currency }} {{ $i18n.t('market.PER_YEAR') }}
+                    {{ yearlyPrice | currency }} {{ $t('market.PER_YEAR') }}
                   </template>
                   <template v-else>
-                    {{ $i18n.t('market.UNAVAILABLE') }}
+                    {{ $t('market.UNAVAILABLE') }}
                   </template>
                 </span>
                 <div
                   v-if="plan && plan['yearly_discount_pct']"
                   class="savings">
-                  {{ $i18n.t('misc.SAVE') }} {{ plan['yearly_discount_pct'] * 100 }}%
+                  {{ $t('misc.SAVE') }} {{ plan['yearly_discount_pct'] * 100 }}%
                 </div>
               </div>
             </div>
@@ -98,7 +98,7 @@
               <button
                 class="button-success"
                 @click.stop="showChangeTerm ? modifyTerm() : add()">
-                <span class="icon-shopping-cart"/> {{ showChangeTerm ? $i18n.t('market.CHANGE_TERM') : $i18n.t('misc.ADD_TO_CART') }}
+                <span class="icon-shopping-cart"/> {{ showChangeTerm ? $t('market.CHANGE_TERM') : $t('misc.ADD_TO_CART') }}
               </button>
             </div>
           </div>
@@ -107,25 +107,25 @@
         <template v-else>
           <div class="addedToCart">
             <h5 class="mb-3">
-              <span class="icon-shopping-cart"/> {{ $i18n.t('market.ADDED_TO_YOUR_CART') }}
+              <span class="icon-shopping-cart"/> {{ $t('market.ADDED_TO_YOUR_CART') }}
             </h5>
             <div>
               <div class="details">
                 <ul>
                   <li>
-                    {{ $i18n.t('misc.PRICE') }}: <strong>{{ (term === 'YEARLY') ? yearlyPrice : item.price | currency }}</strong><br>
+                    {{ $t('misc.PRICE') }}: <strong>{{ (term === 'YEARLY') ? yearlyPrice : item.price | currency }}</strong><br>
                     <span
                       class="link remove"
                       @click="remove">
-                      {{ $i18n.t('market.REMOVE_FROM_CART') }}
+                      {{ $t('market.REMOVE_FROM_CART') }}
                     </span>
                   </li>
                   <li>
-                    {{ $i18n.t('misc.TERM') }}: <strong>{{ $i18n.t(`market.TERM.${term}`) }}</strong><br>
+                    {{ $t('misc.TERM') }}: <strong>{{ $t(`market.TERM.${term}`) }}</strong><br>
                     <span
                       class="link"
                       @click="showTerms">
-                      {{ $i18n.t('market.CHANGE_TERM') }}
+                      {{ $t('market.CHANGE_TERM') }}
                     </span>
                   </li>
                 </ul>
@@ -134,13 +134,13 @@
                 <button
                   class="button"
                   @click="$emit('close')">
-                  {{ $i18n.t('misc.CONTINUE_SHOPPING') }}
+                  {{ $t('misc.CONTINUE_SHOPPING') }}
                 </button>
                 <router-link
                   :to="{ name: 'cart' }"
                   class="button-success"
                   @click.native="$emit('close')">
-                  <span class="icon-check-circle"/> {{ $i18n.t('misc.CHECKOUT') }}
+                  <span class="icon-check-circle"/> {{ $t('misc.CHECKOUT') }}
                 </router-link>
               </div>
             </div>
@@ -209,14 +209,14 @@ export default {
           term: this.term,
           plan: this.plan ? this.plan.id : null
         })
-        this.$toasted.success(this.$i18n.t('market.ADDED_TO_CART', { name: this.item.friendly_name }))
+        this.$toasted.success(this.$t('market.ADDED_TO_CART', { name: this.item.friendly_name }))
       } catch (e) {
-        this.$toasted.error(this.$i18n.t(`market.${e.message}`, { name: this.item.friendly_name }))
+        this.$toasted.error(this.$t(`market.${e.message}`, { name: this.item.friendly_name }))
       }
     },
     remove () {
       this.removeFromCart(this.item)
-      this.$toasted.show(this.$i18n.t('market.REMOVED_FROM_CART', { name: this.item.friendly_name }))
+      this.$toasted.show(this.$t('market.REMOVED_FROM_CART', { name: this.item.friendly_name }))
     },
     toggleTerm (term) {
       this.term = term
@@ -232,7 +232,7 @@ export default {
         type: this.item.type,
         term: this.term
       })
-      this.$toasted.info(this.$i18n.t('market.TERM_MODIFIED'))
+      this.$toasted.info(this.$t('market.TERM_MODIFIED'))
     }
   }
 }

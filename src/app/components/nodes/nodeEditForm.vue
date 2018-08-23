@@ -4,7 +4,7 @@
       <div v-if="!loading">
         <form @submit.prevent.stop="submit">
           <div class="section padded">
-            <h2>{{ $i18n.t('misc.GENERAL_INFO') }}</h2>
+            <h2>{{ $t('misc.GENERAL_INFO') }}</h2>
             <div
               v-if="formError"
               class="message message-error">{{ formError }}</div>
@@ -36,14 +36,14 @@
                 <div
                   v-if="marketModels"
                   class="form-input">
-                  <div class="label"><label :for="form.market_model">{{ $i18n.t('misc.MARKET_MODEL') }}</label></div>
+                  <div class="label"><label :for="form.market_model">{{ $t('misc.MARKET_MODEL') }}</label></div>
                   <div class="input-with-tooltip">
                     <select v-model="form.market_model">
                       <option
                         v-for="model in marketModels"
                         :key="model"
                         :value="model">
-                        {{ $i18n.t(`nodes.MODEL.${model}`) }}
+                        {{ $t(`nodes.MODEL.${model}`) }}
                       </option>
                     </select>
                     <tooltip id="nodes.topics.marketModels"/>
@@ -106,7 +106,7 @@
               :disabled="formLoading"
               type="submit"
               class="button-info button-md max-width">
-              {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('misc.SAVE') }}
+              {{ formLoading ? $t('misc.LOADING') : $t('misc.SAVE') }}
             </button>
           </div>
         </form>
@@ -202,7 +202,7 @@ export default {
       // Add a "fake" uncategorized option
       groups.push({
         id: 0,
-        label: this.$i18n.t('nodes.UNCATEGORIZED')
+        label: this.$t('nodes.UNCATEGORIZED')
       })
 
       for (let index in this.groups) {
@@ -223,54 +223,54 @@ export default {
       return [
         {
           name: 'friendly_name',
-          label: this.$i18n.t('misc.FRIENDLY_NAME'),
-          placeholder: this.$i18n.t('misc.FRIENDLY_NAME'),
+          label: this.$t('misc.FRIENDLY_NAME'),
+          placeholder: this.$t('misc.FRIENDLY_NAME'),
           type: 'text'
         },
         {
           name: 'ip',
-          label: this.$i18n.t('misc.IP'),
-          placeholder: this.$i18n.t('misc.IP'),
+          label: this.$t('misc.IP'),
+          placeholder: this.$t('misc.IP'),
           type: 'text'
         },
         {
           name: 'port',
-          label: this.$i18n.t('misc.PORT_NUMBER'),
-          placeholder: this.$i18n.t('misc.PORT_NUMBER'),
+          label: this.$t('misc.PORT_NUMBER'),
+          placeholder: this.$t('misc.PORT_NUMBER'),
           type: 'number'
         },
         {
           name: 'access_token',
-          label: this.$i18n.t('misc.ACCESS_TOKEN'),
-          placeholder: this.$i18n.t('misc.PLACEHOLDER_ACCESS_TOKEN'),
+          label: this.$t('misc.ACCESS_TOKEN'),
+          placeholder: this.$t('misc.PLACEHOLDER_ACCESS_TOKEN'),
           type: 'text'
         },
         {
           name: 'protocol',
-          label: this.$i18n.t('misc.PROTOCOL'),
-          placeholder: this.$i18n.t('misc.PROTOCOL'),
+          label: this.$t('misc.PROTOCOL'),
+          placeholder: this.$t('misc.PROTOCOL'),
           type: 'select',
           object: this.protocols,
           objectKey: null
         },
         {
           name: 'market_model',
-          label: this.$i18n.t('misc.MARKET_MODEL'),
-          placeholder: this.$i18n.t('misc.MARKET_MODEL'),
+          label: this.$t('misc.MARKET_MODEL'),
+          placeholder: this.$t('misc.MARKET_MODEL'),
           type: 'model',
           object: this.marketModels,
           objectKey: null
         },
         {
           name: 'price',
-          label: this.$i18n.t('misc.PRICE'),
-          placeholder: this.$i18n.t('misc.PRICE'),
+          label: this.$t('misc.PRICE'),
+          placeholder: this.$t('misc.PRICE'),
           type: 'price',
           show: this.form.market_model !== 'UNLISTED'
         },
         {
           name: 'group_id',
-          label: this.$i18n.t('misc.NODE_GROUP'),
+          label: this.$t('misc.NODE_GROUP'),
           type: 'select',
           object: this.formattedGroupList,
           objectKey: 'id',
@@ -287,7 +287,7 @@ export default {
     submit () {
       this.$validator.validateAll().then(result => {
         if (!result) {
-          this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
+          this.formError = this.$t(`errors.VALIDATION_FAILED`)
         } else {
           this.formError = null
           this.processSubmit()
@@ -303,7 +303,7 @@ export default {
           if (response.data.result) {
             this.formLoading = false
             this.formErrors = []
-            this.$toasted.success(this.$i18n.t('nodes.UPDATE_SUCCESS'))
+            this.$toasted.success(this.$t('nodes.UPDATE_SUCCESS'))
 
             // Updating the group requires a different API call
             if (this.node.group_id !== this.form.group_id) {
@@ -317,7 +317,7 @@ export default {
               if (Object.keys(error.fields[k])[0] !== undefined) {
                 this.formErrors.push({
                   key: k,
-                  text: this.$i18n.t('errors.' + Object.keys(error.fields[k])[0])
+                  text: this.$t('errors.' + Object.keys(error.fields[k])[0])
                 })
               }
             })
@@ -340,7 +340,7 @@ export default {
         success: response => {
           if (response.data.result) {
             this.formLoading = false
-            this.$toasted.success(this.$i18n.t('nodes.GROUP_FROM_NODE_UPDATE_SUCCESS'))
+            this.$toasted.success(this.$t('nodes.GROUP_FROM_NODE_UPDATE_SUCCESS'))
           }
         },
         fail: error => {

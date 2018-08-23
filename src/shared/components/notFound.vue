@@ -1,9 +1,9 @@
 <template>
   <div class="alert-msg-centered">
     <div class="icon-alert-circle big-icon"/>
-    <h1>{{ $i18n.t('misc.NOT_FOUND_TITLE') }}</h1>
+    <h1>{{ $t('misc.NOT_FOUND_TITLE') }}</h1>
     <slot>
-      <p>{{ type ? $i18n.t('misc.NOT_FOUND', { type: type }) : $i18n.t('misc.NOT_FOUND_DEFAULT') }}</p>
+      <p>{{ type ? $t('misc.NOT_FOUND', { type: type }) : $t('misc.NOT_FOUND_DEFAULT') }}</p>
     </slot>
   </div>
 </template>

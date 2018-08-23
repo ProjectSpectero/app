@@ -14,7 +14,7 @@
             <td>{{ row.id }}</td>
             <td>
               <div :class="'badge-' + row.status.toLowerCase()">
-                {{ $i18n.t('invoices.INVOICE_STATUS.' + row.status) }}
+                {{ $t('invoices.INVOICE_STATUS.' + row.status) }}
               </div>
             </td>
             <td>{{ row.due_date | moment('MMM D, YYYY') }}</td>
@@ -24,13 +24,13 @@
                 v-if="row.status === 'UNPAID'"
                 :to="{ name: 'checkout', params: { id: row.id } }"
                 class="button-success">
-                {{ $i18n.t('misc.PAY_NOW') }}
+                {{ $t('misc.PAY_NOW') }}
               </router-link>
 
               <router-link
                 :to="{ name: 'invoice', params: { id: row.id } }"
                 class="button-info">
-                {{ $i18n.t('misc.VIEW') }}
+                {{ $t('misc.VIEW') }}
               </router-link>
             </td>
           </tr>

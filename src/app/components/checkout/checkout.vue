@@ -11,12 +11,12 @@
               v-if="!isCreditInvoice"
               :to="{ name: 'order', params: { id: invoice.order_id } }"
               class="button-info">
-              {{ $i18n.t('misc.VIEW') }} {{ $i18n.t('misc.ORDER') }}
+              {{ $t('misc.VIEW') }} {{ $t('misc.ORDER') }}
             </router-link>
             <router-link
               :to="{ name: 'invoice', params: { id: invoice.id } }"
               class="button">
-              {{ $i18n.t('misc.CANCEL') }}
+              {{ $t('misc.CANCEL') }}
             </router-link>
           </template>
         </top>
@@ -46,7 +46,7 @@
                       :key="id"
                       :class="{ 'active': selectedGateway === id, 'disabled': !method.enabled || method.disabled }"
                       @click="selectGateway(id)">
-                      <h3 v-html="$i18n.t(`payments.METHODS.${method.lang}.TITLE`)"/>
+                      <h3 v-html="$t(`payments.METHODS.${method.lang}.TITLE`)"/>
                       <p v-if="!method.enabled">Not Available</p>
                       <p v-else-if="method.gatewayLabel">{{ method.gatewayLabel }}</p>
                     </article>

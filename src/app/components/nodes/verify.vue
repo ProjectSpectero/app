@@ -1,14 +1,14 @@
 <template>
   <div>
-    <top :title="$i18n.t('nodes.VERIFY_NODE')"/>
+    <top :title="$t('nodes.VERIFY_NODE')"/>
     <template v-if="!error">
       <div v-if="!loading">
         <div
           v-if="verifyError"
           class="alert-msg-centered">
           <div class="icon-alert-circle big-icon"/>
-          <h1>{{ $i18n.t('nodes.VERIFICATION_FAILED_TITLE') }}</h1>
-          <div v-html="$i18n.t('nodes.VERIFICATION_FAILED')"/>
+          <h1>{{ $t('nodes.VERIFICATION_FAILED_TITLE') }}</h1>
+          <div v-html="$t('nodes.VERIFICATION_FAILED')"/>
         </div>
       </div>
       <loading v-else/>
@@ -67,7 +67,7 @@ export default {
         data: { id: node.id },
         success: async response => {
           this.loading = false
-          this.$toasted.success(this.$i18n.t('nodes.NODE_VERIFY_SUCCESS', { node: node.friendly_name }))
+          this.$toasted.success(this.$t('nodes.NODE_VERIFY_SUCCESS', { node: node.friendly_name }))
           this.$router.push({ name: 'nodes' })
         },
         fail: (error) => {

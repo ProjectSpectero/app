@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!loading">
-      <h1 v-if="!resetProcessed && !resetFailed">{{ $i18n.t('reset.HEADER') }}</h1>
+      <h1 v-if="!resetProcessed && !resetFailed">{{ $t('reset.HEADER') }}</h1>
 
       <div
         v-if="formError"
@@ -9,10 +9,10 @@
       <template v-else-if="tokenValid && !resetProcessed">
         <div
           v-if="isEasy"
-          class="message message-info">{{ $i18n.t('reset.RESET_INFO_MSG_EASY') }}</div>
+          class="message message-info">{{ $t('reset.RESET_INFO_MSG_EASY') }}</div>
         <div
           v-else
-          class="message message-info">{{ $i18n.t('reset.RESET_INFO_MSG') }}</div>
+          class="message message-info">{{ $t('reset.RESET_INFO_MSG') }}</div>
       </template>
 
       <template v-if="tokenValid">
@@ -59,7 +59,7 @@
             class="button-info button-md max-width"
             @click.prevent="submit"
             @keyup.enter="submit">
-            {{ formLoading ? $i18n.t('misc.LOADING') : ( (isEasy) ? $i18n.t('reset.SET_BUTTON') : $i18n.t('reset.CHANGE_BUTTON') ) }}
+            {{ formLoading ? $t('misc.LOADING') : ( (isEasy) ? $t('reset.SET_BUTTON') : $t('reset.CHANGE_BUTTON') ) }}
           </button>
         </form>
         <template v-else>
@@ -67,12 +67,12 @@
             v-if="!resetFailed"
             class="reset-complete">
             <div class="icon-check-circle mb-3"/>
-            <h3>{{ $i18n.t('reset.RESET_COMPLETE') }}</h3>
-            <p class="mb-3">{{ $i18n.t('reset.RESET_COMPLETE_TEXT') }}</p>
+            <h3>{{ $t('reset.RESET_COMPLETE') }}</h3>
+            <p class="mb-3">{{ $t('reset.RESET_COMPLETE_TEXT') }}</p>
             <router-link
               :to="{ name: 'login' }"
               class="button">
-              {{ $i18n.t('users.BACK_TO_LOGIN') }}
+              {{ $t('users.BACK_TO_LOGIN') }}
             </router-link>
           </div>
         </template>
@@ -82,7 +82,7 @@
         v-else
         class="bottom-link">
         <router-link :to="{ name: 'login' }">
-          {{ $i18n.t('users.BACK_TO_LOGIN') }}
+          {{ $t('users.BACK_TO_LOGIN') }}
         </router-link>
       </div>
     </div>
@@ -140,7 +140,7 @@ export default {
         fail: error => {
           this.loading = false
           this.tokenValid = false
-          this.formError = this.$i18n.t('reset.PASSWORD_FAILED')
+          this.formError = this.$t('reset.PASSWORD_FAILED')
           console.error('Error validating reset token', error)
         }
       })
@@ -148,7 +148,7 @@ export default {
     submit () {
       this.$validator.validateAll().then((result) => {
         if (!result) {
-          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
+          this.formError = this.$t('errors.VALIDATION_FAILED')
         } else {
           // Disable form while HTTP request being made
           this.formLoading = true
@@ -173,7 +173,7 @@ export default {
               this.loading = false
               this.resetProcessed = true
               this.resetFailed = true
-              this.formError = this.$i18n.t('reset.PASSWORD_FAILED')
+              this.formError = this.$t('reset.PASSWORD_FAILED')
               console.error('Error resetting password', error)
             }
           })

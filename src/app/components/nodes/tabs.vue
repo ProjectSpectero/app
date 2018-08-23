@@ -5,7 +5,7 @@
       :key="tab.id"
       :class="(activeTab === tab.id) ? 'active' : ''"
       @click.stop="switchTab(tab.id, tab.path)">
-      {{ $i18n.t('misc.' + tab.label) }}
+      {{ $t('misc.' + tab.label) }}
     </li>
   </ul>
 </template>

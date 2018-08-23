@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>{{ $i18n.t('misc.RESET_PASSWORD') }}</h1>
+    <h1>{{ $t('misc.RESET_PASSWORD') }}</h1>
     <form>
       <template v-if="tokenIssued">
         <div class="message message-success">
-          {{ $i18n.t('reset.TOKEN_ISSUED', { email: email }) }}
+          {{ $t('reset.TOKEN_ISSUED', { email: email }) }}
         </div>
       </template>
       <template v-else>
@@ -16,7 +16,7 @@
           <input
             v-validate="'required|email'"
             v-model="email"
-            :placeholder="$i18n.t('users.PLACEHOLDER_EMAIL')"
+            :placeholder="$t('users.PLACEHOLDER_EMAIL')"
             :class="{'input-error': errors.has('email')}"
             :disabled="formLoading"
             type="email"
@@ -36,14 +36,14 @@
           class="button-info button-md max-width"
           @click.prevent="submit"
           @keyup.enter="submit">
-          {{ formLoading ? $i18n.t('misc.LOADING') : $i18n.t('users.RESET_PASSWORD_BUTTON') }}
+          {{ formLoading ? $t('misc.LOADING') : $t('users.RESET_PASSWORD_BUTTON') }}
         </button>
       </template>
     </form>
 
     <div class="bottom-link">
       <router-link :to="{ name: 'login' }">
-        {{ $i18n.t('users.BACK_TO_LOGIN') }}
+        {{ $t('users.BACK_TO_LOGIN') }}
       </router-link>
     </div>
   </div>
@@ -68,7 +68,7 @@ export default {
     submit () {
       this.$validator.validateAll().then(result => {
         if (!result) {
-          this.formError = this.$i18n.t(`errors.VALIDATION_FAILED`)
+          this.formError = this.$t(`errors.VALIDATION_FAILED`)
         } else {
           this.formLoading = true
           this.formError = null
@@ -98,7 +98,7 @@ export default {
       // Get first error key to display main error msg
       for (var errorKey in err.errors) {
         if (err.errors.hasOwnProperty(errorKey)) {
-          this.formError = this.$i18n.t(`errors.${errorKey}`)
+          this.formError = this.$t(`errors.${errorKey}`)
           break
         }
       }
@@ -113,7 +113,7 @@ export default {
               this.$validator.errors.add({
                 id: `${inputName}_${errorKey}`,
                 field: inputName,
-                msg: this.$i18n.t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
+                msg: this.$t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
               })
             }
           }

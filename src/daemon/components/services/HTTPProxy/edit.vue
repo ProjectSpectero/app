@@ -4,7 +4,7 @@
       <button
         class="button"
         @click="askBeforeExiting">
-        {{ $i18n.t('misc.CANCEL') }}
+        {{ $t('misc.CANCEL') }}
       </button>
     </top>
 
@@ -15,7 +15,7 @@
         <div class="section padded">
           <form>
             <div class="section">
-              <h2>{{ $i18n.t('services.PROXY_MODE') }}</h2>
+              <h2>{{ $t('services.PROXY_MODE') }}</h2>
               <div class="form-input">
                 <div class="input-with-tooltip">
                   <select
@@ -167,7 +167,7 @@ export default {
       })
     },
     askBeforeExiting () {
-      if (confirm(this.$i18n.t('misc.LEAVE_CONFIRM_DIALOG'))) {
+      if (confirm(this.$t('misc.LEAVE_CONFIRM_DIALOG'))) {
         this.$router.push({ name: 'daemon', params: { nodeId: this.$route.params.nodeId, action: 'services' } })
       }
     },
@@ -191,7 +191,7 @@ export default {
         name: this.name,
         data: this.config,
         success: response => {
-          this.$toasted.success(this.$i18n.t('services.UPDATE_SUCCESS'))
+          this.$toasted.success(this.$t('services.UPDATE_SUCCESS'))
           console.log('updated', response.data.message)
 
           // Append the restart server button if needed
@@ -203,7 +203,7 @@ export default {
         },
         fail: error => {
           console.log(error)
-          this.$toasted.error(this.$i18n.t('services.UPDATE_ERROR'))
+          this.$toasted.error(this.$t('services.UPDATE_ERROR'))
         }
       })
     },

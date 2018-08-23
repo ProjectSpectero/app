@@ -32,11 +32,11 @@ export default {
         action: 'restart',
         success: response => {
           this.removeBarComponent()
-          this.$toasted.success(this.$i18n.t('services.RESTART_SUCCESS'))
+          this.$toasted.success(this.$t('services.RESTART_SUCCESS'))
         },
         fail: error => {
           console.error(error)
-          this.$toasted.error(this.$i18n.t('services.RESTART_ERROR'))
+          this.$toasted.error(this.$t('services.RESTART_ERROR'))
         }
       })
     }

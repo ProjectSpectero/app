@@ -7,7 +7,7 @@
         <div class="section">
           <div class="add col-12 mt-4 mb-4">
             <h2>
-              {{ $i18n.t('misc.USERS') }}
+              {{ $t('misc.USERS') }}
             </h2>
             <button
               class="button-md button-success"
@@ -37,25 +37,25 @@
                           <button
                             class="button"
                             @click.stop="remove(row.id)">
-                            {{ $i18n.t('misc.REMOVE') }}
+                            {{ $t('misc.REMOVE') }}
                           </button>
 
                           <button
                             class="button"
                             @click.stop="edit(row.id)">
-                            {{ $i18n.t('misc.EDIT') }}
+                            {{ $t('misc.EDIT') }}
                           </button>
 
                           <button
                             class="button"
                             @click.stop="certificates(row.id)">
-                            {{ $i18n.t('daemon.CERTIFICATES') }}
+                            {{ $t('daemon.CERTIFICATES') }}
                           </button>
 
                           <button
                             class="button"
                             @click.stop="resources(row.id)">
-                            {{ $i18n.t('daemon.RESOURCES') }}
+                            {{ $t('daemon.RESOURCES') }}
                           </button>
                         </template>
                       </td>
@@ -129,7 +129,7 @@ export default {
       this.$router.push({ name: 'daemon-user-edit', params: { nodeId: this.$route.params.nodeId, id: id } })
     },
     async remove (id) {
-      if (confirm(this.$i18n.t('misc.DELETE_CONFIRM_DIALOG', { object: 'user' }))) {
+      if (confirm(this.$t('misc.DELETE_CONFIRM_DIALOG', { object: 'user' }))) {
         await this.testLogin()
 
         await userAPI.delete({
@@ -137,12 +137,12 @@ export default {
             id: id
           },
           success: response => {
-            this.$toasted.success(this.$i18n.t('daemon.USER_DELETE_SUCCESS'))
+            this.$toasted.success(this.$t('daemon.USER_DELETE_SUCCESS'))
             this.fetchUsers(this.$route.params.page || 1)
           },
           fail: error => {
             console.error(error)
-            this.$toasted.error(this.$i18n.t('daemon.USER_DELETE_ERROR'))
+            this.$toasted.error(this.$t('daemon.USER_DELETE_ERROR'))
           }
         })
       }

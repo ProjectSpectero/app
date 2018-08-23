@@ -26,7 +26,7 @@
     <div
       v-show="networkError"
       class="input-error-msg">
-      {{ $i18n.t('daemon.INVALID_NETWORK') }}
+      {{ $t('daemon.INVALID_NETWORK') }}
     </div>
 
     <div

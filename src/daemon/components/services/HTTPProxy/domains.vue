@@ -25,7 +25,7 @@
       <button
         class="button-md button-success"
         @click.prevent="add">
-        {{ $i18n.t('services.ADD_DOMAIN') }}
+        {{ $t('services.ADD_DOMAIN') }}
       </button>
     </div>
     <div
@@ -49,7 +49,7 @@
             :disabled="!enabled"
             class="button-sm button-bordered button-danger"
             @click.prevent="remove">
-            {{ $i18n.t('misc.REMOVE') }}
+            {{ $t('misc.REMOVE') }}
           </button>
         </li>
       </ul>
@@ -92,7 +92,7 @@ export default {
   },
   computed: {
     forbiddenMessage () {
-      return this.$i18n.t(this.forbiddenMessageKey)
+      return this.$t(this.forbiddenMessageKey)
     }
   },
   created () {

@@ -1,7 +1,7 @@
 <template>
   <div class="modal">
     <div class="modal-header">
-      <h2>{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</h2>
+      <h2>{{ $t('orders.REGENERATE_ACCESSOR') }}</h2>
       <button
         class="modal-close"
         @click="$modal.hide('regenerateAccessorModal')"/>
@@ -9,18 +9,18 @@
     <div class="modal-content">
       <div
         v-if="!failed"
-        class="message message-warning">{{ $i18n.t('orders.REGENERATE_ACCESSOR_WARNING') }}</div>
+        class="message message-warning">{{ $t('orders.REGENERATE_ACCESSOR_WARNING') }}</div>
       <div
         v-else
-        class="message message-error">{{ $i18n.t('orders.REGENERATE_ACCESSOR_ERROR') }}</div>
+        class="message message-error">{{ $t('orders.REGENERATE_ACCESSOR_ERROR') }}</div>
       <div class="action-buttons">
         <button
           :disabled="processing"
           class="button-info"
-          @click="process()">{{ $i18n.t('orders.REGENERATE_ACCESSOR') }}</button>
+          @click="process()">{{ $t('orders.REGENERATE_ACCESSOR') }}</button>
         <button
           class="button right"
-          @click="$modal.hide('regenerateAccessorModal')">{{ $i18n.t('misc.NO_CANCEL') }}</button>
+          @click="$modal.hide('regenerateAccessorModal')">{{ $t('misc.NO_CANCEL') }}</button>
       </div>
     </div>
   </div>
@@ -53,7 +53,7 @@ export default {
         },
         success: response => {
           this.processing = false
-          this.$toasted.success(this.$i18n.t('orders.REGENERATE_ACCESSOR_SUCCESS'))
+          this.$toasted.success(this.$t('orders.REGENERATE_ACCESSOR_SUCCESS'))
           this.$emit('fetchAccessor')
           this.$modal.hide('regenerateAccessorModal')
         },

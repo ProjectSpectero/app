@@ -3,13 +3,13 @@
     <template v-if="status !== 400">
       <button
         class="button-danger"
-        @click="fix">{{ $i18n.t('orders.FIX') }}</button>
+        @click="fix">{{ $t('orders.FIX') }}</button>
       <button
         class="button"
-        @click="cancel">{{ $i18n.t('orders.CANCEL') }}</button>
+        @click="cancel">{{ $t('orders.CANCEL') }}</button>
     </template>
     <template v-else>
-      {{ $i18n.t('invoices.RESOURCES_MISMATCH', { order: invoice.order_id }) }}
+      {{ $t('invoices.RESOURCES_MISMATCH', { order: invoice.order_id }) }}
     </template>
   </div>
 </template>
@@ -54,10 +54,10 @@ export default {
         data: { id: this.invoice.order_id },
         success: response => {
           this.fixed()
-          this.$toasted.success(this.$i18n.t('orders.FIX_SUCCESS'))
+          this.$toasted.success(this.$t('orders.FIX_SUCCESS'))
           this.$emit('close')
         },
-        fail: e => this.$toasted.error(this.$i18n.t('orders.FIX_ERROR'))
+        fail: e => this.$toasted.error(this.$t('orders.FIX_ERROR'))
       })
     },
     fixed () {

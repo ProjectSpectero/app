@@ -126,7 +126,7 @@ export default {
         accessReference: connector.accessReference ? connector.accessReference.join('\n') : '',
         accessConfig: connector.accessConfig,
         accessCredentials: (connector.accessCredentials && connector.accessCredentials === 'SPECTERO_USERNAME_PASSWORD')
-          ? this.$i18n.t('orders.USE_ACCESSOR')
+          ? this.$t('orders.USE_ACCESSOR')
           : connector.accessCredentials
       }
     },
@@ -161,7 +161,7 @@ export default {
           this.accessor = this.parseAccessor(response.data.result.accessor)
         },
         fail: (e) => {
-          this.$toasted.error(this.$i18n.t('orders.UNABLE_TO_CHECK_ACCESSOR'))
+          this.$toasted.error(this.$t('orders.UNABLE_TO_CHECK_ACCESSOR'))
           console.log(e)
         }
       })

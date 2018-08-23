@@ -16,21 +16,21 @@
               <td>{{ row.id }}</td>
               <td>
                 <div :class="'badge status-' + row.status.toLowerCase()">
-                  {{ $i18n.t('orders.ORDER_STATUS.' + row.status) }}
+                  {{ $t('orders.ORDER_STATUS.' + row.status) }}
                 </div>
               </td>
               <td>
                 <router-link
                   :to="{ name: 'order', params: { id: row.id } }"
                   class="button">
-                  {{ $i18n.t('misc.VIEW') }}
+                  {{ $t('misc.VIEW') }}
                 </router-link>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div>{{ $i18n.t('misc.EMPTY_RESULTS', { type: 'orders' }) }}</div>
+      <div>{{ $t('misc.EMPTY_RESULTS', { type: 'orders' }) }}</div>
     </div>
     <loading v-else/>
   </div>

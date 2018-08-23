@@ -7,7 +7,7 @@
         @click="$emit('close')"/>
     </div>
     <div class="modal-content">
-      <p class="spaced">{{ $i18n.t('nodes.DELETE_ENGAGEMENT_CONFIRM_DIALOG') }}</p>
+      <p class="spaced">{{ $t('nodes.DELETE_ENGAGEMENT_CONFIRM_DIALOG') }}</p>
       <div>
         <button
           :class="{'button-loading': loading, 'button-danger': !loading}"
@@ -56,7 +56,7 @@ export default {
         success: response => {
           this.cancelItem()
           this.$emit('close')
-          this.$toasted.success(this.$i18n.t('nodes.ENGAGEMENT_DELETE_SUCCESS'))
+          this.$toasted.success(this.$t('nodes.ENGAGEMENT_DELETE_SUCCESS'))
         },
         fail: error => {
           this.loading = false

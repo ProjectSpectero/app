@@ -7,13 +7,13 @@
     <div
       v-if="redirecting"
       class="loading-overlay">
-      <h3>{{ $i18n.t('misc.PLEASE_WAIT') }}</h3>
-      <p>{{ $i18n.t(`payments.METHODS.${lang}.REDIRECT_TEXT`) }}</p>
+      <h3>{{ $t('misc.PLEASE_WAIT') }}</h3>
+      <p>{{ $t(`payments.METHODS.${lang}.REDIRECT_TEXT`) }}</p>
     </div>
     <div>
       <p
         class="description"
-        v-html="$i18n.t(`payments.METHODS.${lang}.DESCRIPTION`)"/>
+        v-html="$t(`payments.METHODS.${lang}.DESCRIPTION`)"/>
 
       <p class="order-total">
         Order Total: <span class="amount">{{ due.amount | currency }} {{ due.currency }}</span>
@@ -25,7 +25,7 @@
           :class="{'button-loading': loading}"
           class="button-lg button-success button-pay"
           @click.stop="pay"
-          v-html="$i18n.t(`payments.METHODS.${lang}.PAY_BUTTON`)"/>
+          v-html="$t(`payments.METHODS.${lang}.PAY_BUTTON`)"/>
       </div>
     </div>
   </div>
@@ -72,13 +72,13 @@ export default {
             this.redirecting = true
             window.location.href = response.data.result.redirectUrl
           } else {
-            this.formError = this.$i18n.t('misc.UNKNOWN_ERROR')
+            this.formError = this.$t('misc.UNKNOWN_ERROR')
           }
         },
         fail: error => {
           const keys = Object.keys(error.errors)
           this.loading = false
-          this.formError = this.$i18n.t(`errors.${keys[0]}`)
+          this.formError = this.$t(`errors.${keys[0]}`)
         }
       })
     }

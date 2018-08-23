@@ -14,7 +14,7 @@
             <td>{{ row.id }}</td>
             <td>
               <div :class="'badge-' + row.status.toLowerCase()">
-                {{ $i18n.t('orders.ORDER_STATUS.' + row.status) }}
+                {{ $t('orders.ORDER_STATUS.' + row.status) }}
               </div>
             </td>
             <td>{{ row.created_at | moment('MMM D, YYYY') }}</td>
@@ -26,14 +26,14 @@
                   v-if="row.status !== 'CANCELLED' && row.last_invoice && row.last_invoice.status === 'UNPAID'"
                   :to="{ name: 'checkout', params: { id: row.last_invoice.id } }"
                   class="button-success">
-                  {{ $i18n.t('misc.PAY_NOW') }}
+                  {{ $t('misc.PAY_NOW') }}
                 </router-link>
               </template>
 
               <router-link
                 :to="{ name: 'order', params: { id: row.id } }"
                 class="button-info">
-                {{ $i18n.t('misc.VIEW') }}
+                {{ $t('misc.VIEW') }}
               </router-link>
             </td>
           </tr>

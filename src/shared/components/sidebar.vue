@@ -30,7 +30,7 @@
                   :to="{ name: 'dashboard' }"
                   @click.native="toggleMenuClick">
                   <span class="icon-pie-chart"></span>
-                  {{ $i18n.t('misc.DASHBOARD') }}
+                  {{ $t('misc.DASHBOARD') }}
                 </router-link>
               </li>
             </ul>
@@ -38,14 +38,14 @@
           <section
             v-if="isAdmin"
             class="nav-section">
-            <h5>{{ $i18n.t('misc.ADMIN') }}</h5>
+            <h5>{{ $t('misc.ADMIN') }}</h5>
             <ul>
               <li>
                 <router-link
                   :to="{ name: 'users-list' }"
                   @click.native="toggleMenuClick">
                   <span class="icon-pie-chart"/>
-                  {{ $i18n.t('misc.USERS') }}
+                  {{ $t('misc.USERS') }}
                 </router-link>
               </li>
             </ul>
@@ -57,7 +57,7 @@
                   :to="{ name: 'pro' }"
                   @click.native="toggleMenuClick">
                   <span class="icon-zap"/>
-                  {{ $i18n.t('misc.PRO') }}
+                  {{ $t('misc.PRO') }}
                 </router-link>
               </li>
             </ul>
@@ -65,20 +65,20 @@
           <section
             v-if="isEnterprise"
             class="nav-section">
-            <h5>{{ $i18n.t('misc.ENTERPRISE') }}</h5>
+            <h5>{{ $t('misc.ENTERPRISE') }}</h5>
             <ul>
               <li>
                 <router-link
                   :to="{ name: 'enterpriseOrders' }"
                   @click.native="toggleMenuClick">
                   <span class="icon-server"/>
-                  {{ $i18n.t('misc.ENTERPRISE') }}
+                  {{ $t('misc.ENTERPRISE') }}
                 </router-link>
               </li>
             </ul>
           </section>
           <section class="nav-section">
-            <h5>{{ $i18n.t('misc.DAEMON') }}</h5>
+            <h5>{{ $t('misc.DAEMON') }}</h5>
             <ul>
               <li>
                 <router-link
@@ -86,7 +86,7 @@
                   :class="{'router-link-active': ['node', 'nodesGroupCreate', 'nodeGroupEdit', 'daemon', 'daemon-service-HTTPProxy', 'daemon-service-OpenVPN'].includes($route.name)}"
                   @click.native="toggleMenuClick">
                   <span class="icon-hard-drive"/>
-                  {{ $i18n.t('misc.NODES') }}
+                  {{ $t('misc.NODES') }}
                 </router-link>
               </li>
               <li>
@@ -94,20 +94,20 @@
                   :to="{ name: 'downloads' }"
                   @click.native="toggleMenuClick">
                   <span class="icon-download-cloud"/>
-                  {{ $i18n.t('misc.DOWNLOADS') }}
+                  {{ $t('misc.DOWNLOADS') }}
                 </router-link>
               </li>
             </ul>
           </section>
           <section class="nav-section">
-            <h5>{{ $i18n.t('misc.MARKET') }}</h5>
+            <h5>{{ $t('misc.MARKET') }}</h5>
             <ul>
               <li>
                 <router-link
                   :to="{ name: 'market' }"
                   @click.native="toggleMenuClick">
                   <span class="icon-shopping-bag"/>
-                  {{ $i18n.t('misc.MARKET') }}
+                  {{ $t('misc.MARKET') }}
                 </router-link>
               </li>
               <li>
@@ -115,7 +115,7 @@
                   :to="{ name: 'cart' }"
                   @click.native="toggleMenuClick">
                   <span class="icon-shopping-cart"/>
-                  {{ $i18n.t('misc.CART') }}
+                  {{ $t('misc.CART') }}
                   <span
                     v-if="count"
                     class="count">{{ count }}</span>
@@ -127,7 +127,7 @@
                   :class="{'router-link-active': ['order', 'orderResources', 'orderInvoices'].includes($route.name)}"
                   @click.native="toggleMenuClick">
                   <span class="icon-briefcase"/>
-                  {{ $i18n.t('misc.ORDERS') }}
+                  {{ $t('misc.ORDERS') }}
                 </router-link>
               </li>
               <li>
@@ -136,20 +136,20 @@
                   :class="{'router-link-active': ['invoice', 'checkout'].includes($route.name)}"
                   @click.native="toggleMenuClick">
                   <span class="icon-dollar-sign"/>
-                  {{ $i18n.t('misc.INVOICES') }}
+                  {{ $t('misc.INVOICES') }}
                 </router-link>
               </li>
             </ul>
           </section>
           <section class="nav-section">
-            <h5>{{ $i18n.t('misc.HELP') }}</h5>
+            <h5>{{ $t('misc.HELP') }}</h5>
             <ul>
               <li>
                 <router-link
                   :to="{ name: 'docs' }"
                   @click.native="toggleMenuClick">
                   <span class="icon-help-circle"/>
-                  {{ $i18n.t('misc.DOCUMENTATION') }}
+                  {{ $t('misc.DOCUMENTATION') }}
                 </router-link>
               </li>
               <li v-if="supportLink">
@@ -157,20 +157,20 @@
                   :href="supportLink"
                   target="_blank">
                   <span class="icon-life-buoy"/>
-                  {{ $i18n.t('misc.SUPPORT') }}
+                  {{ $t('misc.SUPPORT') }}
                 </a>
               </li>
             </ul>
           </section>
           <section class="nav-section responsive-only">
-            <h5>{{ $i18n.t('misc.ACCOUNT') }}</h5>
+            <h5>{{ $t('misc.ACCOUNT') }}</h5>
             <ul>
               <li>
                 <router-link
                   :to="{ name: 'settings' }"
                   @click.native="toggleMenuClick">
                   <span class="icon-settings"/>
-                  {{ $i18n.t('misc.SETTINGS') }}
+                  {{ $t('misc.SETTINGS') }}
                 </router-link>
               </li>
               <li>
@@ -178,7 +178,7 @@
                   href="#logout"
                   @click.prevent="logOut()">
                   <span class="icon-log-out"/>
-                  {{ $i18n.t('misc.LOGOUT') }}
+                  {{ $t('misc.LOGOUT') }}
                 </a>
               </li>
             </ul>
@@ -190,7 +190,7 @@
               <li>
                 <a href="https://spectero.com">
                   <span class="icon-home"/>
-                  {{ $i18n.t('misc.HOME') }}
+                  {{ $t('misc.HOME') }}
                 </a>
               </li>
               <li>
@@ -198,26 +198,26 @@
                   :to="{ name: 'pro' }"
                   @click.native="toggleMenuClick">
                   <span class="icon-zap"/>
-                  {{ $i18n.t('misc.PRO') }}
+                  {{ $t('misc.PRO') }}
                 </router-link>
               </li>
             </ul>
           </section>
           <section class="nav-section">
-            <h5>{{ $i18n.t('misc.DAEMON') }}</h5>
+            <h5>{{ $t('misc.DAEMON') }}</h5>
             <ul>
               <li>
                 <router-link
                   :to="{ name: 'downloads' }"
                   @click.native="toggleMenuClick">
                   <span class="icon-download-cloud"/>
-                  {{ $i18n.t('misc.DOWNLOADS') }}
+                  {{ $t('misc.DOWNLOADS') }}
                 </router-link>
               </li>
             </ul>
           </section>
           <section class="nav-section">
-            <h5>{{ $i18n.t('misc.ACCOUNT') }}</h5>
+            <h5>{{ $t('misc.ACCOUNT') }}</h5>
             <ul>
               <li>
                 <router-link
@@ -225,7 +225,7 @@
                   :class="{'router-link-active': ['login'].includes($route.name)}"
                   @click.native="toggleMenuClick">
                   <span class="icon-log-in"/>
-                  {{ $i18n.t('misc.LOGIN') }}
+                  {{ $t('misc.LOGIN') }}
                 </router-link>
               </li>
               <li>
@@ -233,7 +233,7 @@
                   :to="{ name: 'register' }"
                   @click.native="toggleMenuClick">
                   <span class="icon-user-plus"/>
-                  {{ $i18n.t('misc.REGISTER') }}
+                  {{ $t('misc.REGISTER') }}
                 </router-link>
               </li>
             </ul>

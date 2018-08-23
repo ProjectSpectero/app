@@ -7,7 +7,7 @@
             v-if="!isCreditInvoice"
             :to="{ name: 'order', params: { id: invoice.order_id } }"
             class="button-info">
-            {{ $i18n.t('misc.VIEW') }} {{ $i18n.t('misc.ORDER') }}
+            {{ $t('misc.VIEW') }} {{ $t('misc.ORDER') }}
           </router-link>
 
           <template v-if="!loading">
@@ -16,7 +16,7 @@
               v-if="isUnpaid && isPayable"
               :to="{ name: 'checkout', params: { id: invoice.id } }"
               class="button-success">
-              <span class="icon-dollar-sign"/>{{ $i18n.t('misc.PAY_NOW') }}
+              <span class="icon-dollar-sign"/>{{ $t('misc.PAY_NOW') }}
             </router-link>
           </template>
         </top>
@@ -55,16 +55,16 @@
                   :class="{ 'message-success': invoice.status === 'PAID' }"
                   class="message-status message">
                   <div>
-                    <h5>{{ $i18n.t('invoices.STATUS.' + invoice.status + '.TITLE') }}</h5>
-                    <p>{{ $i18n.t('invoices.STATUS.' + invoice.status + '.TEXT') }}</p>
+                    <h5>{{ $t('invoices.STATUS.' + invoice.status + '.TITLE') }}</h5>
+                    <p>{{ $t('invoices.STATUS.' + invoice.status + '.TEXT') }}</p>
                   </div>
                 </div>
                 <div
                   v-else-if="isCreditInvoice"
                   class="message-status message">
                   <div>
-                    <h5 v-html="$i18n.t('invoices.CANCEL_CREDIT_INVOICE')"/>
-                    <p v-html="$i18n.t('invoices.CANCEL_CREDIT_INVOICE_DAYS', { cancelDays: creditInvoiceCancelDays })"/>
+                    <h5 v-html="$t('invoices.CANCEL_CREDIT_INVOICE')"/>
+                    <p v-html="$t('invoices.CANCEL_CREDIT_INVOICE_DAYS', { cancelDays: creditInvoiceCancelDays })"/>
                   </div>
                 </div>
 
@@ -87,7 +87,7 @@
 
                 <div class="details">
                   <div class="client">
-                    <span class="details-title">{{ $i18n.t('invoices.BILL_TO') }}</span>
+                    <span class="details-title">{{ $t('invoices.BILL_TO') }}</span>
 
                     <strong class="name">
                       <div v-if="user.organization">{{ user.organization }}</div>
@@ -118,15 +118,15 @@
                   <div class="info">
                     <table class="info-table">
                       <tr>
-                        <td><strong>{{ $i18n.t('invoices.NUMBER') }}:</strong></td>
+                        <td><strong>{{ $t('invoices.NUMBER') }}:</strong></td>
                         <td>{{ invoice.id }}</td>
                       </tr>
                       <tr>
-                        <td><strong>{{ $i18n.t('misc.STATUS') }}:</strong></td>
+                        <td><strong>{{ $t('misc.STATUS') }}:</strong></td>
                         <td><strong :class="statusClass">{{ status }}</strong></td>
                       </tr>
                       <tr>
-                        <td><strong>{{ $i18n.t('invoices.DATE') }}:</strong></td>
+                        <td><strong>{{ $t('invoices.DATE') }}:</strong></td>
                         <td>{{ invoice.updated_at | moment('MMMM D, YYYY') }}</td>
                       </tr>
                       <template v-if="invoice.type === 'STANDARD'">
@@ -146,11 +146,11 @@
                       </template>
                       <template v-else>
                         <tr>
-                          <td><strong>{{ $i18n.t('invoices.PAYMENT_DUE') }}:</strong></td>
+                          <td><strong>{{ $t('invoices.PAYMENT_DUE') }}:</strong></td>
                           <td>{{ invoice.due_date | moment('MMMM D, YYYY') }}</td>
                         </tr>
                         <tr class="invert">
-                          <td><strong>{{ $i18n.t('invoices.AMOUNT_DUE') }}:</strong></td>
+                          <td><strong>{{ $t('invoices.AMOUNT_DUE') }}:</strong></td>
                           <td>
                             <strong>{{ invoice.amount | currency }} {{ invoice.currency }}</strong>
                           </td>
@@ -199,7 +199,7 @@
                         <span
                           v-if="item.error"
                           class="line-error-msg">
-                          {{ $i18n.t(`invoices.RESOURCE_ERROR.${item.error}`) }}
+                          {{ $t(`invoices.RESOURCE_ERROR.${item.error}`) }}
                         </span>
                       </td>
                       <td class="text-left">
@@ -242,7 +242,7 @@
                   <div
                     v-if="canShowDueAmount"
                     class="totals-line total-outstanding">
-                    <div class="label"><strong>{{ $i18n.t('invoices.AMOUNT_DUE') }}:</strong></div>
+                    <div class="label"><strong>{{ $t('invoices.AMOUNT_DUE') }}:</strong></div>
                     <div class="amount"><strong>{{ due.amount | currency }} {{ due.currency }}</strong></div>
                   </div>
                 </div>
@@ -302,7 +302,7 @@ export default {
       countries: 'settings/countries'
     }),
     status () {
-      return this.$i18n.t(`invoices.INVOICE_STATUS.${this.invoice.status}`)
+      return this.$t(`invoices.INVOICE_STATUS.${this.invoice.status}`)
     },
     statusClass () {
       let status = this.status.toLowerCase()

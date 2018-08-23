@@ -231,7 +231,7 @@ export default {
 
       this.$validator.validateAll().then((result) => {
         if (!result) {
-          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
+          this.formError = this.$t('errors.VALIDATION_FAILED')
         } else {
           this.formDisable = true
           this.formError = null
@@ -252,7 +252,7 @@ export default {
           this.dealWithSuccess(response)
         },
         fail: (err) => {
-          this.$toasted.error(this.$i18n.t('daemon.USER_UPDATE_ERROR'))
+          this.$toasted.error(this.$t('daemon.USER_UPDATE_ERROR'))
           this.dealWithErrors(err)
         }
       })
@@ -265,12 +265,12 @@ export default {
             this.dealWithSuccess(response)
           },
           fail: (err) => {
-            this.$toasted.error(this.$i18n.t('daemon.USER_UPDATE_ERROR'))
+            this.$toasted.error(this.$t('daemon.USER_UPDATE_ERROR'))
             this.dealWithErrors(err)
           }
         })
       } else {
-        throw new ReferenceError(this.$i18n.t('errors.USER_OBJECT_NOT_FOUND'))
+        throw new ReferenceError(this.$t('errors.USER_OBJECT_NOT_FOUND'))
       }
     },
     cancel () {
@@ -284,7 +284,7 @@ export default {
 
       for (let errorKey in err.errors) {
         if (err.errors.hasOwnProperty(errorKey)) {
-          this.formError = this.$i18n.t(`errors.${errorKey}`)
+          this.formError = this.$t(`errors.${errorKey}`)
           break
         }
       }
@@ -299,7 +299,7 @@ export default {
               this.$validator.errors.add({
                 id: `${inputName}_${errorKey}`,
                 field: inputName,
-                msg: this.$i18n.t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
+                msg: this.$t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
               })
             }
           }

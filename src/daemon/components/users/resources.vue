@@ -1,10 +1,10 @@
 <template>
   <div>
-    <top :title="$i18n.t('daemon.RESOURCES')">
+    <top :title="$t('daemon.RESOURCES')">
       <router-link
         :to="{ name: 'daemon-users' }"
         class="button">
-        {{ $i18n.t('misc.BACK') }}
+        {{ $t('misc.BACK') }}
       </router-link>
     </top>
 
@@ -22,7 +22,7 @@
             <div
               v-if="service.accessReference"
               class="item">
-              <div class="label"><label>{{ $i18n.t('orders.ACCESS_REFERENCE') }}</label></div>
+              <div class="label"><label>{{ $t('orders.ACCESS_REFERENCE') }}</label></div>
 
               <div class="reference-list">
                 <span>{{ formatAccessReferences(service.accessReference) }}</span>
@@ -39,7 +39,7 @@
               v-if="service.accessConfig"
               class="item">
               <div class="label">
-                <label for="accessConfig">{{ $i18n.t('orders.ACCESS_CONFIG') }}</label>
+                <label for="accessConfig">{{ $t('orders.ACCESS_CONFIG') }}</label>
               </div>
 
               <textarea
@@ -60,7 +60,7 @@
             <div
               class="item">
               <div class="label">
-                <label>{{ $i18n.t('orders.ACCESS_CREDENTIALS') }}</label>
+                <label>{{ $t('orders.ACCESS_CREDENTIALS') }}</label>
               </div>
 
               <template v-if="service.accessCredentials">

@@ -1,7 +1,7 @@
 <template>
   <div>
     <template>
-      <top :title="`${ (!isPro) ? `${$i18n.t('misc.PURCHASE')} `: '' }${$i18n.t('misc.SPECTERO')} ${$i18n.t('misc.PRO')}`"/>
+      <top :title="`${ (!isPro) ? `${$t('misc.PURCHASE')} `: '' }${$t('misc.SPECTERO')} ${$t('misc.PRO')}`"/>
       <loading v-if="loading"/>
       <div v-else>
         <div class="container">
@@ -10,8 +10,8 @@
               v-if="isPro"
               class="already-pro section padded">
               <div class="icon-check-circle mb-3"/>
-              <h3>{{ $i18n.t('pro.ALREADY_SUBSCRIBED') }}</h3>
-              <p>{{ $i18n.t('pro.ALREADY_SUBSCRIBED_TEXT') }}</p>
+              <h3>{{ $t('pro.ALREADY_SUBSCRIBED') }}</h3>
+              <p>{{ $t('pro.ALREADY_SUBSCRIBED_TEXT') }}</p>
             </div>
 
             <form v-else>
@@ -116,7 +116,7 @@
                       class="button-info button-md"
                       @click.prevent="submit"
                       @keyup.enter="submit">
-                      <span class="icon-check"/> {{ $i18n.t('misc.CONTINUE') }}
+                      <span class="icon-check"/> {{ $t('misc.CONTINUE') }}
                     </button>
                   </div>
                 </div>
@@ -226,7 +226,7 @@ export default {
         },
         fail: error => {
           this.loading = false
-          this.formError = this.$i18n.t('misc.UNKNOWN_ERROR')
+          this.formError = this.$t('misc.UNKNOWN_ERROR')
           console.error('Error while getting pro plan', error)
         }
       })
@@ -258,7 +258,7 @@ export default {
         },
         fail: error => {
           this.loading = false
-          this.formError = this.$i18n.t('pro.ORDER_CREATE_FAILED')
+          this.formError = this.$t('pro.ORDER_CREATE_FAILED')
           console.error('Unable to create pro order', error)
         }
       })
@@ -266,11 +266,11 @@ export default {
     easyRegister () {
       this.$validator.validateAll().then((result) => {
         if (!result) {
-          this.formError = this.$i18n.t('errors.VALIDATION_FAILED')
+          this.formError = this.$t('errors.VALIDATION_FAILED')
         } else {
           // Check for captcha
           if (this.captchaExpired || !this.captchaKey) {
-            this.formError = this.$i18n.t('errors.CAPTCHA_VALIDATION_FAILED')
+            this.formError = this.$t('errors.CAPTCHA_VALIDATION_FAILED')
           } else {
             // Disable form while HTTP request being made
             this.formLoading = true
@@ -308,7 +308,7 @@ export default {
       // Get first error key to display main error msg
       for (var errorKey in err.errors) {
         if (err.errors.hasOwnProperty(errorKey)) {
-          this.formError = this.$i18n.t(`errors.${errorKey}`)
+          this.formError = this.$t(`errors.${errorKey}`)
           break
         }
       }
@@ -323,7 +323,7 @@ export default {
               this.$validator.errors.add({
                 id: `${inputName}_${errorKey}`,
                 field: inputName,
-                msg: this.$i18n.t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
+                msg: this.$t(`errors.${inputName.toUpperCase()}_${errorKey}`, null, { x: inputErrors[errorKey] })
               })
             }
           }

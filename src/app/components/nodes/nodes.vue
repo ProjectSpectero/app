@@ -1,17 +1,17 @@
 <template>
   <div>
     <template v-if="!error">
-      <top :title="$i18n.t('misc.NODES')">
+      <top :title="$t('misc.NODES')">
         <router-link
           :to="{ name: 'nodesGroupCreate' }"
           class="button">
-          <span class="icon-plus"/>{{ $i18n.t('nodes.CREATE_GROUP') }}
+          <span class="icon-plus"/>{{ $t('nodes.CREATE_GROUP') }}
         </router-link>
 
         <button
           class="button-success"
           @click.prevent="showAddNodeModal()">
-          <span class="icon-plus"/>{{ $i18n.t('nodes.ADD_NODE') }}
+          <span class="icon-plus"/>{{ $t('nodes.ADD_NODE') }}
         </button>
 
         <help-button obj="nodes.topics"/>
@@ -26,7 +26,7 @@
               v-if="groups && groups.length"
               class="split-list nodes-sidebar">
               <header>
-                <h2 class="mb-0">{{ $i18n.t('misc.GROUPS') }}</h2>
+                <h2 class="mb-0">{{ $t('misc.GROUPS') }}</h2>
               </header>
               <div
                 v-for="group in groups"
@@ -47,7 +47,7 @@
                 class="node-group"
                 @click.stop="selectUncategorized">
                 <div class="group-name">
-                  {{ $i18n.t('nodes.UNCATEGORIZED') }}
+                  {{ $t('nodes.UNCATEGORIZED') }}
                 </div>
                 <div class="count">
                   {{ uncategorized.pagination.total }}
@@ -135,7 +135,7 @@ export default {
 
         return {
           id: found ? found.id : 0,
-          friendly_name: found ? found.friendly_name : this.$i18n.t('nodes.UNCATEGORIZED')
+          friendly_name: found ? found.friendly_name : this.$t('nodes.UNCATEGORIZED')
         }
       }
     },
