@@ -37,12 +37,12 @@ export default {
       syncCurrentUser: 'appAuth/syncCurrentUser'
     }),
     testImpersonation () {
-      if (getCookie(process.env.IMPERSONATE_COOKIE) !== null) {
+      if (getCookie(process.env.VUE_APP_IMPERSONATE_COOKIE) !== null) {
         this.startImpersonating()
       }
     },
     async stopImpersonation () {
-      const loginCookie = getCookie(process.env.IMPERSONATE_COOKIE)
+      const loginCookie = getCookie(process.env.VUE_APP_IMPERSONATE_COOKIE)
 
       if (loginCookie) {
         let realCookie = JSON.parse(loginCookie)

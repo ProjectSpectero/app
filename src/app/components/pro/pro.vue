@@ -179,7 +179,7 @@ export default {
       isPro: 'appAuth/isPro'
     }),
     recaptchaSitekey () {
-      return process.env.GOOGLE_RECAPTCHA_KEY
+      return process.env.VUE_APP_GOOGLE_RECAPTCHA_KEY
     }
   },
   async created () {

@@ -293,7 +293,7 @@ export default {
       errorItem: 'invoice',
       errorCode: 404,
       getTransactions: true,
-      creditInvoiceCancelDays: process.env.CREDIT_INVOICE_AUTOCANCEL_DAYS
+      creditInvoiceCancelDays: process.env.VUE_APP_CREDIT_INVOICE_AUTOCANCEL_DAYS
     }
   },
   computed: {

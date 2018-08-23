@@ -170,9 +170,9 @@ export default {
     },
     downloadLinks () {
       return {
-        'Linux': process.env.DOWNLOAD_LINK_LINUX,
-        'Windows': process.env.DOWNLOAD_LINK_WINDOWS
-        // 'MacOS': process.env.DOWNLOAD_LINK_MACOS
+        'Linux': process.env.VUE_APP_DOWNLOAD_LINK_LINUX,
+        'Windows': process.env.VUE_APP_DOWNLOAD_LINK_WINDOWS
+        // 'MacOS': process.env.VUE_APP_DOWNLOAD_LINK_MACOS
       }
     }
   },

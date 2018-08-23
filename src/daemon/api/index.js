@@ -4,7 +4,7 @@ import store from '@/store'
 
 async function API (method, path, data, success, failed) {
   // Setting up the DAEMON project
-  const cookieName = process.env.DAEMON_COOKIE
+  const cookieName = process.env.VUE_APP_DAEMON_COOKIE
   const cookie = getCookie(cookieName)
 
   let project = {

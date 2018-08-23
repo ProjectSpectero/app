@@ -108,7 +108,7 @@ export default {
   },
   computed: {
     recaptchaSitekey () {
-      return process.env.GOOGLE_RECAPTCHA_KEY
+      return process.env.VUE_APP_GOOGLE_RECAPTCHA_KEY
     }
   },
   methods: {

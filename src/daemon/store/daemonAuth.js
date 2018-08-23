@@ -68,7 +68,7 @@ const actions = {
     })
   },
   async testLogin ({ state, dispatch }) {
-    if (state.user && getCookie(process.env.DAEMON_COOKIE) === null) {
+    if (state.user && getCookie(process.env.VUE_APP_DAEMON_COOKIE) === null) {
       console.warn('Daemon login test failed, calling autologin() ...')
       await dispatch('autologin')
     } else {
@@ -83,8 +83,8 @@ const actions = {
       refreshTokenExpires: payload.credentials.refresh.expires
     }
 
-    // setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: '20s' })
-    setCookie(process.env.DAEMON_COOKIE, JSON.stringify(data), { expires: parseFloat(payload.credentials.access.expires / 1000) + 's' })
+    // setCookie(process.env.VUE_APP_DAEMON_COOKIE, JSON.stringify(data), { expires: '20s' })
+    setCookie(process.env.VUE_APP_DAEMON_COOKIE, JSON.stringify(data), { expires: parseFloat(payload.credentials.access.expires / 1000) + 's' })
     console.log('Finished adding cookie with data')
   },
   setupEndpoint ({ commit }, payload) {
@@ -135,7 +135,7 @@ const actions = {
     }
   },
   logout ({ commit }) {
-    removeCookie(process.env.DAEMON_COOKIE)
+    removeCookie(process.env.VUE_APP_DAEMON_COOKIE)
     commit('CLEAR_ENDPOINT')
   }
 }

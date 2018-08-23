@@ -10,8 +10,8 @@ async function API (method, path, data, success, failed) {
   // 2.2) If a port is specified on our config BUT that port is '', we'll run the app using only the ip address
   // 2.3) If a port is specified and numeric, that will be used as expected
 
-  const cookieName = process.env.APP_COOKIE
-  const port = process.env.APP_PORT
+  const cookieName = process.env.VUE_APP_COOKIE
+  const port = process.env.VUE_APP_PORT
   const cookie = getCookie(cookieName)
   let parsedPort = location.port ? ':' + location.port : ''
 
@@ -25,8 +25,8 @@ async function API (method, path, data, success, failed) {
     cookie: (cookie !== null) ? JSON.parse(cookie) : null,
     protocol: 'https://',
     port: parsedPort,
-    endpoint: process.env.APP_ENDPOINT ? process.env.APP_ENDPOINT : location.hostname,
-    version: process.env.APP_VERSION,
+    endpoint: process.env.VUE_APP_ENDPOINT ? process.env.VUE_APP_ENDPOINT : location.hostname,
+    version: process.env.VUE_APP_VERSION,
     timeout: 10000
   }
 

@@ -82,23 +82,23 @@ export default {
       startImpersonating: 'appAuth/startImpersonating'
     }),
     async triggerImpersonation (id) {
-      const loginCookie = getCookie(process.env.APP_COOKIE)
+      const loginCookie = getCookie(process.env.VUE_APP_COOKIE)
 
       if (loginCookie) {
         let realCookie = JSON.parse(loginCookie)
-        realCookie.cookieName = process.env.IMPERSONATE_COOKIE
+        realCookie.cookieName = process.env.VUE_APP_IMPERSONATE_COOKIE
 
         await authAPI.impersonate({
           data: { id: id },
           success: async response => {
             const impersonationData = response.data.result
 
-            // Store the "real" login information in process.env.IMPERSONATE_COOKIE
+            // Store the "real" login information in process.env.VUE_APP_IMPERSONATE_COOKIE
             // so we can switch back to it later
-            this.addCookie(Object.assign({}, realCookie, { cookieName: process.env.IMPERSONATE_COOKIE }))
+            this.addCookie(Object.assign({}, realCookie, { cookieName: process.env.VUE_APP_IMPERSONATE_COOKIE }))
 
             // Set our current login information as if we were the target user:
-            // First we add the new info to process.env.APP_COOKIE,
+            // First we add the new info to process.env.VUE_APP_COOKIE,
             // then we clear all user data from the store,
             // then we act as if we had just logged in with the "fake" user
             this.addCookie(impersonationData)

@@ -152,7 +152,7 @@ export default {
       user: 'appAuth/user'
     }),
     stripeKey () {
-      return (process.env.STRIPE_MODE === 'live') ? process.env.STRIPE_LIVE_PUBLIC_KEY : process.env.STRIPE_SANDBOX_PUBLIC_KEY
+      return (process.env.VUE_APP_STRIPE_MODE === 'live') ? process.env.VUE_APP_STRIPE_LIVE_PUBLIC_KEY : process.env.VUE_APP_STRIPE_SANDBOX_PUBLIC_KEY
     }
   },
   async created () {

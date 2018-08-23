@@ -43,7 +43,7 @@ const actions = {
     })
   },
   async checkLogin ({ getters, dispatch }) {
-    const cookie = getCookie(process.env.APP_COOKIE)
+    const cookie = getCookie(process.env.VUE_APP_COOKIE)
     let data = null
 
     if (cookie) {
@@ -66,14 +66,14 @@ const actions = {
     return false
   },
   addCookie ({ commit }, payload) {
-    let cookieName = process.env.APP_COOKIE
+    let cookieName = process.env.VUE_APP_COOKIE
     const data = {
       accessToken: payload.accessToken,
       refreshToken: payload.refreshToken,
       expiry: payload.expiry
     }
 
-    // Check if we're adding a custom cookie, otherwise use process.env.APP_COOKIE
+    // Check if we're adding a custom cookie, otherwise use process.env.VUE_APP_COOKIE
     // (default cookie for login)
     if (payload.cookieName !== undefined && payload.cookieName) {
       cookieName = payload.cookieName
@@ -82,8 +82,8 @@ const actions = {
     setCookie(cookieName, JSON.stringify(data), { expires: payload.expiry + 's' })
   },
   logout ({ commit }) {
-    removeCookie(process.env.APP_COOKIE)
-    removeCookie(process.env.IMPERSONATE_COOKIE)
+    removeCookie(process.env.VUE_APP_COOKIE)
+    removeCookie(process.env.VUE_APP_IMPERSONATE_COOKIE)
     commit('CLEAR_LOGIN_INFO')
   },
   setLoginInfo ({ commit }, payload) {
@@ -120,7 +120,7 @@ const mutations = {
   },
   STOP_IMPERSONATION (state) {
     state.impersonating = false
-    removeCookie(process.env.IMPERSONATE_COOKIE)
+    removeCookie(process.env.VUE_APP_IMPERSONATE_COOKIE)
   }
 }
 
