@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import nodeAPI from '@/app/api/node.js'
+import nodeAPI from '@/app/api/node'
 import paginator from '@/shared/components/paginator'
 import tableHeader from '@/shared/components/table/thead'
 

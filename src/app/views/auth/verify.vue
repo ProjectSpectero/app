@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import user from '@/app/api/user.js'
+import user from '@/app/api/user'
 
 export default {
   metaInfo: {

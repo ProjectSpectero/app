@@ -35,7 +35,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import userAPI from '@/app/api/user.js'
+import userAPI from '@/app/api/user'
 import copyToClipboard from '@/shared/components/copyToClipboard'
 
 export default {

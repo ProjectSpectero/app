@@ -35,9 +35,9 @@
 
 <script>
 import top from '@/shared/components/top'
-import tabAccount from '@/app/components/settings/tabs/account'
-import tabPayment from '@/app/components/settings/tabs/payment'
-import tabKeys from '@/app/components/settings/tabs/keys'
+import tabAccount from '@/app/components/users/settings/tabs/account'
+import tabPayment from '@/app/components/users/settings/tabs/payment'
+import tabKeys from '@/app/components/users/settings/tabs/keys'
 
 export default {
   components: {

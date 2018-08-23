@@ -30,7 +30,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import paymentAPI from '@/app/api/payment.js'
+import paymentAPI from '@/app/api/payment'
 
 export default {
   computed: {

@@ -6,7 +6,7 @@
       </div>
 
       <div class="col-8">
-        <billing-form/>
+        <billing/>
       </div>
 
       <div class="col-4">
@@ -20,14 +20,14 @@
 </template>
 
 <script>
-import billingForm from '../components/billingForm'
-import savedCards from '../components/savedCards'
-import credits from '../components/credits'
-import promoCodes from '../components/promoCodes'
+import billing from '@/app/components/users/settings/billing'
+import savedCards from '@/app/components/users/settings/savedCards'
+import credits from '@/app/components/users/settings/credits'
+import promoCodes from '@/app/components/users/settings/promoCodes'
 
 export default {
   components: {
-    billingForm,
+    billing,
     savedCards,
     credits,
     promoCodes

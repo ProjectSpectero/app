@@ -102,7 +102,7 @@ import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
 import gateways from '@/app/components/checkout/gateways'
-import billingForm from '@/app/components/settings/components/billingForm'
+import billing from '@/app/components/users/settings/billing'
 
 export default {
   components: {
@@ -112,7 +112,7 @@ export default {
     alertUnpayable,
     loading,
     gateways,
-    billingForm
+    billing
   },
   metaInfo: {
     title: 'Checkout'
