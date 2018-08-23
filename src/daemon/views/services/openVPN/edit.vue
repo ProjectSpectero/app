@@ -226,9 +226,9 @@ import serviceAPI from '@/daemon/api/service'
 import top from '@/shared/components/top'
 import tooltip from '@/shared/components/tooltip'
 import protocols from '@/shared/helpers/protocols'
-import dhcp from './dhcp'
-import gateways from './gateways'
-import cidr from './cidr'
+import dhcp from '@/daemon/components/services/openVPN/dhcp'
+import gateways from '@/daemon/components/services/openVPN/gateways'
+import cidr from '@/daemon/components/services/openVPN/cidr'
 
 export default {
   components: {

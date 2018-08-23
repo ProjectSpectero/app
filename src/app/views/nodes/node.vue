@@ -23,7 +23,7 @@
 import nodeAPI from '@/app/api/node'
 import loading from '@/shared/components/loading'
 import error from '@/shared/components/errors/error'
-import nodeEdit from './nodeEdit'
+import nodeEdit from '@/app/components/nodes/nodeEdit'
 
 export default {
   components: {

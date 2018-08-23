@@ -1,6 +1,6 @@
-import market from '@/app/components/market/market'
-import marketView from '@/app/components/market/view'
-import cart from '@/app/components/market/cart'
+import market from '@/app/views/market/market'
+import marketView from '@/app/views/market/view'
+import cart from '@/app/views/market/cart'
 
 export default [
   { path: '/market', name: 'market', component: market, meta: { layout: 'nocache', auth: true } },

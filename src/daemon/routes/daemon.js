@@ -1,12 +1,12 @@
-import manage from '@/daemon/components/manage/manage'
-import HTTPProxy from '@/daemon/components/services/HTTPProxy/edit'
-import openVPN from '@/daemon/components/services/openVPN/edit'
-import services from '@/daemon/components/services/services'
-import users from '@/daemon/components/users/list'
-import certificates from '@/daemon/components/users/certificates'
-import resources from '@/daemon/components/users/resources'
-import edit from '@/daemon/components/users/edit'
-import create from '@/daemon/components/users/create'
+import manage from '@/daemon/views/manage/manage'
+import HTTPProxy from '@/daemon/views/services/HTTPProxy/edit'
+import openVPN from '@/daemon/views/services/openVPN/edit'
+import services from '@/daemon/views/services/services'
+import users from '@/daemon/views/users/list'
+import certificates from '@/daemon/views/users/certificates'
+import resources from '@/daemon/views/users/resources'
+import edit from '@/daemon/views/users/edit'
+import create from '@/daemon/views/users/create'
 
 export default [
   { path: '/daemon/:nodeId', name: 'daemon', component: manage, meta: { layout: 'daemon' } },

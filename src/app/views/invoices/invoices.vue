@@ -53,7 +53,7 @@
 <script>
 import filtersMixin from '@/app/mixins/listFilters'
 import invoiceAPI from '@/app/api/invoice'
-import invoicesList from './list'
+import invoicesList from '@/app/components/invoices/list'
 import paginator from '@/shared/components/paginator'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'

@@ -264,9 +264,9 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import orderMixin from '@/app/mixins/order'
-import alertProcessing from './alertProcessing'
-import alertOutstanding from './alertOutstanding'
-import alertUnpayable from './alertUnpayable'
+import alertProcessing from '@/app/components/invoices/alertProcessing'
+import alertOutstanding from '@/app/components/invoices/alertOutstanding'
+import alertUnpayable from '@/app/components/invoices/alertUnpayable'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'

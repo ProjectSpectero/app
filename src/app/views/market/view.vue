@@ -18,7 +18,7 @@
 
 <script>
 import marketAPI from '@/app/api/market'
-import itemDetails from './details'
+import itemDetails from '@/app/components/market/details'
 import loading from '@/shared/components/loading'
 import error from '@/shared/components/errors/error'
 

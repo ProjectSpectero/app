@@ -152,15 +152,15 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import filters from './filters'
-import addToCart from './addToCart'
-import marketMenu from './marketMenu'
+import filters from '@/app/components/market/filters'
+import addToCart from '@/app/components/market/addToCart'
+import marketMenu from '@/app/components/market/marketMenu'
 import top from '@/shared/components/top'
 import paginator from '@/shared/components/paginator'
 import loading from '@/shared/components/loading'
 import tableHeader from '@/shared/components/table/thead'
 import helpButton from '@/shared/components/docs/button'
-import addNodeModal from '../nodes/addNodeModal'
+import addNodeModal from '@/app/components/nodes/addNodeModal'
 
 export default {
   components: {

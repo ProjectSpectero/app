@@ -65,10 +65,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// @import '../../assets/styles/_vars.scss';
-
 article {
-  // background: $darker;
   border-radius: 4px;
 
   .info {

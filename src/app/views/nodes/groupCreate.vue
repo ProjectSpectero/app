@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import createForm from './groupForm'
+import createForm from '@/app/components/nodes/groupForm'
 import top from '@/shared/components/top'
 
 export default {

@@ -84,13 +84,13 @@
 <script>
 import filtersMixin from '@/app/mixins/listFilters'
 import nodeAPI from '@/app/api/node'
-import nodesList from './nodesList'
+import nodesList from '@/app/components/nodes/nodesList'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
 import notFound from '@/shared/components/notFound'
 import helpButton from '@/shared/components/docs/button'
-import addNodeModal from './addNodeModal'
+import addNodeModal from '@/app/components/nodes/addNodeModal'
 
 export default {
   components: {

@@ -55,7 +55,7 @@
 import { mapGetters } from 'vuex'
 import filtersMixin from '@/app/mixins/listFilters'
 import orderAPI from '@/app/api/order'
-import ordersList from './list'
+import ordersList from '@/app/components/orders/list'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'

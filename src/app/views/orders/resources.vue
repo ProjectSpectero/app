@@ -109,9 +109,9 @@ import orderMixin from '@/app/mixins/order'
 import top from '@/shared/components/top'
 import loading from '@/shared/components/loading'
 import error from '@/shared/components/errors/error'
-import resourceDetails from './resourceDetails'
+import resourceDetails from '@/app/components/orders/resourceDetails'
 import orderAPI from '@/app/api/order'
-import regenerateAccessor from './regenerateAccessor'
+import regenerateAccessor from '@/app/components/orders/regenerateAccessor'
 
 export default {
   components: {

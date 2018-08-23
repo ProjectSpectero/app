@@ -31,9 +31,9 @@
 
 <script>
 import nodeAPI from '@/app/api/node'
-import tabs from './tabs'
-import editForm from './groupForm'
-import listEngagements from './listEngagements'
+import tabs from '@/app/components/nodes/tabs'
+import editForm from '@/app/components/nodes/groupForm'
+import listEngagements from '@/app/components/nodes/listEngagements'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'

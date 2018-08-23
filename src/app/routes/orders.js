@@ -1,8 +1,8 @@
-import orders from '@/app/components/orders/orders'
-import order from '@/app/components/orders/order'
-import resources from '@/app/components/orders/resources'
-import orderInvoices from '@/app/components/orders/orderInvoices'
-import pro from '@/app/components/pro/pro'
+import orders from '@/app/views/orders/orders'
+import order from '@/app/views/orders/order'
+import resources from '@/app/views/orders/resources'
+import orderInvoices from '@/app/views/orders/orderInvoices'
+import pro from '@/app/views/pro/pro'
 
 export default [
   { path: '/orders', name: 'orders', component: orders, meta: { auth: true } },

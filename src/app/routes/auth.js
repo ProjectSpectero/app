@@ -1,12 +1,12 @@
 // Authentication routes
 
-import login from '@/app/components/auth/login'
-import twoFactorLogin from '@/app/components/auth/tfa'
-import register from '@/app/components/auth/register'
-import welcome from '@/app/components/auth/welcome'
-import verify from '@/app/components/auth/verify'
-import reset from '@/app/components/auth/reset'
-import newPassword from '@/app/components/auth/newPassword'
+import login from '@/app/views/auth/login'
+import twoFactorLogin from '@/app/views/auth/tfa'
+import register from '@/app/views/auth/register'
+import welcome from '@/app/views/auth/welcome'
+import verify from '@/app/views/auth/verify'
+import reset from '@/app/views/auth/reset'
+import newPassword from '@/app/views/auth/newPassword'
 
 export default [
   { path: '/login', name: 'login', component: login, meta: { antiAuth: true, layout: 'auth' } },

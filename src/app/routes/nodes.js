@@ -1,8 +1,8 @@
-import nodes from '@/app/components/nodes/nodes'
-import node from '@/app/components/nodes/node'
-import verifyNode from '@/app/components/nodes/verify'
-import groupEdit from '@/app/components/nodes/groupEdit'
-import groupCreate from '@/app/components/nodes/groupCreate'
+import nodes from '@/app/views/nodes/nodes'
+import node from '@/app/views/nodes/node'
+import verifyNode from '@/app/views/nodes/verify'
+import groupEdit from '@/app/views/nodes/groupEdit'
+import groupCreate from '@/app/views/nodes/groupCreate'
 
 export default [
   { path: '/nodes', name: 'nodes', component: nodes, meta: { auth: true } },

@@ -1,6 +1,6 @@
 // Payment routes
-import paypalCallback from '@/app/components/payments/paypalCallback'
-import addCredit from '@/app/components/payments/addCredit'
+import paypalCallback from '@/app/views/payments/paypalCallback'
+import addCredit from '@/app/views/payments/addCredit'
 
 export default [
   { path: '/payment/paypal/callback', name: 'paypalCallback', component: paypalCallback, meta: { auth: true } },

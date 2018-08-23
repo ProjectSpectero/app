@@ -101,7 +101,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import top from '@/shared/components/top'
 import marketAPI from '@/app/api/market'
-import cartItem from './cartItem'
+import cartItem from '@/app/components/market/cartItem'
 
 export default {
   components: {

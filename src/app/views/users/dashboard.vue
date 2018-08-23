@@ -15,7 +15,7 @@
 <script>
 import orderAPI from '@/app/api/order.js'
 import top from '@/shared/components/top'
-import ordersList from '../orders/miniList'
+import ordersList from '@/app/components/orders/miniList'
 
 export default {
   components: {

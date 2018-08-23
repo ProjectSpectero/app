@@ -1,7 +1,7 @@
 
-import Invoices from '@/app/components/invoices/invoices'
-import Invoice from '@/app/components/invoices/invoice'
-import Checkout from '@/app/components/checkout/checkout'
+import Invoices from '@/app/views/invoices/invoices'
+import Invoice from '@/app/views/invoices/invoice'
+import Checkout from '@/app/views/checkout/checkout'
 
 export default [
   { path: '/invoices', name: 'invoices', component: Invoices, meta: { auth: true } },

@@ -92,9 +92,9 @@ import { mapGetters, mapActions } from 'vuex'
 import serviceAPI from '@/daemon/api/service'
 import top from '@/shared/components/top'
 import tooltip from '@/shared/components/tooltip'
-import listeners from './listeners'
-import domains from './domains'
-import addresses from './addresses'
+import listeners from '@/daemon/components/services/HTTPProxy/listeners'
+import domains from '@/daemon/components/services/HTTPProxy/domains'
+import addresses from '@/daemon/components/services/HTTPProxy/addresses'
 
 export default {
   components: {
