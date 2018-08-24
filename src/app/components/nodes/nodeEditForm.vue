@@ -162,7 +162,7 @@ export default {
       ],
       rules: {
         friendly_name: {
-          max: 32,
+          max: 32
         },
         price: {
           required: true,
