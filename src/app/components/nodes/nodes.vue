@@ -37,9 +37,6 @@
                 <div class="group-name">
                   {{ group.friendly_name }}
                 </div>
-                <!-- <div class="count">
-                  0
-                </div> -->
               </div>
 
               <div

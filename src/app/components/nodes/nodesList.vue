@@ -3,7 +3,10 @@
     v-if="tableData"
     class="section padded">
     <header v-if="!hideHeader && selectedGroupInformation">
-      <h2 class="mb-0">{{ selectedGroupInformation.friendly_name }}</h2>
+      <h2 class="mb-0">
+        {{ selectedGroupInformation.friendly_name }}
+        ({{ tableData.length }} nodes)
+      </h2>
       <div
         v-if="selectedGroupInformation.id !== 0"
         class="actions">
