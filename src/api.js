@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import axios from 'axios'
-import { getCookie, removeCookie } from 'tiny-cookie'
-import Err from '@/error'
-import router from '@/router'
+// import { getCookie, removeCookie } from 'tiny-cookie'
+// import Err from '@/error'
+// import router from '@/router'
 
 /**
  * API wrapper for making various calls from sub-wrappers.
@@ -11,100 +11,112 @@ import router from '@/router'
  * @param {String}   path    API endpoint path
  * @param {Object}   data    Form data for submit
  * @param {Function} success Callback to be called on method success
- * @param {Function} failed  Callback to be called on method fail
+ * @param {Function} fail  Callback to be called on method fail
  */
-async function API (project, method, path, data, success, failed) {
+function API (project, method, path, data, success, fail) {
   const baseURL = project.protocol + project.endpoint + project.port + '/' + project.version
-
-  Vue.prototype.$Progress.start()
-
+  const progress = Vue.prototype.$Progress
   let headers = {
     Authorization: project.cookie ? `Bearer ${project.cookie.accessToken}` : null
   }
 
-  let dataHeaders = data.headers
-
   if (data.headers) {
-    headers = {...headers, ...dataHeaders}
+    headers = {...headers, ...data.headers}
   }
 
-  try {
-    const response = await axios({
-      method: method,
-      baseURL: baseURL,
-      timeout: project.timeout,
-      headers: headers,
-      url: path,
-      data: data.data
-    })
+  progress.start()
 
-    // axios.interceptors.response.use((response) => {
-    //   console.log('interceptor response')
-    //   return response
-    // }, (error) => {
-    //   console.log('interceptor error')
-    //   if (error.response) {
-    //   }
-    // })
+  // https://gist.github.com/moreta/fb2625c59aa788009b1f7ce8e44ac559
+  let instance = axios.create({
+    baseURL: baseURL,
+    timeout: project.timeout,
+    headers: headers,
+    method: method,
+    url: path,
+    data: data.data,
+    params: {}
+  })
 
-    if (response) {
-      Vue.prototype.$Progress.finish()
+  // Handle request (before it is sent)
+  instance.interceptors.request.use((config) => {
+    console.log('using config', config)
+    return config
+  }, (error) => {
+    return Promise.reject(error)
+  })
 
-      // Main api callback
-      if (typeof success === 'function') {
-        success(response)
-      }
+  // Handle response
+  instance.interceptors.response.use((response) => {
+    console.log('interceptor response')
+    progress.finish()
+    success(response)
+    return response
+  }, (error) => {
+    console.log('interceptor error')
+    progress.fail()
 
-      // Sub-wrapper callback
-      if (typeof data.success === 'function') {
-        data.success(response)
-      }
-
-      return { error: false, data: response }
+    if (error.response) {
+      console.error(error)
+      fail(error.response)
     }
-  } catch (e) {
-    console.error('API handling failed!', e)
-    const errors = (e.response !== undefined && e.response.data !== undefined && e.response.data.errors !== undefined) ? e.response.data.errors : null
-    const status = (e.response !== undefined && e.response.status !== undefined) ? e.response.status : null
-    const err = new Err(errors, status)
+  })
 
-    // Gracefully handling timeout errors
-    if (e.code === 'ECONNABORTED') {
-      const str = (process.env.NODE_ENV !== 'production') ? 'Connection to ' + baseURL + path + ' timed out!' : 'Connection timed out!'
+  //   if (response) {
+  //     // Main api callback
+  //     if (typeof success === 'function') {
+  //       success(response)
+  //     }
 
-      Vue.prototype.$Progress.fail()
-      Vue.toasted.error(str)
+  //     // Sub-wrapper callback
+  //     if (typeof data.success === 'function') {
+  //       data.success(response)
+  //     }
 
-      if (failed !== undefined && typeof failed === 'function') {
-        failed(err, 598)
-      } else {
-        data.fail(err)
-      }
+  //     return { error: false, data: response }
+  //   }
+  // } catch (e) {
+  //   console.error('API handling fail!', e)
+  //   const errors = (e.response !== undefined && e.response.data !== undefined && e.response.data.errors !== undefined) ? e.response.data.errors : null
+  //   const status = (e.response !== undefined && e.response.status !== undefined) ? e.response.status : null
+  //   const err = new Err(errors, status)
 
-      router.go(-2)
-      return
-    }
+  //   // Gracefully handling timeout errors
+  //   if (e.code === 'ECONNABORTED') {
+  //     const str = (process.env.NODE_ENV !== 'production') ? 'Connection to ' + baseURL + path + ' timed out!' : 'Connection timed out!'
 
-    // Remove authorization cookie if 401 (unauthorized / email verification needed) is returned by the API call
-    if (status === 401 && getCookie(project.cookieName) !== null) {
-      removeCookie(project.cookieName)
-      router.push({ name: 'login', query: { redirect: location.pathname + location.search } })
-    }
+  //     Vue.prototype.$Progress.fail()
+  //     Vue.toasted.error(str)
 
-    // Main api callback
-    if (typeof failed === 'function') {
-      failed(err)
-    }
+  //     if (fail !== undefined && typeof fail === 'function') {
+  //       fail(err, 598)
+  //     } else {
+  //       data.fail(err)
+  //     }
 
-    // Sub-wrapper callback
-    if (data !== undefined && typeof data.fail === 'function') {
-      data.fail(err)
-    }
+  //     router.go(-2)
+  //     return
+  //   }
 
-    Vue.prototype.$Progress.fail()
+  //   // Remove authorization cookie if 401 (unauthorized / email verification needed) is returned by the API call
+  //   if (status === 401 && getCookie(project.cookieName) !== null) {
+  //     removeCookie(project.cookieName)
+  //     router.push({ name: 'login', query: { redirect: location.pathname + location.search } })
+  //   }
 
-    return { error: true, data: err, status: status }
-  }
+  //   // Main api callback
+  //   if (typeof fail === 'function') {
+  //     fail(err)
+  //   }
+
+  //   // Sub-wrapper callback
+  //   if (data !== undefined && typeof data.fail === 'function') {
+  //     data.fail(err)
+  //   }
+
+  //   Vue.prototype.$Progress.fail()
+
+  //   return { error: true, data: err, status: status }
+  // }
 }
 
 export default API
