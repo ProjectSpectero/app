@@ -162,8 +162,7 @@ export default {
       ],
       rules: {
         friendly_name: {
-          max: 50,
-          regex: /^[a-z\d\-_\s]+$/i
+          max: 32
         },
         price: {
           required: true,
