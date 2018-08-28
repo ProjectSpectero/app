@@ -215,7 +215,7 @@ export default {
           this.plans.yearly.price = (result.price / 30) * 365
 
           // Apply discount to yearly plan
-          if (this.plan.yearly_discount_pct > 0) {
+          if (this.plan && this.plan.yearly_discount_pct > 0) {
             const yearlyPlan = this.plans.yearly
             let yearlySavings = yearlyPlan.price * this.plan.yearly_discount_pct
 

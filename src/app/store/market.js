@@ -76,7 +76,7 @@ const actions = {
       }
     })
   },
-  async fetchPlans ({ getters, commit }, data) {
+  async fetchPlans ({ commit }) {
     await marketAPI.plans({
       success: response => {
         commit('UPDATE_PLANS', { results: response.data.result })
@@ -133,10 +133,11 @@ const mutations = {
   },
   UPDATE_PLANS: (state, data) => {
     let plans = data.results
-    for (var i in plans) {
+    for (let i in plans) {
       if (plans.hasOwnProperty(i)) {
-        let plan = plans[i]
-        plan.yearly_discount_pct = parseFloat(plan.yearly_discount_pct)
+        if (plans[i].yearly_discount_pct) {
+          plans[i].yearly_discount_pct = parseFloat(plans[i].yearly_discount_pct)
+        }
       }
     }
     state.plans = plans

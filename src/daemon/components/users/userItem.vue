@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props: {
     user: {
@@ -45,13 +47,10 @@ export default {
     }
   },
   computed: {
-    displayName () {
-      return this.user.fullName ? this.user.fullName : this.user.authKey
-    },
-    initials () {
-      const initials = this.displayName.match(/\b\w/g) || []
-      return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase()
-    },
+    ...mapGetters({
+      initials: 'appAuth/initials',
+      displayName: 'appAuth/displayName'
+    }),
     roles () {
       return this.user.roles.join(', ')
     }

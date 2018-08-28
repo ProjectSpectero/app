@@ -124,16 +124,17 @@ export default {
       this.loading = true
     },
     async fetch (page) {
+      let finished = false
+
       if (this.rules.length) {
         await orderAPI.search({
           rules: this.rules,
-          success: async response => {
-            if (response.data.result.searchId) {
+          success: response => {
+            if (response.data.result && response.data.result.searchId) {
               this.error = false
               this.searchId = response.data.result.searchId
+              finished = true
             }
-
-            this.fetchOrders(page)
           },
           fail: e => {
             console.log(e)
@@ -141,10 +142,15 @@ export default {
             this.error = true
           }
         })
+
+        if (!finished) {
+          this.searchId = null
+        }
       } else {
         this.searchId = null
-        this.fetchOrders(page)
       }
+
+      await this.fetchOrders(page)
     },
     async fetchOrders (page) {
       const method = this.enterprisePage ? orderAPI['myEnterpriseOrders'] : orderAPI['myOrders']

@@ -69,6 +69,7 @@ const actions = {
       commit('LOCK', getLocalData().locked)
     }
 
+    console.log('Refreshed user cart')
     commit('INITIALIZE')
   },
 
@@ -103,7 +104,7 @@ const actions = {
         }
 
         // Yearly discount pricing
-        if (item.plan && plan.yearly_discount_pct) {
+        if (item.plan && plan && plan.yearly_discount_pct) {
           pricing.yearlyDiscount = plan.yearly_discount_pct
           pricing.yearlySavings = pricing.yearly * plan.yearly_discount_pct
           pricing.yearly = Math.floor(pricing.yearly - pricing.yearlySavings) // floor the price for marketing purposes

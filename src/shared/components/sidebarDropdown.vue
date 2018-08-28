@@ -58,13 +58,9 @@ export default {
   computed: {
     ...mapGetters({
       user: 'appAuth/user',
-      isImpersonating: 'appAuth/isImpersonating'
-    }),
-    initials () {
-      let displayName = (this.user.name) ? this.user.name : this.user.email
-      const initials = displayName.match(/\b\w/g) || []
-      return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase()
-    }
+      isImpersonating: 'appAuth/isImpersonating',
+      initials: 'appAuth/initials'
+    })
   },
   created () {
     document.addEventListener('click', this.documentClick)

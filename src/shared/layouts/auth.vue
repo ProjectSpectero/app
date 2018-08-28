@@ -23,6 +23,9 @@ export default {
   components: {
     sidebar
   },
+  created () {
+    console.warn('Auth layout loaded')
+  },
   data () {
     return {
       menuCollapsed: true
@@ -30,7 +33,6 @@ export default {
   },
   methods: {
     toggleMenu () {
-      console.log(`toggleMenu!`)
       this.menuCollapsed = !this.menuCollapsed
     }
   }

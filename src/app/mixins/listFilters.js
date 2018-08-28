@@ -19,7 +19,7 @@ export default {
     }
   },
   methods: {
-    sidebarSort (field, current, page) {
+    async sidebarSort (field, current, page) {
       if (this.status.find(s => s === current)) {
         // The list comes sorted by id desc by default
         this.rules = [{
@@ -45,9 +45,9 @@ export default {
         return
       }
 
-      this.fetch(page)
+      await this.fetch(page)
     },
-    sortByColumn () {
+    async sortByColumn () {
       this.removeFilter('SORT')
 
       this.rules.push({
@@ -56,7 +56,7 @@ export default {
         value: this.sortDirection.toUpperCase()
       })
 
-      this.fetch(1)
+      await this.fetch(1)
     },
     removeFilter (operator) {
       const index = this.rules.findIndex(r => r.operator === operator)
@@ -65,7 +65,7 @@ export default {
         this.rules.splice(index, 1)
       }
     },
-    search (value) {
+    async search (value) {
       if (value.length >= 2) {
         this.removeFilter('SORT')
         this.removeFilter('LIKE')
@@ -79,16 +79,17 @@ export default {
         this.removeFilter('LIKE')
       }
 
-      this.fetch()
+      await this.fetch(1)
     },
-    reset () {
+    async reset () {
       this.rules.forEach(r => {
         if (r.field !== 'status') {
           const i = this.rules.indexOf(r)
           this.rules.splice(i, 1)
         }
       })
-      this.fetch()
+
+      await this.fetch(1)
     }
   }
 }

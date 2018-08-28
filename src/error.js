@@ -29,7 +29,7 @@ class Err {
       }
     } else {
       // Data is Object{} with keys as error keys, values as additional info to those error keys
-      for (var key in data) {
+      for (let key in data) {
         if (data.hasOwnProperty(key)) {
           let err = []
 

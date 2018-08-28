@@ -28,6 +28,9 @@ export default {
     help,
     impersonationBar
   },
+  created () {
+    console.warn('Master layout loaded')
+  },
   data () {
     return {
       menuCollapsed: true

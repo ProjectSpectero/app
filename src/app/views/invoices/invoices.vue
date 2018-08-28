@@ -116,16 +116,17 @@ export default {
       this.loading = true
     },
     async fetch (page) {
+      let finished = false
+
       if (this.rules.length) {
         await invoiceAPI.search({
           rules: this.rules,
-          success: async response => {
-            if (response.data.result.searchId) {
+          success: response => {
+            if (response.data.result && response.data.result.searchId) {
               this.error = false
               this.searchId = response.data.result.searchId
+              finished = true
             }
-
-            this.fetchInvoices(page)
           },
           fail: e => {
             console.log(e)
@@ -133,10 +134,15 @@ export default {
             this.error = true
           }
         })
+
+        if (!finished) {
+          this.searchId = null
+        }
       } else {
         this.searchId = null
-        this.fetchInvoices(page)
       }
+
+      await this.fetchInvoices(page)
     },
     async fetchInvoices (page) {
       this.loading = true
@@ -164,7 +170,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

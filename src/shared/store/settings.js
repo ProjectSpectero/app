@@ -30,7 +30,7 @@ const actions = {
 
     await userAPI.getSupportLink({
       success: response => {
-        if (response.data.result.redirect_uri !== undefined) {
+        if (response.data.result && response.data.result.redirect_uri !== undefined) {
           link = response.data.result.redirect_uri
         }
 

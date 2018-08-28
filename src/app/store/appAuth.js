@@ -17,11 +17,25 @@ const getters = {
   isImpersonating: (state) => state.impersonating,
   isAdmin: (state) => state.user && state.user.roles ? state.user.roles.indexOf('ADMIN') > -1 : false,
   isEnterprise: (state) => state.user && state.user.plans ? state.user.plans.indexOf('enterprise') > -1 : false,
-  isPro: (state) => state.user && state.user.plans ? state.user.plans.indexOf('pro') > -1 : false
+  isPro: (state) => state.user && state.user.plans ? state.user.plans.indexOf('pro') > -1 : false,
+  displayName: (state) => {
+    if (state.user) {
+      return state.user.fullName ? this.user.fullName : this.user.authKey
+    }
+    return '-'
+  },
+  initials: (getters) => {
+    if (getters.user && getters.user.email) {
+      let displayName = (getters.user.name) ? getters.user.name : getters.user.email
+      const initials = displayName.match(/\b\w/g) || []
+      return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase()
+    }
+    return ''
+  }
 }
 
 const actions = {
-  async syncCurrentUser ({ commit }) {
+  async syncCurrentUser ({ commit, dispatch }) {
     await userAPI.getMe({
       success: response => {
         commit('SET_CURRENT_USER', response.data.result)
@@ -30,6 +44,11 @@ const actions = {
         console.error(error)
       }
     })
+
+    // Fetch support link, plans and cart data
+    await dispatch('settings/fetchSupportLink', null, { root: true })
+    await dispatch('market/fetchPlans', null, { root: true })
+    await dispatch('cart/refresh', null, { root: true })
   },
   async syncImpersonatedUser ({ commit }, id) {
     await userAPI.getMe({

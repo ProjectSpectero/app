@@ -46,11 +46,9 @@ export default {
   computed: {
     ...mapGetters({
       user: 'daemonAuth/user',
-      node: 'daemonAuth/node'
-    }),
-    displayName () {
-      return this.user.fullName ? this.user.fullName : this.user.authKey
-    }
+      node: 'daemonAuth/node',
+      displayName: 'appAuth/displayName'
+    })
   }
 }
 </script>

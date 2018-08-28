@@ -270,25 +270,10 @@ export default {
       supportLink: 'settings/supportLink'
     })
   },
-  watch: {
-    user: async function (u) {
-      if (u) {
-        await this.fetchSupportLink()
-        await this.fetchPlans()
-        await this.refreshCart()
-      }
-    }
-  },
-  created () {
-    this.fetchSupportLink()
-  },
   methods: {
     ...mapActions({
       appLogout: 'appAuth/logout',
-      daemonLogout: 'daemonAuth/logout',
-      fetchPlans: 'market/fetchPlans',
-      refreshCart: 'cart/refresh',
-      fetchSupportLink: 'settings/fetchSupportLink'
+      daemonLogout: 'daemonAuth/logout'
     }),
     toggleMenu () {
       this.menuCollapsed = !this.menuCollapsed

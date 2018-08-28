@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import axios from 'axios'
-// import { getCookie, removeCookie } from 'tiny-cookie'
-// import Err from '@/error'
-// import router from '@/router'
+import { getCookie, removeCookie } from 'tiny-cookie'
+import router from '@/router'
+import Err from '@/error'
 
 /**
  * API wrapper for making various calls from sub-wrappers.
@@ -13,7 +13,7 @@ import axios from 'axios'
  * @param {Function} success Callback to be called on method success
  * @param {Function} fail  Callback to be called on method fail
  */
-function API (project, method, path, data, success, fail) {
+async function API (project, method, path, data, success, fail) {
   const baseURL = project.protocol + project.endpoint + project.port + '/' + project.version
   const progress = Vue.prototype.$Progress
   let headers = {
@@ -26,8 +26,49 @@ function API (project, method, path, data, success, fail) {
 
   progress.start()
 
-  // https://gist.github.com/moreta/fb2625c59aa788009b1f7ce8e44ac559
-  let instance = axios.create({
+  axios.interceptors.response.use(
+    async response => {
+      if (typeof success === 'function') {
+        await success(response)
+      }
+
+      if (typeof data.success === 'function') {
+        await data.success(response)
+      }
+
+      progress.finish()
+
+      return { error: false, data: response.data }
+    },
+    async e => {
+      const errors = (e.response !== undefined && e.response.data !== undefined && e.response.data.errors !== undefined) ? e.response.data.errors : null
+      const status = (e.response !== undefined && e.response.status !== undefined) ? e.response.status : null
+      const err = new Err(errors, status)
+
+      console.error('Interceptor caught an error', err)
+
+      if (status === 401 && getCookie(project.cookieName) !== null) {
+        removeCookie(project.cookieName)
+        router.push({ name: 'login', query: { redirect: location.pathname + location.search } })
+      }
+
+      // Main api callback
+      if (typeof fail === 'function') {
+        await fail(err)
+      }
+
+      // Sub-wrapper callback
+      if (typeof data.fail === 'function') {
+        await data.fail(err)
+      }
+
+      progress.fail()
+
+      return { error: true, data: err, status: status }
+    }
+  )
+
+  await axios({
     baseURL: baseURL,
     timeout: project.timeout,
     headers: headers,
@@ -35,30 +76,6 @@ function API (project, method, path, data, success, fail) {
     url: path,
     data: data.data,
     params: {}
-  })
-
-  // Handle request (before it is sent)
-  instance.interceptors.request.use((config) => {
-    console.log('using config', config)
-    return config
-  }, (error) => {
-    return Promise.reject(error)
-  })
-
-  // Handle response
-  instance.interceptors.response.use((response) => {
-    console.log('interceptor response')
-    progress.finish()
-    success(response)
-    return response
-  }, (error) => {
-    console.log('interceptor error')
-    progress.fail()
-
-    if (error.response) {
-      console.error(error)
-      fail(error.response)
-    }
   })
 
   //   if (response) {

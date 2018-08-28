@@ -113,8 +113,6 @@ export default {
       perPage: 10,
       selectedGroup: 0,
       groups: null,
-      totalGroups: null,
-      processedGroups: 0,
       groupsPage: 1,
       nodes: [],
       uncategorized: {
@@ -167,8 +165,6 @@ export default {
     },
     reset () {
       this.groups = null
-      this.totalGroups = null
-      this.processedGroups = 0
       this.groupsPage = 1
       this.nodes = []
       this.uncategorized = {
@@ -237,20 +233,18 @@ export default {
       this.search(page)
     },
     async search (page) {
+      let finished = false
+
+      console.log('rules', this.rules)
       if (this.rules.length) {
         await nodeAPI.search({
           rules: this.rules,
           success: async response => {
-            if (response.data.result.searchId) {
+            console.log('t', response.data.result)
+            if (response.data.result && response.data.result.searchId) {
               this.searchId = response.data.result.searchId
               this.error = false
-            }
-
-            if (this.selectedGroup !== 0) {
-              await this.fetchNodes(page)
-            } else {
-              await this.fetchUncategorized(page)
-              this.loadingNodes = false
+              finished = true
             }
           },
           fail: e => {
@@ -258,21 +252,25 @@ export default {
             this.error = true
           }
         })
+
+        if (!finished) {
+          this.searchId = null
+        }
       } else {
         this.searchId = null
+      }
 
-        if (this.selectedGroup !== 0) {
-          await this.fetchNodes(page)
-        } else {
-          await this.fetchUncategorized(page)
-          this.loadingNodes = false
-        }
+      if (this.selectedGroup !== 0) {
+        await this.fetchNodes(page)
+      } else {
+        await this.fetchUncategorized(page)
+        this.loadingNodes = false
       }
     },
     async fetchNodes (page) {
       // Attempt to find and replace the list of nodes of the current group with
       // the newly sorted one
-      const index = this.groups.findIndex(g => g.id === this.selectedGroup)
+      const index = (this.groups !== undefined) ? this.groups.findIndex(g => g.id === this.selectedGroup) : -1
 
       if (index !== -1 && !isNaN(page)) {
         await nodeAPI.myNodes({
@@ -323,21 +321,25 @@ export default {
       }
     },
     async fetchGroups () {
+      let totalGroups = null
+      let processedGroups = 0
+
       // Group fetching is paged in chunks of 10, so we need to keep
       // fetching until we reach the total amount (received in pagination)
       if (this.fetchSuccessful) {
-        while (this.totalGroups === null || this.totalGroups !== this.processedGroups) {
+        while (totalGroups === null || totalGroups >= processedGroups) {
           await nodeAPI.groups({
             perPage: 10,
             groupsPage: this.groupsPage,
             success: response => {
               const pagination = response.data.pagination
-              this.totalGroups = pagination.total
-              this.processedGroups = this.processedGroups + response.data.result.length
               this.groupsPage++
-              this.groups = this.groups ? [...this.groups, ...response.data.result] : response.data.result
+              this.groups = response.data.result
               this.error = false
               this.loadingGroups = false
+
+              totalGroups = pagination.total
+              processedGroups = processedGroups + response.data.result.length
             },
             fail: e => {
               console.error(e)
