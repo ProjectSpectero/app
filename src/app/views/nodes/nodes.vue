@@ -113,7 +113,6 @@ export default {
       perPage: 10,
       selectedGroup: 0,
       groups: null,
-      groupsPage: 1,
       nodes: [],
       uncategorized: {
         pagination: {},
@@ -165,7 +164,6 @@ export default {
     },
     reset () {
       this.groups = null
-      this.groupsPage = 1
       this.nodes = []
       this.uncategorized = {
         pagination: {},
@@ -321,33 +319,19 @@ export default {
       }
     },
     async fetchGroups () {
-      let totalGroups = null
-      let processedGroups = 0
-
-      // Group fetching is paged in chunks of 10, so we need to keep
-      // fetching until we reach the total amount (received in pagination)
       if (this.fetchSuccessful) {
-        while (totalGroups === null || totalGroups >= processedGroups) {
-          await nodeAPI.groups({
-            perPage: 10,
-            groupsPage: this.groupsPage,
-            success: response => {
-              const pagination = response.data.pagination
-              this.groupsPage++
-              this.groups = response.data.result
-              this.error = false
-              this.loadingGroups = false
-
-              totalGroups = pagination.total
-              processedGroups = processedGroups + response.data.result.length
-            },
-            fail: e => {
-              console.error(e)
-              this.error = true
-              this.errorCode = 400
-            }
-          })
-        }
+        await nodeAPI.groups({
+          success: response => {
+            this.groups = response.data.result
+            this.error = false
+            this.loadingGroups = false
+          },
+          fail: e => {
+            console.error(e)
+            this.error = true
+            this.errorCode = 400
+          }
+        })
       }
     },
     showAddNodeModal () {

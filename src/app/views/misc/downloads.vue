@@ -201,31 +201,6 @@ export default {
     switchTab (tabId) {
       this.osTab = tabId
     }
-    // async fetchDownloadInfo () {
-    //   try {
-    //     const response = await axios({
-    //       method: 'GET',
-    //       url: 'https://spectero.com/releases.json',
-    //       timeout: 10000
-    //     })
-
-    //     if (response) {
-    //       let data = response.data
-    //       let channel = data.channels.stable
-    //       let release = data.versions[channel]
-
-    //       this.version = channel
-    //       this.latest = release.download
-    //       this.alt = release.altDownload
-    //       this.changelog = release.changelog
-
-    //       this.loaded = true
-    //     }
-    //   } catch (e) {
-    //     console.error('Failed to fetch release data:', e.response)
-    //     this.$toasted.error(this.$t(`errors.RELEASES_FETCH_FAILED`))
-    //   }
-    // },
   }
 }
 </script>

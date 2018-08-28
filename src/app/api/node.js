@@ -6,7 +6,7 @@ export default {
    * Retrieves all node groups and their nodes.
    */
   groups (options) {
-    return api('GET', `/node_group/self?page=${options.groupsPage}&perPage=${options.perPage}`, options)
+    return api('GET', `/node_group/self?paginate=false`, options)
   },
 
   /**

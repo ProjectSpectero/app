@@ -10,7 +10,10 @@ const state = {
 }
 
 const getters = {
-  user: (state) => state.user,
+  user: (state) => {
+    console.log('state.user', state.user)
+    return state.user
+  },
   accessToken: (state) => state.accessToken,
   refreshToken: (state) => state.refreshToken,
   expiry: (state) => state.expiry,
@@ -24,13 +27,10 @@ const getters = {
     }
     return '-'
   },
-  initials: (getters) => {
-    if (getters.user && getters.user.email) {
-      let displayName = (getters.user.name) ? getters.user.name : getters.user.email
-      const initials = displayName.match(/\b\w/g) || []
-      return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase()
-    }
-    return ''
+  initials: (state) => {
+    let displayName = (state.user.name) ? state.user.name : state.user.email
+    const initials = displayName.match(/\b\w/g) || []
+    return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase()
   }
 }
 
@@ -38,6 +38,7 @@ const actions = {
   async syncCurrentUser ({ commit, dispatch }) {
     await userAPI.getMe({
       success: response => {
+        console.log('calling syncCurrentUser', response.data.result)
         commit('SET_CURRENT_USER', response.data.result)
       },
       fail: error => {
@@ -46,9 +47,9 @@ const actions = {
     })
 
     // Fetch support link, plans and cart data
-    await dispatch('settings/fetchSupportLink', null, { root: true })
-    await dispatch('market/fetchPlans', null, { root: true })
-    await dispatch('cart/refresh', null, { root: true })
+    // await dispatch('settings/fetchSupportLink', null, { root: true })
+    // await dispatch('market/fetchPlans', null, { root: true })
+    // await dispatch('cart/refresh', null, { root: true })
   },
   async syncImpersonatedUser ({ commit }, id) {
     await userAPI.getMe({
@@ -62,6 +63,7 @@ const actions = {
     })
   },
   async checkLogin ({ getters, dispatch }) {
+    console.log('Checking login ...')
     const cookie = getCookie(process.env.VUE_APP_COOKIE)
     let data = null
 
@@ -76,7 +78,10 @@ const actions = {
       // If no data is set we're first-landing the page and
       // we'll need to decode the cookie,retrieve the current user
       if (data) {
+        console.log('checkLogin::setLoginInfo')
         await dispatch('setLoginInfo', data)
+
+        console.log('checkLogin::syncCurrentUser')
         await dispatch('syncCurrentUser')
         return true
       }
@@ -121,6 +126,7 @@ const actions = {
 const mutations = {
   SET_CURRENT_USER (state, payload) {
     state.user = payload
+    console.log('changed current user to', payload)
   },
   SET_LOGIN_INFO (state, payload) {
     state.accessToken = payload.accessToken

@@ -201,7 +201,7 @@ export default {
         data: {
           id: 'pro'
         },
-        success: async response => {
+        success: response => {
           const result = response.data.result
 
           this.loading = false

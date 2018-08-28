@@ -120,24 +120,30 @@ export default {
       })
     },
     async processLogin () {
+      let loggedIn = false
+
       await auth.login({
         data: {
           username: this.username,
           password: this.password
         },
-        loginSuccess: async response => {
-          await this.syncCurrentUser()
-
-          if (this.$route.query.redirect) {
-            this.$router.push({ path: this.$route.query.redirect })
-          } else {
-            this.$router.push({ name: (this.isEnterprise) ? 'enterpriseOrders' : 'dashboard' })
-          }
+        loginSuccess: response => {
+          loggedIn = true
         },
         loginFailed: error => {
           this.dealWithError(error)
         }
       })
+
+      if (loggedIn) {
+        await this.syncCurrentUser()
+
+        if (this.$route.query.redirect) {
+          this.$router.push({ path: this.$route.query.redirect })
+        } else {
+          this.$router.push({ name: (this.isEnterprise) ? 'enterpriseOrders' : 'dashboard' })
+        }
+      }
     },
     dealWithError (err) {
       this.formLoading = false

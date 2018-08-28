@@ -23,9 +23,6 @@ export default {
   components: {
     sidebar
   },
-  created () {
-    console.warn('Auth layout loaded')
-  },
   data () {
     return {
       menuCollapsed: true
