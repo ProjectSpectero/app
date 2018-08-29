@@ -233,12 +233,10 @@ export default {
     async search (page) {
       let finished = false
 
-      console.log('rules', this.rules)
       if (this.rules.length) {
         await nodeAPI.search({
           rules: this.rules,
           success: async response => {
-            console.log('t', response.data.result)
             if (response.data.result && response.data.result.searchId) {
               this.searchId = response.data.result.searchId
               this.error = false
@@ -246,8 +244,8 @@ export default {
             }
           },
           fail: e => {
-            console.error(e)
             this.error = true
+            this.$router.push({ name: 'generic-error' })
           }
         })
 

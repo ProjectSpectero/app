@@ -129,9 +129,8 @@ export default {
             }
           },
           fail: e => {
-            console.log(e)
-            this.errorCode = 400
             this.error = true
+            this.$router.push({ name: 'generic-error' })
           }
         })
 

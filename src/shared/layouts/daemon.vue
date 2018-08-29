@@ -58,7 +58,7 @@ export default {
         this.$router.push({ name: 'nodes' })
       }
     } else {
-      this.$router.push({ path: '/404' })
+      this.$router.push({ name: 'generic-error' })
     }
   },
   methods: {

@@ -353,7 +353,6 @@ export default {
           this.loading = false
         },
         fail: e => {
-          console.error(e)
           this.error = true
           this.errorCode = 400
         }

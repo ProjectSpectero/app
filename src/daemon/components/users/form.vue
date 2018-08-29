@@ -194,7 +194,6 @@ export default {
           this.user = response.data.result
         },
         fail: e => {
-          console.error(e)
           this.$router.push({ name: 'daemon' })
         }
       })

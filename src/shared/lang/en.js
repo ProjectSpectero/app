@@ -125,6 +125,8 @@ module.exports = {
     PASSWORD_FIELD_REQUIRED: 'The password field is required.',
     ERROR_400_ITEM_TITLE: 'Something went wrong.',
     ERROR_400_ITEM_TEXT: 'We were unable to retrieve the list of {item} you requested.',
+    ERROR_GENERIC_ITEM_TITLE: 'Something went wrong.',
+    ERROR_GENERIC_ITEM_TEXT: 'We were unable to retrieve some data from the page you requested. Please try again and contact us if the problem persists.',
     REQUESTED_PAGE_DOES_NOT_EXIST: 'Invalid page!',
     VALIDATION_FAILED: 'Please correct any errors and try again.',
     PASSWORD_FIELD_MINLENGTH: 'Your password must have 5 characters or more.',

@@ -1,6 +1,12 @@
-class Err {
-  constructor (data, status) {
-    this.parse(data, status)
+import { getCookie, removeCookie } from 'tiny-cookie'
+import router from '@/router'
+
+class ErrorHandler {
+  constructor (project, data, status) {
+    this.project = project
+    this.status = status
+
+    this.parse(data)
   }
 
   /**
@@ -14,7 +20,7 @@ class Err {
    *
    * @param {String} data Data string from error passed from API.
    */
-  parse (data, status) {
+  parse (data) {
     let errors = {}
     let fields = {}
 
@@ -53,18 +59,21 @@ class Err {
         }
       }
     }
+
     this.errors = errors
     this.fields = fields
-    this.status = status
   }
 
-  data () {
-    return {
-      errors: this.errors,
-      fields: this.fields,
-      status: this.status
+  handleStatus () {
+    if (this.status === 401 && getCookie(this.project.cookieName) !== null) {
+      removeCookie(this.project.cookieName)
+      router.push({ name: 'login', query: { redirect: location.pathname + location.search } })
+    } else if (this.status === 404) {
+      router.push({ path: '/404' })
+    } else if ([400, 500].includes(this.status)) {
+      router.push({ name: 'generic-error' })
     }
   }
 }
 
-export default Err
+export default ErrorHandler

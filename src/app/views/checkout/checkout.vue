@@ -220,9 +220,8 @@ export default {
           }
         },
         fail: e => {
-          console.error(e)
           this.error = true
-          this.loading = false
+          this.$router.push({ name: 'generic-error' })
         }
       })
     },

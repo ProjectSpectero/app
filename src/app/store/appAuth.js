@@ -10,10 +10,7 @@ const state = {
 }
 
 const getters = {
-  user: (state) => {
-    console.log('state.user', state.user)
-    return state.user
-  },
+  user: (state) => state.user,
   accessToken: (state) => state.accessToken,
   refreshToken: (state) => state.refreshToken,
   expiry: (state) => state.expiry,
@@ -21,12 +18,7 @@ const getters = {
   isAdmin: (state) => state.user && state.user.roles ? state.user.roles.indexOf('ADMIN') > -1 : false,
   isEnterprise: (state) => state.user && state.user.plans ? state.user.plans.indexOf('enterprise') > -1 : false,
   isPro: (state) => state.user && state.user.plans ? state.user.plans.indexOf('pro') > -1 : false,
-  displayName: (state) => {
-    if (state.user) {
-      return state.user.fullName ? this.user.fullName : this.user.authKey
-    }
-    return '-'
-  },
+  displayName: (state) => state.user ? (state.user.fullName ? this.user.fullName : this.user.authKey) : '-',
   initials: (state) => {
     let displayName = (state.user.name) ? state.user.name : state.user.email
     const initials = displayName.match(/\b\w/g) || []
@@ -38,7 +30,6 @@ const actions = {
   async syncCurrentUser ({ commit, dispatch }) {
     await userAPI.getMe({
       success: response => {
-        console.log('calling syncCurrentUser', response.data.result)
         commit('SET_CURRENT_USER', response.data.result)
       },
       fail: error => {
@@ -47,9 +38,9 @@ const actions = {
     })
 
     // Fetch support link, plans and cart data
-    // await dispatch('settings/fetchSupportLink', null, { root: true })
-    // await dispatch('market/fetchPlans', null, { root: true })
-    // await dispatch('cart/refresh', null, { root: true })
+    dispatch('settings/fetchSupportLink', null, { root: true })
+    dispatch('market/fetchPlans', null, { root: true })
+    dispatch('cart/refresh', null, { root: true })
   },
   async syncImpersonatedUser ({ commit }, id) {
     await userAPI.getMe({
@@ -63,7 +54,6 @@ const actions = {
     })
   },
   async checkLogin ({ getters, dispatch }) {
-    console.log('Checking login ...')
     const cookie = getCookie(process.env.VUE_APP_COOKIE)
     let data = null
 
@@ -78,10 +68,7 @@ const actions = {
       // If no data is set we're first-landing the page and
       // we'll need to decode the cookie,retrieve the current user
       if (data) {
-        console.log('checkLogin::setLoginInfo')
         await dispatch('setLoginInfo', data)
-
-        console.log('checkLogin::syncCurrentUser')
         await dispatch('syncCurrentUser')
         return true
       }

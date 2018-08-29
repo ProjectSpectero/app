@@ -168,7 +168,6 @@ export default {
           this.tableData = response.data.result
         },
         fail: e => {
-          console.error(e)
           this.$router.push({ name: 'daemon' })
         }
       })

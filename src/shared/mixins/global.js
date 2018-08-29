@@ -5,7 +5,7 @@ function globalMixin (i18n) {
         loading: true,
         error: false,
         errorItem: '',
-        errorCode: 404
+        errorCode: 400
       }
     },
     computed: {

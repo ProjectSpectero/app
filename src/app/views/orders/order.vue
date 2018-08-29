@@ -287,8 +287,8 @@ export default {
           }
         },
         fail: e => {
-          console.log(e)
           this.error = true
+          this.$router.push({ name: 'generic-error' })
         }
       })
     },
@@ -303,8 +303,8 @@ export default {
           }
         },
         fail: e => {
-          console.log(e)
           this.error = true
+          this.$router.push({ name: 'generic-error' })
         }
       })
     },

@@ -18,8 +18,6 @@ const mutations = {
   SET_SORT (state, data) {
     state.sortColumn = data.column
     state.sortDirection = data.direction
-
-    console.log('sorted column', state.sortColumn, state.sortDirection)
   }
 }
 

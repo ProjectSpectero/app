@@ -79,7 +79,6 @@ export default {
         },
         fail: error => {
           this.verified = true
-          console.error('Verification check error', error)
 
           if (typeof error.errors === 'object') {
             for (let key in error.errors) {
@@ -111,8 +110,7 @@ export default {
         },
         fail: (e) => {
           this.error = true
-          this.loading = false
-          console.error('Error while fetching order', e)
+          this.$router.push({ name: 'generic-error' })
         }
       })
     },
@@ -129,7 +127,7 @@ export default {
         },
         fail: e => {
           this.error = true
-          console.error('Error while fetching invoice due', e)
+          this.$router.push({ name: 'generic-error' })
         }
       })
     },
@@ -145,9 +143,8 @@ export default {
           }
         },
         fail: e => {
-          this.loading = false
           this.error = true
-          console.log('Error while fetching transactions', e)
+          this.$router.push({ name: 'generic-error' })
         }
       })
     },
@@ -194,10 +191,9 @@ export default {
             }
           }
         },
-        fail: (e) => {
-          this.loading = false
+        fail: e => {
           this.error = true
-          console.error('Error while fetching invoice', e)
+          this.$router.push({ name: 'generic-error' })
         }
       })
     }

@@ -37,7 +37,7 @@ const actions = {
         commit('SET_SUPPORT_LINK', link)
       },
       fail: e => {
-        console.error(e)
+        console.error('Unable to fetch support link for Freshdesk')
       }
     })
   }

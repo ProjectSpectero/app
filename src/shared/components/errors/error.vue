@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import error400 from './error400'
-import error404 from './error404'
+import error400 from '@/shared/components/errors/error400'
+import error404 from '@/shared/components/errors/error404'
 
 export default {
   components: {
