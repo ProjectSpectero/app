@@ -32,8 +32,8 @@ const actions = {
       success: response => {
         commit('SET_CURRENT_USER', response.data.result)
       },
-      fail: error => {
-        console.error(error)
+      fail: e => {
+        console.error('Unable to sync current user')
       }
     })
 

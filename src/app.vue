@@ -25,7 +25,7 @@ export default {
     daemon
   },
   metaInfo: {
-    title: 'test',
+    title: '',
     titleTemplate: (titleChunk) => {
       return (titleChunk ? `${titleChunk} - ` : '') + 'Spectero'
     }

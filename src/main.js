@@ -91,6 +91,14 @@ Vue.mixin(globalMixin(i18n))
 Vue.config.productionTip = false
 Vue.prototype.$filters = Vue.options.filters
 
+Vue.config.errorHandler = function (err) {
+  console.log('Custom vue error handler: ', err, err.constructor)
+}
+
+Vue.config.warnHandler = function (err) {
+  console.log('Custom vue warn handler: ', err, err.constructor)
+}
+
 // /* eslint-disable no-new */
 new Vue({
   i18n,

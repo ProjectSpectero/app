@@ -37,17 +37,16 @@ const getters = {
 const actions = {
   async syncCurrentUser ({ commit, dispatch }) {
     await userAPI.getMe({
-      success: async response => {
-        console.log('Retrieved user information (syncCurrentUser)', response.data.result)
+      success: response => {
         commit('SET_CURRENT_USER', response.data.result)
-
-        // Gather remote node details
-        await dispatch('connectToRemote')
       },
-      fail: error => {
-        console.error(error)
+      fail: e => {
+        console.error('Unable to sync current user')
       }
     })
+
+    // Gather remote node details
+    await dispatch('connectToRemote')
   },
   async connectToRemote ({ commit, dispatch }) {
     await cloudAPI.remote({
