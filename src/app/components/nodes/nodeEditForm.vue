@@ -147,9 +147,6 @@ export default {
       errorCode: 400,
       errorItem: 'groups',
       groups: null,
-      totalGroups: null,
-      processedGroups: 0,
-      groupsPage: 1,
       formError: null,
       formErrors: [],
       formLoading: false,
@@ -349,30 +346,18 @@ export default {
       })
     },
     async fetchGroups () {
-      // Group fetching is paged in chunks of 10, so we need to keep
-      // fetching until we reach the total amount (received in pagination)
-      while (this.totalGroups === null || this.totalGroups !== this.processedGroups) {
-        await nodeAPI.groups({
-          perPage: 10,
-          groupsPage: this.groupsPage,
-          success: response => {
-            const pagination = response.data.pagination
-            this.totalGroups = pagination.total
-            this.processedGroups = this.processedGroups + response.data.result.length
-            this.groupsPage++
-            this.groups = this.groups ? [...this.groups, ...response.data.result] : response.data.result
-            this.error = false
-            this.loading = false
-          },
-          fail: e => {
-            console.log(e)
-            this.loading = false
-            this.error = true
-            this.totalGroups = 0
-            this.processedGroups = 0
-          }
-        })
-      }
+      await nodeAPI.groups({
+        success: response => {
+          this.groups = response.data.result
+          this.error = false
+          this.loading = false
+        },
+        fail: e => {
+          console.error(e)
+          this.error = true
+          this.errorCode = 400
+        }
+      })
     }
   }
 }
