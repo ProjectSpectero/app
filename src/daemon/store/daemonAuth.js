@@ -109,18 +109,15 @@ const actions = {
   },
   async autologin ({ dispatch }) {
     const nodeId = router.currentRoute.params.nodeId
+    let details = null
 
     if (nodeId) {
       await nodeAPI.nodeLogin({
         data: {
           id: nodeId
         },
-        success: async response => {
-          console.warn('Auto-login started, setting up daemon data', response.data.result)
-          await dispatch('addCookie', response.data.result)
-          await dispatch('setupEndpoint', response.data.result)
-          await dispatch('setupNode', nodeId)
-          await dispatch('syncCurrentUser')
+        success: response => {
+          details = response.data.result
         },
         fail: error => {
           console.error('Auto-login failed', error)
@@ -129,6 +126,16 @@ const actions = {
           throw new Error(e)
         }
       })
+
+      if (details) {
+        console.warn('Auto-login started, setting up daemon data', details)
+        await dispatch('addCookie', details)
+        await dispatch('setupEndpoint', details)
+        await dispatch('setupNode', nodeId)
+        await dispatch('syncCurrentUser')
+      } else {
+        router.push({ name: 'nodes' })
+      }
     } else {
       router.push({ name: 'nodes' })
     }

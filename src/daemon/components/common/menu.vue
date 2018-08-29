@@ -16,7 +16,7 @@
         v-if="user"
         class="managing-user line">
         <span class="icon-user" /> <strong>User:</strong>
-        <span>{{ $t('daemon.MANAGING_AS', { id: $route.params.nodeId }) }} {{ displayName }}</span>
+        <span>{{ $t('daemon.MANAGING_AS', { id: $route.params.nodeId }) }} {{ user.email }}</span>
       </div>
       <specs/>
     </div>
@@ -46,8 +46,7 @@ export default {
   computed: {
     ...mapGetters({
       user: 'daemonAuth/user',
-      node: 'daemonAuth/node',
-      displayName: 'appAuth/displayName'
+      node: 'daemonAuth/node'
     })
   }
 }
