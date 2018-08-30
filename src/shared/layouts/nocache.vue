@@ -20,9 +20,6 @@ export default {
     sidebar,
     help,
     impersonationBar
-  },
-  created () {
-    console.warn('Nocache layout loaded')
   }
 }
 </script>

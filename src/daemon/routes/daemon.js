@@ -7,8 +7,10 @@ import certificates from '@/daemon/views/users/certificates'
 import resources from '@/daemon/views/users/resources'
 import edit from '@/daemon/views/users/edit'
 import create from '@/daemon/views/users/create'
+import error from '@/shared/views/daemonError'
 
 export default [
+  { path: '/daemon/error', name: 'daemon-error', component: error, meta: { auth: false } },
   { path: '/daemon/:nodeId', name: 'daemon', component: manage, meta: { layout: 'daemon' } },
   { path: '/daemon/:nodeId/services', name: 'daemon-services', component: services, meta: { auth: true, layout: 'daemon' } },
   { path: '/daemon/:nodeId/services/HTTPProxy/edit', name: 'daemon-service-HTTPProxy', component: HTTPProxy, meta: { auth: true, layout: 'daemon' } },

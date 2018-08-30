@@ -69,7 +69,6 @@ const actions = {
       commit('LOCK', getLocalData().locked)
     }
 
-    console.log('Refreshed user cart')
     commit('INITIALIZE')
   },
 

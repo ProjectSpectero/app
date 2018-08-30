@@ -80,10 +80,9 @@ const actions = {
     await marketAPI.plans({
       success: response => {
         commit('UPDATE_PLANS', { results: response.data.result })
-        console.log('Fetched plans')
       },
       fail: (e) => {
-        console.error('Error plans fetch:', e)
+        console.error('Error fetching plans!', e)
       }
     })
   },

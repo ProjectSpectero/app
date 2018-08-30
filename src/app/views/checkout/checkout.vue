@@ -221,7 +221,7 @@ export default {
         },
         fail: e => {
           this.error = true
-          this.$router.push({ name: 'generic-error' })
+          this.$router.push({ name: 'app-error' })
         }
       })
     },

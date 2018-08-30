@@ -51,8 +51,8 @@ async function API (project, method, path, data, success, fail) {
       return response
     },
     async e => {
-      const errors = (e.response.data !== undefined && e.response.data.errors !== undefined) ? e.response.data.errors : null
-      const status = (e.response.status !== undefined) ? e.response.status : null
+      const errors = (e.response && e.response.data !== undefined && e.response.data.errors !== undefined) ? e.response.data.errors : null
+      const status = (e.response && e.response.status !== undefined) ? e.response.status : null
       const err = new ErrorHandler(project, errors, status)
 
       console.error('*** API ERROR ***')

@@ -113,7 +113,6 @@ const actions = {
 const mutations = {
   SET_CURRENT_USER (state, payload) {
     state.user = payload
-    console.log('changed current user to', payload)
   },
   SET_LOGIN_INFO (state, payload) {
     state.accessToken = payload.accessToken

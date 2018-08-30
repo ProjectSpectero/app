@@ -65,13 +65,20 @@ class ErrorHandler {
   }
 
   handleStatus () {
-    if (this.status === 401 && getCookie(this.project.cookieName) !== null) {
-      removeCookie(this.project.cookieName)
+    const name = this.project.name
+    const cookie = this.project.cookieName
+
+    if (this.status === 401 && name === 'app' && getCookie(cookie) !== null) {
+      removeCookie(cookie)
       router.push({ name: 'login', query: { redirect: location.pathname + location.search } })
     } else if (this.status === 404) {
       router.push({ path: '/404' })
-    } else if ([400, 500].includes(this.status)) {
-      router.push({ name: 'generic-error' })
+    } else if ([400, 500, 503].includes(this.status)) {
+      if (name === 'daemon') {
+        router.push({ name: 'daemon-error' })
+      } else {
+        router.push({ name: 'app-error' })
+      }
     }
   }
 }

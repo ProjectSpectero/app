@@ -41,7 +41,7 @@ const actions = {
         commit('SET_CURRENT_USER', response.data.result)
       },
       fail: e => {
-        console.error('Unable to sync current user')
+        console.error('DAEMON: Unable to sync user')
       }
     })
 
@@ -51,7 +51,7 @@ const actions = {
   async connectToRemote ({ commit, dispatch }) {
     await cloudAPI.remote({
       success: response => {
-        console.warn('Finished connecting to remote', response.data.result)
+        console.warn('DAEMON: Finished connecting to remote', response.data.result)
         commit('SET_SPECS', response.data.result)
 
         // Append the restart server button if needed
@@ -59,19 +59,17 @@ const actions = {
           dispatch('settings/switchBarComponent', 'restart', { root: true })
         }
       },
-      fail: error => {
-        const e = Object.keys(error.errors)[0]
-        console.log('Unable to connect to remote node', error)
-        throw new Error(e)
+      fail: e => {
+        console.error('DAEMON: Unable to connect to remote node')
       }
     })
   },
   async testLogin ({ state, dispatch }) {
     if (state.user && getCookie(process.env.VUE_APP_DAEMON_COOKIE) === null) {
-      console.warn('Daemon login test failed, calling autologin() ...')
+      console.warn('DAEMON: login test failed, calling autologin() ...')
       await dispatch('autologin')
     } else {
-      console.warn('Daemon login test passed, proceeding ...')
+      console.warn('DAEMON: login test passed, proceeding ...')
     }
   },
   async addCookie ({ commit }, payload) {
@@ -84,10 +82,8 @@ const actions = {
 
     // setCookie(process.env.VUE_APP_DAEMON_COOKIE, JSON.stringify(data), { expires: '20s' })
     setCookie(process.env.VUE_APP_DAEMON_COOKIE, JSON.stringify(data), { expires: parseFloat(payload.credentials.access.expires / 1000) + 's' })
-    console.log('Finished adding cookie with data')
   },
   setupEndpoint ({ commit }, payload) {
-    console.log('Setting up endpoint', payload)
     commit('SETUP_ENDPOINT', payload)
   },
   async setupNode ({ commit }, id) {
@@ -97,7 +93,6 @@ const actions = {
       },
       success: async response => {
         if (response.data.result) {
-          console.log('Finished setting up node', response.data.result)
           commit('SETUP_NODE', response.data.result)
         }
       },
@@ -119,16 +114,14 @@ const actions = {
         success: response => {
           details = response.data.result
         },
-        fail: error => {
-          console.error('Auto-login failed', error)
+        fail: e => {
+          console.error('DAEMON: Auto-login failed')
           router.push({ name: 'nodes' })
-          const e = Object.keys(error.errors)[0] || 'AUTOLOGIN_FAIL'
-          throw new Error(e)
         }
       })
 
       if (details) {
-        console.warn('Auto-login started, setting up daemon data', details)
+        console.warn('DAEMON: Auto-login started, setting up daemon data')
         await dispatch('addCookie', details)
         await dispatch('setupEndpoint', details)
         await dispatch('setupNode', nodeId)

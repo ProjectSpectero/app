@@ -21,6 +21,7 @@ async function API (method, path, data, success, failed) {
   }
 
   let project = {
+    name: 'app',
     cookieName: cookieName,
     cookie: (cookie !== null) ? JSON.parse(cookie) : null,
     protocol: 'https://',

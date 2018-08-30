@@ -8,6 +8,7 @@ async function API (method, path, data, success, failed) {
   const cookie = getCookie(cookieName)
 
   let project = {
+    name: 'daemon',
     cookieName: cookieName,
     cookie: (cookie !== null) ? JSON.parse(cookie) : null,
     protocol: store.getters['daemonAuth/protocol'] ? store.getters['daemonAuth/protocol'] + '://' : location.protocol + '//',
