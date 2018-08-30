@@ -24,11 +24,22 @@ npm run dev
 
 ## Server deployment
 
+* Configure any needed environment variables on DeployHQ. *All* variables must start with VUE_APP_ (except for NODE_ENV, but you don't need to specify that one, it's automatically derived from the build name). Example taken from the default .env:
+
+```bash
+VUE_APP_STRIPE_MODE=sandbox
+VUE_APP_STRIPE_SANDBOX_PUBLIC_KEY=stripekey
+VUE_APP_STRIPE_LIVE_PUBLIC_KEY=null
+VUE_APP_GOOGLE_ANALYTICS_ID=dev
+VUE_APP_GOOGLE_RECAPTCHA_KEY=dev
+```
+
+* Run the following command (where %enviroment% is either `dev`, `staging` or `production`):
+
 ```bash
 npm run build-%environment%
 ```
 
-Where %enviroment% is either `dev`, `staging` or `production`.
 
 ## Previewing a build locally
 
