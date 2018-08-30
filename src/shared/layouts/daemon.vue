@@ -51,9 +51,13 @@ export default {
   },
   async created () {
     if (this.$route.params.nodeId) {
-      await this.autologin()
+      try {
+        await this.autologin()
+      } catch (e) {
+        this.$router.push({ name: 'daemon-error' })
+      }
     } else {
-      this.$router.push({ name: 'app-error' })
+      this.$router.push({ name: 'generic-error' })
     }
   },
   methods: {

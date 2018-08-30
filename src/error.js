@@ -64,20 +64,27 @@ class ErrorHandler {
     this.fields = fields
   }
 
+  // Status code handler for errors.
+  // This method uses the interceptor and acts upon catastrophic error codes by
+  // forwarding the user to an escape page.
   handleStatus () {
-    const name = this.project.name
-    const cookie = this.project.cookieName
+    if (this.status) {
+      const name = this.project.name
+      const cookie = this.project.cookieName
 
-    if (this.status === 401 && name === 'app' && getCookie(cookie) !== null) {
-      removeCookie(cookie)
-      router.push({ name: 'login', query: { redirect: location.pathname + location.search } })
-    } else if (this.status === 404) {
-      router.push({ path: '/404' })
-    } else if ([400, 500, 503].includes(this.status)) {
-      if (name === 'daemon') {
-        router.push({ name: 'daemon-error' })
-      } else {
-        router.push({ name: 'app-error' })
+      console.error('Catastrophic error ', this.status, ' on ', name, ' found, forwarding ...')
+
+      if (this.status === 401 && name === 'app' && getCookie(cookie) !== null) {
+        removeCookie(cookie)
+        router.push({ name: 'login', query: { redirect: location.pathname + location.search } })
+      } else if (this.status === 404) {
+        router.push({ path: '/404' })
+      } else if ([400, 500, 503].includes(this.status)) {
+        if (name === 'daemon') {
+          router.push({ name: 'daemon-error' })
+        } else {
+          router.push({ name: 'app-error' })
+        }
       }
     }
   }
