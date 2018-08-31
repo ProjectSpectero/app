@@ -22,6 +22,9 @@ import VueNumeric from 'vue-numeric'
 
 import globalMixin from '@/shared/mixins/global'
 
+Vue.config.productionTip = false
+Vue.prototype.$filters = Vue.options.filters
+
 // Load packages
 Vue.use(VueI18n)
 Vue.use(VueCookie)
@@ -88,17 +91,24 @@ const i18n = new VueI18n({
 // Load global mixin
 Vue.mixin(globalMixin(i18n))
 
-Vue.config.productionTip = false
-Vue.prototype.$filters = Vue.options.filters
-
+// Error handling: shows the appError page with stack trace
 Vue.config.errorHandler = function (e) {
-  console.warn('*** APPLICATION ERROR (' + e.name + ') ***')
-  console.warn(e)
+  store.dispatch('error/add', {
+    type: 'error',
+    name: e.name,
+    date: new Date().toLocaleString(),
+    stack: e.stack
+  })
 }
 
+// Warning handling: displays stack trace on the console (dev only)
 Vue.config.warnHandler = function (e) {
-  console.warn('*** APPLICATION WARNING (' + e.name + ') ***')
-  console.warn(e)
+  console.warn({
+    type: 'warning',
+    name: e.name,
+    date: new Date().toLocaleString(),
+    stack: e.stack
+  })
 }
 
 // /* eslint-disable no-new */

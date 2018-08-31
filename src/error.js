@@ -79,7 +79,7 @@ class ErrorHandler {
         router.push({ name: 'login', query: { redirect: location.pathname + location.search } })
       } else if (this.status === 404) {
         router.push({ path: '/404' })
-      } else if ([400, 500, 503].includes(this.status)) {
+      } else if ([400, 403, 500, 503].includes(this.status)) {
         if (name === 'daemon') {
           router.push({ name: 'daemon-error' })
         } else {
