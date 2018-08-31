@@ -55,9 +55,8 @@ async function API (project, method, path, data, success, fail) {
       const status = (e.response && e.response.status !== undefined) ? e.response.status : null
       const err = new ErrorHandler(project, errors, status)
 
-      console.error('*** API ERROR ***')
+      console.error('%c💥 API ERROR (' + new Date().toLocaleString() + ') 💥', 'font-weight:bold')
       console.error(err)
-      console.error('*****************')
 
       // Call either the fail() or data.fail() callbacks
       if (typeof fail === 'function') {

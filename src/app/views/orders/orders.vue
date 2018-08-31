@@ -138,7 +138,7 @@ export default {
           },
           fail: e => {
             this.error = true
-            this.$router.push({ name: 'app-error' })
+            this.$router.push({ name: 'api-error' })
           }
         })
 

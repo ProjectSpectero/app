@@ -68,11 +68,15 @@ class ErrorHandler {
   // This method uses the interceptor and acts upon catastrophic error codes by
   // forwarding the user to an escape page.
   handleStatus () {
-    if (this.status) {
-      const name = this.project.name
-      const cookie = this.project.cookieName
+    const name = this.project.name
 
-      console.error('Catastrophic error ', this.status, ' on ', name, ' found, forwarding ...')
+    // When a status isn't found, this means we were unable to track the error itself.
+    // This means that something really unexpected happened (like a server timeout),
+    // so we'll just forward to the generic error page, since we can't track anything else.
+    if (!this.status) {
+      this.forwardToProjectError(name)
+    } else {
+      const cookie = this.project.cookieName
 
       if (this.status === 401 && name === 'app' && getCookie(cookie) !== null) {
         removeCookie(cookie)
@@ -80,13 +84,13 @@ class ErrorHandler {
       } else if (this.status === 404) {
         router.push({ path: '/404' })
       } else if ([400, 403, 500, 503].includes(this.status)) {
-        if (name === 'daemon') {
-          router.push({ name: 'daemon-error' })
-        } else {
-          router.push({ name: 'app-error' })
-        }
+        this.forwardToProjectError(name)
       }
     }
+  }
+
+  forwardToProjectError (name) {
+    router.push({ name: (name === 'daemon') ? 'daemon-error' : 'api-error' })
   }
 }
 

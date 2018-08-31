@@ -93,22 +93,23 @@ Vue.prototype.$filters = Vue.options.filters
 
 // Error handling: shows the appError page with stack trace
 Vue.config.errorHandler = function (e) {
-  store.dispatch('error/add', {
+  const error = {
     type: 'error',
     name: e.name,
     date: new Date().toLocaleString(),
     stack: e.stack
-  })
+  }
+
+  console.error('%c🔥 APPLICATION ERROR (' + error.date + ') 🔥', 'font-weight:bold')
+  console.error(e.stack)
+
+  store.dispatch('error/add', error)
 }
 
 // Warning handling: displays stack trace on the console (dev only)
 Vue.config.warnHandler = function (e) {
-  console.warn({
-    type: 'warning',
-    name: e.name,
-    date: new Date().toLocaleString(),
-    stack: e.stack
-  })
+  console.warn('%c⚡ APPLICATION WARNING (' + new Date().toLocaleString() + ') ⚡', 'font-weight:bold')
+  console.warn(e.stack)
 }
 
 // /* eslint-disable no-new */
