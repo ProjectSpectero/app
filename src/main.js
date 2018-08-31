@@ -22,9 +22,6 @@ import VueNumeric from 'vue-numeric'
 
 import globalMixin from '@/shared/mixins/global'
 
-Vue.config.productionTip = false
-Vue.prototype.$filters = Vue.options.filters
-
 // Load packages
 Vue.use(VueI18n)
 Vue.use(VueCookie)
@@ -90,6 +87,9 @@ const i18n = new VueI18n({
 
 // Load global mixin
 Vue.mixin(globalMixin(i18n))
+
+Vue.config.productionTip = false
+Vue.prototype.$filters = Vue.options.filters
 
 // Error handling: shows the appError page with stack trace
 Vue.config.errorHandler = function (e) {
