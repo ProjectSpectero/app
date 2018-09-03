@@ -20,6 +20,7 @@
           <div class="form-input">
             <input
               v-validate="'required|min:5|max:72'"
+              ref="passwordRef"
               v-model="password"
               :class="{'input-error': errors.has('password')}"
               :disabled="formLoading"
@@ -37,7 +38,7 @@
 
           <div class="form-input">
             <input
-              v-validate="'required|confirmed:password'"
+              v-validate="'required|confirmed:passwordRef'"
               v-model="confirmation"
               :class="{'input-error': errors.has('confirmation')}"
               :disabled="formLoading"
