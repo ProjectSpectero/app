@@ -91,6 +91,7 @@ export default {
       isEnterprise: 'appAuth/isEnterprise'
     }),
     environment () {
+      console.log(process.env)
       return process.env.NODE_ENV
     }
   },
