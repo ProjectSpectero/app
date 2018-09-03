@@ -35,6 +35,7 @@ async function API (project, method, path, data, success, fail) {
   // Response interceptors (handle what happens AFTER connecting to the API)
   instance.interceptors.response.use(
     async response => {
+      console.log('Response is', response)
       if (response.data) {
         // Call either the success() or data.success() callbacks
         if (typeof success === 'function') {
