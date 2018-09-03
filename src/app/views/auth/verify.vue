@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import user from '@/app/api/user'
+import userAPI from '@/app/api/user'
 
 export default {
   metaInfo: {
@@ -47,12 +47,12 @@ export default {
       errorMessage: ''
     }
   },
-  created () {
-    this.validateVerification()
+  async created () {
+    await this.validateVerification()
   },
   methods: {
-    validateVerification () {
-      user.verify({
+    async validateVerification () {
+      await userAPI.verify({
         data: {
           email: this.$route.params.email,
           token: this.$route.params.token
@@ -63,7 +63,6 @@ export default {
         },
         fail: error => {
           const keys = Object.keys(error.errors)
-
           this.error = keys[0]
           this.verified = false
         }
