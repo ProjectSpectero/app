@@ -183,7 +183,10 @@ export default {
     }
   },
   async created () {
-    await this.syncCurrentUser()
+    if (this.user) {
+      await this.syncCurrentUser()
+    }
+
     await this.fetchProPlan()
   },
   methods: {
