@@ -41,9 +41,8 @@
               <div class="form-input">
                 <float-label>
                   <input
-                    v-validate="rules['email']"
+                    v-validate="confirmedFieldRule('email', rules['email'])"
                     id="email"
-                    ref="emailConfirm"
                     v-model="form.email"
                     :class="{'input-error': errors.has('email')}"
                     :disabled="formLoading"
@@ -62,7 +61,8 @@
               <div class="form-input">
                 <float-label>
                   <input
-                    v-validate="confirmedFieldRule('email', rules['email'])"
+                    v-validate="rules['email']"
+                    ref="emailConfirm"
                     id="emailConfirm"
                     v-model="form.emailConfirm"
                     :class="{'input-error': errors.has('emailConfirm')}"
@@ -123,9 +123,8 @@
               <div class="form-input">
                 <float-label>
                   <input
-                    v-validate="rules['password']"
+                    v-validate="confirmedFieldRule('password', rules['password'])"
                     id="password"
-                    ref="passwordConfirm"
                     v-model="form.password"
                     :class="{'input-error': errors.has('password')}"
                     :disabled="formLoading"
@@ -145,22 +144,23 @@
               <div class="form-input">
                 <float-label>
                   <input
-                    v-validate="confirmedFieldRule('password', rules['password'])"
-                    id="passwordConfirm"
+                    v-validate="rules['password']"
+                    ref="passwordConfirm"
+                    id="password2"
                     v-model="form.passwordConfirm"
-                    :class="{'input-error': errors.has('passwordConfirm')}"
+                    :class="{'input-error': errors.has('password2')}"
                     :disabled="formLoading"
                     type="password"
-                    name="passwordConfirm"
+                    name="password2"
                     placeholder="Confirm New Password"
                     class="input max-width"
                     data-vv-as="new password confirmation">
                 </float-label>
 
                 <span
-                  v-show="errors.has('passwordConfirm')"
+                  v-show="errors.has('password2')"
                   class="input-error-message"
-                  v-html="errors.first('passwordConfirm')"/>
+                  v-html="errors.first('password2')"/>
               </div>
             </div>
           </div>
