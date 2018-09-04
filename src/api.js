@@ -40,20 +40,15 @@ async function API (project, method, path, data, success, fail) {
   // Response interceptors (handle what happens AFTER connecting to the API)
   instance.interceptors.response.use(
     async response => {
-      if (response.data) {
-        // Call either the success() or data.success() callbacks
-        if (typeof success === 'function') {
-          await success(response)
-        } else if (typeof data.success === 'function') {
-          await data.success(response)
-        }
-
-        progress.finish()
-        return { error: false, data: response.data }
+      // Call either the success() or data.success() callbacks
+      if (typeof success === 'function') {
+        await success(response)
+      } else if (typeof data.success === 'function') {
+        await data.success(response)
       }
 
       progress.finish()
-      return response
+      return { error: false, data: response.data || null }
     },
     async e => {
       const errors = (e.response && e.response.data !== undefined && e.response.data.errors !== undefined) ? e.response.data.errors : null
