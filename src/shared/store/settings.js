@@ -26,20 +26,18 @@ const actions = {
     commit('REMOVE_BAR_COMPONENT')
   },
   async fetchSupportLink ({ commit }) {
-    let link = '#'
+    let link = 'mailto:support@spectero.freshdesk.com'
 
     await userAPI.getSupportLink({
       success: response => {
         if (response.data.result && response.data.result.redirect_uri !== undefined) {
           link = response.data.result.redirect_uri
         }
-
-        commit('SET_SUPPORT_LINK', link)
       },
-      fail: e => {
-        console.error('Unable to fetch support link for Freshdesk')
-      }
+      overrideErrors: true
     })
+
+    commit('SET_SUPPORT_LINK', link)
   }
 }
 
