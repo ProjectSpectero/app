@@ -85,11 +85,11 @@ export default {
             this.formLoading = false
           }
         },
-        fail: error => {
-          console.log(error)
+        fail: e => {
           this.formLoading = false
-          this.$toasted.error('reset.TOKEN_ERROR')
-        }
+          this.$toasted.error(this.$t('reset.TOKEN_ERROR'))
+        },
+        overrideErrors: true
       })
     },
     dealWithError (err) {
