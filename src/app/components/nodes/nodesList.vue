@@ -185,7 +185,8 @@ export default {
             this.$emit('refetch')
             this.$toasted.success(this.$t('nodes.DELETE_SUCCESS'))
           },
-          fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
+          fail: error => this.$toasted.error(this.errorAPI(error, 'nodes')),
+          overrideErrors: true
         })
       }
     },
@@ -209,7 +210,8 @@ export default {
           button.disabled = false
           button.classList.toggle('button-loading')
           button.classList.toggle('button-success')
-        }
+        },
+        overrideErrors: true
       })
     },
     editGroup () {
@@ -225,7 +227,8 @@ export default {
             this.$emit('refetch')
             this.$toasted.success(this.$t('nodes.GROUP_DELETE_SUCCESS'))
           },
-          fail: error => this.$toasted.error(this.errorAPI(error, 'nodes'))
+          fail: error => this.$toasted.error(this.errorAPI(error, 'nodes')),
+          overrideErrors: true
         })
       }
     },
