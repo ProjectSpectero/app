@@ -133,7 +133,8 @@ export default {
         },
         loginFailed: error => {
           this.dealWithError(error)
-        }
+        },
+        overrideErrors: true
       })
 
       if (loggedIn) {

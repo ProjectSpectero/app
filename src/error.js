@@ -2,9 +2,10 @@ import { getCookie, removeCookie } from 'tiny-cookie'
 import router from '@/router'
 
 class ErrorHandler {
-  constructor (project, data, status) {
+  constructor (project, data, status, overrideErrors) {
     this.project = project
     this.status = status
+    this.overrideErrors = overrideErrors
 
     this.parse(data)
   }
@@ -90,7 +91,9 @@ class ErrorHandler {
   }
 
   forwardToProjectError (name) {
-    router.push({ name: (name === 'daemon') ? 'daemon-error' : 'api-error' })
+    if (this.overrideErrors === undefined || !this.overrideErrors) {
+      router.push({ name: (name === 'daemon') ? 'daemon-error' : 'api-error' })
+    }
   }
 }
 

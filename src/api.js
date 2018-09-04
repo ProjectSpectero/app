@@ -19,6 +19,11 @@ async function API (project, method, path, data, success, fail) {
     Authorization: project.cookie ? `Bearer ${project.cookie.accessToken}` : null
   }
 
+  // Set overrideErrors flag to false if not defined.
+  // This flag will be checked when deciding what to do in case of a critical error
+  // (see error.js)
+  let overrideErrors = (data.overrideErrors !== undefined) ? data.overrideErrors : false
+
   if (data.headers) {
     headers = {...headers, ...data.headers}
   }
@@ -53,7 +58,7 @@ async function API (project, method, path, data, success, fail) {
     async e => {
       const errors = (e.response && e.response.data !== undefined && e.response.data.errors !== undefined) ? e.response.data.errors : null
       const status = (e.response && e.response.status !== undefined) ? e.response.status : null
-      const err = new ErrorHandler(project, errors, status)
+      const err = new ErrorHandler(project, errors, status, overrideErrors)
 
       console.error('%c💥 API ERROR (' + new Date().toLocaleString() + ') 💥', 'font-weight:bold')
       console.error(err)
