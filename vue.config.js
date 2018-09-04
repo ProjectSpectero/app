@@ -2,7 +2,11 @@ const path = require('path')
 const BourbonNeat = require('bourbon-neat').includePaths[0]
 
 module.exports = {
+  filenameHashing: true,
   configureWebpack: {
+    output: {
+      filename: '[name].[hash:8].js'
+    },
     resolve: {
       alias: {
         '@assets': path.resolve(__dirname, './src/shared/assets'),
