@@ -231,7 +231,8 @@ export default {
           this.loading = false
           this.formError = this.$t('misc.UNKNOWN_ERROR')
           console.error('Error while getting pro plan', error)
-        }
+        },
+        overrideErrors: true
       })
     },
     async submit () {
