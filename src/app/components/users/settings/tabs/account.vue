@@ -41,8 +41,9 @@
               <div class="form-input">
                 <float-label>
                   <input
-                    v-validate="confirmedFieldRule('email', rules['email'])"
+                    v-validate="rules['email']"
                     id="email"
+                    ref="emailConfirm"
                     v-model="form.email"
                     :class="{'input-error': errors.has('email')}"
                     :disabled="formLoading"
@@ -61,7 +62,7 @@
               <div class="form-input">
                 <float-label>
                   <input
-                    v-validate="rules['email']"
+                    v-validate="confirmedFieldRule('email', rules['email'])"
                     id="emailConfirm"
                     v-model="form.emailConfirm"
                     :class="{'input-error': errors.has('emailConfirm')}"
@@ -122,8 +123,9 @@
               <div class="form-input">
                 <float-label>
                   <input
-                    v-validate="confirmedFieldRule('password', rules['password'])"
+                    v-validate="rules['password']"
                     id="password"
+                    ref="passwordConfirm"
                     v-model="form.password"
                     :class="{'input-error': errors.has('password')}"
                     :disabled="formLoading"
@@ -143,7 +145,7 @@
               <div class="form-input">
                 <float-label>
                   <input
-                    v-validate="rules['password']"
+                    v-validate="confirmedFieldRule('password', rules['password'])"
                     id="passwordConfirm"
                     v-model="form.passwordConfirm"
                     :class="{'input-error': errors.has('passwordConfirm')}"
