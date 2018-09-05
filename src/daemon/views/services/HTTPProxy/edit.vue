@@ -204,7 +204,8 @@ export default {
         fail: error => {
           console.log(error)
           this.$toasted.error(this.$t('services.UPDATE_ERROR'))
-        }
+        },
+        overrideErrors: true
       })
     },
     fillAddress (address) {

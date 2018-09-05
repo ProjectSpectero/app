@@ -420,7 +420,8 @@ export default {
         fail: error => {
           console.error(error)
           this.$toasted.error(this.$t('services.UPDATE_ERROR'))
-        }
+        },
+        overrideErrors: true
       })
     },
     askBeforeExiting () {

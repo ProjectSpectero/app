@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import CIDR from 'cidr-js'
+import isCidr from 'is-cidr'
 
 export default {
   props: {
@@ -69,14 +69,11 @@ export default {
     return {
       network: null,
       networkError: false,
-      cidr: null,
       list: []
     }
   },
   created () {
-    this.cidr = new CIDR()
     this.list = this.pushedNetworks
-    console.log(this.list)
   },
   methods: {
     remove (index) {
@@ -105,7 +102,8 @@ export default {
       let test = null
 
       try {
-        test = this.cidr.range(network)
+        test = isCidr(network)
+        console.log(test)
       } catch (e) {
         console.log(e)
       }
