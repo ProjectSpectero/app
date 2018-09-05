@@ -43,10 +43,17 @@ npm run build-%environment%
 
 ## Previewing a build locally
 
-The dist directory is meant to be served by an HTTP server (unless you've configured baseUrl to be a relative value), so it will not work if you open dist/index.html directly over file:// protocol. The easiest way to preview your production build locally is using a Node.js static file server, for example serve:
+The dist directory is meant to be served by an HTTP server (unless you've configured baseUrl to be a relative value), so it will not work if you open dist/index.html directly over file:// protocol. The easiest way to preview your production build locally is using a Node.js static file server, for example `serve`.
+
+* Install `serve` globally:
 
 ```bash
 npm i -g serve
+```
+
+* Build a bundle and serve it (-s flag means you'll be serving in Single-Page Application mode)
+
+```bash
 npm run build-%environment%
 serve -s dist
 ```
