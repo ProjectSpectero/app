@@ -20,6 +20,7 @@ import FlagIcon from 'vue-flag-icon'
 import PrettyCheckbox from 'pretty-checkbox-vue'
 import VueNumeric from 'vue-numeric'
 
+import messages from '@/shared/lang'
 import globalMixin from '@/shared/mixins/global'
 
 // Load packages
@@ -80,9 +81,7 @@ if (process.env.NODE_ENV === 'production') {
 // i18n data
 const i18n = new VueI18n({
   locale: 'en',
-  messages: {
-    en: require('./shared/lang/en')
-  }
+  messages
 })
 
 // Load global mixin

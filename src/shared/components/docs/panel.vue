@@ -20,7 +20,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import contents from '@/shared/components/docs/contents'
-import translations from '@/shared/lang/en'
+import translations from '@/shared/lang'
 
 export default {
   components: {
@@ -32,7 +32,7 @@ export default {
       contentsKey: 'help/contentsKey'
     }),
     items () {
-      return this.contentsKey ? this.contentsKey.split('.').reduce((o, i) => o[i], translations) : null
+      return this.contentsKey ? this.contentsKey.split('.').reduce((o, i) => o[i], translations[this.$i18n.locale]) : null
     }
   },
   methods: {

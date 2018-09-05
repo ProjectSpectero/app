@@ -1,5 +1,4 @@
-module.exports = {
-  lang: 'en',
+const lang = {
   misc: {
     SPECTERO: 'Spectero',
     PRO: 'Pro',
@@ -690,7 +689,7 @@ module.exports = {
         protocols: {
           title: 'Protocols',
           description:
-             `<p>OpenVPN is designed to operate optimally over UDP, but TCP capability is provided for situations where UDP cannot be used.</p>
+            `<p>OpenVPN is designed to operate optimally over UDP, but TCP capability is provided for situations where UDP cannot be used.</p>
               <p>In comparison with UDP, TCP will usually be somewhat less efficient and less robust when used over unreliable or congested networks.</p>
               <p>There are certain cases, however, where using TCP may be advantageous from a security and robustness perspective, such as tunneling non-IP or application-level UDP protocols, or tunneling protocols which don't possess a built-in reliability layer.</p>
               <p><small>Taken from the <a href="https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html" target="_blank">OpenVPN manual</a></small></p>`
@@ -698,7 +697,7 @@ module.exports = {
         redirectGateway: {
           title: 'Redirect gateway',
           description:
-             `<p><strong>Local</strong>: Add the local flag if both OpenVPN servers are directly connected via a common subnet, such as with wireless.</p>
+            `<p><strong>Local</strong>: Add the local flag if both OpenVPN servers are directly connected via a common subnet, such as with wireless.</p>
               <p><strong>Def1</strong>: Add the def1 flag to override the default gateway by using 0.0.0.0/1 and 128.0.0.0/1 rather than 0.0.0.0/0. This has the benefit of overriding but not wiping out the original default gateway.</p>
               <p>Using the def1 flag is highly recommended, and is currently planned to become the default by OpenVPN 2.1.</p>
               <p><small>Taken from the <a href="https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html" target="_blank">OpenVPN manual</a></small></p>`
@@ -706,7 +705,7 @@ module.exports = {
         dhcpOptions: {
           title: 'DHCP Options',
           description:
-             `<p>This option can be used to set additional TCP/IP properties on the TAP-Win32 adapter, and is particularly useful for configuring an OpenVPN client to access a Samba server across the VPN.</p>
+            `<p>This option can be used to set additional TCP/IP properties on the TAP-Win32 adapter, and is particularly useful for configuring an OpenVPN client to access a Samba server across the VPN.</p>
               <p><strong>DOMAIN name</strong>: Set Connection-specific DNS Suffix.</p>
               <p><strong>DNS addr</strong>: Set primary domain name server address. Repeat this option to set secondary DNS server addresses.</p>
               <p><strong>WINS addr</strong>: Set primary WINS server address (NetBIOS over TCP/IP Name Server).</p>
@@ -720,7 +719,7 @@ module.exports = {
         proxyModes: {
           title: 'Proxy Modes',
           description:
-           `<p>The following modes of filtering are supported:</p>
+          `<p>The following modes of filtering are supported:</p>
             <p><strong>Normal Mode</strong><br>In normal mode, the proxy provides a blacklist that the users can use to ban any number of URLs from being visited. Blocked requests will be redirected to BlockedRedirectUri.</p>
             <p><strong>ExclusiveAllow Mode</strong><br>In exclusive-allow mode (or whitelist only mode), the proxy only connects to a list of pre-determined hosts. This is handy in corporate environments where browsing privileges are restricted.</p>
             <p><a href="https://spectero.atlassian.net/wiki/spaces/docs/pages/1048633/HTTP+Proxy" target="_blank">View Full Documentation</a></p>`
@@ -733,3 +732,5 @@ module.exports = {
     }
   }
 }
+
+export default lang

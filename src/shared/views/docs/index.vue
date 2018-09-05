@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top :title="$i18n.t('misc.DOCUMENTATION')"/>
+    <top :title="$t('misc.DOCUMENTATION')"/>
 
     <div class="container">
       <div class="col-12">
@@ -13,7 +13,7 @@
 <script>
 import top from '@/shared/components/top'
 import contents from '@/shared/components/docs/contents'
-import translations from '@/shared/lang/en'
+import translations from '@/shared/lang'
 
 export default {
   components: {
@@ -22,12 +22,8 @@ export default {
   },
   computed: {
     helpContents () {
-      return translations.help
+      return translations[this.$i18n.locale].help
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>
