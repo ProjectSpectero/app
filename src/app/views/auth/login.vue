@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import auth from '@/app/api/auth'
 
 export default {
@@ -87,9 +87,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      isEnterprise: 'appAuth/isEnterprise'
-    }),
     environment () {
       console.log(process.env)
       return process.env.NODE_ENV
@@ -143,7 +140,7 @@ export default {
         if (this.$route.query.redirect) {
           this.$router.push({ path: this.$route.query.redirect })
         } else {
-          this.$router.push({ name: (this.isEnterprise) ? 'enterpriseOrders' : 'dashboard' })
+          this.$router.push({ name: 'dashboard' })
         }
       }
     },
