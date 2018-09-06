@@ -16,7 +16,12 @@ module.exports = {
   },
   chainWebpack: config => {
     const isLegacyBundle = (process.env.VUE_CLI_MODERN_MODE && !process.env.VUE_CLI_MODERN_BUILD)
-    config.output.filename(isLegacyBundle ? 'spectero.[hash:8].js' : 'spectero-legacy.[hash:8].js')
+    const suffix = process.env.HASH_BUNDLE ? '.[hash:8].js' : '.js'
+    const name = 'spectero'
+    const buildName = name + suffix
+    const legacyBuildName = name + '-legacy' + suffix
+
+    config.output.filename(isLegacyBundle ? legacyBuildName : buildName)
   },
   pluginOptions: {
     'style-resources-loader': {
