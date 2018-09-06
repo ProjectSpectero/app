@@ -163,7 +163,7 @@
             </div>
             <div class="section padded">
               <h3 class="mb-2">VPN Locations</h3>
-              <p class="sub mb-2">Choose from 148 cities in 94 countries. With unlimited speeds and unlimited server switches, you can connect from anywhere in the world.</p>
+              <p class="sub mb-2">Choose from 17 cities in 9 countries. With unlimited speeds and unlimited server switches, you can connect from anywhere in the world.</p>
               <ul class="list vpn-country-list">
                 <li>
                   <p>
