@@ -55,8 +55,6 @@
 </template>
 
 <script>
-import isCidr from 'is-cidr'
-
 export default {
   props: {
     pushedNetworks: {
@@ -99,16 +97,8 @@ export default {
       this.network = null
     },
     isValidCIDR (network) {
-      let test = null
-
-      try {
-        test = isCidr(network)
-        console.log(test)
-      } catch (e) {
-        console.log(e)
-      }
-
-      return test || false
+      const cidrRegex = require('cidr-regex')
+      return cidrRegex({ exact: true }).test(network)
     }
   }
 }

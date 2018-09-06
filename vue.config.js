@@ -1,13 +1,9 @@
 const path = require('path')
 const BourbonNeat = require('bourbon-neat').includePaths[0]
-const isLegacyBundle = (process.env.VUE_CLI_MODERN_MODE && !process.env.VUE_CLI_MODERN_BUILD)
 
 module.exports = {
   filenameHashing: true,
   configureWebpack: {
-    output: {
-      filename: isLegacyBundle ? 'spectero-legacy.[hash:8].js' : 'spectero.[hash:8].js'
-    },
     resolve: {
       alias: {
         '@assets': path.resolve(__dirname, './src/shared/assets'),
@@ -17,6 +13,10 @@ module.exports = {
         '@neat': BourbonNeat
       }
     }
+  },
+  chainWebpack: config => {
+    const isLegacyBundle = (process.env.VUE_CLI_MODERN_MODE && !process.env.VUE_CLI_MODERN_BUILD)
+    config.output.filename(isLegacyBundle ? 'spectero.[hash:8].js' : 'spectero-legacy.[hash:8].js')
   },
   pluginOptions: {
     'style-resources-loader': {
