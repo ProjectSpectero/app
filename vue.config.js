@@ -1,11 +1,12 @@
 const path = require('path')
 const BourbonNeat = require('bourbon-neat').includePaths[0]
+const isLegacyBundle = (process.env.VUE_CLI_MODERN_MODE && !process.env.VUE_CLI_MODERN_BUILD)
 
 module.exports = {
   filenameHashing: true,
   configureWebpack: {
     output: {
-      filename: '[name].[hash:8].js'
+      filename: isLegacyBundle ? 'spectero-legacy.[hash:8].js' : 'spectero.[hash:8].js'
     },
     resolve: {
       alias: {
