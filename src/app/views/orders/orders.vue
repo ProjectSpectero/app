@@ -10,7 +10,7 @@
             v-for="s in status"
             :key="s">
             <router-link
-              :to="{ name: enterprisePage ? 'enterpriseOrdersByStatus' : 'ordersByStatus', params: { status: s, page: 1 } }"
+              :to="{ name: 'ordersByStatus', params: { status: s, page: 1 } }"
               :class="{ active: currentStatus === s }"
               @click.native="tabChange">
               {{ $t('orders.MENU_STATUS.' + s.toUpperCase()) }}
@@ -92,9 +92,6 @@ export default {
     }),
     currentStatus () {
       return this.$route.params.status ? this.$route.params.status.toLowerCase() : 'all'
-    },
-    enterprisePage () {
-      return (this.isEnterprise && (this.$route.name === 'enterpriseOrders' || this.$route.name === 'enterpriseOrdersByStatus'))
     }
   },
   watch: {
@@ -109,8 +106,6 @@ export default {
   created () {
     if (this.$route.name === 'orders') {
       this.$router.push({ name: 'ordersByStatus', params: { status: 'all', page: 1 } })
-    } else if (this.$route.name === 'enterpriseOrders') {
-      this.$router.push({ name: 'enterpriseOrdersByStatus', params: { status: 'all', page: 1 } })
     } else {
       this.sidebarSort('status', this.currentStatus, this.currentPage)
     }
@@ -152,7 +147,7 @@ export default {
       await this.fetchOrders(page)
     },
     async fetchOrders (page) {
-      const method = this.enterprisePage ? orderAPI['myEnterpriseOrders'] : orderAPI['myOrders']
+      const method = orderAPI['myOrders']
 
       this.loading = true
 

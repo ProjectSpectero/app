@@ -44,3 +44,43 @@
     margin-top: 16px;
   }
 }
+
+ul.list {
+  list-style: disc;
+  padding-left: 20px;
+  line-height: 150%;
+
+  > li {
+    > ul {
+      margin-top: 2px;
+      padding-left: 16px;
+      font-size: 90%;
+      line-height: 140%;
+      opacity: 0.6;
+    }
+  }
+}
+
+ul.checkmark {
+  list-style: none;
+  line-height: 150%;
+
+  > li {
+    margin-bottom: 6px;
+    padding-left: 22px;
+    position: relative;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+    &:before {
+      @extend [class^="icon-"];
+      @extend .icon-check:before;
+
+      position: absolute;
+      top: 2px;
+      left: 0;
+      color: $color-success;
+    }
+  }
+}

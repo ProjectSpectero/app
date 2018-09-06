@@ -214,7 +214,8 @@ export default {
           this.loading = false
           this.formError = this.errorAPI(error, 'payments')
           console.error('Stripe process error', error)
-        }
+        },
+        overrideErrors: true
       })
     }
   }

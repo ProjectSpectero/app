@@ -62,21 +62,6 @@
               </li>
             </ul>
           </section>
-          <section
-            v-if="isEnterprise"
-            class="nav-section">
-            <h5>{{ $t('misc.ENTERPRISE') }}</h5>
-            <ul>
-              <li>
-                <router-link
-                  :to="{ name: 'enterpriseOrders' }"
-                  @click.native="toggleMenuClick">
-                  <span class="icon-server"/>
-                  {{ $t('misc.ENTERPRISE') }}
-                </router-link>
-              </li>
-            </ul>
-          </section>
           <section class="nav-section">
             <h5>{{ $t('misc.DAEMON') }}</h5>
             <ul>

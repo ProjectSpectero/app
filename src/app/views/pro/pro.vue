@@ -1,19 +1,43 @@
 <template>
   <div>
     <template>
-      <top :title="`${ (!isPro) ? `${$t('misc.PURCHASE')} `: '' }${$t('misc.SPECTERO')} ${$t('misc.PRO')}`"/>
+      <top :title="`${$i18n.t('misc.SPECTERO')} ${$i18n.t('misc.PRO')}`"/>
       <loading v-if="loading"/>
       <div v-else>
-        <div class="container">
+        <div class="container pb-0">
           <div class="col-12">
+            <div class="pro-marketing-cta section padded mb-0">
+              <h2 class="mb-2">Upgrade to Spectero Pro</h2>
+              <p class="cta sub">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet lorem convallis, sollicitudin mauris in, lacinia ipsum. Nunc bibendum lorem a augue lobortis pharetra.</p>
+              <div class="features container pb-0">
+                <div class="col-4">
+                  <p class="icon-globe"/>
+                  <h3>Global VPN Access</h3>
+                  <p class="sub">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                </div>
+                <div class="col-4">
+                  <p class="icon-bar-chart"/>
+                  <h3>Ultra Fast Servers</h3>
+                  <p class="sub">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                </div>
+                <div class="col-4">
+                  <p class="icon-zap"/>
+                  <h3>Premium Features</h3>
+                  <p class="sub">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="col-8">
             <div
               v-if="isPro"
               class="already-pro section padded">
               <div class="icon-check-circle mb-3"/>
-              <h3>{{ $t('pro.ALREADY_SUBSCRIBED') }}</h3>
-              <p>{{ $t('pro.ALREADY_SUBSCRIBED_TEXT') }}</p>
+              <h3>{{ $i18n.t('pro.ALREADY_SUBSCRIBED') }}</h3>
+              <p>{{ $i18n.t('pro.ALREADY_SUBSCRIBED_TEXT') }}</p>
             </div>
-
             <form v-else>
               <div
                 v-if="formError"
@@ -62,6 +86,7 @@
                       </div>
                     </article>
                   </div>
+                  <p class="price-warning">All prices are listed in <strong>USD</strong>.</p>
                 </div>
 
                 <div
@@ -116,12 +141,115 @@
                       class="button-info button-md"
                       @click.prevent="submit"
                       @keyup.enter="submit">
-                      <span class="icon-check"/> {{ $t('misc.CONTINUE') }}
+                      <span class="icon-check"/> {{ $i18n.t('misc.CONTINUE') }}
                     </button>
                   </div>
                 </div>
               </template>
             </form>
+          </div>
+
+          <div class="col-4">
+            <div class="section padded">
+              <h3 class="mb-2">Spectero Pro Includes</h3>
+              <p class="sub mb-2">Enjoy fully featured VPN services with Spectero Pro.</p>
+              <ul class="checkmark">
+                <li>24/7 customer support</li>
+                <li>Ultra fast servers in 94 countries</li>
+                <li>Best-in-class security &amp; encryption</li>
+                <li>No activity logs &amp; no connection logs</li>
+                <li>30 Days Risk Free. Not satisfied? Get your money back, no questions asked.</li>
+              </ul>
+            </div>
+            <div class="section padded">
+              <h3 class="mb-2">VPN Locations</h3>
+              <p class="sub mb-2">Choose from 17 cities in 9 countries. With unlimited speeds and unlimited server switches, you can connect from anywhere in the world.</p>
+              <ul class="list vpn-country-list">
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="US"/>
+                    United States
+                  </p>
+                  <ul>
+                    <li>Los Angeles, CA</li>
+                    <li>San Francisco, CA</li>
+                    <li>San Jose, CA</li>
+                    <li>Atlanta, GA</li>
+                    <li>New York, NY</li>
+                    <li>Newark, NJ</li>
+                    <li>Dallas, TX</li>
+                    <li>Washington, VA</li>
+                    <li>Seattle, WA</li>
+                  </ul>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="CA"/>
+                    Toronto, Canada
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="DE"/>
+                    Frankfurt, Germany
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="GB"/>
+                    London, United Kingdom
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="SG"/>
+                    Singapore City, Singapore
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="IN"/>
+                    Bengaluru, India
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="JP"/>
+                    Tokyo, Japan
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="ZA"/>
+                    Johannesburg, South Africa
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <flag
+                      :squared="false"
+                      iso="TW"/>
+                    Taipei, Taiwan
+                  </p>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -435,6 +563,11 @@ export default {
       }
     }
   }
+  .price-warning {
+    margin-top: 12px;
+    font-size: 90%;
+    opacity: 0.6;
+  }
 }
 .already-pro {
   text-align: center;
@@ -442,6 +575,42 @@ export default {
   [class^="icon-"] {
     font-size: 56px;
     color: $color-success;
+  }
+}
+.pro-marketing-cta {
+  h2 {
+    font-size: 180%;
+    font-weight: $font-bold;
+    text-align: center;
+  }
+  .cta {
+    text-align: center;
+  }
+  .features {
+    text-align: center;
+
+    [class^="icon-"] {
+      margin-bottom: 20px;
+      font-size: 48px;
+      opacity: 0.8;
+    }
+    h3 {
+      margin-bottom: 12px;
+    }
+  }
+}
+.vpn-country-list {
+  .flag-icon {
+    margin-right: 4px;
+    position: relative;
+    top: -1px;
+  }
+  > li {
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 </style>

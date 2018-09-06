@@ -104,7 +104,7 @@
               <div class="content-section">
                 <template v-if="isEnterpriseOrder">
                   <header>
-                    <h3><span class="icon-server icon-bg-info"/>Order Items (Enterprise)</h3>
+                    <h3><span class="icon-server icon-bg-info"/>Enterprise Order Items</h3>
                   </header>
                 </template>
                 <template v-else>

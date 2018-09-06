@@ -30,6 +30,14 @@
             v-html="errors.first('email')"/>
         </div>
 
+        <div class="captcha mt-2 mb-2">
+          <vue-recaptcha
+            ref="recaptcha"
+            :sitekey="recaptchaSitekey"
+            @verify="captchaVerify"
+            @expired="captchaExpiry"/>
+        </div>
+
         <button
           :class="{ 'button-loading': formLoading }"
           :disabled="formLoading"
@@ -51,8 +59,12 @@
 
 <script>
 import authAPI from '@/app/api/auth'
+import VueRecaptcha from 'vue-recaptcha'
 
 export default {
+  components: {
+    VueRecaptcha
+  },
   metaInfo: {
     title: 'Reset Password'
   },
@@ -61,7 +73,14 @@ export default {
       email: null,
       tokenIssued: false,
       formError: null,
-      formLoading: false
+      formLoading: false,
+      captchaKey: null,
+      captchaExpired: false
+    }
+  },
+  computed: {
+    recaptchaSitekey () {
+      return process.env.VUE_APP_GOOGLE_RECAPTCHA_KEY
     }
   },
   methods: {
@@ -70,15 +89,25 @@ export default {
         if (!result) {
           this.formError = this.$t(`errors.VALIDATION_FAILED`)
         } else {
-          this.formLoading = true
-          this.formError = null
-          this.reset()
+          // Check for captcha
+          if (this.captchaExpired || !this.captchaKey) {
+            this.formError = this.$t('errors.CAPTCHA_VALIDATION_FAILED')
+          } else {
+            this.formLoading = true
+            this.formError = null
+            this.reset()
+          }
         }
       })
     },
     async reset () {
       await authAPI.requestPasswordReset({
-        data: { email: this.email },
+        data: {
+          email: this.email
+        },
+        headers: {
+          'X-CAPTCHA-RESPONSE': this.captchaKey
+        },
         success: response => {
           if (response.data.message && response.data.message === 'PASSWORD_RESET_TOKEN_ISSUED') {
             this.tokenIssued = true
@@ -94,6 +123,10 @@ export default {
     },
     dealWithError (err) {
       this.formLoading = false
+
+      // Reset captcha
+      this.$refs.recaptcha.reset()
+      this.captchaKey = null
 
       // Get first error key to display main error msg
       for (var errorKey in err.errors) {
@@ -119,6 +152,14 @@ export default {
           }
         }
       }
+    },
+    captchaVerify: function (response) {
+      this.captchaKey = response
+      this.captchaExpired = false
+    },
+    captchaExpiry: function () {
+      this.captchaKey = null
+      this.captchaExpired = true
     }
   }
 }
