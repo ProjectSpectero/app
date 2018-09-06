@@ -16,6 +16,17 @@ npm update
 
 ## Local development
 
+### Setting up your local environment variables
+
+* Create a new `.env.development.local`. This file will override any `.env` or `.env.development` configurations, if matching keys are provided.
+* Add this:
+
+```
+VUE_APP_HASH_BUNDLE=false
+```
+
+This will prevent our local bundle to be hashed every time it auto-reloads; otherwise hot module reloading would behave weirdly (cached files would be expecting a deprecated .js hash that was no longer available).
+
 After setting up everything, you just need to run:
 
 ```bash
