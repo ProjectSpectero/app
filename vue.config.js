@@ -15,7 +15,7 @@ module.exports = {
     }
   },
   chainWebpack: config => {
-    const hash = (process.env.HASH_BUNDLE && JSON.stringify(process.env.HASH_BUNDLE) === 'true')
+    const hash = (process.env.VUE_APP_HASH_BUNDLE && process.env.VUE_APP_HASH_BUNDLE === 'true')
     config.output.filename(
       (process.env.VUE_CLI_MODERN_MODE && !process.env.VUE_CLI_MODERN_BUILD)
         ? (hash ? 'spectero-legacy.[hash:8].js' : 'spectero-legacy.js')
