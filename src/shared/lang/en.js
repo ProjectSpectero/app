@@ -139,7 +139,7 @@ const lang = {
     RESOURCE_NOT_FOUND: 'We could not find that resource. Please try again and contact our support team if the error persists.',
     REQUEST_FAILED: 'The request failed. Please try again and contact our support team if the error persists.',
     UNAUTHORIZED: 'You are not authorized to do this. Please try again and contact our support team if the error persists.',
-    PAYMENT_FAILED: 'Payment failed. Please try again and contact our support team if the error persists.',
+    PAYMENT_FAILED: 'We were unable to process your payment. Please check your card details are correct and try again. Contact our support team if this error persists.',
     INVOICE_ALREADY_PAID: 'This invoice has already been paid!',
     INVOICE_STATUS_MISMATCH: 'There seems to be a problem processing this invoice. Please try again later and contact our customer support if this issue persists.',
     FIELD_REQUIRED: 'This field is required.',
