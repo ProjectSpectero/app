@@ -18,8 +18,8 @@ module.exports = {
     const hash = (process.env.VUE_APP_HASH_BUNDLE && process.env.VUE_APP_HASH_BUNDLE === 'true')
     config.output.filename(
       (process.env.VUE_CLI_MODERN_MODE && !process.env.VUE_CLI_MODERN_BUILD)
-        ? (hash ? 'spectero-legacy.[hash:8].js' : 'spectero-legacy.js')
-        : (hash ? 'spectero.[hash:8].js' : 'spectero.js'))
+        ? (hash ? '[name]-legacy.[hash:8].js' : '[name]-legacy.js')
+        : (hash ? '[name].[hash:8].js' : '[name].js'))
   },
   pluginOptions: {
     'style-resources-loader': {

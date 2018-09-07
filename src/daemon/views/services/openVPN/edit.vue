@@ -138,7 +138,7 @@
                 <div class="form-input">
                   <float-label>
                     <input
-                      v-validate="rules.network"
+                      v-validate="{ required: true, validateNetwork: true }"
                       :id="`network-${i}`"
                       v-model="item.listener.network"
                       :class="{ 'input-error': errors.has(`network-${i}`) }"
@@ -221,6 +221,7 @@
 </template>
 
 <script>
+import cidrRegex from 'cidr-regex'
 import { mapGetters, mapActions } from 'vuex'
 import serviceAPI from '@/daemon/api/service'
 import top from '@/shared/components/top'
@@ -299,6 +300,18 @@ export default {
   async created () {
     if (this.daemonInitialized) {
       await this.testLogin()
+
+      // Custom validator for networks
+      this.$validator.extend('validateNetwork', {
+        getMessage (field, val) {
+          return 'Please add a valid network.'
+        },
+        validate (value, field) {
+          return cidrRegex({ exact: true }).test(value)
+        }
+      })
+
+      // Set up form
       this.setup()
     }
   },
