@@ -207,7 +207,7 @@ module.exports = {
     ACCOUNT_CREDIT: '(You have {credit} credits in your account)',
     ORDER_CONTAINS_UNAVAILABLE_RESOURCE: 'Error: This order contains an unavailable resource!',
     INVALID_STRIPE_TOKEN: 'We were unable to process your credit card at this time. Please contact our support team if this persists.',
-    PAYMENT_FAILED: 'Payment failed. Please try again and contact our support team if the error persists.',
+    PAYMENT_FAILED: 'We were unable to process your payment. Please check your card details are correct and try again. Contact our support team if this error persists.',
     CREDIT_LIMIT_EXCEEDED: 'We\'re unable to process your request to add more credit as you\'ve exceeded your limit. Please contact our support team to raise your credit limits.',
     PROMO: {
       APPLY_MSG: 'Have a promo code? Apply it to your account here.',

@@ -189,10 +189,10 @@
                           <router-link
                             v-if="item.type !== 'ENTERPRISE'"
                             :to="{ name: 'marketView', params: { id: item.resource, type: (item.type === 'NODE_GROUP' || item.type == 'MANAGED') ? 'group' : 'node' } }">
-                            Resource {{ item.resource }}
+                            {{ item.description }}
                           </router-link>
                           <span v-else>
-                            Resource {{ item.resource }}
+                            {{ item.description }}
                           </span>
                         </template>
 
