@@ -8,22 +8,21 @@
           <div class="col-12">
             <div class="pro-marketing-cta section padded mb-0">
               <h2 class="mb-2">Upgrade to Spectero Pro</h2>
-              <p class="cta sub">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet lorem convallis, sollicitudin mauris in, lacinia ipsum. Nunc bibendum lorem a augue lobortis pharetra.</p>
               <div class="features container pb-0">
                 <div class="col-4">
                   <p class="icon-globe"/>
                   <h3>Global VPN Access</h3>
-                  <p class="sub">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                  <p class="sub">Spectero Pro gives you access to OpenVPN/HTTP proxy VPN servers around the world, with more being added all the time.</p>
                 </div>
                 <div class="col-4">
                   <p class="icon-bar-chart"/>
                   <h3>Ultra Fast Servers</h3>
-                  <p class="sub">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                  <p class="sub">Our VPN severs are hosted in premium top-tier datacenters, with direct connectivity to a variety of networks to reduce latency and increase throughput.</p>
                 </div>
                 <div class="col-4">
                   <p class="icon-zap"/>
                   <h3>Premium Features</h3>
-                  <p class="sub">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                  <p class="sub">In addition to global VPN server access, Spectero pro enables additional VPN sharing and software features to make managing your own VPN server a breeze.</p>
                 </div>
               </div>
             </div>
@@ -163,7 +162,7 @@
             </div>
             <div class="section padded">
               <h3 class="mb-2">VPN Locations</h3>
-              <p class="sub mb-2">Choose from 17 cities in 9 countries. With unlimited speeds and unlimited server switches, you can connect from anywhere in the world.</p>
+              <p class="sub mb-2">Choose from 17 cities in 9 countries.</p>
               <ul class="list vpn-country-list">
                 <li>
                   <p>
@@ -581,9 +580,6 @@ export default {
   h2 {
     font-size: 180%;
     font-weight: $font-bold;
-    text-align: center;
-  }
-  .cta {
     text-align: center;
   }
   .features {
