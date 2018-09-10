@@ -125,6 +125,8 @@ const lang = {
     PASSWORD_FIELD_REQUIRED: 'The password field is required.',
     ERROR_400_ITEM_TITLE: 'Something went wrong.',
     ERROR_400_ITEM_TEXT: 'We were unable to retrieve the list of {item} you requested.',
+    ERROR_400_MODAL_TITLE: 'Something went wrong.',
+    ERROR_400_MODAL_TEXT: 'You were unable to perform this action. Please contact us if keeps happening.',
     DAEMON_ERROR_TITLE: 'Unable to connect to node',
     DAEMON_ERROR_TEXT: 'We were unable to connect to this node. Please make sure your configuration is correct and try again.',
     DAEMON_ERROR_TEXT2: 'Feel free to contact us if the problem persists, making sure to send any relevant server logs to help us track the issue better.',
@@ -173,7 +175,8 @@ const lang = {
     MATRICES_FETCH_FAILED: 'Unable to load compatibility matrices data, please try again later.',
     ECONNABORTED: 'We\'re having trouble connecting to the authentication server. Please try again later.',
     CAPTCHA_MISSING: 'Please complete the captcha and try again.',
-    CAPTCHA_INVALID: 'Captcha validation failed, please try again.'
+    CAPTCHA_INVALID: 'Captcha validation failed, please try again.',
+    OWN_RESOURCE: 'You are trying to buy a resource you listed on the marketplace.'
   },
 
   payments: {

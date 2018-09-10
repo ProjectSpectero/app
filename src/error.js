@@ -1,5 +1,7 @@
+import Vue from 'vue'
 import { getCookie, removeCookie } from 'tiny-cookie'
 import router from '@/router'
+import genericModal from '@/shared/components/errors/modal'
 
 class ErrorHandler {
   constructor (project, data, status, overrideErrors) {
@@ -70,6 +72,7 @@ class ErrorHandler {
   // forwarding the user to an escape page.
   handleStatus () {
     const name = this.project.name
+    const errorKeys = this.errors ? Object.keys(this.errors) : null
 
     // When a status isn't found, this means we were unable to track the error itself.
     // This means that something really unexpected happened (like a server timeout),
@@ -84,7 +87,11 @@ class ErrorHandler {
         router.push({ name: 'login', query: { redirect: location.pathname + location.search } })
       } else if (this.status === 404) {
         router.push({ path: '/404' })
-      } else if ([400, 403, 500, 503].includes(this.status)) {
+      } else if (this.status === 400) {
+        Vue.prototype.$modal.show(genericModal, {
+          errorKeys: errorKeys
+        })
+      } else if ([403, 500, 503].includes(this.status)) {
         this.forwardToProjectError(name)
       }
     }
