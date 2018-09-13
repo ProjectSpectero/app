@@ -25,7 +25,6 @@ import messages from '@/shared/lang'
 import globalMixin from '@/shared/mixins/global'
 
 // Load packages
-Vue.use(Buefy)
 Vue.use(VueI18n)
 Vue.use(VueCookie)
 Vue.use(VeeValidate)
@@ -36,6 +35,10 @@ Vue.use(VueFloatLabel)
 Vue.use(FlagIcon)
 Vue.use(PrettyCheckbox)
 Vue.use(VueNumeric)
+
+Vue.use(Buefy, {
+  defaultIconPack: 'fa'
+})
 
 Vue.use(VueTooltip, {
   delay: 0,
