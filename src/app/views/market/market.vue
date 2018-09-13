@@ -92,7 +92,7 @@
                     <template v-if="route === 'marketMine'">
                       <router-link
                         :to="{ name: 'node', params: { action: 'edit', id: item.id } }"
-                        class="is-small">
+                        class="button is-small">
                         {{ $t('misc.EDIT') }}
                       </router-link>
                     </template>
@@ -112,7 +112,7 @@
                       <router-link
                         v-if="item.type"
                         :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }"
-                        class="is-small">
+                        class="button is-small">
                         {{ $t('misc.VIEW') }}
                       </router-link>
                     </template>

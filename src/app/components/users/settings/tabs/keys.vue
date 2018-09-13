@@ -19,7 +19,7 @@
           </div>
           <copy-to-clipboard
             :field="nodeKey"
-            button-class="is-small"/>
+            button-class="button is-small"/>
         </div>
         <h3>Generate New Key</h3>
         <p>Use the button below to generate a new node key. Your old key will become invalid if you do this.</p><br>

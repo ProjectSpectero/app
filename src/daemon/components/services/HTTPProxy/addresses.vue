@@ -12,7 +12,7 @@
             {{ ip }}
           </div>
           <button
-            class="is-small"
+            class="button is-small"
             @click.prevent="$emit('fillAddress', ip)">
             Fill Address
           </button>

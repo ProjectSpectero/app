@@ -25,7 +25,7 @@
 
             <copy-to-clipboard
               :field="user.authKey"
-              button-class="is-small"/>
+              button-class="button is-small"/>
           </div>
           <div
             v-if="user.cert"
@@ -41,7 +41,7 @@
             <download
               :content="user.cert"
               :file="'spectero-user-certificate.pfx'"
-              button-class="is-small"/>
+              button-class="button is-small"/>
           </div>
           <div
             v-if="user.certKey"
@@ -56,7 +56,7 @@
 
             <copy-to-clipboard
               :field="user.certKey"
-              button-class="is-small"/>
+              button-class="button is-small"/>
           </div>
         </div>
       </div>

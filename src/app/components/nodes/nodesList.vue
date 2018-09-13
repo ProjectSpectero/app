@@ -17,7 +17,7 @@
         </button>
 
         <button
-          class="is-small"
+          class="button is-small"
           @click.stop="editGroup">
           {{ $t('nodes.EDIT_GROUP') }}
         </button>
@@ -66,7 +66,7 @@
             <td class="table-actions">
               <button
                 v-if="row.status === 'UNCONFIRMED' && row.status !== 'PENDING_VERIFICATION'"
-                class="button is-success is-small"
+                class="button is-success"
                 @click.stop="verifyNode($event, row)">
                 <span class="icon-check"/> {{ $t('misc.VERIFY') }}
               </button>
@@ -74,7 +74,7 @@
               <router-link
                 v-if="row.status === 'CONFIRMED'"
                 :to="{ name: 'daemon', params: { nodeId: row.id } }"
-                class="button is-small is-info">
+                class="button is-info">
                 <span class="icon-sliders"/> Manage
               </router-link>
 
