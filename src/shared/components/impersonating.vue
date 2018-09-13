@@ -8,7 +8,7 @@
     </div>
     <div class="actions">
       <button
-        class="button-dark"
+        class="button is-dark"
         @click.stop.prevent="stopImpersonation">Stop impersonating</button>
     </div>
   </div>

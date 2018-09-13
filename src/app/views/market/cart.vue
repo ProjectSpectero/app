@@ -3,7 +3,7 @@
     <top :title="$t('misc.CART')">
       <div v-if="cart && cart.length">
         <button
-          class="button-dark button-bordered"
+          class="button is-dark is-outlined"
           @click.stop="clearCart">
           {{ $t('market.CLEAR_CART') }}
         </button>
@@ -29,7 +29,7 @@
               <p>{{ $t('market.CART_EMPTY_MSG') }}</p>
               <router-link
                 :to="{ name: 'market' }"
-                class="button-info">
+                class="button is-info">
                 {{ $t('market.SHOP_NOW') }}
               </router-link>
             </div>
@@ -62,7 +62,7 @@
                   </div>
                 </div>
                 <button
-                  class="button-success button-md max-width"
+                  class="button is-success is-medium max-width"
                   @click.stop="checkout">
                   {{ $t('misc.CHECKOUT') }}
                 </button>

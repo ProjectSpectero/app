@@ -23,7 +23,7 @@
       </div>
 
       <button
-        class="button-md button-success"
+        class="button is-medium is-success"
         @click.prevent="add">
         {{ $t('services.ADD_DOMAIN') }}
       </button>
@@ -47,7 +47,7 @@
           </div>
           <button
             :disabled="!enabled"
-            class="button-sm button-bordered button-danger"
+            class="is-small is-outlined button is-danger"
             @click.prevent="remove">
             {{ $t('misc.REMOVE') }}
           </button>

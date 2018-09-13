@@ -55,9 +55,9 @@
           </div>
 
           <button
-            :class="{ 'button-loading': formLoading }"
+            :class="{ 'is-loading': formLoading }"
             :disabled="formLoading"
-            class="button-info button-md max-width"
+            class="button is-info is-medium max-width"
             @click.prevent="submit"
             @keyup.enter="submit">
             {{ formLoading ? $t('misc.LOADING') : ( (isEasy) ? $t('reset.SET_BUTTON') : $t('reset.CHANGE_BUTTON') ) }}

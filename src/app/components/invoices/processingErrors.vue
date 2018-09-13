@@ -2,7 +2,7 @@
   <div>
     <template v-if="status !== 400">
       <button
-        class="button-danger"
+        class="button is-danger"
         @click="fix">{{ $t('orders.FIX') }}</button>
       <button
         class="button"

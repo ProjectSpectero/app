@@ -17,7 +17,7 @@
           <div class="ips items-centered">
             <copy-to-clipboard
               :field="field.accessReference"
-              button-class="button-sm"/>
+              button-class="is-small"/>
           </div>
         </div>
 
@@ -33,11 +33,11 @@
             readonly/>
           <copy-to-clipboard
             :field="field.accessConfig"
-            button-class="button-sm"/>
+            button-class="is-small"/>
           <download
             :content="field.accessConfig"
             :file="generateFileName(field.nodeId || null)"
-            button-class="button-sm"/>
+            button-class="is-small"/>
         </div>
 
         <div v-if="field.accessCredentials">

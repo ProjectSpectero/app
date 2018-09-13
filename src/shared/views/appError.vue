@@ -24,7 +24,7 @@
 
     <router-link
       :to="{ name: 'dashboard' }"
-      class="button-info">{{ $t('misc.GO_TO_DASHBOARD') }}</router-link>
+      class="button is-info">{{ $t('misc.GO_TO_DASHBOARD') }}</router-link>
   </div>
 </template>
 

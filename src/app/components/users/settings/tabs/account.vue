@@ -167,10 +167,10 @@
 
           <button
             v-if="showEmailForm || showPasswordForm"
-            :class="{ 'button-loading': formLoading }"
+            :class="{ 'is-loading': formLoading }"
             :disabled="formLoading"
             type="submit"
-            class="button-info button-md max-width">
+            class="button is-info is-medium max-width">
             Save Changes
           </button>
         </form>

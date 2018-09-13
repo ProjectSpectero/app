@@ -10,7 +10,7 @@
               {{ $t('misc.USERS') }}
             </h2>
             <button
-              class="button-md button-success"
+              class="button is-medium is-success"
               @click.prevent="add">
               Add User
             </button>

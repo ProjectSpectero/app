@@ -33,7 +33,7 @@
       <div class="actions">
         <router-link
           :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }"
-          class="button-info"
+          class="button is-info"
           @click.native="$emit('close')">
           {{ $t('misc.VIEW_FULL_DETAILS') }}
         </router-link>
@@ -96,7 +96,7 @@
             </div>
             <div>
               <button
-                class="button-success"
+                class="button is-success"
                 @click.stop="showChangeTerm ? modifyTerm() : add()">
                 <span class="icon-shopping-cart"/> {{ showChangeTerm ? $t('market.CHANGE_TERM') : $t('misc.ADD_TO_CART') }}
               </button>
@@ -138,7 +138,7 @@
                 </button>
                 <router-link
                   :to="{ name: 'cart' }"
-                  class="button-success"
+                  class="button is-success"
                   @click.native="$emit('close')">
                   <span class="icon-check-circle"/> {{ $t('misc.CHECKOUT') }}
                 </router-link>

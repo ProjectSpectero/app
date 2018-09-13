@@ -10,6 +10,6 @@
 
     <router-link
       :to="{ name: 'nodes' }"
-      class="button-info">{{ $t('misc.GO_TO_NODES_LIST') }}</router-link>
+      class="button is-info">{{ $t('misc.GO_TO_NODES_LIST') }}</router-link>
   </div>
 </template>

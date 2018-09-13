@@ -3,7 +3,7 @@
     v-clipboard:copy="field"
     v-clipboard:success="copyToClipboard"
     :class="buttonClass"
-    class="button-bordered button-info">
+    class="is-outlined button is-info">
     <span class="icon-copy"/> {{ $t('misc.COPY_TO_CLIPBOARD') }}
   </button>
 </template>

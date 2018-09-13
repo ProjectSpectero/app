@@ -23,13 +23,13 @@
               <router-link
                 v-if="row.status === 'UNPAID'"
                 :to="{ name: 'checkout', params: { id: row.id } }"
-                class="button-success">
+                class="button is-success">
                 {{ $t('misc.PAY_NOW') }}
               </router-link>
 
               <router-link
                 :to="{ name: 'invoice', params: { id: row.id } }"
-                class="button-info">
+                class="button is-info">
                 {{ $t('misc.VIEW') }}
               </router-link>
             </td>

@@ -10,7 +10,7 @@
       <p class="spaced">{{ $t('nodes.DELETE_ENGAGEMENT_CONFIRM_DIALOG') }}</p>
       <div>
         <button
-          :class="{'button-loading': loading, 'button-danger': !loading}"
+          :class="{'is-loading': loading, 'button is-danger': !loading}"
           :disabled="loading"
           class="button"
           @click="cancel()">

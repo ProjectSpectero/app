@@ -7,8 +7,8 @@
         {{ $t('market.BACK') }}
       </router-link>
       <button
-        :class="{ 'button-bordered': existsInCart(item.id) }"
-        class="button-success"
+        :class="{ 'is-outlined': existsInCart(item.id) }"
+        class="button is-success"
         @click.stop="showModal(item)">
         <template v-if="existsInCart(item.id)">
           <span class="icon-check-circle"/> {{ $t('misc.IN_CART') }}

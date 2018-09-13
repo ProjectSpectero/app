@@ -1,7 +1,7 @@
 <template>
   <dropdown>
     <template slot="btn">
-      <button class="button-sort">{{ buttonText ? buttonText : 'Sort By' }}</button>
+      <button class="button">{{ buttonText ? buttonText : 'Sort By' }}</button>
     </template>
     <template slot="body">
       <div class="dropdown-filters">
@@ -25,7 +25,7 @@
           </ul>
         </div>
         <button
-          class="button-info full-width"
+          class="button is-info full-width"
           @click="applyFilters()">Apply Filters</button>
       </div>
     </template>

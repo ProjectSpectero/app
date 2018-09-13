@@ -8,7 +8,7 @@
           <router-link
             v-if="!loading && order.status === 'ACTIVE'"
             :to="{ name: 'orderResources', params: { id: order.id } }"
-            class="button-info">
+            class="button is-info">
             <span class="icon-package"/> {{ $t('orders.VIEW_RESOURCES') }}
           </router-link>
 
@@ -156,7 +156,7 @@
                 <div class="invoice-links">
                   <router-link
                     :to="{ name: 'invoice', params: { id: invoice.id } }"
-                    class="button-info mb-1">View Invoice</router-link>
+                    class="button is-info mb-1">View Invoice</router-link>
 
                   <router-link
                     :to="{ name: 'orderInvoices', params: { id: order.id } }"

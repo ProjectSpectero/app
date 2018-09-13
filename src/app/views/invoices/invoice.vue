@@ -6,7 +6,7 @@
           <router-link
             v-if="!isCreditInvoice"
             :to="{ name: 'order', params: { id: invoice.order_id } }"
-            class="button-info">
+            class="button is-info">
             {{ $t('misc.VIEW') }} {{ $t('misc.ORDER') }}
           </router-link>
 
@@ -15,7 +15,7 @@
             <router-link
               v-if="isUnpaid && isPayable"
               :to="{ name: 'checkout', params: { id: invoice.id } }"
-              class="button-success">
+              class="button is-success">
               <span class="icon-dollar-sign"/>{{ $t('misc.PAY_NOW') }}
             </router-link>
           </template>

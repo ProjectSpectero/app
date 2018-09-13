@@ -11,13 +11,13 @@
         v-if="selectedGroupInformation.id !== 0"
         class="actions">
         <button
-          class="button-sm button-danger button-icon"
+          class="button is-small is-danger"
           @click.stop="removeGroup">
           <span class="icon-trash-2"/>
         </button>
 
         <button
-          class="button-sm"
+          class="is-small"
           @click.stop="editGroup">
           {{ $t('nodes.EDIT_GROUP') }}
         </button>
@@ -66,7 +66,7 @@
             <td class="table-actions">
               <button
                 v-if="row.status === 'UNCONFIRMED' && row.status !== 'PENDING_VERIFICATION'"
-                class="button-success button-sm"
+                class="button is-success is-small"
                 @click.stop="verifyNode($event, row)">
                 <span class="icon-check"/> {{ $t('misc.VERIFY') }}
               </button>
@@ -74,19 +74,19 @@
               <router-link
                 v-if="row.status === 'CONFIRMED'"
                 :to="{ name: 'daemon', params: { nodeId: row.id } }"
-                class="button-sm button-info">
+                class="button is-small is-info">
                 <span class="icon-sliders"/> Manage
               </router-link>
 
               <button
-                class="button-icon"
+                class="button"
                 @click.stop="removeNode(row.id)">
                 <span class="icon-trash-2"/>
               </button>
 
               <router-link
                 :to="{ name: 'node', params: { action: 'edit', id: row.id } }"
-                class="button-icon">
+                class="button">
                 <span class="icon-edit-2"/>
               </router-link>
             </td>
@@ -101,7 +101,7 @@
       <h1>{{ $t('nodes.NO_NODES_TITLE') }}</h1>
       <p>{{ $t( (groups && groups.length) ? 'nodes.NO_NODES_TEXT' : 'nodes.NO_NODES_TEXT_ACCOUNT') }}</p>
       <button
-        class="button-success"
+        class="button is-success"
         @click.prevent="showAddNodeModal()">
         <span class="icon-plus"/>{{ $t('nodes.ADD_NODE') }}
       </button>
@@ -193,8 +193,8 @@ export default {
     verifyNode ($event, node) {
       let button = $event.currentTarget
       button.disabled = true
-      button.classList.toggle('button-loading')
-      button.classList.toggle('button-success')
+      button.classList.toggle('is-loading')
+      button.classList.toggle('button is-success')
 
       nodeAPI.verify({
         data: {
@@ -208,8 +208,8 @@ export default {
         fail: error => {
           this.$toasted.error(this.errorAPI(error, 'nodes'))
           button.disabled = false
-          button.classList.toggle('button-loading')
-          button.classList.toggle('button-success')
+          button.classList.toggle('is-loading')
+          button.classList.toggle('button is-success')
         },
         overrideErrors: true
       })

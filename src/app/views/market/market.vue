@@ -40,7 +40,7 @@
             <div class="actions">
               <router-link
                 :to="{ name: 'cart' }"
-                class="button-info">
+                class="button is-info">
                 {{ $t('misc.CHECKOUT') }}
               </router-link>
             </div>
@@ -92,14 +92,14 @@
                     <template v-if="route === 'marketMine'">
                       <router-link
                         :to="{ name: 'node', params: { action: 'edit', id: item.id } }"
-                        class="button-sm">
+                        class="is-small">
                         {{ $t('misc.EDIT') }}
                       </router-link>
                     </template>
                     <template v-else>
                       <button
-                        :class="{ 'button-bordered': existsInCart(item.id) }"
-                        class="button-sm button-success"
+                        :class="{ 'is-outlined': existsInCart(item.id) }"
+                        class="button is-small is-success"
                         @click.stop="showModal(item)">
                         <template v-if="existsInCart(item.id)">
                           <span class="icon-check-circle"/> {{ $t('misc.IN_CART') }}
@@ -112,7 +112,7 @@
                       <router-link
                         v-if="item.type"
                         :to="{ name: 'marketView', params: { type: ((item.type.toLowerCase() === 'node') ? 'node' : 'group'), id: item.id } }"
-                        class="button-sm">
+                        class="is-small">
                         {{ $t('misc.VIEW') }}
                       </router-link>
                     </template>
@@ -133,7 +133,7 @@
               <h1>{{ $t('market.NO_LISTINGS_SELF_TITLE') }}</h1>
               <p>{{ $t('market.NO_LISTINGS_SELF_TEXT') }}</p>
               <button
-                class="button-success"
+                class="button is-success"
                 @click.prevent="showAddNodeModal()">
                 <span class="icon-plus"/>{{ $t('nodes.ADD_NODE') }}
               </button>

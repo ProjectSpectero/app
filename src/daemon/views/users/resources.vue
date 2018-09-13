@@ -31,7 +31,7 @@
                 <copy-to-clipboard
                   :field="formatAccessReferences(service.accessReference)"
                   :service="service.accessReference"
-                  button-class="button-sm"/>
+                  button-class="is-small"/>
               </div>
             </div>
 
@@ -50,11 +50,11 @@
               <copy-to-clipboard
                 :field="key + '-' + service.accessConfig"
                 :service="service.accessConfig"
-                button-class="button-sm"/>
+                button-class="is-small"/>
               <download
                 :content="service.accessConfig"
                 :file="configFileName"
-                button-class="button-sm"/>
+                button-class="is-small"/>
             </div>
 
             <div

@@ -76,7 +76,7 @@
               <div class="add col-12 mb-4">
                 <h2>Listeners</h2>
                 <button
-                  class="button-md button-success"
+                  class="button is-medium is-success"
                   @click.prevent.stop="addItem">
                   Add Listener
                 </button>
@@ -89,7 +89,7 @@
                 <div class="add mb-5">
                   <h3>{{ $t('misc.LISTENER') + ' #' + (i+1) }}</h3>
                   <button
-                    class="button-sm button-icon"
+                    class="button is-small"
                     @click.prevent.stop="removeItem(i)">
                     <span class="icon-x"/>
                   </button>
@@ -207,7 +207,7 @@
           <button
             :disabled="formDisable"
             type="submit"
-            class="button-info"
+            class="button is-info"
             @click.prevent="update">
             {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
           </button>

@@ -6,7 +6,7 @@
       <p>{{ $t('errors.ERROR_404_ITEM_TEXT', { item: item }) }}</p>
       <router-link
         :to="{ name: 'dashboard' }"
-        class="button-info">{{ $t('misc.GO_TO_DASHBOARD') }}</router-link>
+        class="button is-info">{{ $t('misc.GO_TO_DASHBOARD') }}</router-link>
     </slot>
   </div>
 </template>

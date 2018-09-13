@@ -28,9 +28,9 @@
       </div>
 
       <button
-        :class="{ 'button-loading': formLoading }"
+        :class="{ 'is-loading': formLoading }"
         :disabled="formLoading"
-        class="button-info max-width">
+        class="button is-info max-width">
         {{ formLoading ? $t('misc.CONTINUE') : $t('misc.SAVE') }}
       </button>
     </form>

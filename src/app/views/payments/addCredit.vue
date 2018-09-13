@@ -32,9 +32,9 @@
               output-type="Number" />
           </div>
           <button
-            :class="{ 'button-loading': formLoading }"
+            :class="{ 'is-loading': formLoading }"
             :disabled="formLoading"
-            class="button-md button-success button-full"
+            class="button is-medium is-success is-fullwidth"
             @click="add(amount)">
             {{ $t('misc.PURCHASE') }}
           </button>
@@ -46,7 +46,7 @@
 
           <router-link
             :to="{ name: 'settings', params: { tab: 'payment' } }"
-            class="button button-md button-full">
+            class="button is-medium is-fullwidth">
             {{ $t('misc.RETURN_TO_SETTINGS') }}
           </router-link>
         </template>

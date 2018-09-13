@@ -22,8 +22,8 @@
       <div class="mt-3">
         <button
           :disabled="loading"
-          :class="{'button-loading': loading}"
-          class="button-lg button-success button-pay"
+          :class="{'is-loading': loading}"
+          class="button is-medium is-success button-pay"
           @click.stop="pay"
           v-html="$t(`payments.METHODS.${lang}.PAY_BUTTON`)"/>
       </div>

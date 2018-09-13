@@ -6,7 +6,7 @@
     </div>
     <div class="actions">
       <button
-        class="button-dark"
+        class="button is-dark"
         @click.stop.prevent="restart">Restart {{ service }} Now</button>
     </div>
   </div>

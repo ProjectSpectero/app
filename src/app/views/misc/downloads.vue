@@ -25,7 +25,7 @@
             <p>Download the latest release of the Spectero Daemon and its CLI, then run it.</p>
             <a
               :href="downloadLinks[osTab]"
-              class="button-info"
+              class="button is-info"
               target="_blank"><span class="icon-download"/> Download Now</a>
           </template>
           <template v-else>
@@ -73,7 +73,7 @@
           <a
             target="_blank"
             href="https://github.com/ProjectSpectero/"
-            class="button-dark">
+            class="button is-dark">
             <span class="icon-github" /> GitHub Repository
           </a>
 

@@ -17,7 +17,7 @@
           v-html="errors.first('network')"/>
       </div>
       <button
-        class="button-md button-success"
+        class="button is-medium is-success"
         @click.prevent="add(network)">
         Add Network
       </button>
@@ -41,7 +41,7 @@
             <strong>{{ item }}</strong>
           </div>
           <button
-            class="button-sm button-icon"
+            class="button is-small"
             @click.prevent="remove(i)">
             <span class="icon-x"/>
           </button>

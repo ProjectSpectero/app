@@ -19,14 +19,14 @@
           </div>
           <copy-to-clipboard
             :field="nodeKey"
-            button-class="button-sm"/>
+            button-class="is-small"/>
         </div>
         <h3>Generate New Key</h3>
         <p>Use the button below to generate a new node key. Your old key will become invalid if you do this.</p><br>
         <button
-          :class="{ 'button-loading': formLoading }"
+          :class="{ 'is-loading': formLoading }"
           :disabled="formLoading"
-          class="button-warning"
+          class="button is-warning"
           @click.prevent.stop="regenerateNodeKey">Regenerate Node Key</button>
       </div>
     </div>

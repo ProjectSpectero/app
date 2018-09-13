@@ -82,8 +82,8 @@
 
       <button
         :disabled="loading"
-        :class="{'button-loading': loading}"
-        class="button-lg button-success button-pay"
+        :class="{'is-loading': loading}"
+        class="button is-medium is-success button-pay"
         @click.stop="pay">
         {{ $t('payments.BUTTON_PAY_NOW') }}
       </button>

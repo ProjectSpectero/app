@@ -40,7 +40,7 @@
       </div>
 
       <button
-        class="button-md button-success"
+        class="button is-medium is-success"
         @click.prevent="add">
         {{ $t('services.ADD_LISTENER') }}
       </button>
@@ -57,7 +57,7 @@
             <strong>{{ listener.item1 }}</strong>:{{ listener.item2 }}
           </div>
           <button
-            class="button-sm button-icon"
+            class="button is-small"
             @click.prevent="remove(index)">
             <span class="icon-x"/>
           </button>

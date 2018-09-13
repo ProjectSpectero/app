@@ -27,7 +27,7 @@
           v-html="errors.first('dhcp_item2')"/>
       </div>
       <button
-        class="button-md button-success"
+        class="button is-medium is-success"
         @click.prevent="add">
         Add DHCP Item
       </button>
@@ -44,7 +44,7 @@
             <strong>{{ listener.item1 }}</strong>{{ (listener.item2) ? ` - ${listener.item2}` : `` }}
           </div>
           <button
-            class="button-sm button-icon"
+            class="button is-small"
             @click.prevent="remove(i)">
             <span class="icon-x"/>
           </button>

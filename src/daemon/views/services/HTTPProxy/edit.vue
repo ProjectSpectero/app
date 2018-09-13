@@ -74,7 +74,7 @@
           <button
             :disabled="formDisable"
             type="submit"
-            class="button-info"
+            class="button is-info"
             @click.prevent="update">
             {{ formDisable ? 'Please wait...' : 'Update Configuration' }}
           </button>

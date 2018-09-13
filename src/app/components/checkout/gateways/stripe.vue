@@ -22,8 +22,8 @@
             @click="toggleSavedCard">{{ $t('payments.BUTTON_USE_SAVED_CARD_NO') }}</button>
           <button
             :disabled="loading"
-            :class="{'button-loading': loading}"
-            class="button-info"
+            :class="{'is-loading': loading}"
+            class="button is-info"
             @click.stop="payUsingSavedCard">{{ $t('payments.BUTTON_USE_SAVED_CARD_YES') }}</button>
         </div>
       </div>

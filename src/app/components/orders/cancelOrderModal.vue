@@ -22,7 +22,7 @@
         <p class="spaced">{{ $t('orders.DELETE_ORDER_CONFIRM_DIALOG') }}</p>
         <div>
           <button
-            :class="{'button-loading': loading, 'button-danger': !loading}"
+            :class="{'is-loading': loading, 'button is-danger': !loading}"
             :disabled="loading"
             class="button"
             @click="cancel">

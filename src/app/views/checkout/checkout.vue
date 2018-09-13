@@ -10,7 +10,7 @@
             <router-link
               v-if="!isCreditInvoice"
               :to="{ name: 'order', params: { id: invoice.order_id } }"
-              class="button-info">
+              class="button is-info">
               {{ $t('misc.VIEW') }} {{ $t('misc.ORDER') }}
             </router-link>
             <router-link

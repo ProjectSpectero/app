@@ -135,9 +135,9 @@
                   </div>
                   <div>
                     <button
-                      :class="{ 'button-loading': formLoading }"
+                      :class="{ 'is-loading': formLoading }"
                       :disabled="formLoading"
-                      class="button-info button-md"
+                      class="button is-info is-medium"
                       @click.prevent="submit"
                       @keyup.enter="submit">
                       <span class="icon-check"/> {{ $i18n.t('misc.CONTINUE') }}

@@ -9,7 +9,7 @@
         </router-link>
 
         <button
-          class="button-success"
+          class="button is-success"
           @click.prevent="showAddNodeModal()">
           <span class="icon-plus"/>{{ $t('nodes.ADD_NODE') }}
         </button>

@@ -11,7 +11,7 @@
       <p class="spaced">After you install and activate Spectero CLI with your node key (provided on the download instructions page) your node will appear on this page.</p>
       <div>
         <button
-          class="button-info"
+          class="button is-info"
           @click.prevent="openDownloads()">
           Download Instructions
         </button>

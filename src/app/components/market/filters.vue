@@ -141,8 +141,8 @@
 
     <input
       :disabled="!buttonEnabled"
-      :class="{ 'button-success': buttonEnabled }"
-      class="button-md max-width buttonFilterSubmit"
+      :class="{ 'is-success': buttonEnabled }"
+      class="button is-medium max-width buttonFilterSubmit"
       type="submit"
       value="Apply Filters">
   </form>

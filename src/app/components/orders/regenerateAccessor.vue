@@ -16,7 +16,7 @@
       <div class="action-buttons">
         <button
           :disabled="processing"
-          class="button-info"
+          class="button is-info"
           @click="process()">{{ $t('orders.REGENERATE_ACCESSOR') }}</button>
         <button
           class="button right"

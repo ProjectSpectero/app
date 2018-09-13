@@ -25,7 +25,7 @@
           :button-text="'Download Proxy List'"
           :content="ipListFormatted"
           :file="`spectero-resource-${item.resource}-ips`"
-          button-class="button-sm button-info"/>
+          button-class="button is-small is-info"/>
       </div>
     </div>
 

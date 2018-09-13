@@ -15,7 +15,7 @@
         </div>
         <div class="cc-button col">
           <button
-            class="button-danger button-icon"
+            class="button is-danger"
             @click.prevent.stop="clearStripe"><span class="icon-x"/></button>
         </div>
       </div>

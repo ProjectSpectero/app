@@ -9,10 +9,10 @@
         type="text"
         class="input">
       <button
-        :class="{ 'button-success': promoCode !== '', 'button-loading': pending }"
+        :class="{ 'is-success': promoCode !== '', 'is-loading': pending }"
         :disabled="promoCode === '' || pending"
         type="submit"
-        class="button-md">
+        class="button is-medium">
         {{ (pending) ? $t('misc.PLEASE_WAIT') : $t('payments.PROMO.APPLY_PROMO_CODE_BUTTON') }}
       </button>
     </form>

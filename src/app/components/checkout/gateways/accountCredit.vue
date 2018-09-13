@@ -17,7 +17,7 @@
         <h3>Partial Payment Complete</h3>
         <p class="mb-3">Thank you for your partial payment. Please click the button below to pay the remaining <strong>{{ $filters.currency(outstanding) }}</strong> balance on this invoice.</p>
         <button
-          class="button-info"
+          class="button is-info"
           @click.prevent="$router.go($router.currentRoute)">
           Complete Payment
         </button>
@@ -42,8 +42,8 @@
         <div class="mt-3">
           <button
             :disabled="loading"
-            :class="{'button-loading': loading}"
-            class="button-lg button-success button-pay"
+            :class="{'is-loading': loading}"
+            class="button is-medium is-success button-pay"
             @click.stop="pay"
             v-html="$t(`payments.METHODS.${lang}.PAY_BUTTON`)"/>
         </div>

@@ -78,7 +78,7 @@
           <div>
             <button
               :disabled="formDisable"
-              class="button-info"
+              class="button is-info"
               @click.prevent="submit"
               @keyup.enter="submit">
               {{ formDisable ? 'Please wait...' : title }}

@@ -25,14 +25,14 @@
                 <router-link
                   v-if="row.status !== 'CANCELLED' && row.last_invoice && row.last_invoice.status === 'UNPAID'"
                   :to="{ name: 'checkout', params: { id: row.last_invoice.id } }"
-                  class="button-success">
+                  class="button is-success">
                   {{ $t('misc.PAY_NOW') }}
                 </router-link>
               </template>
 
               <router-link
                 :to="{ name: 'order', params: { id: row.id } }"
-                class="button-info">
+                class="button is-info">
                 {{ $t('misc.VIEW') }}
               </router-link>
             </td>

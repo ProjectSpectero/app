@@ -6,7 +6,7 @@
     <p>{{ $t('welcome.TEXT_BODY') }}</p>
     <router-link
       :to="{ name: 'login' }"
-      class="button-info">{{ $t('welcome.BACK_TO_LOGIN') }}</router-link>
+      class="button is-info">{{ $t('welcome.BACK_TO_LOGIN') }}</router-link>
   </div>
 </template>
 

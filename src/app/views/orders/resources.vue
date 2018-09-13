@@ -48,7 +48,7 @@
                   </div>
                   <button
                     v-if="!isEnterpriseOrder"
-                    class="button-warning"
+                    class="button is-warning"
                     @click.stop="showRegenerateAccessorModal(orderId)">{{ $t('orders.REGENERATE_ACCESSOR') }}</button>
                 </div>
 

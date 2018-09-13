@@ -1,7 +1,7 @@
 <template>
   <button
     :class="buttonClass"
-    class="button-bordered button-info"
+    class="is-outlined button is-info"
     @click="downloadFile">
     <span class="icon-download"/> {{ buttonText }}
   </button>

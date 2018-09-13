@@ -4,7 +4,7 @@
       <top :title="$t('orders.INVOICES_FOR_ORDER', { id: $route.params.id })">
         <router-link
           :to="{ name: 'order', params: { id: $route.params.id } }"
-          class="button button-info">
+          class="button button is-info">
           {{ $t('orders.BACK_TO_ORDER') }}
         </router-link>
       </top>

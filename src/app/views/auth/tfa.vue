@@ -24,9 +24,9 @@
       </div>
 
       <button
-        :class="{ 'button-loading': formLoading }"
+        :class="{ 'is-loading': formLoading }"
         :disabled="formLoading"
-        class="button-info max-width"
+        class="button is-info max-width"
         @click.prevent="submit"
         @keyup.enter="submit">
         {{ formLoading ? $t('misc.LOADING') : $t('misc.CONTINUE') }}

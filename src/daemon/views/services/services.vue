@@ -24,21 +24,21 @@
               <div class="actions">
                 <router-link
                   :to="{ name: 'daemon-service-' + service }"
-                  class="button-info">
+                  class="button is-info">
                   <span class="icon-sliders"/> {{ $t('misc.CONFIGURE') }}
                 </router-link>
 
                 <div class="right">
                   <button
                     :disabled="status === 'Running'"
-                    :class="{ 'button-success': status !== 'Running' }"
+                    :class="{ 'is-success': status !== 'Running' }"
                     class="button"
                     @click="start(service)">
                     <span class="icon-play"/> {{ $t('misc.START') }}
                   </button>
                   <button
                     :disabled="status !== 'Running'"
-                    :class="{ 'button-danger': status === 'Running' }"
+                    :class="{ 'is-danger': status === 'Running' }"
                     class="button"
                     @click="stop(service)">
                     <span class="icon-x-circle"/> {{ $t('misc.STOP') }}

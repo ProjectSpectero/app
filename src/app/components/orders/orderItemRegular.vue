@@ -20,15 +20,15 @@
       <div class="actions">
         <button
           v-if="!item.error"
-          :class="{'button-danger': order.status === 'ACTIVE' && item.status === 'ACTIVE'}"
+          :class="{'is-danger': order.status === 'ACTIVE' && item.status === 'ACTIVE'}"
           :disabled="(order.status !== 'ACTIVE' || item.status !== 'ACTIVE') && !(item.status !== 'ACTIVE' && item.error)"
-          class="button-sm"
+          class="button is-small"
           @click.stop="cancel()">
           <span class="icon-x-circle"/> Cancel Resource
         </button>
         <router-link
           :to="{ name: 'marketView', params: { id: item.resource, type: (item.type === 'NODE_GROUP' || item.type == 'MANAGED') ? 'group' : 'node' } }"
-          class="button-sm button-info">
+          class="button is-small is-info">
           <span class="icon-book-open"/> {{ $t('orders.VIEW_ON_MARKETPLACE') }}
         </router-link>
       </div>
