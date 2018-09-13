@@ -4,7 +4,9 @@
     <form id="form-register">
       <div
         v-if="formError"
-        class="message message-error">{{ formError }}</div>
+        class="message is-danger">
+        <div class="message-body">{{ formError }}</div>
+      </div>
 
       <div class="form-input">
         <input

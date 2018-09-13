@@ -5,7 +5,9 @@
     <div v-if="displaySavedCard">
       <div
         v-if="formError"
-        class="message message-error">{{ formError }}</div>
+        class="message is-danger">
+        <div class="message-body">{{ formError }}</div>
+      </div>
 
       <p
         class="description"

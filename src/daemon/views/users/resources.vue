@@ -67,13 +67,13 @@
                 <div
                   v-if="service.accessCredentials === 'SPECTERO_USERNAME_PASSWORD'"
                   class="message">
-                  Please create a local user and use the specified credentials to log in.
+                  <div class="message-body">Please create a local user and use the specified credentials to log in.</div>
                 </div>
                 <div v-else-if="key === 'OpenVPN'">
                   {{ service.accessCredentials }}
 
                   <div class="message mt-3">
-                    This is this local user's certificate encryption password.
+                    <div class="message-body">This is this local user's certificate encryption password.</div>
                   </div>
                 </div>
                 <div
@@ -85,7 +85,7 @@
               <div
                 v-else
                 class="message">
-                Please use your local user's credentials to log in.
+                <div class="message-body">Please use your local user's credentials to log in.</div>
               </div>
             </div>
           </div>

@@ -7,13 +7,17 @@
         <p class="credit-current">Balance: {{ user.credit | currency }} {{ currency }}</p>
 
         <template v-if="remaining > 0">
-          <div
-            class="message"
-            v-html="$t('payments.ADD_CREDIT_MAX_WARNING', { remaining: remaining, max: max, currency: currency })"/>
+          <div class="message">
+            <div
+              class="message-body"
+              v-html="$t('payments.ADD_CREDIT_MAX_WARNING', { remaining: remaining, max: max, currency: currency })"/>
+          </div>
 
           <div
             v-if="formError"
-            class="message message-error">{{ formError }}</div>
+            class="message is-danger">
+            <div class="message-body">{{ formError }}</div>
+          </div>
 
           <div class="form-input">
             <div class="label">
@@ -40,9 +44,11 @@
           </button>
         </template>
         <template v-else>
-          <div
-            class="message message-error"
-            v-html="$t('payments.CREDIT_LIMIT_EXCEEDED')"/>
+          <div class="message is-danger">
+            <div
+              class="message-body"
+              v-html="$t('payments.CREDIT_LIMIT_EXCEEDED')"/>
+            </div>
 
           <router-link
             :to="{ name: 'settings', params: { tab: 'payment' } }"

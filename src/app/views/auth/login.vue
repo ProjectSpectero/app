@@ -4,13 +4,15 @@
     <form id="form-login">
       <div
         v-if="!formError && this.$route.query.redirect"
-        class="message message-info">
-        {{ $t('users.PLEASE_LOGIN') }}
+        class="message is-info">
+        <div class="message-body">{{ $t('users.PLEASE_LOGIN') }}</div>
       </div>
 
       <div
         v-if="formError"
-        class="message message-error">{{ formError }}</div>
+        class="message is-danger">
+        <div class="message-body">{{ formError }}</div>
+      </div>
 
       <div class="form-input">
         <input

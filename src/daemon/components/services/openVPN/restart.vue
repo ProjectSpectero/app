@@ -1,13 +1,15 @@
 <template>
-  <div class="message message-warning message-top">
-    <div>
-      <h5>Action Required</h5>
-      <p>One or more operations require that you restart the {{ service }} service.</p>
-    </div>
-    <div class="actions">
-      <button
-        class="button is-dark"
-        @click.stop.prevent="restart">Restart {{ service }} Now</button>
+  <div class="message is-warning message-top">
+    <div class="message-body">
+      <div>
+        <h5>Action Required</h5>
+        <p>One or more operations require that you restart the {{ service }} service.</p>
+      </div>
+      <div class="actions">
+        <button
+          class="button is-dark"
+          @click.stop.prevent="restart">Restart {{ service }} Now</button>
+      </div>
     </div>
   </div>
 </template>

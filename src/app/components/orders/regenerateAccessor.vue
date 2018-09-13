@@ -9,10 +9,14 @@
     <div class="modal-content">
       <div
         v-if="!failed"
-        class="message message-warning">{{ $t('orders.REGENERATE_ACCESSOR_WARNING') }}</div>
+        class="message is-warning">
+        <div class="message-body">{{ $t('orders.REGENERATE_ACCESSOR_WARNING') }}</div>
+      </div>
       <div
         v-else
-        class="message message-error">{{ $t('orders.REGENERATE_ACCESSOR_ERROR') }}</div>
+        class="message is-danger">
+        <div class="message-body">{{ $t('orders.REGENERATE_ACCESSOR_ERROR') }}</div>
+      </div>
       <div class="action-buttons">
         <button
           :disabled="processing"

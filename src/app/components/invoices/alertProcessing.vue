@@ -1,6 +1,6 @@
 <template>
-  <div class="message message-danger processing">
-    <div>
+  <div class="message is-danger processing">
+    <div class="message-body">
       <h5>{{ $t('invoices.RESOURCES_NOT_AVAILABLE') }}</h5>
       <p>{{ $t('invoices.RESOURCES_NOT_AVAILABLE_TEXT') }}</p>
       <p>{{ $t('invoices.FIX_ORDER_TEXT') }}</p>

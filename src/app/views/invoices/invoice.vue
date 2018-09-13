@@ -26,7 +26,7 @@
               <div
                 v-if="'unpayable' in this.$route.query"
                 class="message">
-                <div>
+                <div class="message-body">
                   <h5>Checkout unavailable</h5>
                   <p>We're sorry, checkout is currently unavailable for this invoice. Please check for any errors below or contact our support team if this persists.</p>
                 </div>
@@ -52,9 +52,9 @@
               <div class="invoice">
                 <div
                   v-if="['PAID', 'CANCELLED', 'REFUNDED', 'PARTIALLY_REFUNDED'].indexOf(invoice.status) > -1"
-                  :class="{ 'message-success': invoice.status === 'PAID' }"
+                  :class="{ 'is-success': invoice.status === 'PAID' }"
                   class="message-status message">
-                  <div>
+                  <div class="message-body">
                     <h5>{{ $t('invoices.STATUS.' + invoice.status + '.TITLE') }}</h5>
                     <p>{{ $t('invoices.STATUS.' + invoice.status + '.TEXT') }}</p>
                   </div>
@@ -62,7 +62,7 @@
                 <div
                   v-else-if="isCreditInvoice"
                   class="message-status message">
-                  <div>
+                  <div class="message-body">
                     <h5 v-html="$t('invoices.CANCEL_CREDIT_INVOICE')"/>
                     <p v-html="$t('invoices.CANCEL_CREDIT_INVOICE_DAYS', { cancelDays: creditInvoiceCancelDays })"/>
                   </div>

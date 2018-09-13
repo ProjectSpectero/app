@@ -4,11 +4,11 @@
 
     <div
       v-if="formError"
-      class="message message-error">{{ formError }}</div>
+      class="message is-danger">{{ formError }}</div>
 
     <div
       v-else-if="form.continueCcPayment || needsBillingUpdate"
-      class="message message-info mb-4"
+      class="message is-info mb-4"
       v-html="$t('invoices.BILLING_ADDRESS_CONTINUE_PAYMENT')"/>
 
     <div class="form-input">

@@ -1,6 +1,6 @@
 <template>
-  <div class="message message-warning unpayable">
-    <div>
+  <div class="message is-warning unpayable">
+    <div class="message-body">
       <h5>{{ $t('invoices.UNPAYABLE') }}</h5>
       <p>{{ $t('invoices.UNPAYABLE_TEXT') }}</p>
     </div>

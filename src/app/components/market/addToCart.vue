@@ -11,14 +11,19 @@
 
       <div
         v-if="item.plan"
-        class="message message-success">
-        <p v-html="$t(`market.PLAN_PURCHASE_MSG`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })"/>
+        class="message is-success">
+        <div class="message-body">
+          <p v-html="$t(`market.PLAN_PURCHASE_MSG`, { planName: 'Spectero Pro', planUrl: 'https://spectero.com/pro' })"/>
+        </div>
       </div>
 
       <div
         v-if="item.type === 'NODE_GROUP'"
-        class="message message-info message-group-warning"
-        v-html="$t(`market.ITEM_IS_GROUP_WARNING`, { count: item.nodes.length })"/>
+        class="message is-info message-group-warning">
+        <div
+          class="message-body"
+          v-html="$t(`market.ITEM_IS_GROUP_WARNING`, { count: item.nodes.length })"/>
+      </div>
 
       <ul class="details">
         <li v-if="item.type === 'NODE_GROUP'">
@@ -41,9 +46,9 @@
 
       <div class="cart">
         <div v-if="!inCart && (cartLocked || (item.plan && cartItemCount !== 0))">
-          <div class="message no-icon">
+          <div class="message">
             <span class="icon-alert-circle"/>
-            <div>
+            <div class="message-body">
               <h5>{{ $t('market.CANT_ADD_TO_CART_TITLE') }}</h5>
               <p>{{ $t( (cartLocked) ? 'market.CANT_ADD_TO_CART_MSG_LOCKED' : 'market.CANT_ADD_TO_CART_MSG' ) }}</p>
               <p>{{ $t('market.CHECKOUT_CURRENT_CART') }}</p>

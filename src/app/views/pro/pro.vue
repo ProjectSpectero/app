@@ -40,7 +40,9 @@
             <form v-else>
               <div
                 v-if="formError"
-                class="message message-error">{{ formError }}</div>
+                class="message is-danger">
+                <div class="message-body">{{ formError }}</div>
+              </div>
 
               <template v-if="planFetched">
                 <div class="step section padded select-plan">

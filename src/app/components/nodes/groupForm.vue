@@ -4,7 +4,7 @@
       <div class="col">
         <div
           v-if="formError"
-          class="message message-error">{{ formError }}</div>
+          class="message is-danger">{{ formError }}</div>
 
         <div>
           <div class="form-input">

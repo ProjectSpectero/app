@@ -3,14 +3,16 @@
     <h1>{{ $t('misc.RESET_PASSWORD') }}</h1>
     <form>
       <template v-if="tokenIssued">
-        <div class="message message-success">
-          {{ $t('reset.TOKEN_ISSUED', { email: email }) }}
+        <div class="message is-success">
+          <div class="message-body">{{ $t('reset.TOKEN_ISSUED', { email: email }) }}</div>
         </div>
       </template>
       <template v-else>
         <div
           v-if="formError"
-          class="message message-error">{{ formError }}</div>
+          class="message is-danger">
+          <div class="message-body">{{ formError }}</div>
+        </div>
 
         <div class="form-input">
           <input

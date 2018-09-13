@@ -1,15 +1,15 @@
 .message {
-  display: flex;
-  align-items: center;
-  position: relative;
-  padding: 14px 16px;
-  color: rgba(0,0,0,0.8);
-  background-color: #E9E9E9;
-  font-size: 100%;
-  line-height: 150%;
-  font-weight: $font-semi;
-  margin-bottom: 12px;
-  border-radius: 4px;
+  // display: flex;
+  // align-items: center;
+  // position: relative;
+  // padding: 14px 16px;
+  // color: rgba(0,0,0,0.8);
+  // background-color: #E9E9E9;
+  // font-size: 100%;
+  // line-height: 150%;
+  // font-weight: $font-semi;
+  // margin-bottom: 12px;
+  // border-radius: 4px;
 
   > div {
     flex: 1;
@@ -73,70 +73,54 @@
     }
   }
 
-  &:before {
-    @extend [class^="icon-"];
-    @extend .icon-message-square:before;
-    
-  }
+  // &:before {
+  //   @extend [class^="icon-"];
+  //   @extend .icon-message-square:before;
+  // }
 
-  [class^="icon-"], &:before {
-    align-self: flex-start;
-    font-size: 18px;
-    margin-right: 8px;
-    opacity: 0.8;
-  }
+  // [class^="icon-"], &:before {
+  //   align-self: flex-start;
+  //   font-size: 18px;
+  //   margin-right: 8px;
+  //   opacity: 0.8;
+  // }
 
-  &.no-icon:before {
-    display: none;
-  }
+  // &.no-icon:before {
+  //   display: none;
+  // }
 
-  &.message-info {
-    color: $white;
-    background: $color-info;
+  // &.is-info {
+  //   color: $white;
+  //   background: $color-info;
 
-    .button, [class^="button-"] {
-      background: rgba(0,0,0,0.15);
+  //   .button, [class^="button-"] {
+  //     background: rgba(0,0,0,0.15);
 
-      &:hover {
-        background: rgba(0,0,0,0.3);
-      }
-    }
+  //     &:hover {
+  //       background: rgba(0,0,0,0.3);
+  //     }
+  //   }
 
-    &:before { @extend .icon-info:before; }
-  }
-  &.message-error, &.message-danger {
-    color: $white;
-    background: $color-danger;
+  //   &:before { @extend .icon-info:before; }
+  // }
+  // &.is-danger, &.is-danger {
+  //   color: $white;
+  //   background: $color-danger;
 
-    &:before { @extend .icon-alert-circle:before; }
-  }
-  &.message-success {
-    color: $white;
-    background: $color-success;
+  //   &:before { @extend .icon-alert-circle:before; }
+  // }
+  // &.is-dark {
+  //   color: $white;
+  //   background: $color-dark;
 
-    &:before { @extend .icon-check-circle:before; }
-  }
-  &.message-warning {
-    color: rgba(0,0,0,0.7);
-    background: $color-warning;
+  //   .button, [class^="button-"] {
+  //     background: rgba(0,0,0,0.2);
 
-    .button, [class^="button-"] {
-      color: rbga(0,0,0,0.7);
-    }
-    &:before { @extend .icon-alert-triangle:before; }
-  }
-  &.message-dark {
-    color: $white;
-    background: $color-dark;
-
-    .button, [class^="button-"] {
-      background: rgba(0,0,0,0.2);
-
-      &:hover {
-        background: rgba(0,0,0,0.35);
-      }
-    }
-  }
+  //     &:hover {
+  //       background: rgba(0,0,0,0.35);
+  //     }
+  //   }
+  // }
 
   &.message-top {
     margin-bottom: 0;

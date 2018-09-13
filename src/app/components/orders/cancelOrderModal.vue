@@ -8,7 +8,9 @@
     </div>
     <div class="modal-content">
       <template v-if="enterpriseOrder">
-        <div class="message message-info">{{ $t('orders.CONTACT_ACCOUNT_REPRESENTATIVE') }}</div>
+        <div class="message is-info">
+          <div class="message-body">{{ $t('orders.CONTACT_ACCOUNT_REPRESENTATIVE') }}</div>
+        </div>
         <div>
           <button
             :disabled="loading"

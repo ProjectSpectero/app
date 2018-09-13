@@ -1,6 +1,6 @@
 <template>
   <div class="message mb-3">
-    <div>
+    <div class="message-body">
       <h5>Need to manage this node's resources?</h5>
       <p>
         In order to access this <strong>Unlisted</strong> node's services, you'll need to

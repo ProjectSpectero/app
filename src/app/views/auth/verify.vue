@@ -11,7 +11,9 @@
     <div v-else>
       <div v-if="error">
         <div v-if="error === 'USER_ALREADY_VERIFIED'">
-          <p class="message message-success">Your account is already verified!</p>
+          <div class="message is-success">
+            <div class="message-body">Your account is already verified!</div>
+          </div>
           <p>Click the button below to login now.</p>
           <br>
           <router-link
@@ -19,7 +21,9 @@
             class="button">Go to Login</router-link>
         </div>
         <div v-else>
-          <p class="message message-error">We were unable to verify your account. Please try again later.</p>
+          <div class="message is-danger">
+            <div class="message-body">We were unable to verify your account. Please try again later.</div>
+          </div>
           <router-link
             :to="{ name: 'login' }"
             class="button">Go to Login</router-link>

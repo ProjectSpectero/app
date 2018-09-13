@@ -1,6 +1,6 @@
 <template>
-  <div class="message message-info outstanding">
-    <div>
+  <div class="message is-info outstanding">
+    <div class="message-body">
       <h5>{{ $t('invoices.BALANCE_DUE') }}</h5>
       <p>
         <span v-html="$t('invoices.BALANCE_DUE_TEXT', { amount: $filters.currency(due.amount) })"/>

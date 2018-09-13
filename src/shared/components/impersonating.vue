@@ -1,15 +1,17 @@
 <template>
   <div
     v-if="user && isImpersonating"
-    class="impersonating message message-info message-top">
-    <div>
-      <h5>This isn't you!</h5>
-      <p>{{ $t('users.IMPERSONATING', { name: user.name }) }}</p>
-    </div>
-    <div class="actions">
-      <button
-        class="button is-dark"
-        @click.stop.prevent="stopImpersonation">Stop impersonating</button>
+    class="impersonating message is-info message-top">
+    <div class="message-body">
+      <div>
+        <h5>This isn't you!</h5>
+        <p>{{ $t('users.IMPERSONATING', { name: user.name }) }}</p>
+      </div>
+      <div class="actions">
+        <button
+          class="button is-dark"
+          @click.stop.prevent="stopImpersonation">Stop impersonating</button>
+      </div>
     </div>
   </div>
 </template>

@@ -6,7 +6,8 @@
           <h2>Basic Details</h2>
           <div
             v-if="formError"
-            class="message message-error">{{ formError }}
+            class="message is-danger">
+            <div class="message-body">{{ formError }}</div>
           </div>
 
           <div

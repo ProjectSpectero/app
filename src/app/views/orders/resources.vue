@@ -88,8 +88,8 @@
           v-else
           class="boxed boxed-centered">
           <div class="boxed-container boxed-md">
-            <div class="message message-info mb-0">
-              {{ $t('orders.RESOURCES_NOT_FOUND') }}
+            <div class="message is-info mb-0">
+              <div class="message-body">{{ $t('orders.RESOURCES_NOT_FOUND') }}</div>
             </div>
           </div>
         </div>

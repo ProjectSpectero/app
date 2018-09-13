@@ -65,8 +65,8 @@
                         @disableGateway="disableGateway"/>
                       <div
                         v-else
-                        class="message message-warning mb-0">
-                        This payment option is unavailable for this transaction.
+                        class="message is-warning mb-0">
+                        <div class="message-body">This payment option is unavailable for this transaction.</div>
                       </div>
                     </div>
                   </div>

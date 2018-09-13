@@ -5,14 +5,21 @@
 
       <div
         v-if="formError"
-        class="message message-error">{{ formError }}</div>
+        class="message is-danger">
+        <div class="message-body">{{ formError }}</div>
+      </div>
+
       <template v-else-if="tokenValid && !resetProcessed">
         <div
           v-if="isEasy"
-          class="message message-info">{{ $t('reset.RESET_INFO_MSG_EASY') }}</div>
+          class="message is-info">
+          <div class="message-body">{{ $t('reset.RESET_INFO_MSG_EASY') }}</div>
+        </div>
         <div
           v-else
-          class="message message-info">{{ $t('reset.RESET_INFO_MSG') }}</div>
+          class="message is-info">
+          <div class="message-body">{{ $t('reset.RESET_INFO_MSG') }}</div>
+        </div>
       </template>
 
       <template v-if="tokenValid">
