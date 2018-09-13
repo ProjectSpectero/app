@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="spectero">
     <component :is="layout"/>
     <vue-progress-bar/>
   </div>
@@ -63,9 +63,4 @@ export default {
 
 <style lang="scss">
 @import '~@styles/main.scss';
-
-#app {
-  width: 100%;
-  height: 100%;
-}
 </style>

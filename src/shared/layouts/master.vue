@@ -1,5 +1,5 @@
 <template>
-  <div class="spectero">
+  <div class="app-container">
     <sidebar @toggleMenu="toggleMenu"/>
 
     <div

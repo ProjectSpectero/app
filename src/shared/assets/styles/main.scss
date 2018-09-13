@@ -4,6 +4,9 @@
 // Bourbon neat (https://neat.bourbon.io/)
 @import "~@neat/_neat.scss";
 
+// Bulma (https://bulma.io/documentation/)
+@import "core/bulma";
+
 // Components
 @import "components/utility";
 @import "components/fonts";

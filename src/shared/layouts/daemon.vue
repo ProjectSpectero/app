@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{ bar: barComponent }"
-    class="spectero daemon">
+    class="app-container daemon">
     <sidebar/>
 
     <div

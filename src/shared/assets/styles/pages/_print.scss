@@ -1,8 +1,8 @@
 @media print {
-  body, #app, .spectero, .content {
+  body, #spectero .content {
     height: auto !important;
   }
-  .spectero {
+  #spectero {
     > .sidebar, .top {
       display: none !important;
     }

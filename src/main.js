@@ -3,6 +3,7 @@ import app from './app.vue'
 import router from './router'
 import store from './store'
 
+import Buefy from 'buefy'
 import VueI18n from 'vue-i18n'
 import VueCookie from 'vue-cookie'
 import VeeValidate from 'vee-validate'
@@ -24,6 +25,7 @@ import messages from '@/shared/lang'
 import globalMixin from '@/shared/mixins/global'
 
 // Load packages
+Vue.use(Buefy)
 Vue.use(VueI18n)
 Vue.use(VueCookie)
 Vue.use(VeeValidate)
