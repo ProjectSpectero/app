@@ -1,7 +1,6 @@
 .logo {
   width: 276px;
   height: 40px;
-  display: inline-block;
   position: relative;
   background: url('~@img/logo.svg') no-repeat 0 0/276px 40px;
 
@@ -18,12 +17,17 @@
     height: 25px;
     background-size: 175px 25px;
   }
-  &.logo-pro {
-    &:after {
+  &.is-pro {
+    width: 138px + 33px;
+    padding-right: 33px;
+  }
+  .logo-pro {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    
+    &:before {
       content: 'PRO';
-      position: absolute;
-      top: 0;
-      right: -30px;
       color: $color-brand;
       font-size: 12px;
       font-weight: $font-bold;
