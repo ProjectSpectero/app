@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <sidebar @toggleMenu="toggleMenu"/>
+    <nav-bar @toggleMenu="toggleMenu"/>
 
     <div
       :class="{ 'show': !menuCollapsed }"
@@ -8,7 +8,7 @@
 
     <div
       :class="{ 'overlay-active': !menuCollapsed }"
-      class="content">
+      class="page-content">
       <impersonation-bar/>
       <modals-container/>
       <router-view/>
@@ -18,13 +18,13 @@
 </template>
 
 <script>
-import sidebar from '@/shared/components/sidebar'
+import navBar from '@/shared/components/navBar'
 import help from '@/shared/components/docs/panel'
 import impersonationBar from '@/shared/components/impersonating'
 
 export default {
   components: {
-    sidebar,
+    navBar,
     help,
     impersonationBar
   },

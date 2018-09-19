@@ -2,11 +2,11 @@
   <div
     :class="{ bar: barComponent }"
     class="app-container daemon">
-    <sidebar/>
+    <nav-bar/>
 
     <div
       v-if="daemonInitialized"
-      class="content">
+      class="page-content">
       <modals-container/>
       <impersonation-bar/>
       <bar
@@ -31,12 +31,12 @@
 import { mapActions, mapGetters } from 'vuex'
 import bar from '@/daemon/components/common/bar'
 import loading from '@/shared/components/loading'
-import sidebar from '@/shared/components/sidebar'
+import navBar from '@/shared/components/navBar'
 import impersonationBar from '@/shared/components/impersonating'
 
 export default {
   components: {
-    sidebar,
+    navBar,
     bar,
     loading,
     impersonationBar

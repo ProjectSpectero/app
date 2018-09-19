@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
-    <sidebar @toggleMenu="toggleMenu"/>
+    <nav-bar @toggleMenu="toggleMenu"/>
 
     <div
       :class="{ 'show': !menuCollapsed }"
       class="responsive-menu-overlay" />
 
-    <div class="content">
+    <div class="page-content">
       <div class="auth">
         <div class="auth-container">
           <router-view/>
@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import sidebar from '@/shared/components/sidebar'
+import navBar from '@/shared/components/navBar'
 
 export default {
   components: {
-    sidebar
+    navBar
   },
   data () {
     return {
