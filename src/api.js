@@ -25,11 +25,12 @@ async function API (project, method, path, data, success, fail) {
   let overrideErrors = (data.overrideErrors !== undefined) ? data.overrideErrors : false
 
   if (data.headers) {
-    headers = {...headers, ...data.headers}
+    headers = { ...headers, ...data.headers }
   }
 
   // Request interceptors (handle what happens BEFORE connecting to the API)
   instance.interceptors.request.use(config => {
+    console.log('Headers:', config.headers)
     progress.start()
     return config
   }, error => {
