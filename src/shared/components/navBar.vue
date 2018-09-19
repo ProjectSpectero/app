@@ -22,12 +22,6 @@
     <div id="navbar-main" class="navbar-menu">
       <div class="navbar-start">
         <template v-if="user">
-          <router-link
-            class="navbar-item"
-            :to="{ name: 'pro' }"
-            @click.native="toggleMenuClick">
-            <b-icon icon="bolt" size="is-small" /> <span class="ml-1">{{ $t('misc.PRO') }}</span>
-          </router-link>
           <div class="navbar-item has-dropdown is-hoverable">
             <router-link
               class="navbar-link"
