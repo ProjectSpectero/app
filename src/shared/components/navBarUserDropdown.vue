@@ -1,6 +1,6 @@
 <template>
   <div
-    ref="sidebarDropdown"
+    ref="navBarUserDropdown"
     class="menu-items dropdown">
     <section class="current-user">
       <div
@@ -86,7 +86,7 @@ export default {
       this.showAccountDropdown = !this.showAccountDropdown
     },
     documentClick (e) {
-      let el = this.$refs.sidebarDropdown
+      let el = this.$refs.navBarUserDropdown
 
       // This will hide the account dropdown when you click outside of it on the document
       if (el !== e.target && !el.contains(e.target)) {
@@ -106,7 +106,7 @@ export default {
 
 <style lang="scss" scoped>
 .current-user {
-  margin: 8px;
+  // margin: 8px;
   position: relative;
 
   .dropdown-toggle {
@@ -115,7 +115,7 @@ export default {
     padding: 8px;
     color: #C5D0E1;
     font-weight: $font-semi;
-    border-radius: 4px;
+    // border-radius: 4px;
     cursor: pointer;
 
     &:hover, &.active {
