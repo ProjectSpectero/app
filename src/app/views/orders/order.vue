@@ -142,14 +142,14 @@
                   <div class="balance">
                     <h6>Balance Due</h6>
                     <span
-                      :class="{'text-info': due.amount > 0}"
+                      :class="{'has-text-info': due.amount > 0}"
                       class="balance-left">{{ due.amount | currency }}</span>
                   </div>
                   <div class="details">
-                    <small class="text-light">Invoice No: {{ invoice.id }}</small>
+                    <small class="has-text-light">Invoice No: {{ invoice.id }}</small>
                     <small
                       v-if="order.due_next"
-                      class="text-light">{{ $t('misc.NEXT_DUE_DATE') }}: {{ order.due_next | moment('MMM D, YYYY') }}</small>
+                      class="has-text-light">{{ $t('misc.NEXT_DUE_DATE') }}: {{ order.due_next | moment('MMM D, YYYY') }}</small>
                   </div>
                 </div>
 

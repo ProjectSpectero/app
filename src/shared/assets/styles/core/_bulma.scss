@@ -1,5 +1,6 @@
 // Custom colors
 $primary: $color-primary;
+$info: $color-info;
 
 // Bulma core
 @import "~bulma/sass/utilities/_all";
@@ -7,3 +8,11 @@ $primary: $color-primary;
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
+
+.button .fa-sort-down {
+  position: relative;
+  top: -2px;
+}
+.dropdown-menu .dropdown-item > .icon {
+  margin-right: 6px;
+}

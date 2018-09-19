@@ -20,12 +20,12 @@
       <template v-if="item.pricing.yearlyDiscount">
         <p
           v-if="item.term === 'YEARLY'"
-          class="text-success">
+          class="has-text-success">
           <span class="icon-check-circle"/> {{ $t('market.YEARLY_SAVING') }} <strong>{{ item.pricing.yearlySavings | currency }}</strong>
         </p>
         <p
           v-else
-          class="text-warning switch-yearly">
+          class="has-text-warning switch-yearly">
           <span class="icon-alert-circle"/> {{ $t('market.YEARLY_COULD_SAVE') }} <strong>{{ item.pricing.yearlySavings | currency }}</strong>
           <br>
           <span

@@ -37,7 +37,7 @@ Vue.use(PrettyCheckbox)
 Vue.use(VueNumeric)
 
 Vue.use(Buefy, {
-  defaultIconPack: 'fa'
+  defaultIconPack: 'fas'
 })
 
 Vue.use(VueTooltip, {

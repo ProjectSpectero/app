@@ -13,7 +13,7 @@
         </h5>
         <span
           v-if="item.error"
-          class="line-msg text-danger">
+          class="line-msg has-text-danger">
           <span class="icon-alert-circle"/>
           {{ $t(`invoices.RESOURCE_ERROR.${item.error}`) }}
         </span>
