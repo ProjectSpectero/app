@@ -99,7 +99,7 @@ export default {
     }
   },
   created () {
-    this.list = this.listeners.map(a => ({...a}))
+    this.list = this.listeners.map(a => ({ ...a }))
   },
   methods: {
     remove (index) {

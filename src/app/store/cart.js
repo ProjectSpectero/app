@@ -11,7 +11,7 @@ const localCartKey = 'SPECTERO_CART'
 
 const getLocalData = () => {
   let cart = localStorage.getItem(localCartKey)
-  return (cart) ? JSON.parse(cart) : {cart: [], locked: false}
+  return (cart) ? JSON.parse(cart) : { cart: [], locked: false }
 }
 
 const setLocalCart = (data, locked) => {
