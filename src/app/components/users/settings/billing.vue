@@ -116,7 +116,7 @@
         v-html="errors.first('address_line_2')"/>
     </div>
 
-    <div class="form-input col-container reduce-spacing">
+    <div class="form-input">
       <div class="col">
         <float-label>
           <input
@@ -159,7 +159,7 @@
       </div>
     </div>
 
-    <div class="form-input col-container reduce-spacing">
+    <div class="form-input">
       <div class="col">
         <float-label>
           <input

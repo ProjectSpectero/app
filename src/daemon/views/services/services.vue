@@ -6,9 +6,7 @@
       <div class="col-12">
         <div class="section padded">
           <h2>Services</h2>
-          <div
-            v-if="services"
-            class="col-container">
+          <div v-if="services">
             <div
               v-for="(status, service) in services"
               :key="service"
@@ -110,8 +108,5 @@ export default {
   .actions {
     margin-top: $pad;
   }
-}
-.col-container {
-  margin-left: -$pad;
 }
 </style>

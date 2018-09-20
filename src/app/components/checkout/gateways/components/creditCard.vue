@@ -9,7 +9,7 @@
         <div class="message-body">{{ formError }}</div>
       </div>
 
-      <div class="form-input col-container reduce-spacing billing-fields">
+      <div class="form-input billing-fields">
         <div class="col">
           <float-label>
             <input
