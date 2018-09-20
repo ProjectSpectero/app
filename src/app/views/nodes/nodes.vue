@@ -17,58 +17,46 @@
         <help-button obj="nodes.topics"/>
       </top>
 
-      <div>
-        <div class="container">
-          <div
-            v-if="groups && everythingLoaded"
-            class="col-12 content-split">
-            <div
-              v-if="groups && groups.length"
-              class="split-list nodes-sidebar">
-              <header>
-                <h2 class="mb-0">{{ $t('misc.GROUPS') }}</h2>
-              </header>
-              <div
+      <div class="container is-body">
+        <div
+          v-if="groups && everythingLoaded"
+          class="columns">
+          <aside
+            v-if="groups && groups.length"
+            class="menu column is-one-quarter">
+            <p class="menu-label">
+              Your Node Groups
+            </p>
+            <ul class="menu-list">
+              <li
                 v-for="group in groups"
                 :key="group.id"
-                :class="selectedGroup === group.id ? 'active' : ''"
-                class="node-group"
                 @click.stop="selectGroup(group, true)">
-                <div class="group-name">
-                  {{ group.friendly_name }}
-                </div>
-              </div>
-
-              <div
-                :class="selectedGroup === 0 ? 'active' : ''"
-                class="node-group"
+                  <a :class="{ 'is-active': selectedGroup === group.id }">{{ group.friendly_name }}</a>
+              </li>
+              <li
                 @click.stop="selectUncategorized">
-                <div class="group-name">
-                  {{ $t('nodes.UNCATEGORIZED') }}
-                </div>
-                <div class="count">
-                  {{ uncategorized.pagination.total }}
-                </div>
-              </div>
-            </div>
-            <div class="split-details">
-              <nodes-list
-                :selected-group-information="selectedGroupInformation"
-                :search-id="searchId"
-                :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
-                :table-data="(selectedGroup === 0) ? uncategorized.result : nodes"
-                :hide-header="groups && groups.length === 0"
-                :groups="groups"
-                @refetch="setup"
-                @changedPage="changedPage"
-                @sortByColumn="sortByColumn"
-                @showAddNodeModal="showAddNodeModal"/>
-            </div>
+                <a :class="{ 'is-active': selectedGroup === 0 }">{{ $t('nodes.UNCATEGORIZED') }}</a>
+              </li>
+            </ul>
+          </aside>
+          <div class="column">
+            <node-list
+              :selected-group-information="selectedGroupInformation"
+              :search-id="searchId"
+              :pagination="(selectedGroup === 0) ? uncategorized.pagination : pagination"
+              :nodes="(selectedGroup === 0) ? uncategorized.result : nodes"
+              :hide-header="groups && groups.length === 0"
+              :groups="groups"
+              @refetch="setup"
+              @changedPage="changedPage"
+              @sortByColumn="sortByColumn"
+              @showAddNodeModal="showAddNodeModal"/>
           </div>
-          <loading
-            v-else
-            :text="loadingText" />
         </div>
+        <loading
+          v-else
+          :text="loadingText" />
       </div>
     </template>
     <error
@@ -81,7 +69,7 @@
 <script>
 import filtersMixin from '@/app/mixins/listFilters'
 import nodeAPI from '@/app/api/node'
-import nodesList from '@/app/components/nodes/nodesList'
+import NodeList from '@/app/components/nodes/nodeList'
 import top from '@/shared/components/top'
 import error from '@/shared/components/errors/error'
 import loading from '@/shared/components/loading'
@@ -96,7 +84,7 @@ export default {
     loading,
     helpButton,
     notFound,
-    nodesList,
+    NodeList,
     addNodeModal
   },
   mixins: [
@@ -340,3 +328,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>
